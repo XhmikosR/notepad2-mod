@@ -45,7 +45,7 @@ KEYWORDLIST KeyWords_NULL = {
 
 
 EDITLEXER lexDefault = { SCLEX_NULL, 63000, L"Default Text", L"txt; text; wtx; log; asc; doc", L"", &KeyWords_NULL, {
-                /*  0 */ { STYLE_DEFAULT, 63100, L"Default Style", L"font:Lucida Console; size:10", L"" },
+                /*  0 */ { STYLE_DEFAULT, 63100, L"Default Style", L"font:Default; size:10", L"" },
                 /*  1 */ { STYLE_LINENUMBER, 63101, L"Margins and Line Numbers", L"size:-2; fore:#FF0000", L"" },
                 /*  2 */ { STYLE_BRACELIGHT, 63102, L"Matching Braces", L"size:+1; bold; fore:#FF0000", L"" },
                 /*  3 */ { STYLE_BRACEBAD, 63103, L"Matching Braces Error", L"size:+1; bold; fore:#000080", L"" },
@@ -1939,6 +1939,34 @@ BOOL Style_GetOpenDlgFilterStr(LPWSTR lpszFilter,int cchFilter)
 
 //=============================================================================
 //
+//  IsConsolasAvailable()
+//
+int CALLBACK EnumFontsProc( CONST LOGFONT *plf, CONST TEXTMETRIC *ptm,
+                            DWORD FontType, LPARAM lParam )
+{
+  *((PBOOL)lParam) = TRUE;
+  return(FALSE);
+
+}
+
+BOOL IsConsolasAvailable( )
+{
+  // Yes, EnumFonts is old, but we neither need nor care about the additional
+  // info returned by the newer font enumeration APIs; all that we care about
+  // is whether the callback is ever called.
+
+  BOOL fFound = FALSE;
+
+  HDC hDC = GetDC(NULL);
+  EnumFonts(hDC, TEXT("Consolas"), EnumFontsProc, (LPARAM)&fFound);
+  ReleaseDC(NULL, hDC);
+
+  return(fFound);
+}
+
+
+//=============================================================================
+//
 //  Style_StrGetFont()
 //
 BOOL Style_StrGetFont(LPCWSTR lpszStyle,LPWSTR lpszFont,int cchFont)
@@ -1952,7 +1980,19 @@ BOOL Style_StrGetFont(LPCWSTR lpszStyle,LPWSTR lpszFont,int cchFont)
     if (p = StrChr(tch,L';'))
       *p = L'\0';
     TrimString(tch);
-    lstrcpyn(lpszFont,tch,cchFont);
+
+    if (lstrcmpi(tch,L"Default") == 0)
+    {
+      if (IsConsolasAvailable())
+        lstrcpyn(lpszFont,L"Consolas",cchFont);
+      else
+        lstrcpyn(lpszFont,L"Lucida Console",cchFont);
+    }
+    else
+    {
+      lstrcpyn(lpszFont,tch,cchFont);
+    }
+
     return TRUE;
   }
   return FALSE;
