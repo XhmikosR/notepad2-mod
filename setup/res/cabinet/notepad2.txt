@@ -5,8 +5,8 @@
 =   Notepad2 - light-weight Scintilla-based text editor for Windows   =
 =                                                                     =
 =                                                                     =
-=                                                   Notepad2 4.0.22   =
-=                                      (c) Florian Balmer 2004-2009   =
+=                                                   Notepad2 4.1.24   =
+=                                      (c) Florian Balmer 2004-2010   =
 =                                       http://www.flos-freeware.ch   =
 =                                                                     =
 =                                                                     =
@@ -26,7 +26,7 @@ Features
   - Syntax highlighting: HTML, XML, PHP, ASP (JS, VBS), CSS,
     JavaScript, VBScript, C/C++, C#, Resource Script, Makefiles, Java,
     Visual Basic, Pascal, Assembly, SQL, Perl, Python, Configuration
-    Files, Apache Config Files, Batch Files, Diff Files
+    Files, Apache Config Files, PowerShell, Batch Files, Diff Files
   - Drag & drop text editing inside and outside Notepad2
   - Basic regular expression search and replace
   - Useful word, line and block editing shortcuts
@@ -37,7 +37,42 @@ Features
   - Mostly adjustable
 
 
-New in Version 4.0.22-beta5 (released July 21, 2009)
+New in Version 4.1.24 (released March 02, 2010)
+
+  - /z command line switch (support registry-based Notepad replacement)
+  - /u command line switch (launch Notepad2 with elevated privileges)
+  - Fixed some /p command line switch options not working properly
+  - Display more informative error messages for file operation failures
+  - Hotkey to copy pathname of current file to clipboard (Shift+F9)
+  - Window title indicator when running with elevated privileges
+  - Ini-options to control system MRU, taskbar and jump list behaviour
+  - Enhanced portability for directory settings inside My Documents
+  - Configure whether tab key should reformat indenting whitespace
+  - Revised word wrap settings dialog and added more detailed options
+  - New style setting to control font smoothing (see FAQ on my website)
+  - New style setting to control size of visible white space dots
+  - Improved cursor visibility on any background color
+  - Added new "HTML Element Text" and "XML Element Text" styles
+  - Improved default style utilization for HTML-embedded schemes
+  - Updated PowerShell keywords to version 2.0
+  - Added missing keywords to VBScript scheme
+  - Fixed deleted files reappearing in MRU lists
+  - Updated Scintilla library to 2.03
+
+
+New in Version 4.0.23 (released October 06, 2009)
+
+  - Added PowerShell Script syntax highlighting
+  - Added missing keywords to JavaScript schemes
+  - Further simplified syntax schemes by consolidating certain styles
+  - More accurate "mode" file variable matching with tightened rules
+  - Avoid repetitive zone checks when running Notepad2.exe internally
+  - Fixed choice of encoding conversion prompt being ignored
+  - Fixed recent file dialog hang with inaccessible UNC paths
+  - Internal changes to allow complete internationalization (future)
+
+
+New in Version 4.0.22 (released July 28, 2009)
 
   - Support for numerous Windows, DOS, ISO, Mac and EBCDIC encodings
   - Enhanced encoding selection dialog (F9)
@@ -62,9 +97,10 @@ New in Version 4.0.22-beta5 (released July 21, 2009)
   - Allow bigger tab-/indent-widths (256) and long line limit (4096)
   - Allow setting extra line spacing (through "Default Text" scheme)
   - Dropping directories displays file open dialog
-  - Enabled improved Scintilla Pascal lexing module (patch by Kai Liu)
   - Consolidated styles to simplify configuration (patch by Kai Liu)
   - Ensure cursor visibility on any background color (patch by Kai Liu)
+  - Enabled improved Scintilla Pascal lexing module (patch by Kai Liu)
+  - Updated HTML keywords to version 5.0
   - Remapped "Manage Favorites" hotkey to Alt+F9
   - Remapped "Invert Case" hotkey to Ctrl+Alt+U
   - Remapped "Title Case" hotkey to Ctrl+Alt+I
@@ -444,7 +480,7 @@ Keyboard Shortcuts for Notepad2
     Ctrl+F4               Close file, identical with Ctrl+N.
     Ctrl+O                Open file.
     F5                    Reload file.
-    F8                    Recode.
+    F8                    Recode file.
     Ctrl+Shift+A          Recode file as system default ANSI.
     Ctrl+Shift+O          Recode file as system default OEM.
     Shift+F8              Recode 7-bit ASCII file as UTF-8.
@@ -559,8 +595,6 @@ Keyboard Shortcuts for Notepad2
     Ctrl+Shift+R          URL Decode.
     Ctrl+Alt+E            Escape C Special Chars.
     Ctrl+Alt+U            Unescape C Special Chars.
-    Ctrl+Alt++            Increase number.
-    Ctrl+Alt+-            Decrease number.
     Ctrl+B                Find matching brace.
     Ctrl+Shift+B          Select to matching brace.
     Ctrl+1                Enclose within ''.
@@ -570,6 +604,8 @@ Keyboard Shortcuts for Notepad2
     Ctrl+5                Enclose within {}.
     Ctrl+6                Enclose within ``.
     Shift+F5              Update timestamps.
+    Ctrl+Alt++            Increase number.
+    Ctrl+Alt+-            Decrease number.
     Ctrl+,                Jump to selection start.
     Ctrl+.                Jump to selection end.
 
@@ -623,14 +659,15 @@ Keyboard Shortcuts for Notepad2
     Alt+-                 Decrease limit for long lines.
     Ctrl+Shift+H          Toggle auto close HTML/XML.
     Alt+T                 Always on top.
-    Alt+F5                File change notification settings.
     Ctrl+0                Transparent mode.
+    Alt+F5                File change notification settings.
     Ctrl+9                Display text excerpt in title.
     F7                    Save settings now.
     Ctrl+F7               Jump to ini-file.
 
   Misc.
 
+    Shift+F9              Copy pathname to clipboard.
     Esc                   Optionally minimize or exit Notepad2.
     Shift+Esc             Save file and exit Notepad2.
     F1                    Display version info.
@@ -696,6 +733,7 @@ Regular Expression Syntax
          - Unquote lines: find "^> " replace with ""
          - Remove line numbers: find "^[0-9]+" replace with ""
          - Convert tabs to double spaces: find "\t" replace with "  "
+         - Remove NULL bytes: find "\x00" replace with ""
 
 
 Command Line Switches
@@ -704,7 +742,8 @@ Command Line Switches
                [/m[-][r|b] text] [/q] [/s ext] [/d] [/h] [/x] [/c]
                [/b] [/n|/ns] [/r|/rs]
                [/p x,y,cx,cy[,max]|/p0|/ps|/pf,l,t,r,b,m]
-               [/t title] [/i] [/f ini|/f0] [/?] [+|-] [file] ...
+               [/t title] [/i] [/f ini|/f0] [/u] [/z ...] [/?]
+               [+|-] [file] ...
 
     file  File to open, can be a relative pathname, or a shell link.
           Must be the last argument, no quoted spaces by default.
@@ -731,6 +770,8 @@ Command Line Switches
     /t    Set window title.
     /i    Start as tray icon.
     /f    Specify ini-file; /f0 use no ini-file (don't save settings).
+    /u    Launch with elevated privileges.
+    /z    Skip next (usable for registry-based Notepad replacement).
     /?    Display a brief summary about command line parameters.
 
 
@@ -745,8 +786,9 @@ Source Code
 
 More Information and Resources
 
-  For more information on Notepad2 features, and answers to the most
-  frequently asked questions (FAQ), please visit the Notepad2 website:
+  For more information on Notepad2 features, how to replace Windows
+  Notepad, and answers to the most frequently asked questions (FAQ),
+  please visit the Notepad2 website:
   http://www.flos-freeware.ch
 
 
@@ -755,14 +797,6 @@ Feature Requests
   Thank you very much for the overwhelming feedback about Notepad2!
   Feature requests are always welcome, but please keep in mind that
   Notepad2 has been designed as a compact Notepad replacement.
-
-  Hyperlink support is currently not provided by the Scintilla source
-  code editing component (and not planned), it's unlikely I will
-  implement this.
-
-  Notepad replacement is easier said than done, I'm sorry! Instructions
-  on how to replace Notepad on various versions of Windows can be found
-  around in the net.
 
 
 Credits and Special Thanks
@@ -796,6 +830,6 @@ Copyright
   If you have comments or questions, please drop me a note:
   florian.balmer@gmail.com
 
-  (c) Florian Balmer 2004-2009
+  (c) Florian Balmer 2004-2010
 
 ###
