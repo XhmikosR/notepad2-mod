@@ -1,0 +1,4 @@
+{2}// A demonstration program
+{5}int{0} {11}main{10}(){0} {10}{{0}
+	{11}printf{10}({6}"hello world %d\n"{10},{0} {4}9{10});{0}
+{10}}{0}
