@@ -5,9 +5,17 @@
       <Configuration>Full</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Full|x64">
+      <Configuration>Full</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Lite|Win32">
       <Configuration>Lite</Configuration>
       <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Lite|x64">
+      <Configuration>Lite</Configuration>
+      <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -19,7 +27,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Full|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Full|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Lite|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Lite|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Full|Win32'" Label="Configuration">
@@ -28,7 +42,19 @@
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Full|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Lite|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Lite|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
@@ -40,27 +66,55 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Full|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Full|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Lite|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Lite|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Full|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Full|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Lite|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Lite|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Lite|Win32'">
-    <OutDir>.\bin.x86-32\</OutDir>
-    <IntDir>.\obj.x86-32.lite\</IntDir>
+    <OutDir>bin.x86-32\</OutDir>
+    <IntDir>obj\x86-32.lite\</IntDir>
     <LinkIncremental>false</LinkIncremental>
+    <TargetName>setuplite</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Lite|x64'">
+    <OutDir>bin.x86-64\</OutDir>
+    <IntDir>obj\x86-64.lite\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <TargetName>setuplite</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Full|Win32'">
-    <OutDir>.\bin.x86-32\</OutDir>
-    <IntDir>.\obj.x86-32.full\</IntDir>
+    <OutDir>bin.x86-32\</OutDir>
+    <IntDir>obj\x86-32.full\</IntDir>
     <LinkIncremental>false</LinkIncremental>
+    <TargetName>setupfull</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Full|x64'">
+    <OutDir>bin.x86-64\</OutDir>
+    <IntDir>obj\x86-64.full\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <TargetName>setupfull</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Lite|Win32'">
     <ClCompile>
@@ -71,15 +125,12 @@
       <Optimization>MinSpace</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;UNICODE;_WIN32_WINNT=0x0500;SETUP_LITE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AssemblerListingLocation>.\obj.x86-32.lite\</AssemblerListingLocation>
-      <PrecompiledHeaderOutputFile>.\obj.x86-32.lite\setup.pch</PrecompiledHeaderOutputFile>
-      <ObjectFileName>.\obj.x86-32.lite\</ObjectFileName>
-      <ProgramDataBaseFileName>.\obj.x86-32.lite\</ProgramDataBaseFileName>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;UNICODE;_WIN32_WINNT=0x0600;SETUP_LITE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>
       </AdditionalOptions>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Midl>
       <TypeLibraryName>.\bin.x86-32\setup.tlb</TypeLibraryName>
@@ -93,11 +144,49 @@
     </Bscmake>
     <Link>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\bin.x86-32\setup.exe</OutputFile>
+      <OutputFile>$(OutDir)setuplite.exe</OutputFile>
       <SetChecksum>true</SetChecksum>
       <MergeSections>.rdata=.text</MergeSections>
       <AdditionalDependencies>comctl32.lib;advpack.lib;cabinet.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions>/SUBSYSTEM:WINDOWS,5.0 /OSVERSION:5.0 /STUB:dosstub.bin /OUT:bin.x86-32\setuplite.exe /IGNORE:4078 /STUB:dosstub.bin /OUT:bin.x86-32\setuplite.exe /STUB:dosstub.bin /OUT:bin.x86-32\setuplite.exe /OUT:bin.x86-32\setuplite.exe </AdditionalOptions>
+      <AdditionalOptions>/SUBSYSTEM:WINDOWS,5.0 /OSVERSION:5.0 /STUB:dosstub.bin /IGNORE:4078</AdditionalOptions>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Lite|x64'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <StringPooling>true</StringPooling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <Optimization>MinSpace</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;UNICODE;_WIN32_WINNT=0x0600;SETUP_LITE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>
+      </AdditionalOptions>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Midl>
+      <TypeLibraryName>.\bin.x86-32\setup.tlb</TypeLibraryName>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;_M_IX86;SETUP_LITE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <OutputFile>.\bin.x86-32\setup.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>$(OutDir)setuplite.exe</OutputFile>
+      <SetChecksum>true</SetChecksum>
+      <MergeSections>.rdata=.text</MergeSections>
+      <AdditionalDependencies>comctl32.lib;advpack.lib;cabinet.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/SUBSYSTEM:WINDOWS,5.0 /OSVERSION:5.0 /STUB:dosstub.bin /IGNORE:4078</AdditionalOptions>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
@@ -112,15 +201,12 @@
       <Optimization>MinSpace</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;UNICODE;_WIN32_WINNT=0x0500;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AssemblerListingLocation>.\obj.x86-32.full\</AssemblerListingLocation>
-      <PrecompiledHeaderOutputFile>.\obj.x86-32.full\setup.pch</PrecompiledHeaderOutputFile>
-      <ObjectFileName>.\obj.x86-32.full\</ObjectFileName>
-      <ProgramDataBaseFileName>.\obj.x86-32.full\</ProgramDataBaseFileName>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;UNICODE;_WIN32_WINNT=0x0600;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>
       </AdditionalOptions>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Midl>
       <TypeLibraryName>.\bin.x86-32\setup.tlb</TypeLibraryName>
@@ -134,11 +220,49 @@
     </Bscmake>
     <Link>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\bin.x86-32\setup.exe</OutputFile>
+      <OutputFile>$(OutDir)setupfull.exe</OutputFile>
       <SetChecksum>true</SetChecksum>
       <MergeSections>.rdata=.text</MergeSections>
       <AdditionalDependencies>comctl32.lib;advpack.lib;cabinet.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions>/SUBSYSTEM:WINDOWS,5.0 /OSVERSION:5.0 /STUB:dosstub.bin /OUT:bin.x86-32\setupfull.exe /IGNORE:4078 /STUB:dosstub.bin /OUT:bin.x86-32\setupfull.exe /STUB:dosstub.bin /OUT:bin.x86-32\setupfull.exe /OUT:bin.x86-32\setupfull.exe </AdditionalOptions>
+      <AdditionalOptions>/SUBSYSTEM:WINDOWS,5.0 /OSVERSION:5.0 /STUB:dosstub.bin /IGNORE:4078</AdditionalOptions>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Full|x64'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <StringPooling>true</StringPooling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <Optimization>MinSpace</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;UNICODE;_WIN32_WINNT=0x0600;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>
+      </AdditionalOptions>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Midl>
+      <TypeLibraryName>.\bin.x86-32\setup.tlb</TypeLibraryName>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;_M_IX86;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <OutputFile>.\bin.x86-32\setup.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>$(OutDir)setupfull.exe</OutputFile>
+      <SetChecksum>true</SetChecksum>
+      <MergeSections>.rdata=.text</MergeSections>
+      <AdditionalDependencies>comctl32.lib;advpack.lib;cabinet.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/SUBSYSTEM:WINDOWS,5.0 /OSVERSION:5.0 /STUB:dosstub.bin /IGNORE:4078</AdditionalOptions>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
@@ -146,20 +270,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="setup.c">
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Lite|Win32'"> /Wp64 /GS- /GL /EHsc   /Wp64 /GS- /GL /EHsc </AdditionalOptions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Full|Win32'"> /Wp64 /GS- /GL /EHsc   /Wp64 /GS- /GL /EHsc </AdditionalOptions>
     </ClCompile>
     <ClCompile Include="dosetup.c">
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Lite|Win32'"> /Wp64 /GS- /GL /EHsc   /Wp64 /GS- /GL /EHsc </AdditionalOptions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Full|Win32'"> /Wp64 /GS- /GL /EHsc   /Wp64 /GS- /GL /EHsc </AdditionalOptions>
     </ClCompile>
     <ClCompile Include="cabinet.c">
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Lite|Win32'"> /Wp64 /GS- /GL /EHsc   /Wp64 /GS- /GL /EHsc </AdditionalOptions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Full|Win32'"> /Wp64 /GS- /GL /EHsc   /Wp64 /GS- /GL /EHsc </AdditionalOptions>
     </ClCompile>
     <ClCompile Include="libs\Wow64.c">
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Lite|Win32'"> /Wp64 /GS- /GL /EHsc   /Wp64 /GS- /GL /EHsc </AdditionalOptions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Full|Win32'"> /Wp64 /GS- /GL /EHsc   /Wp64 /GS- /GL /EHsc </AdditionalOptions>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

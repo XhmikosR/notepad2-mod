@@ -6,13 +6,19 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Full|Win32 = Full|Win32
+		Full|x64 = Full|x64
 		Lite|Win32 = Lite|Win32
+		Lite|x64 = Lite|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{8A95BEFC-9819-58B6-5FDB-FA8EB2A6B480}.Full|Win32.ActiveCfg = Full|Win32
 		{8A95BEFC-9819-58B6-5FDB-FA8EB2A6B480}.Full|Win32.Build.0 = Full|Win32
+		{8A95BEFC-9819-58B6-5FDB-FA8EB2A6B480}.Full|x64.ActiveCfg = Full|x64
+		{8A95BEFC-9819-58B6-5FDB-FA8EB2A6B480}.Full|x64.Build.0 = Full|x64
 		{8A95BEFC-9819-58B6-5FDB-FA8EB2A6B480}.Lite|Win32.ActiveCfg = Lite|Win32
 		{8A95BEFC-9819-58B6-5FDB-FA8EB2A6B480}.Lite|Win32.Build.0 = Lite|Win32
+		{8A95BEFC-9819-58B6-5FDB-FA8EB2A6B480}.Lite|x64.ActiveCfg = Lite|x64
+		{8A95BEFC-9819-58B6-5FDB-FA8EB2A6B480}.Lite|x64.Build.0 = Lite|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
