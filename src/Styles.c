@@ -33,6 +33,8 @@
 #include "styles.h"
 #include "resource.h"
 
+extern int iEncoding;
+
 
 #define MULTI_STYLE(a,b,c,d) ((a)|(b<<8)|(c<<16)|(d<<24))
 
@@ -41,7 +43,7 @@ KEYWORDLIST KeyWords_NULL = {
 "", "", "", "", "", "", "", "", "" };
 
 
-EDITLEXER lexDefault = { SCLEX_NULL, 63000, L"Default Text", L"txt; text; wtx; log; asc; doc; diz; nfo", L"", &KeyWords_NULL, {
+EDITLEXER lexDefault = { SCLEX_NULL, 63000, L"Default Text", L"txt; text; wtx; log; asc; doc", L"", &KeyWords_NULL, {
                 /*  0 */ { STYLE_DEFAULT, 63100, L"Default Style", L"font:Lucida Console; size:10", L"" },
                 /*  1 */ { STYLE_LINENUMBER, 63101, L"Margins and Line Numbers", L"size:-2; fore:#FF0000", L"" },
                 /*  2 */ { STYLE_BRACELIGHT, 63102, L"Matching Braces", L"size:+1; bold; fore:#FF0000", L"" },
@@ -956,6 +958,14 @@ EDITLEXER lexPS = { SCLEX_POWERSHELL, 63021, L"PowerShell Script", L"ps1; psc1",
                     { -1, 00000, L"", L"", L"" } } };
 
 
+EDITLEXER lexANSI = { SCLEX_NULL, 63321, L"ANSI Art", L"nfo; diz", L"", &KeyWords_NULL, {
+                      { STYLE_DEFAULT, 63322, L"Default", L"font:Lucida Console", L"" },
+                      { STYLE_LINENUMBER, 63323, L"Margins and Line Numbers", L"font:Lucida Console; size:-2", L"" },
+                      { STYLE_BRACELIGHT, 63324, L"Matching Braces", L"size:+0", L"" },
+                      { STYLE_BRACEBAD, 63325, L"Matching Braces Error", L"size:+0", L"" },
+                      { -1, 00000, L"", L"", L"" } } };
+
+
 // This array holds all the lexers...
 PEDITLEXER pLexArray[NUMLEXERS] =
 {
@@ -980,7 +990,8 @@ PEDITLEXER pLexArray[NUMLEXERS] =
   &lexCONF,
   &lexPS,
   &lexBAT,
-  &lexDIFF
+  &lexDIFF,
+  &lexANSI
 };
 
 
@@ -1286,14 +1297,15 @@ void Style_SetLexer(HWND hwnd,PEDITLEXER pLexNew)
   if (!Style_StrGetColor(FALSE,lexDefault.Styles[0+iIdx].szValue,&iValue))
     SendMessage(hwnd,SCI_STYLESETBACK,STYLE_DEFAULT,(LPARAM)GetSysColor(COLOR_WINDOW));       // default window color
 
-  if (pLexNew->iLexer != SCLEX_NULL)
+  if (pLexNew->iLexer != SCLEX_NULL || pLexNew == &lexANSI)
     Style_SetStyles(hwnd,pLexNew->Styles[0].iStyle,pLexNew->Styles[0].szValue); // lexer default
   SendMessage(hwnd,SCI_STYLECLEARALL,0,0);
 
   Style_SetStyles(hwnd,lexDefault.Styles[1+iIdx].iStyle,lexDefault.Styles[1+iIdx].szValue); // linenumber
   Style_SetStyles(hwnd,lexDefault.Styles[2+iIdx].iStyle,lexDefault.Styles[2+iIdx].szValue); // brace light
   Style_SetStyles(hwnd,lexDefault.Styles[3+iIdx].iStyle,lexDefault.Styles[3+iIdx].szValue); // brace bad
-  Style_SetStyles(hwnd,lexDefault.Styles[4+iIdx].iStyle,lexDefault.Styles[4+iIdx].szValue); // control char
+  if (pLexNew != &lexANSI)
+    Style_SetStyles(hwnd,lexDefault.Styles[4+iIdx].iStyle,lexDefault.Styles[4+iIdx].szValue); // control char
   Style_SetStyles(hwnd,lexDefault.Styles[5+iIdx].iStyle,lexDefault.Styles[5+iIdx].szValue); // indent guide
 
   // More default values...
@@ -1421,7 +1433,7 @@ void Style_SetLexer(HWND hwnd,PEDITLEXER pLexNew)
   }
 
   // Extra Line Spacing
-  if (Style_StrGetSize(lexDefault.Styles[12+iIdx].szValue,&iValue)) {
+  if (Style_StrGetSize(lexDefault.Styles[12+iIdx].szValue,&iValue) && pLexNew != &lexANSI) {
     int iAscent = 0;
     int iDescent = 0;
     iValue = min(max(iValue,0),64);
@@ -1444,7 +1456,7 @@ void Style_SetLexer(HWND hwnd,PEDITLEXER pLexNew)
   if (SendMessage(hwnd,SCI_GETINDENTATIONGUIDES,0,0) != SC_IV_NONE)
     Style_SetIndentGuides(hwnd,TRUE);
 
-  if (pLexNew->iLexer != SCLEX_NULL)
+  if (pLexNew->iLexer != SCLEX_NULL || pLexNew == &lexANSI)
   {
     int j;
     i = 1;
@@ -1707,8 +1719,13 @@ void Style_SetLexerFromFile(HWND hwnd,LPCWSTR lpszFile)
       SendMessage(hwnd,SCI_GETTEXT,(WPARAM)COUNTOF(tchText)-1,(LPARAM)tchText);
       StrTrimA(tchText," \t\n\r");
       if (pLexSniffed = Style_SniffShebang(tchText)) {
-        pLexNew = pLexSniffed;
-        bFound = TRUE;
+        if (iEncoding != g_DOSEncoding || pLexSniffed != &lexDefault || (
+            lstrcmpi(lpszExt,L"nfo") && lstrcmpi(lpszExt,L"diz"))) {
+          // Although .nfo and .diz were removed from the default lexer's
+          // default extensions list, they may still presist in the user's INI
+          pLexNew = pLexSniffed;
+          bFound = TRUE;
+        }
       }
     }
 
@@ -1772,6 +1789,9 @@ void Style_SetLexerFromFile(HWND hwnd,LPCWSTR lpszFile)
       bFound = TRUE;
     }
   }
+
+  if (!bFound && iEncoding == g_DOSEncoding)
+    pLexNew = &lexANSI;
 
   // Apply the new lexer
   Style_SetLexer(hwnd,pLexNew);

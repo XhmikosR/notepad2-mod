@@ -113,6 +113,8 @@ BOOL  EditPrint(HWND,LPCWSTR,LPCWSTR);
 void  EditPrintSetup(HWND);
 void  EditPrintInit();
 
+extern int g_DOSEncoding;
+
 #define NCP_DEFAULT            1
 #define NCP_UTF8               2
 #define NCP_UTF8_SIGN          4

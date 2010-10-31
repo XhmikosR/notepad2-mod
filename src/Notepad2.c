@@ -131,6 +131,7 @@ BOOL      bViewEOLs;
 int       iDefaultEncoding;
 BOOL      bSkipUnicodeDetection;
 BOOL      bLoadASCIIasUTF8;
+BOOL      bLoadNFOasOEM;
 BOOL      bNoEncodingTags;
 int       iSrcEncoding = -1;
 int       iWeakSrcEncoding = -1;
@@ -4831,6 +4832,9 @@ void LoadSettings()
   bLoadASCIIasUTF8 = IniSectionGetInt(pIniSection,L"LoadASCIIasUTF8",0);
   if (bLoadASCIIasUTF8) bLoadASCIIasUTF8 = 1;
 
+  bLoadNFOasOEM = IniSectionGetInt(pIniSection,L"LoadNFOasOEM",1);
+  if (bLoadNFOasOEM) bLoadNFOasOEM = 1;
+
   bNoEncodingTags = IniSectionGetInt(pIniSection,L"NoEncodingTags",0);
   if (bNoEncodingTags) bNoEncodingTags = 1;
 
@@ -5065,6 +5069,7 @@ void SaveSettings(BOOL bSaveSettingsNow)
   IniSectionSetInt(pIniSection,L"DefaultEncoding",Encoding_MapIniSetting(FALSE,iDefaultEncoding));
   IniSectionSetInt(pIniSection,L"SkipUnicodeDetection",bSkipUnicodeDetection);
   IniSectionSetInt(pIniSection,L"LoadASCIIasUTF8",bLoadASCIIasUTF8);
+  IniSectionSetInt(pIniSection,L"LoadNFOasOEM",bLoadNFOasOEM);
   IniSectionSetInt(pIniSection,L"NoEncodingTags",bNoEncodingTags);
   IniSectionSetInt(pIniSection,L"DefaultEOLMode",iDefaultEOLMode);
   IniSectionSetInt(pIniSection,L"FixLineEndings",bFixLineEndings);

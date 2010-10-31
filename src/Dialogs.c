@@ -41,6 +41,7 @@ extern LPMALLOC  g_lpMalloc;
 extern DWORD dwLastIOError;
 extern BOOL bSkipUnicodeDetection;
 extern BOOL bLoadASCIIasUTF8;
+extern BOOL bLoadNFOasOEM;
 extern int fNoFileVariables;
 extern BOOL bNoEncodingTags;
 extern BOOL bFixLineEndings;
@@ -1898,6 +1899,9 @@ BOOL CALLBACK SelectDefEncodingDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM 
         if (bLoadASCIIasUTF8)
           CheckDlgButton(hwnd,IDC_ASCIIASUTF8,BST_CHECKED);
 
+        if (bLoadNFOasOEM)
+          CheckDlgButton(hwnd,IDC_NFOASOEM,BST_CHECKED);
+
         if (bNoEncodingTags)
           CheckDlgButton(hwnd,IDC_ENCODINGFROMFILEVARS,BST_CHECKED);
 
@@ -1913,6 +1917,7 @@ BOOL CALLBACK SelectDefEncodingDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM 
             if (Encoding_GetFromComboboxEx(GetDlgItem(hwnd,IDC_ENCODINGLIST),&pdd->idEncoding)) {
               bSkipUnicodeDetection = (IsDlgButtonChecked(hwnd,IDC_NOUNICODEDETECTION) == BST_CHECKED) ? 1 : 0;
               bLoadASCIIasUTF8 = (IsDlgButtonChecked(hwnd,IDC_ASCIIASUTF8) == BST_CHECKED) ? 1 : 0;
+              bLoadNFOasOEM = (IsDlgButtonChecked(hwnd,IDC_NFOASOEM) == BST_CHECKED) ? 1 : 0;
               bNoEncodingTags = (IsDlgButtonChecked(hwnd,IDC_ENCODINGFROMFILEVARS) == BST_CHECKED) ? 1 : 0;
               EndDialog(hwnd,IDOK);
             }

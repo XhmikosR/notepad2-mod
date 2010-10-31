@@ -108,6 +108,7 @@
 #define IDACC_REPLACE                   201
 #define IDACC_SAVEPOS                   202
 #define IDACC_RESETPOS                  203
+#define IDC_NFOASOEM                    300
 #define IDS_APPTITLE                    10000
 #define IDS_APPTITLE_ELEVATED           10001
 #define IDS_APPTITLE_PASTEBOARD         10002
