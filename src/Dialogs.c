@@ -91,7 +91,7 @@ int MsgBox(int iType,UINT uIdMsg,...)
   GetString(IDS_APPTITLE,szTitle,COUNTOF(szTitle));
 
   switch (iType) {
-    case MBINFO: iIcon = MB_ICONEXCLAMATION; break;
+    case MBINFO: iIcon = MB_ICONINFORMATION; break;
     case MBWARN: iIcon = MB_ICONEXCLAMATION; break;
     case MBYESNO: iIcon = MB_ICONEXCLAMATION | MB_YESNO; break;
     case MBYESNOCANCEL: iIcon = MB_ICONEXCLAMATION | MB_YESNOCANCEL; break;

@@ -897,7 +897,7 @@ LRESULT CALLBACK MainWndProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lParam)
           FileLoad(FALSE,FALSE,FALSE,FALSE,szBuf);
 
         if (DragQueryFile(hDrop,(UINT)(-1),NULL,0) > 1)
-          MsgBox(MBINFO,IDS_ERR_DROP);
+          MsgBox(MBWARN,IDS_ERR_DROP);
 
         DragFinish(hDrop);
       }
@@ -3682,11 +3682,11 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
           }
           else {
             dwLastIOError = GetLastError();
-            MsgBox(MBINFO,IDS_WRITEINI_FAIL);
+            MsgBox(MBWARN,IDS_WRITEINI_FAIL);
           }
         }
         else
-          MsgBox(MBINFO,IDS_CREATEINI_FAIL);
+          MsgBox(MBWARN,IDS_CREATEINI_FAIL);
       }
       break;
 

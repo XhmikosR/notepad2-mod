@@ -3190,7 +3190,7 @@ void Style_ConfigDlg(HWND hwnd)
   else {
     fStylesModified = TRUE;
     if (lstrlen(szIniFile) == 0 && !fWarnedNoIniFile) {
-      MsgBox(MBINFO,IDS_SETTINGSNOTSAVED);
+      MsgBox(MBWARN,IDS_SETTINGSNOTSAVED);
       fWarnedNoIniFile = TRUE;
     }
   }
