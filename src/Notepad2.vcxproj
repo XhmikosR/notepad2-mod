@@ -242,6 +242,7 @@
     <ClInclude Include="Edit.h" />
     <ClInclude Include="Helpers.h" />
     <ClInclude Include="Notepad2.h" />
+    <ClInclude Include="SciCall.h" />
     <ClInclude Include="Styles.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="..\scintilla\include\Accessor.h" />

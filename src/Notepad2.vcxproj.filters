@@ -188,6 +188,9 @@
     <ClInclude Include="Notepad2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SciCall.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Styles.h">
       <Filter>Header Files</Filter>
     </ClInclude>

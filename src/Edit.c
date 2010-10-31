@@ -32,6 +32,7 @@
 #include "scilexer.h"
 #include "styles.h"
 #include "edit.h"
+#include "scicall.h"
 #include "resource.h"
 
 
