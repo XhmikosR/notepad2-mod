@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Notepad2", "Notepad2.vcxproj", "{B69A8C7E-A22D-45DA-9997-2D1403C7AEE8}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Notepad2", "src\Notepad2.vcxproj", "{B69A8C7E-A22D-45DA-9997-2D1403C7AEE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
