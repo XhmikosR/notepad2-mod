@@ -4,8 +4,6 @@ set WDKBASEDIR=C:\progs\WinDDK\7600.16385.1
 
 set INCLUDE=%WDKBASEDIR%\inc\crt;%WDKBASEDIR%\inc\api;%WDKBASEDIR%\inc\api\crt\stl60;%WDKBASEDIR%\inc\ddk
 set LIB=%WDKBASEDIR%\lib\crt\i386;%WDKBASEDIR%\lib\win7\i386
-set LIBPATH=
-set VSCOMNTOOLS=
 
 md "../Release" >NUL 2>&1
 del "../Release/*.obj" >NUL 2>&1
