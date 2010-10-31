@@ -952,8 +952,8 @@ BOOL IsUnicode(const char* pBuffer,int cb,LPBOOL lpbBOM,LPBOOL lpbReverse)
   else
     bIsTextUnicode = FALSE;
 
-  bHasBOM  = (*pBuffer == '\xFF' && *(pBuffer+1) == '\xFE');
-  bHasRBOM = (*pBuffer == '\xFE' && *(pBuffer+1) == '\xFF');
+  bHasBOM  = (*((UNALIGNED PWCHAR)pBuffer) == 0xFEFF);
+  bHasRBOM = (*((UNALIGNED PWCHAR)pBuffer) == 0xFFFE);
 
   /*{
     char szBuf[512];
@@ -992,12 +992,7 @@ BOOL IsUnicode(const char* pBuffer,int cb,LPBOOL lpbBOM,LPBOOL lpbReverse)
   if (i == 0xFFFF) // i doesn't seem to have been modified ...
     i = 0;
 
-  if (bIsTextUnicode || bHasBOM || bHasRBOM ||
-        ((i & (IS_TEXT_UNICODE_UNICODE_MASK | IS_TEXT_UNICODE_REVERSE_MASK)) &&
-       !((i & IS_TEXT_UNICODE_UNICODE_MASK) && (i & IS_TEXT_UNICODE_REVERSE_MASK)) &&
-        !(i & IS_TEXT_UNICODE_ODD_LENGTH) &&
-        !(i & IS_TEXT_UNICODE_ILLEGAL_CHARS && !(i & IS_TEXT_UNICODE_REVERSE_SIGNATURE)) &&
-        !((i & IS_TEXT_UNICODE_REVERSE_MASK) == IS_TEXT_UNICODE_REVERSE_STATISTICS))) {
+  if (bIsTextUnicode || bHasBOM || bHasRBOM) {
 
     if (lpbBOM)
       *lpbBOM = (bHasBOM || bHasRBOM ||
@@ -5669,7 +5664,7 @@ BOOL FileVars_Init(char *lpData,DWORD cbData,LPFILEVARS lpfv) {
       lpfv->mask |= FV_MODE;
   }
 
-  if (lpfv->mask == 0 && cbData > COUNTOF(tch)) {
+  /*if (lpfv->mask == 0 && cbData > COUNTOF(tch)) {
 
     lstrcpynA(tch,lpData+cbData-COUNTOF(tch)+1,COUNTOF(tch));
 
@@ -5709,7 +5704,7 @@ BOOL FileVars_Init(char *lpData,DWORD cbData,LPFILEVARS lpfv) {
       if (FileVars_ParseStr(tch,"mode",lpfv->tchMode,COUNTOF(lpfv->tchMode)))
         lpfv->mask |= FV_MODE;
     }
-  }
+  }*/
 
   if (lpfv->mask & FV_ENCODING)
     lpfv->iEncoding = Encoding_MatchA(lpfv->tchEncoding);
