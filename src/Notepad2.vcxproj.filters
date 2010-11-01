@@ -186,6 +186,9 @@
     <ClCompile Include="..\scintilla\src\LexNsis.cxx">
       <Filter>Scintilla\src</Filter>
     </ClCompile>
+    <ClCompile Include="..\scintilla\src\LexLua.cxx">
+      <Filter>Scintilla\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dialogs.h">

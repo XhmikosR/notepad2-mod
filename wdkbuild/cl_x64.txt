@@ -22,6 +22,7 @@
 /Tp "..\scintilla\src\LexCSS.cxx"
 /Tp "..\scintilla\src\LexHTML.cxx"
 /Tp "..\scintilla\src\LexInno.cxx"
+/Tp "..\scintilla\src\LexLua.cxx"
 /Tp "..\scintilla\src\LexNsis.cxx"
 /Tp "..\scintilla\src\LexOthers.cxx"
 /Tp "..\scintilla\src\LexPascal.cxx"

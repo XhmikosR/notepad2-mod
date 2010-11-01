@@ -24,6 +24,7 @@
 "..\Release\obj\LexCSS.obj"
 "..\Release\obj\LexHTML.obj"
 "..\Release\obj\LexInno.obj"
+"..\Release\obj\LexLua.obj"
 "..\Release\obj\LexNsis.obj"
 "..\Release\obj\LexOthers.obj"
 "..\Release\obj\LexPascal.obj"
