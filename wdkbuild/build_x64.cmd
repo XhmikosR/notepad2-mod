@@ -5,10 +5,9 @@ set WDKBASEDIR=C:\progs\WinDDK\7600.16385.1
 set INCLUDE=%WDKBASEDIR%\inc\crt;%WDKBASEDIR%\inc\api;%WDKBASEDIR%\inc\api\crt\stl60;%WDKBASEDIR%\inc\ddk
 set LIB=%WDKBASEDIR%\lib\crt\amd64;%WDKBASEDIR%\lib\win7\amd64
 
-md "../Release_x64" >NUL 2>&1
 md "../Release_x64/obj" >NUL 2>&1
-del "../Release_x64/obj/*.obj" >NUL 2>&1
 del "../Release_x64/*.exe" >NUL 2>&1
+del "../Release_x64/obj/*.obj" >NUL 2>&1
 del "../Release_x64/obj/*.pdb" >NUL 2>&1
 del "../Release_x64/obj/*.idb" >NUL 2>&1
 
