@@ -1,4 +1,4 @@
-/Fo"../Release_x64/obj/" /I "..\scintilla\include" /I "..\scintilla\src" /I "..\scintilla\win32" /D "STATIC_BUILD" /D "SCI_LEXER" /D "_WIN64" /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE" /wd"4133" /wd"4244" /wd"4267" /c /EHsc /GF /MD /O2 /Os /W3 /MP /GL
+/Fo"../Release_x64/obj/" /I "..\scintilla\include" /I "..\scintilla\src" /I "..\scintilla\win32" /D "STATIC_BUILD" /D "SCI_LEXER" /D "_WIN64" /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE" /wd"4133" /wd"4244" /wd"4267" /c /EHsc /GF /MD /O2 /Os /W3 /GS /Gy /fp:precise /GL /MP
 /Tp "..\scintilla\win32\PlatWin.cxx"
 /Tp "..\scintilla\win32\ScintillaWin.cxx"
 /Tp "..\scintilla\src\AutoComplete.cxx"
