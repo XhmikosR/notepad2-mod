@@ -959,11 +959,11 @@ EDITLEXER lexPS = { SCLEX_POWERSHELL, 63021, L"PowerShell Script", L"ps1; psc1",
                     { -1, 00000, L"", L"", L"" } } };
 
 
-EDITLEXER lexANSI = { SCLEX_NULL, 63321, L"ANSI Art", L"nfo; diz", L"", &KeyWords_NULL, {
-                      { STYLE_DEFAULT, 63322, L"Default", L"font:Lucida Console", L"" },
-                      { STYLE_LINENUMBER, 63323, L"Margins and Line Numbers", L"font:Lucida Console; size:-2", L"" },
-                      { STYLE_BRACELIGHT, 63324, L"Matching Braces", L"size:+0", L"" },
-                      { STYLE_BRACEBAD, 63325, L"Matching Braces Error", L"size:+0", L"" },
+EDITLEXER lexANSI = { SCLEX_NULL, 63258, L"ANSI Art", L"nfo; diz", L"", &KeyWords_NULL, {
+                      { STYLE_DEFAULT, 63106, L"Default", L"font:Lucida Console", L"" },
+                      { STYLE_LINENUMBER, 63101, L"Margins and Line Numbers", L"font:Lucida Console; size:-2", L"" },
+                      { STYLE_BRACELIGHT, 63102, L"Matching Braces", L"size:+0", L"" },
+                      { STYLE_BRACEBAD, 63103, L"Matching Braces Error", L"size:+0", L"" },
                       { -1, 00000, L"", L"", L"" } } };
 
 
