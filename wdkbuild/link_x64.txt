@@ -31,6 +31,7 @@
 "..\Release_x64\obj\LexPerl.obj"
 "..\Release_x64\obj\LexPowerShell.obj"
 "..\Release_x64\obj\LexPython.obj"
+"..\Release_x64\obj\LexRuby.obj"
 "..\Release_x64\obj\LexSQL.obj"
 "..\Release_x64\obj\LexTCL.obj"
 "..\Release_x64\obj\LexVB.obj"

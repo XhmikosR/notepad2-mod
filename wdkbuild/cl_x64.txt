@@ -29,6 +29,7 @@
 /Tp "..\scintilla\src\LexPerl.cxx"
 /Tp "..\scintilla\src\LexPowerShell.cxx"
 /Tp "..\scintilla\src\LexPython.cxx"
+/Tp "..\scintilla\src\LexRuby.cxx"
 /Tp "..\scintilla\src\LexSQL.cxx"
 /Tp "..\scintilla\src\LexTCL.cxx"
 /Tp "..\scintilla\src\LexVB.cxx"

@@ -192,6 +192,7 @@
     <ClCompile Include="..\scintilla\src\LexInno.cxx" />
     <ClCompile Include="..\scintilla\src\LexLua.cxx" />
     <ClCompile Include="..\scintilla\src\LexNsis.cxx" />
+    <ClCompile Include="..\scintilla\src\LexRuby.cxx" />
     <ClCompile Include="..\scintilla\src\LexTCL.cxx" />
     <ClCompile Include="Dialogs.c" />
     <ClCompile Include="Dlapi.c" />
