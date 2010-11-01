@@ -1,4 +1,4 @@
-/Fo"../Release_x64/obj/" /I "..\scintilla\include" /I "..\scintilla\src" /I "..\scintilla\win32" /D "STATIC_BUILD" /D "SCI_LEXER" /D "WIN32" /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE" /wd"4133" /wd"4244" /wd"4267" /c /EHsc /GF /MD /O2 /Ot /W3 /MP /GL
+/Fo"../Release_x64/obj/" /I "..\scintilla\include" /I "..\scintilla\src" /I "..\scintilla\win32" /D "STATIC_BUILD" /D "SCI_LEXER" /D "_WIN64" /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE" /wd"4133" /wd"4244" /wd"4267" /c /EHsc /GF /MD /O2 /Os /W3 /MP /GL
 /Tp "..\scintilla\win32\PlatWin.cxx"
 /Tp "..\scintilla\win32\ScintillaWin.cxx"
 /Tp "..\scintilla\src\AutoComplete.cxx"
@@ -15,6 +15,8 @@
 /Tp "..\scintilla\src\KeyMap.cxx"
 /Tp "..\scintilla\src\KeyWords.cxx"
 /Tp "..\scintilla\src\LexAsm.cxx"
+/Tp "..\scintilla\src\LexAU3.cxx"
+/Tp "..\scintilla\src\LexBash.cxx"
 /Tp "..\scintilla\src\LexConf.cxx"
 /Tp "..\scintilla\src\LexCPP.cxx"
 /Tp "..\scintilla\src\LexCSS.cxx"
@@ -25,6 +27,7 @@
 /Tp "..\scintilla\src\LexPowerShell.cxx"
 /Tp "..\scintilla\src\LexPython.cxx"
 /Tp "..\scintilla\src\LexSQL.cxx"
+/Tp "..\scintilla\src\LexTCL.cxx"
 /Tp "..\scintilla\src\LexVB.cxx"
 /Tp "..\scintilla\src\LineMarker.cxx"
 /Tp "..\scintilla\src\PerLine.cxx"

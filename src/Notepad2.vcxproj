@@ -187,6 +187,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\scintilla\src\LexAU3.cxx" />
+    <ClCompile Include="..\scintilla\src\LexBash.cxx" />
+    <ClCompile Include="..\scintilla\src\LexTCL.cxx" />
     <ClCompile Include="Dialogs.c" />
     <ClCompile Include="Dlapi.c" />
     <ClCompile Include="Edit.c" />

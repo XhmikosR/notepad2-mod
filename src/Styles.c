@@ -959,6 +959,232 @@ EDITLEXER lexPS = { SCLEX_POWERSHELL, 63021, L"PowerShell Script", L"ps1; psc1",
                     { -1, 00000, L"", L"", L"" } } };
 
 
+KEYWORDLIST KeyWords_BASH = {
+"alias ar asa awk banner basename bash bc bdiff break "
+"bunzip2 bzip2 cal calendar case cat cc cd chmod cksum "
+"clear cmp col comm compress continue cp cpio crypt "
+"csplit ctags cut date dc dd declare deroff dev df diff diff3 "
+"dircmp dirname do done du echo ed egrep elif else env "
+"esac eval ex exec exit expand export expr false fc "
+"fgrep fi file find fmt fold for function functions "
+"getconf getopt getopts grep gres hash head help "
+"history iconv id if in integer jobs join kill local lc "
+"let line ln logname look ls m4 mail mailx make "
+"man mkdir more mt mv newgrp nl nm nohup ntps od "
+"pack paste patch pathchk pax pcat perl pg pr print "
+"printf ps pwd read readonly red return rev rm rmdir "
+"sed select set sh shift size sleep sort spell "
+"split start stop strings strip stty sum suspend "
+"sync tail tar tee test then time times touch tr "
+"trap true tsort tty type typeset ulimit umask unalias "
+"uname uncompress unexpand uniq unpack unset until "
+"uudecode uuencode vi vim vpax wait wc whence which "
+"while who wpaste wstart xargs zcat chgrp chown chroot dir dircolors "
+"factor groups hostid install link md5sum mkfifo "
+"mknod nice pinky printenv ptx readlink seq "
+"sha1sum shred stat su tac unlink users vdir whoami yes",
+"", "", "", "", "", "", "", "" };
+
+
+EDITLEXER lexBASH = { SCLEX_BASH, 63259, L"Shell Script", L"sh", L"", &KeyWords_BASH, {
+                      { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
+                      { SCE_SH_ERROR, 63260, L"Error", L"", L"" },
+                      { SCE_SH_COMMENTLINE, 63127, L"Comment", L"fore:#008000", L"" },
+                      { SCE_SH_NUMBER, 63130, L"Number", L"", L"" },
+                      { SCE_SH_WORD, 63128, L"Keyword", L"fore:#FF8000; bold", L"" },
+                      { SCE_SH_STRING, 63211, L"String double quoted", L"fore:#008000", L"" },
+                      { SCE_SH_CHARACTER, 63212, L"String single quoted", L"fore:#008000", L"" },
+                      { SCE_SH_OPERATOR, 63132, L"Operator", L"", L"" },
+                      { SCE_SH_IDENTIFIER, 63129, L"Identifier", L"", L"" },
+                      { SCE_SH_SCALAR, 63268, L"Scalar", L"", L"" },
+                      { SCE_SH_PARAM, 63269, L"Parameter expansion", L"", L"" },
+                      { SCE_SH_BACKTICKS, 63270, L"Back Ticks", L"", L"" },
+                      { SCE_SH_HERE_DELIM, 63271, L"Here-doc (Delimiter)", L"", L"" },
+                      { SCE_SH_HERE_Q, 63272, L"Here-doc (Single quoted, q)", L"", L"" },
+                      { -1, 00000, L"", L"", L"" } } };
+
+
+KEYWORDLIST KeyWords_TCL = {
+// TCL Keywords
+"after append array auto_execok "
+"auto_import auto_load auto_load_index auto_qualify "
+"beep bgerror binary break case catch cd clock "
+"close concat continue dde default echo else elseif "
+"encoding eof error eval exec exit expr fblocked "
+"fconfigure fcopy file fileevent flush for foreach format "
+"gets glob global history http if incr info "
+"interp join lappend lindex linsert list llength load "
+"loadTk lrange lreplace lsearch lset lsort memory msgcat "
+"namespace open package pid pkg::create pkg_mkIndex Platform-specific proc "
+"puts pwd re_syntax read regexp registry regsub rename "
+"resource return scan seek set socket source split "
+"string subst switch tclLog tclMacPkgSearch tclPkgSetup tclPkgUnknown tell "
+"time trace unknown unset update uplevel upvar variable "
+"vwait while",
+// TK Keywords
+"bell bind bindtags bitmap button canvas checkbutton clipboard "
+"colors console cursors destroy entry event focus font "
+"frame grab grid image Inter-client keysyms label labelframe "
+"listbox lower menu menubutton message option options pack "
+"panedwindow photo place radiobutton raise scale scrollbar selection "
+"send spinbox text tk tk_chooseColor tk_chooseDirectory tk_dialog tk_focusNext "
+"tk_getOpenFile tk_messageBox tk_optionMenu tk_popup tk_setPalette tkerror tkvars tkwait "
+"toplevel winfo wish wm",
+// iTCL Keywords
+"@scope body class code common component configbody "
+"constructor define destructor hull import inherit itcl itk itk_component "
+"itk_initialize itk_interior itk_option iwidgets keep method "
+"private protected public",
+"", "", "", "", "", "" };
+
+
+#define SCE_TCL__MULTI_COMMENT      MULTI_STYLE(SCE_TCL_COMMENT,SCE_TCL_COMMENTLINE,SCE_TCL_COMMENT_BOX,SCE_TCL_BLOCK_COMMENT)
+#define SCE_TCL__MULTI_KEYWORD      MULTI_STYLE(SCE_TCL_WORD,SCE_TCL_WORD2,SCE_TCL_WORD3,SCE_TCL_WORD_IN_QUOTE)
+#define SCE_TCL__MULTI_SUBSTITUTION MULTI_STYLE(SCE_TCL_SUBSTITUTION,SCE_TCL_SUB_BRACE,0,0)
+
+
+EDITLEXER lexTCL = { SCLEX_TCL, 63273, L"Tcl Script", L"tcl; itcl", L"", &KeyWords_TCL, {
+                     { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
+                     { SCE_TCL__MULTI_COMMENT, 63127, L"Comment", L"fore:#008000", L"" },
+                     { SCE_TCL__MULTI_KEYWORD, 63128, L"Keyword", L"fore:#0000FF", L"" },
+                     { SCE_TCL_NUMBER, 63130, L"Number", L"fore:#008080", L"" },
+                     { SCE_TCL_IN_QUOTE, 63131, L"String", L"fore:#008080", L"" },
+                     { SCE_TCL_OPERATOR, 63132, L"Operator", L"", L"" },
+                     { SCE_TCL_IDENTIFIER, 63129, L"Identifier", L"fore:#800080", L"" },
+                     { SCE_TCL__MULTI_SUBSTITUTION, 63274, L"Substitution", L"fore:#CC0000", L"" },
+                     { SCE_TCL_MODIFIER, 63275, L"Modifier", L"fore:#FF00FF", L"" },
+                     { -1, 00000, L"", L"", L"" } } };
+
+
+KEYWORDLIST KeyWords_AU3 = {
+"and byref case const continuecase continueloop default dim "
+"do else elseif endfunc endif endselect endswitch endwith enum exit exitloop false "
+"for func global if in local next not or redim return select step switch then to true "
+"until wend while with",
+"abs acos adlibdisable adlibenable asc ascw asin assign atan "
+"autoitsetoption autoitwingettitle autoitwinsettitle beep binary binarylen binarymid "
+"binarytostring bitand bitnot bitor bitrotate bitshift bitxor blockinput break call "
+"cdtray ceiling chr chrw clipget clipput consoleread consolewrite consolewriteerror "
+"controlclick controlcommand controldisable controlenable controlfocus controlgetfocus "
+"controlgethandle controlgetpos controlgettext controlhide controllistview controlmove "
+"controlsend controlsettext controlshow controltreeview cos dec dircopy dircreate "
+"dirgetsize dirmove dirremove dllcall dllcallbackfree dllcallbackgetptr dllcallbackregister "
+"dllclose dllopen dllstructcreate dllstructgetdata dllstructgetptr dllstructgetsize "
+"dllstructsetdata drivegetdrive drivegetfilesystem drivegetlabel drivegetserial drivegettype "
+"drivemapadd drivemapdel drivemapget drivesetlabel drivespacefree drivespacetotal "
+"drivestatus envget envset envupdate eval execute exp filechangedir fileclose filecopy "
+"filecreatentfslink filecreateshortcut filedelete fileexists filefindfirstfile filefindnextfile "
+"filegetattrib filegetlongname filegetshortcut filegetshortname filegetsize filegettime "
+"filegetversion fileinstall filemove fileopen fileopendialog fileread filereadline "
+"filerecycle filerecycleempty filesavedialog fileselectfolder filesetattrib filesettime "
+"filewrite filewriteline floor ftpsetproxy guicreate guictrlcreateavi guictrlcreatebutton "
+"guictrlcreatecheckbox guictrlcreatecombo guictrlcreatecontextmenu guictrlcreatedate "
+"guictrlcreatedummy guictrlcreateedit guictrlcreategraphic guictrlcreategroup guictrlcreateicon "
+"guictrlcreateinput guictrlcreatelabel guictrlcreatelist guictrlcreatelistview guictrlcreatelistviewitem "
+"guictrlcreatemenu guictrlcreatemenuitem guictrlcreatemonthcal guictrlcreateobj guictrlcreatepic "
+"guictrlcreateprogress guictrlcreateradio guictrlcreateslider guictrlcreatetab guictrlcreatetabitem "
+"guictrlcreatetreeview guictrlcreatetreeviewitem guictrlcreateupdown guictrldelete "
+"guictrlgethandle guictrlgetstate guictrlread guictrlrecvmsg guictrlregisterlistviewsort "
+"guictrlsendmsg guictrlsendtodummy guictrlsetbkcolor guictrlsetcolor guictrlsetcursor "
+"guictrlsetdata guictrlsetdefbkcolor guictrlsetdefcolor guictrlsetfont guictrlsetgraphic "
+"guictrlsetimage guictrlsetlimit guictrlsetonevent guictrlsetpos guictrlsetresizing "
+"guictrlsetstate guictrlsetstyle guictrlsettip guidelete guigetcursorinfo guigetmsg "
+"guigetstyle guiregistermsg guisetaccelerators guisetbkcolor guisetcoord guisetcursor "
+"guisetfont guisethelp guiseticon guisetonevent guisetstate guisetstyle guistartgroup "
+"guiswitch hex hotkeyset httpsetproxy hwnd inetget inetgetsize inidelete iniread inireadsection "
+"inireadsectionnames inirenamesection iniwrite iniwritesection inputbox int isadmin "
+"isarray isbinary isbool isdeclared isdllstruct isfloat ishwnd isint iskeyword isnumber "
+"isobj isptr isstring log memgetstats mod mouseclick mouseclickdrag mousedown mousegetcursor "
+"mousegetpos mousemove mouseup mousewheel msgbox number objcreate objevent objevent "
+"objget objname opt ping pixelchecksum pixelgetcolor pixelsearch pluginclose pluginopen "
+"processclose processexists processgetstats processlist processsetpriority processwait "
+"processwaitclose progressoff progresson progressset ptr random regdelete regenumkey "
+"regenumval regread regwrite round run runas runaswait runwait send sendkeepactive "
+"seterror setextended shellexecute shellexecutewait shutdown sin sleep soundplay soundsetwavevolume "
+"splashimageon splashoff splashtexton sqrt srandom statusbargettext stderrread stdinwrite "
+"stdioclose stdoutread string stringaddcr stringcompare stringformat stringinstr stringisalnum "
+"stringisalpha stringisascii stringisdigit stringisfloat stringisint stringislower "
+"stringisspace stringisupper stringisxdigit stringleft stringlen stringlower stringmid "
+"stringregexp stringregexpreplace stringreplace stringright stringsplit stringstripcr "
+"stringstripws stringtobinary stringtrimleft stringtrimright stringupper tan tcpaccept "
+"tcpclosesocket tcpconnect tcplisten tcpnametoip tcprecv tcpsend tcpshutdown tcpstartup "
+"timerdiff timerinit tooltip traycreateitem traycreatemenu traygetmsg trayitemdelete "
+"trayitemgethandle trayitemgetstate trayitemgettext trayitemsetonevent trayitemsetstate "
+"trayitemsettext traysetclick trayseticon traysetonevent traysetpauseicon traysetstate "
+"traysettooltip traytip ubound udpbind udpclosesocket udpopen udprecv udpsend udpshutdown "
+"udpstartup vargettype winactivate winactive winclose winexists winflash wingetcaretpos "
+"wingetclasslist wingetclientsize wingethandle wingetpos wingetprocess wingetstate "
+"wingettext wingettitle winkill winlist winmenuselectitem winminimizeall winminimizeallundo "
+"winmove winsetontop winsetstate winsettitle winsettrans winwait winwaitactive winwaitclose "
+"winwaitnotactive",
+"@appdatacommondir @appdatadir @autoitexe @autoitpid @autoitunicode "
+"@autoitversion @autoitx64 @com_eventobj @commonfilesdir @compiled @computername @comspec "
+"@cr @crlf @desktopcommondir @desktopdepth @desktopdir @desktopheight @desktoprefresh "
+"@desktopwidth @documentscommondir @error @exitcode @exitmethod @extended @favoritescommondir "
+"@favoritesdir @gui_ctrlhandle @gui_ctrlid @gui_dragfile @gui_dragid @gui_dropid @gui_winhandle "
+"@homedrive @homepath @homeshare @hotkeypressed @hour @inetgetactive @inetgetbytesread "
+"@ipaddress1 @ipaddress2 @ipaddress3 @ipaddress4 @kblayout @lf @logondnsdomain @logondomain "
+"@logonserver @mday @min @mon @mydocumentsdir @numparams @osbuild @oslang @osservicepack "
+"@ostype @osversion @processorarch @programfilesdir @programscommondir @programsdir "
+"@scriptdir @scriptfullpath @scriptlinenumber @scriptname @sec @startmenucommondir "
+"@startmenudir @startupcommondir @startupdir @sw_disable @sw_enable @sw_hide @sw_lock "
+"@sw_maximize @sw_minimize @sw_restore @sw_show @sw_showdefault @sw_showmaximized "
+"@sw_showminimized @sw_showminnoactive @sw_showna @sw_shownoactivate @sw_shownormal "
+"@sw_unlock @systemdir @tab @tempdir @tray_id @trayiconflashing @trayiconvisible @username "
+"@userprofiledir @wday @windowsdir @workingdir @yday @year",
+"{!} {#} {^} {{} {}} {+} {alt} {altdown} {altup} {appskey} "
+"{asc} {backspace} {break} {browser_back} {browser_favorites} {browser_forward} {browser_home} "
+"{browser_refresh} {browser_search} {browser_stop} {bs} {capslock} {ctrldown} {ctrlup} "
+"{del} {delete} {down} {end} {enter} {esc} {escape} {f1} {f10} {f11} {f12} {f2} {f3} "
+"{f4} {f5} {f6} {f7} {f8} {f9} {home} {ins} {insert} {lalt} {launch_app1} {launch_app2} "
+"{launch_mail} {launch_media} {lctrl} {left} {lshift} {lwin} {lwindown} {lwinup} {media_next} "
+"{media_play_pause} {media_prev} {media_stop} {numlock} {numpad0} {numpad1} {numpad2} "
+"{numpad3} {numpad4} {numpad5} {numpad6} {numpad7} {numpad8} {numpad9} {numpadadd} "
+"{numpaddiv} {numpaddot} {numpadenter} {numpadmult} {numpadsub} {pause} {pgdn} {pgup} "
+"{printscreen} {ralt} {rctrl} {right} {rshift} {rwin} {rwindown} {rwinup} {scrolllock} "
+"{shiftdown} {shiftup} {sleep} {space} {tab} {up} {volume_down} {volume_mute} {volume_up}",
+"#ce #comments-end #comments-start #cs #include #include-once "
+"#notrayicon #requireadmin",
+"#autoit3wrapper_au3check_parameters #autoit3wrapper_au3check_stop_onwarning "
+"#autoit3wrapper_change2cui #autoit3wrapper_compression #autoit3wrapper_cvswrapper_parameters "
+"#autoit3wrapper_icon #autoit3wrapper_outfile #autoit3wrapper_outfile_type #autoit3wrapper_plugin_funcs "
+"#autoit3wrapper_res_comment #autoit3wrapper_res_description #autoit3wrapper_res_field "
+"#autoit3wrapper_res_file_add #autoit3wrapper_res_fileversion #autoit3wrapper_res_fileversion_autoincrement "
+"#autoit3wrapper_res_icon_add #autoit3wrapper_res_language #autoit3wrapper_res_legalcopyright "
+"#autoit3wrapper_res_requestedexecutionlevel #autoit3wrapper_res_savesource #autoit3wrapper_run_after "
+"#autoit3wrapper_run_au3check #autoit3wrapper_run_before #autoit3wrapper_run_cvswrapper "
+"#autoit3wrapper_run_debug_mode #autoit3wrapper_run_obfuscator #autoit3wrapper_run_tidy "
+"#autoit3wrapper_tidy_stop_onerror #autoit3wrapper_useansi #autoit3wrapper_useupx "
+"#autoit3wrapper_usex64 #autoit3wrapper_version #endregion #forceref #obfuscator_ignore_funcs "
+"#obfuscator_ignore_variables #obfuscator_parameters #region #tidy_parameters",
+"", "", "" };
+
+
+EDITLEXER lexAU3 = { SCLEX_AU3, 63276, L"AutoIt3", L"au3", L"", &KeyWords_AU3, {
+                     { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
+                     { MULTI_STYLE(SCE_AU3_COMMENT,SCE_AU3_COMMENTBLOCK,0,0), 63127, L"Comment", L"fore:#008000", L"" },
+                     { SCE_AU3_NUMBER, 63130, L"Number", L"fore:#FF0000", L"" },
+                     { SCE_AU3_FUNCTION, 63277, L"Function", L"fore:#0A246A; bold", L"" },
+                     { SCE_AU3_KEYWORD, 63128, L"Keyword", L"fore:#0A246A; bold", L"" },
+                     { SCE_AU3_MACRO, 63278, L"Macro", L"fore:#0080FF", L"" },
+                     { SCE_AU3_STRING, 63131, L"String", L"fore:#008000", L"" },
+                     { SCE_AU3_OPERATOR, 63132, L"Operator", L"", L"" },
+                     { SCE_AU3_VARIABLE, 63249, L"Variable", L"", L"" },
+                     { SCE_AU3_SENT, 63279, L"Send Key", L"fore:#0080FF", L"" },
+                     { SCE_AU3_PREPROCESSOR, 63133, L"Preprocessor", L"fore:#808080", L"" },
+                     { SCE_AU3_SPECIAL, 63280, L"Special", L"fore:#808080", L"" },
+                     { -1, 00000, L"", L"", L"" } } };
+
+
+EDITLEXER lexLATEX = { SCLEX_LATEX, 63281, L"LaTeX Files", L"tex; latex", L"", &KeyWords_NULL, {
+                       { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
+                       { SCE_L_COMMAND, 63236, L"Command", L"fore:#0000FF", L"" },
+                       { SCE_L_TAG, 63282, L"Tag", L"fore:#0000FF", L"" },
+                       { SCE_L_MATH, 63283, L"Math", L"fore:#FF0000", L"" },
+                       { SCE_L_COMMENT, 63127, L"Comment", L"fore:#008000", L"" },
+                       { -1, 00000, L"", L"", L"" } } };
+
+
 EDITLEXER lexANSI = { SCLEX_NULL, 63258, L"ANSI Art", L"nfo; diz", L"", &KeyWords_NULL, {
                       { STYLE_DEFAULT, 63106, L"Default", L"font:Lucida Console", L"" },
                       { STYLE_LINENUMBER, 63101, L"Margins and Line Numbers", L"font:Lucida Console; size:-2", L"" },
@@ -992,6 +1218,10 @@ PEDITLEXER pLexArray[NUMLEXERS] =
   &lexPS,
   &lexBAT,
   &lexDIFF,
+  &lexBASH,
+  &lexTCL,
+  &lexAU3,
+  &lexLATEX,
   &lexANSI
 };
 
@@ -1677,6 +1907,14 @@ PEDITLEXER __fastcall Style_SniffShebang(char *pchText)
       return(&lexPL);
     else if ((pch - pchText) >= 6 && StrCmpNIA(pch-6,"python",6) == 0)
       return(&lexPY);
+    else if ((pch - pchText) >= 3 && StrCmpNA(pch-3,"tcl",3) == 0)
+      return(&lexTCL);
+    else if ((pch - pchText) >= 4 && StrCmpNA(pch-4,"wish",4) == 0)
+      return(&lexTCL);
+    else if ((pch - pchText) >= 5 && StrCmpNA(pch-5,"tclsh",5) == 0)
+      return(&lexTCL);
+    else if ((pch - pchText) >= 2 && StrCmpNA(pch-2,"sh",2) == 0)
+      return(&lexBASH);
   }
 
   return(NULL);

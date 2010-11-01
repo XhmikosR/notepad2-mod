@@ -171,6 +171,15 @@
     <ClCompile Include="..\scintilla\win32\ScintillaWin.cxx">
       <Filter>Scintilla\win32</Filter>
     </ClCompile>
+    <ClCompile Include="..\scintilla\src\LexAU3.cxx">
+      <Filter>Scintilla\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scintilla\src\LexBash.cxx">
+      <Filter>Scintilla\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scintilla\src\LexTCL.cxx">
+      <Filter>Scintilla\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dialogs.h">
