@@ -180,6 +180,12 @@
     <ClCompile Include="..\scintilla\src\LexTCL.cxx">
       <Filter>Scintilla\src</Filter>
     </ClCompile>
+    <ClCompile Include="..\scintilla\src\LexInno.cxx">
+      <Filter>Scintilla\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scintilla\src\LexNsis.cxx">
+      <Filter>Scintilla\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dialogs.h">

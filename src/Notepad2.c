@@ -3202,6 +3202,8 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
         case SCLEX_ASM:
         case SCLEX_PROPERTIES:
         case SCLEX_AU3:
+        case SCLEX_NSIS: // # could also be used instead
+        case SCLEX_INNOSETUP:
           SendMessage(hwndEdit,SCI_SETCURSOR,SC_CURSORWAIT,0);
           EditToggleLineComments(hwndEdit,L";",TRUE);
           SendMessage(hwndEdit,SCI_SETCURSOR,SC_CURSORNORMAL,0);
@@ -3249,9 +3251,11 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
         case SCLEX_XML:
         case SCLEX_CSS:
         case SCLEX_CPP:
+        case SCLEX_NSIS:
           EditEncloseSelection(hwndEdit,L"/*",L"*/");
           break;
         case SCLEX_PASCAL:
+        case SCLEX_INNOSETUP:
           EditEncloseSelection(hwndEdit,L"{",L"}");
       }
       break;

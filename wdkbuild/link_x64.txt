@@ -23,6 +23,8 @@
 "..\Release_x64\obj\LexCPP.obj"
 "..\Release_x64\obj\LexCSS.obj"
 "..\Release_x64\obj\LexHTML.obj"
+"..\Release_x64\obj\LexInno.obj"
+"..\Release_x64\obj\LexNsis.obj"
 "..\Release_x64\obj\LexOthers.obj"
 "..\Release_x64\obj\LexPascal.obj"
 "..\Release_x64\obj\LexPerl.obj"
