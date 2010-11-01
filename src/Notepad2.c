@@ -530,18 +530,6 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInst,
   // Default Encodings (may already be used for command line parsing)
   Encoding_InitDefaults();
 
-  // Needed to make W7 jump lists work when NP2 is not explicitly associated
-  // Notepad2 should be registered under HKCR\*\OpenWithList
-  if (IsW7()) {
-    typedef HRESULT (WINAPI *PFNSCPEAUMID)( PCWSTR AppID );
-
-    PFNSCPEAUMID pfnSetCurrentProcessExplicitAppUserModelID = (PFNSCPEAUMID)
-      GetProcAddress(GetModuleHandleA("SHELL32.dll"), "SetCurrentProcessExplicitAppUserModelID");
-
-    if (pfnSetCurrentProcessExplicitAppUserModelID)
-      pfnSetCurrentProcessExplicitAppUserModelID(L"Notepad2");
-  }
-
   // Command Line, Ini File and Flags
   ParseCommandLine();
   FindIniFile();
