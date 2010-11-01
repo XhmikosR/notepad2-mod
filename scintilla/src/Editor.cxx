@@ -5254,7 +5254,22 @@ int Editor::KeyCommand(unsigned int iMessage) {
 	return 0;
 }
 
-int Editor::KeyDefault(int, int) {
+int Editor::KeyDefault(int key, int modifiers) {
+	// SCN_KEY is normally not sent for key codes >= 256 or on Windows; but this
+	// notification is needed for the code folding keyboard commands, and this
+	// is by far the best way to do this (making an accelerator for every
+	// possible hotkey combo--remember the Ctrl modifier for child nodes--is
+	// unwieldy, and manually handling the Windows messages would mean that we
+	// have to duplicate all the processing work that Scintilla does
+	if (modifiers & SCI_ALT && key >= SCK_DOWN && key <= SCK_RIGHT)
+	{
+		SCNotification scn = {0};
+		scn.nmhdr.code = SCN_KEY;
+		scn.ch = key;
+		scn.modifiers = modifiers;
+		NotifyParent(scn);
+	}
+
 	return 0;
 }
 

@@ -1454,6 +1454,41 @@ void Style_SetLexer(HWND hwnd,PEDITLEXER pLexNew)
     //wsprintf(lexDefault.Styles[12+iIdx].szValue,L"size:0");
   }
 
+  { // set folding style; braces are for scoping only
+    static const int iMarkerIDs[] =
+    {
+      SC_MARKNUM_FOLDEROPEN,
+      SC_MARKNUM_FOLDER,
+      SC_MARKNUM_FOLDERSUB,
+      SC_MARKNUM_FOLDERTAIL,
+      SC_MARKNUM_FOLDEREND,
+      SC_MARKNUM_FOLDEROPENMID,
+      SC_MARKNUM_FOLDERMIDTAIL
+    };
+
+    int i;
+
+    COLORREF clrFore = SciCall_StyleGetFore(STYLE_DEFAULT);
+    COLORREF clrBack = SciCall_StyleGetBack(STYLE_DEFAULT);
+
+    SciCall_SetFoldMarginColour(TRUE, clrBack);
+    SciCall_SetFoldMarginHiColour(TRUE, clrBack);
+
+    // Set marker color to the average of clrFore and clrBack
+    clrFore = (((clrFore & 0xFF0000) + (clrBack & 0xFF0000)) >> 1 & 0xFF0000) |
+              (((clrFore & 0x00FF00) + (clrBack & 0x00FF00)) >> 1 & 0x00FF00) |
+              (((clrFore & 0x0000FF) + (clrBack & 0x0000FF)) >> 1 & 0x0000FF);
+
+    // Rounding hack for pure white against pure black
+    if (clrFore == 0x7F7F7F) clrFore = 0x808080;
+
+    for (i = 0; i < COUNTOF(iMarkerIDs); ++i)
+    {
+      SciCall_MarkerSetBack(iMarkerIDs[i], clrFore);
+      SciCall_MarkerSetFore(iMarkerIDs[i], clrBack);
+    }
+  } // end set folding style
+
   if (SendMessage(hwnd,SCI_GETINDENTATIONGUIDES,0,0) != SC_IV_NONE)
     Style_SetIndentGuides(hwnd,TRUE);
 

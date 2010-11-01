@@ -265,6 +265,9 @@ BEGIN
         MENUITEM "Line &Numbers\tCtrl+Shift+N", IDM_VIEW_LINENUMBERS
         MENUITEM "Selection &Margin\tCtrl+Shift+M", IDM_VIEW_MARGIN
         MENUITEM SEPARATOR
+        MENUITEM "Code &Folding\tCtrl+Shift+Alt+F", IDM_VIEW_FOLDING
+        MENUITEM "&Toggle All Folds\tCtrl+Shift+F", IDM_VIEW_TOGGLEFOLDS
+        MENUITEM SEPARATOR
         MENUITEM "Zoom &In\tCtrl++",            IDM_VIEW_ZOOMIN
         MENUITEM "Zoom &Out\tCtrl+-",           IDM_VIEW_ZOOMOUT
         MENUITEM "Reset &Zoom\tCtrl+/",         IDM_VIEW_RESETZOOM
@@ -395,6 +398,10 @@ BEGIN
     "E",            IDM_EDIT_URLENCODE,     VIRTKEY, SHIFT, CONTROL, 
                                                     NOINVERT
     "F",            IDM_EDIT_FIND,          VIRTKEY, CONTROL, NOINVERT
+    "F",            IDM_VIEW_FOLDING,       VIRTKEY, SHIFT, CONTROL, ALT, 
+                                                    NOINVERT
+    "F",            IDM_VIEW_TOGGLEFOLDS,   VIRTKEY, SHIFT, CONTROL, 
+                                                    NOINVERT
     "G",            IDM_EDIT_GOTOLINE,      VIRTKEY, CONTROL, NOINVERT
     "G",            IDM_VIEW_SHOWINDENTGUIDES, VIRTKEY, SHIFT, CONTROL, 
                                                     NOINVERT
@@ -1435,6 +1442,7 @@ BEGIN
     IDT_FILE_PRINT          "Print"
     IDT_FILE_OPENFAV        "Favorites"
     IDT_FILE_ADDTOFAV       "Add to Favorites"
+    IDT_VIEW_TOGGLEFOLDS    "Toggle All Folds"
 END
 
 STRINGTABLE 

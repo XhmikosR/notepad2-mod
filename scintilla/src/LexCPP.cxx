@@ -421,6 +421,7 @@ static void FoldCppDoc(unsigned int startPos, int length, int initStyle,
 				levelNext--;
 			}
 		}
+		/* Disable explicit folding; it can often cause problems with non-aware code
 		if (foldComment && (style == SCE_C_COMMENTLINE)) {
 			if ((ch == '/') && (chNext == '/')) {
 				char chNext2 = styler.SafeGetCharAt(i + 2);
@@ -431,6 +432,7 @@ static void FoldCppDoc(unsigned int startPos, int length, int initStyle,
 				}
 			}
 		}
+		*/
 		if (foldPreprocessor && (style == SCE_C_PREPROCESSOR)) {
 			if (ch == '#') {
 				unsigned int j = i + 1;

@@ -262,6 +262,7 @@ static void FoldSQLDoc(unsigned int startPos, int length, int initStyle,
 				levelNext--;
 			}
 		}
+		/* Disable explicit folding; it can often cause problems with non-aware code
 		if (foldComment && (style == SCE_SQL_COMMENTLINE)) {
 			// MySQL needs -- comments to be followed by space or control char
 			if ((ch == '-') && (chNext == '-')) {
@@ -274,6 +275,7 @@ static void FoldSQLDoc(unsigned int startPos, int length, int initStyle,
 				}
 			}
 		}
+		*/
 		if (style == SCE_SQL_OPERATOR) {
 			if (ch == '(') {
 				levelNext++;

@@ -309,6 +309,8 @@
 #define IDM_VIEW_STATUSBAR              40442
 #define IDM_VIEW_SAVESETTINGS           40443
 #define IDM_VIEW_SAVESETTINGSNOW        40444
+#define IDM_VIEW_FOLDING                40445
+#define IDM_VIEW_TOGGLEFOLDS            40446
 #define IDM_HELP_ABOUT                  40500
 #define IDM_TRAY_RESTORE                40600
 #define IDM_TRAY_EXIT                   40601
@@ -335,6 +337,7 @@
 #define IDT_FILE_PRINT                  40720
 #define IDT_FILE_OPENFAV                40721
 #define IDT_FILE_ADDTOFAV               40722
+#define IDT_VIEW_TOGGLEFOLDS            40723
 #define SC_SAVEPOS                      40800
 #define SC_RESETPOS                     40801
 #define IDS_ERR_LOADFILE                50000
