@@ -6,11 +6,11 @@ mkdir binaries >NUL 2>&1
 mkdir binaries\x86-32 >NUL 2>&1
 mkdir binaries\x86-64 >NUL 2>&1
 
-copy /b /v /y ..\Release\Notepad2.exe res\cabinet\notepad2.exe
+copy /b /v /y ..\..\Release\Notepad2.exe res\cabinet\notepad2.exe
 copy /b /v /y res\cabinet\*.* binaries\x86-32
 cabutcd res\cabinet res\cabinet.x86-32.cab
 
-copy /b /v /y ..\Release_x64\Notepad2.exe res\cabinet\notepad2.exe
+copy /b /v /y ..\..\Release_x64\Notepad2.exe res\cabinet\notepad2.exe
 copy /b /v /y res\cabinet\*.* binaries\x86-64
 cabutcd res\cabinet res\cabinet.x86-64.cab
 
