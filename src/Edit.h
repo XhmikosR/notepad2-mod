@@ -21,7 +21,7 @@
 
 
 // extern "C" declarations of Scintilla functions
-BOOL Scintilla_RegisterClasses(HINSTANCE);
+BOOL Scintilla_RegisterClasses(void *hInstance);
 BOOL Scintilla_ReleaseResources();
 
 

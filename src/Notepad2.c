@@ -5781,7 +5781,7 @@ void LoadFlags()
   if (IniSectionGetInt(pIniSection,L"NoFileVariables",0))
     fNoFileVariables = 1;
 
-  IniSectionGetString(pIniSection,L"ShellAppUserModelID",L"(default)",
+  IniSectionGetString(pIniSection,L"ShellAppUserModelID",L"Notepad2",
     g_wchAppUserModelID,COUNTOF(g_wchAppUserModelID));
 
   if (IniSectionGetInt(pIniSection,L"ShellUseSystemMRU",0))

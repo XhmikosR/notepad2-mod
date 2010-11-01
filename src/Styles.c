@@ -1738,7 +1738,7 @@ extern FILEVARS fvCurFile;
 
 void Style_SetLexerFromFile(HWND hwnd,LPCWSTR lpszFile)
 {
-  LPWSTR lpszExt;
+  LPWSTR lpszExt = PathFindExtension(lpszFile);
   BOOL  bFound = FALSE;
   PEDITLEXER pLexNew = pLexArray[iDefaultLexer];
   PEDITLEXER pLexSniffed;
@@ -1777,7 +1777,6 @@ void Style_SetLexerFromFile(HWND hwnd,LPCWSTR lpszFile)
     }
   }
 
-  lpszExt = PathFindExtension(lpszFile);
   if (!bFound && bAutoSelect && /* bAutoSelect == FALSE skips lexer search */
       (lpszFile && lstrlen(lpszFile) > 0 && *lpszExt)) {
 
