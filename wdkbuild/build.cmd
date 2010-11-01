@@ -1,6 +1,6 @@
 @echo off
 setlocal
-set WDKBASEDIR=C:\progs\WinDDK\7600.16385.1
+set WDKBASEDIR=C:\WinDDK\7600.16385.1
 
 set INCLUDE=%WDKBASEDIR%\inc\crt;%WDKBASEDIR%\inc\api;%WDKBASEDIR%\inc\api\crt\stl60;%WDKBASEDIR%\inc\ddk
 set LIB=%WDKBASEDIR%\lib\crt\i386;%WDKBASEDIR%\lib\win7\i386
