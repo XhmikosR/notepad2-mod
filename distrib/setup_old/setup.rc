@@ -56,13 +56,11 @@ IDD_LICENSE  DIALOGEX 0, 0, 256, 224
     EDITTEXT        IDC_LICENSE_BOX, 7,  35, 242, 136, WS_TABSTOP | WS_GROUP | WS_VSCROLL | ES_MULTILINE | ES_READONLY
 }
 
-IDR_RT_MANIFEST         RT_MANIFEST             "res\full\setup.manifest"
 IDI_SETUP               ICON                    "res\full\setup.ico"
 IDR_LICENSE             RCDATA                  "res\full\license.txt"
 
 #else
 
-IDR_RT_MANIFEST         RT_MANIFEST             "res\lite\setup.manifest"
 IDI_SETUP               ICON                    "res\lite\setup.ico"
 
 #endif
