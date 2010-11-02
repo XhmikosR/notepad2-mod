@@ -754,10 +754,15 @@ EDITLEXER lexINI = { SCLEX_PROPERTIES, 63015, L"Configuration Files", L"ini; inf
 
 
 KEYWORDLIST KeyWords_BAT = {
-"rem set if exist errorlevel for in do break call chcp cd chdir choice cls "
-"country ctty date del erase dir echo exit goto loadfix loadhigh mkdir md "
-"move path pause prompt rename ren rmdir rd shift time type ver verify vol "
-"com con lpt nul echo.",
+"assoc attrib bcdedit break cacls call cd chcp chdir chkdsk chkntfs choice cls "
+"cmd color com comp compact con convert copy country ctty date del dir "
+"diskcomp diskcopy diskpart do doskey driverquery echo echo. else endlocal equ "
+"erase errorlevel exist exit fc find findstr for format fsutil ftype geq goto "
+"gpresult graftabl gtr help icacls if in label leq loadfix loadhigh lpt lss md "
+"mkdir mklink mode more move neq nul openfiles path pause popd print prompt "
+"pushd rd recover rem ren rename replace rmdir robocopy sc schtasks set "
+"setlocal shift shutdown sort start subst systeminfo taskkill tasklist time "
+"title tree type ver verify vol wmic xcopy",
 "", "", "", "", "", "", "", "" };
 
 
