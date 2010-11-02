@@ -1,6 +1,4 @@
-/Fo"../Release/obj/" /I "..\scintilla\include" /I "..\scintilla\src" /I "..\scintilla\win32" /D "STATIC_BUILD" /D "SCI_LEXER" /D "WIN32" /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE" /c /EHsc /GF /MD /O2 /Os /W3 /GS /Gy /fp:precise /GL /MP
-/Tp "..\scintilla\win32\PlatWin.cxx"
-/Tp "..\scintilla\win32\ScintillaWin.cxx"
+/Fo"../Release/obj/" /I "..\scintilla\include" /I "..\scintilla\src" /I "..\scintilla\win32" /D "STATIC_BUILD" /D "SCI_LEXER" /D "WIN32" /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE" /c /EHsc /GF /MD /O1 /Os /W3
 /Tp "..\scintilla\src\AutoComplete.cxx"
 /Tp "..\scintilla\src\CallTip.cxx"
 /Tp "..\scintilla\src\CellBuffer.cxx"
@@ -40,6 +38,8 @@
 /Tp "..\scintilla\src\ViewStyle.cxx"
 /Tp "..\scintilla\src\WindowAccessor.cxx"
 /Tp "..\scintilla\src\XPM.cxx"
+/Tp "..\scintilla\win32\PlatWin.cxx"
+/Tp "..\scintilla\win32\ScintillaWin.cxx"
 /Tc "..\src\Dialogs.c"
 /Tc "..\src\Dlapi.c"
 /Tc "..\src\Edit.c"
