@@ -37,13 +37,13 @@ COPY "..\Notepad2.txt" "temp_zip\" /Y /V
 COPY "..\ReadMe.txt" "temp_zip\" /Y /V
 
 PUSHD "temp_zip"
-START "" /B /WAIT "..\..\distrib\setup_old\7za.exe" a -tzip -mx=9^
+START "" /B /WAIT "..\..\distrib\setup_old\tools\7za.exe" a -tzip -mx=9^
  "Notepad2-mod.%NOTEPAD_VERSION%_r%SVNREV%_%2.zip" "License.txt" "Notepad2.exe"^
  "Notepad2.ini" "notepad2.redir.ini" "Notepad2.inf" "Notepad2.txt" "ReadMe.txt" >NUL
 IF %ERRORLEVEL% NEQ 0 GOTO :ErrorDetected
 
 ECHO:Notepad2-mod.%NOTEPAD_VERSION%_r%SVNREV%_%2.zip created successfully!
-MOVE /Y "Notepad2-mod.%NOTEPAD_VERSION%_r%SVNREV%_%2.zip" "..\.." >NUL 2>&1
+MOVE /Y "Notepad2-mod.%NOTEPAD_VERSION%_r%SVNREV%_%2.zip" ".." >NUL 2>&1
 ECHO.
 POPD
 RD /S /Q "temp_zip" >NUL 2>&1

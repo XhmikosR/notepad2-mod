@@ -93,25 +93,25 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Lite|Win32'">
-    <OutDir>bin.x86-32\</OutDir>
+    <OutDir>setup.x86-32\</OutDir>
     <IntDir>obj\x86-32.lite\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <TargetName>setuplite</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Lite|x64'">
-    <OutDir>bin.x86-64\</OutDir>
+    <OutDir>setup.x86-64\</OutDir>
     <IntDir>obj\x86-64.lite\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <TargetName>setuplite</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Full|Win32'">
-    <OutDir>bin.x86-32\</OutDir>
+    <OutDir>setup.x86-32\</OutDir>
     <IntDir>obj\x86-32.full\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <TargetName>setupfull</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Full|x64'">
-    <OutDir>bin.x86-64\</OutDir>
+    <OutDir>setup.x86-64\</OutDir>
     <IntDir>obj\x86-64.full\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <TargetName>setupfull</TargetName>
@@ -144,7 +144,6 @@
     </Bscmake>
     <Link>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>$(OutDir)setuplite.exe</OutputFile>
       <SetChecksum>true</SetChecksum>
       <MergeSections>.rdata=.text</MergeSections>
       <AdditionalDependencies>comctl32.lib;advpack.lib;cabinet.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -184,7 +183,6 @@
     </Bscmake>
     <Link>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>$(OutDir)setuplite.exe</OutputFile>
       <SetChecksum>true</SetChecksum>
       <MergeSections>.rdata=.text</MergeSections>
       <AdditionalDependencies>comctl32.lib;advpack.lib;cabinet.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -222,7 +220,6 @@
     </Bscmake>
     <Link>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>$(OutDir)setupfull.exe</OutputFile>
       <SetChecksum>true</SetChecksum>
       <MergeSections>.rdata=.text</MergeSections>
       <AdditionalDependencies>comctl32.lib;advpack.lib;cabinet.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -262,7 +259,6 @@
     </Bscmake>
     <Link>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>$(OutDir)setupfull.exe</OutputFile>
       <SetChecksum>true</SetChecksum>
       <MergeSections>.rdata=.text</MergeSections>
       <AdditionalDependencies>comctl32.lib;advpack.lib;cabinet.lib;%(AdditionalDependencies)</AdditionalDependencies>
