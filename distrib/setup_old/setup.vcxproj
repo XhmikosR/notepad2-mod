@@ -186,10 +186,12 @@
       <SetChecksum>true</SetChecksum>
       <MergeSections>.rdata=.text</MergeSections>
       <AdditionalDependencies>comctl32.lib;advpack.lib;cabinet.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions>/SUBSYSTEM:WINDOWS,5.0 /OSVERSION:5.0 /STUB:dosstub.bin /IGNORE:4078</AdditionalOptions>
+      <AdditionalOptions>/OSVERSION:5.2 /STUB:dosstub.bin /IGNORE:4078</AdditionalOptions>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <SubSystem>Windows</SubSystem>
+      <MinimumRequiredVersion>5.2</MinimumRequiredVersion>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Full|Win32'">
@@ -262,10 +264,12 @@
       <SetChecksum>true</SetChecksum>
       <MergeSections>.rdata=.text</MergeSections>
       <AdditionalDependencies>comctl32.lib;advpack.lib;cabinet.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions>/SUBSYSTEM:WINDOWS,5.0 /OSVERSION:5.0 /STUB:dosstub.bin /IGNORE:4078</AdditionalOptions>
+      <AdditionalOptions>/OSVERSION:5.2 /STUB:dosstub.bin /IGNORE:4078</AdditionalOptions>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <SubSystem>Windows</SubSystem>
+      <MinimumRequiredVersion>5.2</MinimumRequiredVersion>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
