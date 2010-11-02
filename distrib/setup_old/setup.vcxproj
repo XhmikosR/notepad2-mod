@@ -145,6 +145,7 @@
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <SubSystem>Windows</SubSystem>
       <MinimumRequiredVersion>5.0</MinimumRequiredVersion>
+      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>res\lite\setup.manifest</AdditionalManifestFiles>
@@ -187,6 +188,7 @@
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <SubSystem>Windows</SubSystem>
       <MinimumRequiredVersion>5.2</MinimumRequiredVersion>
+      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>res\lite\setup.manifest</AdditionalManifestFiles>

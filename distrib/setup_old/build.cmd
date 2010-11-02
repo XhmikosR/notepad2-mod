@@ -28,9 +28,13 @@ rd /q binaries >NUL 2>&1
 
 CALL "%VS100COMNTOOLS%vsvars32.bat" >NUL
 devenv setup.sln /Rebuild "Full|Win32"
+IF %ERRORLEVEL% NEQ 0 ECHO:Compilation failed!&&PAUSE&&EXIT
 devenv setup.sln /Rebuild "Full|x64"
+IF %ERRORLEVEL% NEQ 0 ECHO:Compilation failed!&&PAUSE&&EXIT
 devenv setup.sln /Rebuild "Lite|Win32"
+IF %ERRORLEVEL% NEQ 0 ECHO:Compilation failed!&&PAUSE&&EXIT
 devenv setup.sln /Rebuild "Lite|x64"
+IF %ERRORLEVEL% NEQ 0 ECHO:Compilation failed!&&PAUSE&&EXIT
 
 rem "%perl_path%\perl\bin\perl.exe" addon_build.pl
 
