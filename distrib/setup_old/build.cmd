@@ -2,6 +2,12 @@
 
 set perl_path=G:\Installation Programs\Programs\Compiling Stuff\Other\ActivePerl-5.12.2.1202-MSWin32-x86-293621
 
+IF NOT DEFINED VS100COMNTOOLS (
+	ECHO:Visual Studio 2010 NOT FOUND!!! && PAUSE
+	ECHO.
+	GOTO :end
+)
+
 mkdir binaries\x86-32 >NUL 2>&1
 mkdir binaries\x86-64 >NUL 2>&1
 
@@ -11,7 +17,7 @@ copy /b /v /y res\cabinet\notepad2.inf binaries\x86-32\notepad2.inf
 copy /b /v /y res\cabinet\notepad2.ini binaries\x86-32\notepad2.ini
 copy /b /v /y res\cabinet\notepad2.redir.ini binaries\x86-32\notepad2.redir.ini
 copy /b /v /y res\cabinet\notepad2.txt binaries\x86-32\notepad2.txt
-copy /b /v /y res\cabinet\readme.txt binaries\x86-32\readme.txt
+copy /b /v /y ..\..\Readme-mod.txt binaries\x86-32\readme.txt
 tools\cabutcd.exe binaries\x86-32 res\cabinet.x86-32.cab
 rd /q /s binaries\x86-32 >NUL 2>&1
 
@@ -21,7 +27,7 @@ copy /b /v /y res\cabinet\notepad2.inf binaries\x86-64\notepad2.inf
 copy /b /v /y res\cabinet\notepad2.ini binaries\x86-64\notepad2.ini
 copy /b /v /y res\cabinet\notepad2.redir.ini binaries\x86-64\notepad2.redir.ini
 copy /b /v /y res\cabinet\notepad2.txt binaries\x86-64\notepad2.txt
-copy /b /v /y res\cabinet\readme.txt binaries\x86-64\readme.txt
+copy /b /v /y ..\..\Readme-mod.txt binaries\x86-64\readme.txt
 tools\cabutcd.exe binaries\x86-64 res\cabinet.x86-64.cab
 rd /q /s binaries\x86-64 >NUL 2>&1
 rd /q binaries >NUL 2>&1

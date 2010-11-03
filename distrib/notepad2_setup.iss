@@ -119,7 +119,7 @@ Source: ..\Release\Notepad2.exe; DestDir: {app}; Flags: ignoreversion
 Source: Notepad2.ini; DestDir: {userappdata}\Notepad2; Flags: onlyifdoesntexist uninsneveruninstall
 Source: notepad2.redir.ini; DestDir: {app}; DestName: Notepad2.ini; Flags: ignoreversion
 Source: ..\Notepad2.txt; DestDir: {app}; Flags: ignoreversion
-Source: ..\Readme.txt; DestDir: {app}; Flags: ignoreversion
+Source: ..\Readme-mod.txt; DestDir: {app}; DestName: Readme.txt; Flags: ignoreversion
 
 
 [Icons]
