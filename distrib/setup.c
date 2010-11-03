@@ -44,10 +44,18 @@ __forceinline BOOL ShowLicense( HINSTANCE hInstance );
 INT_PTR CALLBACK LicenseDlgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
 #endif
 
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrev, PSTR szCmdLine, int iCmdShow)
+{
+	ExitProcess(SetupMain(hInstance));
+	return 0;
+}
+
+/*
 void SetupEntry( )
 {
 	ExitProcess(SetupMain(GetModuleHandleA(NULL)));
 }
+*/
 
 /**
  * SetupMain - Process command line arguments, display help, display license

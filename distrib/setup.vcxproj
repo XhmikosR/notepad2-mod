@@ -106,7 +106,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Lite|Win32'">
     <ClCompile>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <Optimization>MaxSpeed</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
@@ -137,7 +137,6 @@
       <SubSystem>Windows</SubSystem>
       <MinimumRequiredVersion>5.0</MinimumRequiredVersion>
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
-      <EntryPointSymbol>SetupEntry</EntryPointSymbol>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>res\lite\setup.manifest</AdditionalManifestFiles>
@@ -145,7 +144,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Lite|x64'">
     <ClCompile>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <Optimization>MaxSpeed</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
@@ -176,7 +175,6 @@
       <SubSystem>Windows</SubSystem>
       <MinimumRequiredVersion>5.2</MinimumRequiredVersion>
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
-      <EntryPointSymbol>SetupEntry</EntryPointSymbol>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>res\lite\setup.manifest</AdditionalManifestFiles>
@@ -184,7 +182,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Full|Win32'">
     <ClCompile>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <Optimization>MaxSpeed</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
@@ -214,7 +212,6 @@
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <SubSystem>Windows</SubSystem>
       <MinimumRequiredVersion>5.0</MinimumRequiredVersion>
-      <EntryPointSymbol>SetupEntry</EntryPointSymbol>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>res\full\setup.manifest</AdditionalManifestFiles>
@@ -222,7 +219,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Full|x64'">
     <ClCompile>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <Optimization>MaxSpeed</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
@@ -252,7 +249,6 @@
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <SubSystem>Windows</SubSystem>
       <MinimumRequiredVersion>5.2</MinimumRequiredVersion>
-      <EntryPointSymbol>SetupEntry</EntryPointSymbol>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>res\full\setup.manifest</AdditionalManifestFiles>
