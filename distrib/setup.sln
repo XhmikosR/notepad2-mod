@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SetupStub", "setup.vcxproj", "{AA902504-68C0-68D1-8905-72BCDCCD10C7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Full|Win32 = Full|Win32
+		Full|x64 = Full|x64
+		Lite|Win32 = Lite|Win32
+		Lite|x64 = Lite|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AA902504-68C0-68D1-8905-72BCDCCD10C7}.Full|Win32.ActiveCfg = Full|Win32
+		{AA902504-68C0-68D1-8905-72BCDCCD10C7}.Full|Win32.Build.0 = Full|Win32
+		{AA902504-68C0-68D1-8905-72BCDCCD10C7}.Full|x64.ActiveCfg = Full|x64
+		{AA902504-68C0-68D1-8905-72BCDCCD10C7}.Full|x64.Build.0 = Full|x64
+		{AA902504-68C0-68D1-8905-72BCDCCD10C7}.Lite|Win32.ActiveCfg = Lite|Win32
+		{AA902504-68C0-68D1-8905-72BCDCCD10C7}.Lite|Win32.Build.0 = Lite|Win32
+		{AA902504-68C0-68D1-8905-72BCDCCD10C7}.Lite|x64.ActiveCfg = Lite|x64
+		{AA902504-68C0-68D1-8905-72BCDCCD10C7}.Lite|x64.Build.0 = Lite|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
