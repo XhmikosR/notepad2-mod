@@ -42,18 +42,21 @@ IF %ERRORLEVEL% NEQ 0 ECHO:Compilation failed!&&PAUSE&&EXIT
 devenv setup.sln /Rebuild "Lite|x64"
 IF %ERRORLEVEL% NEQ 0 ECHO:Compilation failed!&&PAUSE&&EXIT
 
-rem "%perl_path%\perl\bin\perl.exe" addon_build.pl
+"%perl_path%\perl\bin\perl.exe" addon_build.pl
 
 mkdir setup-bin >NUL 2>&1
-rem move setup.x86-32\addon.7z      setup-bin\Notepad2Addon.x86-32.7z >NUL
-move setup.x86-32\setupfull.exe setup-bin\SetupNotepad2.x86-32.exe >NUL
-move setup.x86-32\setuplite.exe setup-bin\SetupNotepad2Silent.x86-32.exe >NUL
-rem move setup.x86-64\addon.7z      setup-bin\Notepad2Addon.x86-64.7z >NUL
-move setup.x86-64\setupfull.exe setup-bin\SetupNotepad2.x86-64.exe >NUL
-move setup.x86-64\setuplite.exe setup-bin\SetupNotepad2Silent.x86-64.exe >NUL
+move setup.x86-32\addon.7z      setup-bin\Notepad2_Addon.x86-32.7z >NUL
+move setup.x86-32\setupfull.exe setup-bin\Notepad2_Setup.x86-32.exe >NUL
+move setup.x86-32\setuplite.exe setup-bin\Notepad2_Setup_Silent.x86-32.exe >NUL
+move setup.x86-64\addon.7z      setup-bin\Notepad2_Addon.x86-64.7z >NUL
+move setup.x86-64\setupfull.exe setup-bin\Notepad2_Setup.x86-64.exe >NUL
+move setup.x86-64\setuplite.exe setup-bin\Notepad2_Setup_Silent.x86-64.exe >NUL
 
 rd setup.x86-32 setup.x86-64 >NUL 2>&1
 rd setup.x86-32 setup.x86-64 >NUL 2>&1
+rd /q /s addon >NUL 2>&1
+rd /q /s obj >NUL 2>&1
+del res\cabinet.x86-32.cab res\cabinet.x86-64.cab >NUL 2>&1
 
 pushd setup-bin
 rem advzip -z -4 Notepad2.zip
