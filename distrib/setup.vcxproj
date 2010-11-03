@@ -38,28 +38,24 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Full|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <PlatformToolset>Windows7.1SDK</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Full|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <PlatformToolset>Windows7.1SDK</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Lite|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <PlatformToolset>Windows7.1SDK</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Lite|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <PlatformToolset>Windows7.1SDK</PlatformToolset>
@@ -131,7 +127,6 @@
       <OutputFile>.\bin.x86-32\setup.bsc</OutputFile>
     </Bscmake>
     <Link>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
       <SetChecksum>true</SetChecksum>
       <MergeSections>.rdata=.text</MergeSections>
       <AdditionalDependencies>comctl32.lib;advpack.lib;cabinet.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -171,7 +166,6 @@
       <OutputFile>.\bin.x86-32\setup.bsc</OutputFile>
     </Bscmake>
     <Link>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
       <SetChecksum>true</SetChecksum>
       <MergeSections>.rdata=.text</MergeSections>
       <AdditionalDependencies>comctl32.lib;advpack.lib;cabinet.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -211,7 +205,6 @@
       <OutputFile>.\bin.x86-32\setup.bsc</OutputFile>
     </Bscmake>
     <Link>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
       <SetChecksum>true</SetChecksum>
       <MergeSections>.rdata=.text</MergeSections>
       <AdditionalDependencies>comctl32.lib;advpack.lib;cabinet.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -250,7 +243,6 @@
       <OutputFile>.\bin.x86-32\setup.bsc</OutputFile>
     </Bscmake>
     <Link>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
       <SetChecksum>true</SetChecksum>
       <MergeSections>.rdata=.text</MergeSections>
       <AdditionalDependencies>comctl32.lib;advpack.lib;cabinet.lib;%(AdditionalDependencies)</AdditionalDependencies>
