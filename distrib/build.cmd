@@ -56,7 +56,6 @@ rd setup.x86-32 setup.x86-64 >NUL 2>&1
 rd setup.x86-32 setup.x86-64 >NUL 2>&1
 rd /q /s addon >NUL 2>&1
 rd /q /s obj >NUL 2>&1
-del res\cabinet.x86-32.cab res\cabinet.x86-64.cab >NUL 2>&1
 
 pushd setup-bin
 rem advzip -z -4 Notepad2.zip
