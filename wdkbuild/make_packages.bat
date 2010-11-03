@@ -34,7 +34,7 @@ COPY "..\distrib\Notepad2.ini" "temp_zip\" /Y /V
 COPY "..\distrib\notepad2.redir.ini" "temp_zip\" /Y /V
 COPY "..\distrib\setup_old\res\cabinet\Notepad2.inf" "temp_zip\" /Y /V
 COPY "..\Notepad2.txt" "temp_zip\" /Y /V
-COPY "..\ReadMe.txt" "temp_zip\" /Y /V
+COPY "..\ReadMe-mod.txt" "temp_zip\Readme.txt" /Y /V
 
 PUSHD "temp_zip"
 START "" /B /WAIT "..\..\distrib\setup_old\tools\7za.exe" a -tzip -mx=9^
