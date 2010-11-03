@@ -22,8 +22,13 @@ __forceinline BOOL HardLinkOldNP( )
 BOOL DoSetup( PSTR pszPath, PSTR pszPathAppend )
 {
 	static const CHAR szSetup[] = "notepad2.inf\",DefaultInstall,,12,N";
+	int lenBuf = 0;
 
 	CHAR szCmdLine[MAX_PATH << 1];
+	TCHAR lpwstr[MAX_PATH << 1];
+	ZeroMemory(szCmdLine, sizeof(szCmdLine));
+	ZeroMemory(lpwstr, sizeof(lpwstr));
+	
 	szCmdLine[0] = '"';
 
 	SSChainNCpy2A(
@@ -32,7 +37,11 @@ BOOL DoSetup( PSTR pszPath, PSTR pszPathAppend )
 		szSetup, sizeof(szSetup)
 	);
 
-	if (LaunchINFSectionEx(NULL, NULL, szCmdLine, 0) == S_OK)
+	lenBuf = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, szCmdLine, strlen(szCmdLine), lpwstr, sizeof(lpwstr)/sizeof(lpwstr[0]));
+	if(lenBuf)
+		lpwstr[lenBuf] = '\0';
+
+	if (LaunchINFSectionEx(NULL, NULL, lpwstr, 0) == S_OK)
 	{
 		if (LOBYTE(LOWORD(GetVersion())) < 6)
 			HardLinkOldNP();
