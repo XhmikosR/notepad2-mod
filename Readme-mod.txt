@@ -4,7 +4,8 @@ version using patches by Kai Liu and others.
 Notable changes:
 * Code folding
 * Support for registry-based Notepad replacement
-* Support for more types of syntax highlighting
+* Syntax highlighting support for AutoIt3, Bash, LaTeX, Lua, Ruby, Tcl,
+  NSIS and Inno Setup scripts
 * Native x86-64 support
 
 More information:

@@ -1,4 +1,4 @@
-/Fo"../Release/obj/" /I "..\scintilla\include" /I "..\scintilla\src" /I "..\scintilla\win32" /D "STATIC_BUILD" /D "SCI_LEXER" /D "WIN32" /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE" /c /EHsc /GF /MD /O2 /Oi /Ot /Oy /GT /GL /W3 /GS /Gy /MP
+/Fo"../Release/obj/" /I "..\scintilla\include" /I "..\scintilla\src" /I "..\scintilla\win32" /D "STATIC_BUILD" /D "SCI_LEXER" /D "WIN32" /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE" /c /EHsc /MD /O2 /GS /GT /GL /W3 /MP
 /Tp "..\scintilla\src\AutoComplete.cxx"
 /Tp "..\scintilla\src\CallTip.cxx"
 /Tp "..\scintilla\src\CellBuffer.cxx"
