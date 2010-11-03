@@ -44,7 +44,6 @@ __forceinline BOOL ShowLicense( HINSTANCE hInstance );
 INT_PTR CALLBACK LicenseDlgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
 #endif
 
-#pragma comment(linker, "/entry:SetupEntry")
 void SetupEntry( )
 {
 	ExitProcess(SetupMain(GetModuleHandleA(NULL)));
