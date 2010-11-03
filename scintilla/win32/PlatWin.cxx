@@ -28,10 +28,6 @@
 #define IDC_HAND MAKEINTRESOURCE(32649)
 #endif
 
-#ifndef CLEARTYPE_QUALITY
-#define CLEARTYPE_QUALITY 5
-#endif
-
 // Take care of 32/64 bit pointers
 #ifdef GetWindowLongPtr
 static void *PointerFromWindow(HWND hWnd) {
