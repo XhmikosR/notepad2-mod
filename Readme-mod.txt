@@ -9,7 +9,7 @@ Notable changes:
 * Native x86-64 support
 
 More information:
-* Source patches and patched builds:  http://code.google.com/p/notepad2-mod/
-* Kai Liu's site:                     http://code.kliu.org/misc/notepad2/
-* Code folding usage guide:           http://code.kliu.org/misc/notepad2/folding.html
-* Official Notepad2 website:          http://www.flos-freeware.ch/notepad2.html
+* Source code and binaries:   http://code.google.com/p/notepad2-mod/
+* Kai Liu's website:          http://code.kliu.org/misc/notepad2/
+* Code folding usage guide:   http://code.kliu.org/misc/notepad2/folding.html
+* Official Notepad2 website:  http://www.flos-freeware.ch/notepad2.html
