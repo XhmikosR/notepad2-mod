@@ -1,4 +1,4 @@
-/OUT:"../Release_x64/Notepad2.exe" /INCREMENTAL:NO /RELEASE /VERSION:5.2 /SUBSYSTEM:WINDOWS,5.2 /OSVERSION:5.2 /MACHINE:X64 /OPT:REF /OPT:ICF /DYNAMICBASE /NXCOMPAT /MERGE:.rdata=.text /IGNORE:4078 /LTCG kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib shlwapi.lib comdlg32.lib comctl32.lib winspool.lib imm32.lib ole32.lib oleaut32.lib psapi.lib
+/OUT:"../Release_x64/Notepad2.exe" /INCREMENTAL:NO /RELEASE /SUBSYSTEM:WINDOWS /MACHINE:X64 /OPT:REF /OPT:ICF /DYNAMICBASE /NXCOMPAT /MERGE:.rdata=.text /IGNORE:4078 /LTCG kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib shlwapi.lib comdlg32.lib comctl32.lib winspool.lib imm32.lib ole32.lib oleaut32.lib psapi.lib
 "..\Release_x64\obj\AutoComplete.obj"
 "..\Release_x64\obj\CallTip.obj"
 "..\Release_x64\obj\CellBuffer.obj"

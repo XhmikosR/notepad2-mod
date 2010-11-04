@@ -130,12 +130,11 @@
       <SetChecksum>true</SetChecksum>
       <MergeSections>.rdata=.text</MergeSections>
       <AdditionalDependencies>comctl32.lib;advpack.lib;cabinet.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions>/OSVERSION:5.0 /STUB:dosstub.bin</AdditionalOptions>
+      <AdditionalOptions>/STUB:dosstub.bin</AdditionalOptions>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <SubSystem>Windows</SubSystem>
-      <MinimumRequiredVersion>5.0</MinimumRequiredVersion>
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
     </Link>
     <Manifest>
@@ -168,12 +167,11 @@
       <SetChecksum>true</SetChecksum>
       <MergeSections>.rdata=.text</MergeSections>
       <AdditionalDependencies>comctl32.lib;advpack.lib;cabinet.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions>/OSVERSION:5.2 /STUB:dosstub.bin</AdditionalOptions>
+      <AdditionalOptions>/STUB:dosstub.bin</AdditionalOptions>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <SubSystem>Windows</SubSystem>
-      <MinimumRequiredVersion>5.2</MinimumRequiredVersion>
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
     </Link>
     <Manifest>
@@ -206,12 +204,11 @@
       <SetChecksum>true</SetChecksum>
       <MergeSections>.rdata=.text</MergeSections>
       <AdditionalDependencies>comctl32.lib;advpack.lib;cabinet.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions>/OSVERSION:5.0 /STUB:dosstub.bin</AdditionalOptions>
+      <AdditionalOptions>/STUB:dosstub.bin</AdditionalOptions>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <SubSystem>Windows</SubSystem>
-      <MinimumRequiredVersion>5.0</MinimumRequiredVersion>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>res\full\setup.manifest</AdditionalManifestFiles>
@@ -243,12 +240,11 @@
       <SetChecksum>true</SetChecksum>
       <MergeSections>.rdata=.text</MergeSections>
       <AdditionalDependencies>comctl32.lib;advpack.lib;cabinet.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions>/OSVERSION:5.2 /STUB:dosstub.bin</AdditionalOptions>
+      <AdditionalOptions>/STUB:dosstub.bin</AdditionalOptions>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <SubSystem>Windows</SubSystem>
-      <MinimumRequiredVersion>5.2</MinimumRequiredVersion>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>res\full\setup.manifest</AdditionalManifestFiles>

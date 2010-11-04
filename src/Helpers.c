@@ -19,7 +19,9 @@
 *
 *
 ******************************************************************************/
+#if !defined(_WIN32_WINNT)
 #define _WIN32_WINNT 0x501
+#endif
 #include <windows.h>
 #include <shlobj.h>
 #include <shlwapi.h>
