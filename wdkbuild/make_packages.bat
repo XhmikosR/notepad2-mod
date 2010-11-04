@@ -7,6 +7,11 @@ SET PERL_PATH=G:\Installation Programs\Programs\Compiling Stuff\Other\ActivePerl
 CALL build.cmd
 CALL build_x64.cmd
 
+rem Get the revision
+FOR /f "tokens=3,4 delims= " %%K IN (
+  'FINDSTR /I /L /C:"define VERSION_REV" "..\src\Version_rev.h"') DO (
+  SET "buildnum=%%K"&Call :SubRevNumber %%buildnum:*Z=%%)
+
 CALL :SubZipFiles Release x86-32
 CALL :SubZipFiles Release_x64 x86-64
 
@@ -24,10 +29,6 @@ EXIT
 :SubZipFiles
 TITLE Creating the ZIP files
 ECHO.
-
-FOR /f "tokens=3,4 delims= " %%K IN (
-  'FINDSTR /I /L /C:"define VERSION_REV" "..\src\Version_rev.h"') DO (
-  SET "buildnum=%%K"&Call :SubRevNumber %%buildnum:*Z=%%)
 
 MD "temp_zip" >NUL 2>&1
 MD "packages" >NUL 2>&1
@@ -71,7 +72,12 @@ COPY /B /V /Y res\cabinet\notepad2.ini binaries\x86-32\notepad2.ini
 COPY /B /V /Y res\cabinet\notepad2.redir.ini binaries\x86-32\notepad2.redir.ini
 COPY /B /V /Y res\cabinet\notepad2.txt binaries\x86-32\notepad2.txt
 COPY /B /V /Y ..\Readme-mod.txt binaries\x86-32\readme.txt
+rem Set the revision for the DisplayVersion
+CALL tools\BatchSubstitute.bat "0.0.0.0" %NOTEPAD_VERSION%.%buildnum% binaries\x86-32\notepad2.inf >notepad2.inf.temp
+COPY /Y binaries\x86-32\notepad2.inf notepad2.inf.orig >NUL
+MOVE /Y notepad2.inf.temp binaries\x86-32\notepad2.inf >NUL
 tools\cabutcd.exe binaries\x86-32 res\cabinet.x86-32.cab
+DEL notepad2.inf.orig >NUL 2>&1
 RD /Q /S binaries\x86-32 >NUL 2>&1
 
 COPY /B /V /Y ..\Release_x64\Notepad2.exe binaries\x86-64\notepad2.exe
@@ -81,7 +87,12 @@ COPY /B /V /Y res\cabinet\notepad2.ini binaries\x86-64\notepad2.ini
 COPY /B /V /Y res\cabinet\notepad2.redir.ini binaries\x86-64\notepad2.redir.ini
 COPY /B /V /Y res\cabinet\notepad2.txt binaries\x86-64\notepad2.txt
 COPY /B /V /Y ..\Readme-mod.txt binaries\x86-64\readme.txt
+rem Set the revision for the DisplayVersion
+CALL tools\BatchSubstitute.bat "0.0.0.0" %NOTEPAD_VERSION%.%buildnum% binaries\x86-64\notepad2.inf >notepad2.inf.temp
+COPY /Y binaries\x86-64\notepad2.inf notepad2.inf.orig >NUL
+MOVE /Y notepad2.inf.temp binaries\x86-64\notepad2.inf >NUL
 tools\cabutcd.exe binaries\x86-64 res\cabinet.x86-64.cab
+DEL notepad2.inf.orig >NUL 2>&1
 RD /Q /S binaries\x86-64 >NUL 2>&1
 RD /q binaries >NUL 2>&1
 

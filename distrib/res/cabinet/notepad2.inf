@@ -45,8 +45,10 @@ Notepad2.ini,,,0x00000010
 ; Allow the uninstallation of Notepad2
 HKLM,"%REG_UNIS%","DisplayIcon",0,"%16422%\Notepad2\Notepad2.exe"
 HKLM,"%REG_UNIS%","DisplayName",0,"Notepad2 (Notepad Replacement)"
+HKLM,"%REG_UNIS%","DisplayVersion",0,"0.0.0.0"
 HKLM,"%REG_UNIS%","NoModify",0x10001,1
 HKLM,"%REG_UNIS%","NoRepair",0x10001,1
+HKLM,"%REG_UNIS%","Publisher",0,"XhmikosR"
 HKLM,"%REG_UNIS%","UninstallString",0,"rundll32.exe advpack.dll,LaunchINFSectionEx ""%16422%\Notepad2\Uninstall.inf"",DefaultUninstall,,8,N"
 ; Soft replacement of Windows Notepad with Notepad2
 HKLM,"%REG_IFEO%","Debugger",0,"""%16422%\Notepad2\Notepad2.exe"" /z"
