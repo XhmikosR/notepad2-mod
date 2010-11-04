@@ -714,10 +714,9 @@ EDITLEXER lexPL = { SCLEX_PERL, 63014, L"Perl Script", L"pl; pm; cgi; pod", L"",
 
 
 KEYWORDLIST KeyWords_RUBY = {
-"__FILE__ and def end in or self unless __LINE__ begin "
-"defined? ensure module redo super until BEGIN break do false next rescue "
-"then when END case else for nil retry true while alias class elsif if "
-"not return undef yield",
+"__FILE__ __LINE__ alias and begin break case class def defined? do else elsif end ensure "
+"false for in if module next nil not or redo rescue retry return self super then true "
+"undef unless until when while yield",
 "", "", "", "", "", "", "", "" };
 
 EDITLEXER lexRUBY = { SCLEX_RUBY, 63304, L"Ruby", L"rb;ruby", L"", &KeyWords_RUBY, {
@@ -754,14 +753,13 @@ EDITLEXER lexINI = { SCLEX_PROPERTIES, 63015, L"Configuration Files", L"ini; inf
 
 
 KEYWORDLIST KeyWords_BAT = {
-"assoc attrib bcdedit break cacls call cd chcp chdir chkdsk chkntfs choice cls "
-"cmd color com comp compact con convert copy country ctty date defined del dir "
-"diskcomp diskcopy diskpart do doskey driverquery echo echo. else endlocal equ "
-"erase errorlevel exist exit fc find findstr for format fsutil ftype geq goto "
-"gpresult graftabl gtr help icacls if in label leq loadfix loadhigh lpt lss md "
-"mkdir mklink mode more move neq not nul openfiles path pause popd print prompt "
-"pushd rd recover rem ren rename replace rmdir robocopy sc schtasks set "
-"setlocal shift shutdown sort start subst systeminfo taskkill tasklist time "
+"assoc attrib bcdedit break cacls call cd chcp chdir chkdsk chkntfs choice cls cmd color "
+"com comp compact con convert copy country ctty date defined del dir diskcomp diskcopy "
+"diskpart do doskey driverquery echo echo. else endlocal equ erase errorlevel exist exit "
+"fc find findstr for format fsutil ftype geq goto gpresult graftabl gtr help icacls if in "
+"label leq loadfix loadhigh lpt lss md mkdir mklink mode more move neq not nul openfiles "
+"path pause popd print prompt pushd rd recover rem ren rename replace rmdir robocopy sc "
+"schtasks set setlocal shift shutdown sort start subst systeminfo taskkill tasklist time "
 "title tree type ver verify vol wmic xcopy",
 "", "", "", "", "", "", "", "" };
 
@@ -929,17 +927,17 @@ KEYWORDLIST KeyWords_INNO = {
 "changesenvironment compression copyrightfontname copyrightfontsize createappdir createuninstallregkey "
 "defaultdirname defaultgroupname defaultuserinfoname defaultuserinfoorg defaultuserinfoserial dialogfontname "
 "dialogfontsize direxistswarning disabledirpage disablefinishedpage disableprogramgrouppage disablereadymemo "
-"disablereadypage disablestartupprompt diskclustersize diskslicesize diskspanning enablesdirdoesntexistwarning "
+"disablereadypage disablestartupprompt diskclustersize diskslicesize diskspanning enabledirdoesntexistwarning "
 "encryption extradiskspacerequired flatcomponentslist infoafterfile infobeforefile internalcompresslevel "
 "languagedetectionmethod languagecodepage languageid languagename licensefile mergeduplicatefiles minversion "
 "onlybelowversion outputbasefilename outputdir outputmanifestfile password privilegesrequired reservebytes "
 "restartifneededbyrun setupiconfile showcomponentsizes showlanguagedialog showtaskstreelines slicesperdisk "
 "solidcompression sourcedir timestamprounding timestampsinutc titlefontname titlefontsize touchdate touchtime "
 "uninstallable uninstalldisplayicon uninstalldisplayname uninstallfilesdir uninstalllogmode uninstallrestartcomputer "
-"updateuninstalllogappname usepreviousappdir usepreviousgroup useprevioussetuptype useprevioustasks "
-"useprevioususerinfo userinfopage usesetupldr versioninfocompany versioninfocopyright versioninfodescription "
-"versioninfotextversion versioninfoversion welcomefontname welcomefontsize windowshowcaption windowstartmaximized "
-"windowresizable windowvisible wizardimagebackcolor wizardimagefile wizardimagestretch wizardsmallimagefile",
+"updateuninstalllogappname usepreviousappdir usepreviousgroup useprevioussetuptype useprevioustasks versioninfoproductname "
+"useprevioususerinfo userinfopage usesetupldr versioninfocompany versioninfocopyright versioninfodescription versioninfoproductversion "
+"versioninfotextversion versioninfoversion versioninfoproducttextversion welcomefontname welcomefontsize windowshowcaption "
+"windowstartmaximized windowresizable windowvisible wizardimagebackcolor wizardimagefile wizardimagestretch wizardsmallimagefile",
 "afterinstall attribs beforeinstall check comment components copymode description destdir destname excludes "
 "extradiskspacerequired filename flags fontinstall groupdescription hotkey infoafterfile infobeforefile iconfilename "
 "iconindex key languages licensefile messagesfile minversion name onlybelowversion parameters permissions root "
