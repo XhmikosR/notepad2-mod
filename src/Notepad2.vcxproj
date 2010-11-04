@@ -110,6 +110,11 @@
     <Manifest>
       <AdditionalManifestFiles>..\res\Notepad2.exe.manifest</AdditionalManifestFiles>
     </Manifest>
+    <PreBuildEvent>
+      <Command>cd ..
+update_version.bat</Command>
+      <Message>Generating SVN revision...</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -133,6 +138,11 @@
     <Manifest>
       <AdditionalManifestFiles>..\res\Notepad2.exe.manifest</AdditionalManifestFiles>
     </Manifest>
+    <PreBuildEvent>
+      <Command>cd ..
+update_version.bat</Command>
+      <Message>Generating SVN revision...</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -168,6 +178,11 @@
     <Manifest>
       <AdditionalManifestFiles>..\res\Notepad2.exe.manifest</AdditionalManifestFiles>
     </Manifest>
+    <PreBuildEvent>
+      <Command>cd ..
+update_version.bat</Command>
+      <Message>Generating SVN revision...</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -204,6 +219,11 @@
     <Manifest>
       <AdditionalManifestFiles>..\res\Notepad2.exe.manifest</AdditionalManifestFiles>
     </Manifest>
+    <PreBuildEvent>
+      <Command>cd ..
+update_version.bat</Command>
+      <Message>Generating SVN revision...</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\scintilla\src\LexAU3.cxx" />

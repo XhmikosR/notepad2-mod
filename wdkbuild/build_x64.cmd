@@ -11,6 +11,10 @@ del "..\Release_x64\obj\*.obj" >NUL 2>&1
 del "..\Release_x64\obj\*.pdb" >NUL 2>&1
 del "..\Release_x64\obj\*.idb" >NUL 2>&1
 
+pushd ..
+call update_version.bat
+popd
+
 "%WDKBASEDIR%\bin\x86\amd64\cl.exe" @cl_x64.txt
 IF %ERRORLEVEL% NEQ 0 ECHO:Compilation failed!&&PAUSE&&EXIT
 "%WDKBASEDIR%\bin\x86\rc.exe" /fo"../Release_x64/obj/Notepad2.res" "..\src\Notepad2.rc"

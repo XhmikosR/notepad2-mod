@@ -42,13 +42,13 @@ IF %ERRORLEVEL% NEQ 0 ECHO:Compilation failed!&&PAUSE&&EXIT
 devenv setup.sln /Rebuild "Lite|x64"
 IF %ERRORLEVEL% NEQ 0 ECHO:Compilation failed!&&PAUSE&&EXIT
 
-"%perl_path%\perl\bin\perl.exe" addon_build.pl
+rem "%perl_path%\perl\bin\perl.exe" addon_build.pl
 
 mkdir setup-bin >NUL 2>&1
-move setup.x86-32\addon.7z      setup-bin\Notepad2-mod_Addon.x86-32.7z >NUL
+rem move setup.x86-32\addon.7z      setup-bin\Notepad2-mod_Addon.x86-32.7z >NUL
 move setup.x86-32\setupfull.exe setup-bin\Notepad2-mod_Setup.x86-32.exe >NUL
 move setup.x86-32\setuplite.exe setup-bin\Notepad2-mod_Setup_Silent.x86-32.exe >NUL
-move setup.x86-64\addon.7z      setup-bin\Notepad2-mod_Addon.x86-64.7z >NUL
+rem move setup.x86-64\addon.7z      setup-bin\Notepad2-mod_Addon.x86-64.7z >NUL
 move setup.x86-64\setupfull.exe setup-bin\Notepad2-mod_Setup.x86-64.exe >NUL
 move setup.x86-64\setuplite.exe setup-bin\Notepad2-mod_Setup_Silent.x86-64.exe >NUL
 

@@ -7,3 +7,5 @@
 
 #define IDD_LICENSE                     100
 #define IDC_LICENSE_BOX                 100
+
+#define IDC_SETUP_LABEL                 200

@@ -1,7 +1,6 @@
 #include <windows.h>
 #include <advpub.h>
 #include "libs\SimpleString.h"
-#include "version.h"
 
 __forceinline BOOL HardLinkOldNP( )
 {
@@ -28,7 +27,7 @@ BOOL DoSetup( PSTR pszPath, PSTR pszPathAppend )
 	TCHAR lpwstr[MAX_PATH << 1];
 	ZeroMemory(szCmdLine, sizeof(szCmdLine));
 	ZeroMemory(lpwstr, sizeof(lpwstr));
-	
+
 	szCmdLine[0] = '"';
 
 	SSChainNCpy2A(

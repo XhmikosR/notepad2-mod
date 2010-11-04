@@ -5,7 +5,7 @@
 #include "libs\GetArgv.h"
 #include "libs\SimpleString.h"
 #include "resource.h"
-#include "version.h"
+#include "..\src\Version.h"
 
 #ifndef SETUP_LITE
 #define MessageBoxWarn(a)  MessageBox(NULL, a, TEXT(SETUP_TITLE_STR), MB_OK | MB_ICONWARNING)
@@ -298,6 +298,7 @@ INT_PTR CALLBACK LicenseDlgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 		case WM_INITDIALOG:
 		{
 			PSTR pszLicense = GetResource(MAKEINTRESOURCE(IDR_LICENSE), RT_RCDATA, NULL);
+			PSTR pszLabel   = SETUP_VERSION_LABEL;
 
 			if (pszLicense)
 			{
@@ -314,6 +315,9 @@ INT_PTR CALLBACK LicenseDlgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 
 				// Set license text
 				SendDlgItemMessageA(hWnd, IDC_LICENSE_BOX, WM_SETTEXT, 0, (LPARAM)pszLicense);
+
+				// Set the label
+				SendDlgItemMessageA(hWnd, IDC_SETUP_LABEL, WM_SETTEXT, 0, (LPARAM)pszLabel);
 			}
 			else
 			{

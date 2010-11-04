@@ -32,6 +32,7 @@
 #include "dlapi.h"
 #include "dialogs.h"
 #include "resource.h"
+#include "Version.h"
 
 
 extern HWND  hwndMain;
@@ -210,9 +211,9 @@ BOOL GetDirectory(HWND hwndParent,int iTitle,LPWSTR pszFolder,LPCWSTR pszBase,BO
 //
 //  AboutDlgProc()
 //
-static const DWORD  dwVerMajor    = 4;
-static const DWORD  dwVerMinor    = 1;
-static const DWORD  dwBuildNumber = 24;
+static const DWORD  dwVerMajor    = VERSION_MAJOR;
+static const DWORD  dwVerMinor    = VERSION_MINOR;
+static const DWORD  dwBuildNumber = VERSION_BUILD;
 static const WCHAR* szRevision    = L" (modified; rev. 6)";
 static const WCHAR* szExtra       = L"";
 static const BOOL   bReleaseBuild = TRUE;
