@@ -3,9 +3,9 @@
 set perl_path=G:\Installation Programs\Programs\Compiling Stuff\Other\ActivePerl-5.12.2.1202-MSWin32-x86-293621
 
 IF NOT DEFINED VS100COMNTOOLS (
-	ECHO:Visual Studio 2010 NOT FOUND!!! && PAUSE
-	ECHO.
-	GOTO :end
+  ECHO:Visual Studio 2010 NOT FOUND!!! && PAUSE
+  ECHO.
+  GOTO :end
 )
 
 mkdir binaries\x86-32 >NUL 2>&1
@@ -45,23 +45,23 @@ IF %ERRORLEVEL% NEQ 0 ECHO:Compilation failed!&&PAUSE&&EXIT
 "%perl_path%\perl\bin\perl.exe" addon_build.pl
 
 mkdir setup-bin >NUL 2>&1
-move setup.x86-32\addon.7z      setup-bin\Notepad2_Addon.x86-32.7z >NUL
-move setup.x86-32\setupfull.exe setup-bin\Notepad2_Setup.x86-32.exe >NUL
-move setup.x86-32\setuplite.exe setup-bin\Notepad2_Setup_Silent.x86-32.exe >NUL
-move setup.x86-64\addon.7z      setup-bin\Notepad2_Addon.x86-64.7z >NUL
-move setup.x86-64\setupfull.exe setup-bin\Notepad2_Setup.x86-64.exe >NUL
-move setup.x86-64\setuplite.exe setup-bin\Notepad2_Setup_Silent.x86-64.exe >NUL
+move setup.x86-32\addon.7z      setup-bin\Notepad2-mod_Addon.x86-32.7z >NUL
+move setup.x86-32\setupfull.exe setup-bin\Notepad2-mod_Setup.x86-32.exe >NUL
+move setup.x86-32\setuplite.exe setup-bin\Notepad2-mod_Setup_Silent.x86-32.exe >NUL
+move setup.x86-64\addon.7z      setup-bin\Notepad2-mod_Addon.x86-64.7z >NUL
+move setup.x86-64\setupfull.exe setup-bin\Notepad2-mod_Setup.x86-64.exe >NUL
+move setup.x86-64\setuplite.exe setup-bin\Notepad2-mod_Setup_Silent.x86-64.exe >NUL
 
 rd setup.x86-32 setup.x86-64 >NUL 2>&1
 rd setup.x86-32 setup.x86-64 >NUL 2>&1
 rd /q /s addon >NUL 2>&1
 rd /q /s obj >NUL 2>&1
 
-pushd setup-bin
+rem pushd setup-bin
 rem advzip -z -4 Notepad2.zip
-md5sum  *.* | grep -U -v "\.(md5|sha1)" > md5hashes
-sha1sum *.* | grep -U -v "\.(md5|sha1)" > sha1hashes
-popd
+rem md5sum  *.* | grep -U -v "\.(md5|sha1)" > md5hashes
+rem sha1sum *.* | grep -U -v "\.(md5|sha1)" > sha1hashes
+rem popd
 
 if ["%1"] == ["/nopause"] goto end
 pause
