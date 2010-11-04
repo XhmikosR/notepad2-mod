@@ -216,7 +216,7 @@ BOOL GetDirectory(HWND hwndParent,int iTitle,LPWSTR pszFolder,LPCWSTR pszBase,BO
 static const DWORD  dwVerMajor    = VERSION_MAJOR;
 static const DWORD  dwVerMinor    = VERSION_MINOR;
 static const DWORD  dwBuildNumber = VERSION_BUILD;
-static const WCHAR* szRevision    = L" (modified; rev. 6)";
+static const DWORD  dwVerRev      = VERSION_REV;
 static const WCHAR* szExtra       = L"";
 static const BOOL   bReleaseBuild = TRUE;
 
@@ -236,14 +236,14 @@ BOOL CALLBACK AboutDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lParam)
         LOGFONT lf;
 
         if (bReleaseBuild) {
-          wsprintf(szVersion,L"Notepad2 %u.%u.%0.2u%s",
-            dwVerMajor,dwVerMinor,dwBuildNumber,szRevision);
+          wsprintf(szVersion,L"Notepad2 %u.%u.%0.2u (modified rev. %u)%s",
+            dwVerMajor,dwVerMinor,dwBuildNumber,dwVerRev,szExtra);
           SetDlgItemText(hwnd,IDC_VERSION,szVersion);
         }
         else {
           MultiByteToWideChar(CP_ACP,0,__DATE__,-1,szDate,COUNTOF(szDate));
-          wsprintf(szVersion,L"Notepad2 %u.%u.%0.2u%s%s %s",
-            dwVerMajor,dwVerMinor,dwBuildNumber,szRevision,szExtra,szDate);
+          wsprintf(szVersion,L"Notepad2 %u.%u.%0.2u%u%s %s",
+            dwVerMajor,dwVerMinor,dwBuildNumber,dwVerRev,szExtra,szDate);
           SetDlgItemText(hwnd,IDC_VERSION,szVersion);
         }
 
