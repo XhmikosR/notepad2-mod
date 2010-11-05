@@ -11,7 +11,7 @@ use File::Copy;
 
 my($SHORT_NAME) = 'np2setup';
 my($USE_LITE) = 0;
-my($VERSION_SOURCE) = 'version.h';
+my($VERSION_SOURCE) = '../src/Version.h';
 
 my($ENTRIES_TEMPLATE) = q(
 	[General]

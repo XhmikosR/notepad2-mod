@@ -4,6 +4,8 @@ TITLE Building Notepad2...
 SET NOTEPAD_VERSION=4.1.24
 SET PERL_PATH=G:\Installation Programs\Programs\Compiling Stuff\Other\ActivePerl-5.12.2.1202-MSWin32-x86-293621
 
+SET TOOLS_PATH=..\..\distrib\tools
+
 CALL build.cmd
 CALL build_x64.cmd
 
@@ -17,6 +19,18 @@ CALL :SubZipFiles Release_x64 x86-64
 
 CALL :SubInstaller
 
+rem Calulate md5/sha1 hashes
+PUSHD packages
+"%TOOLS_PATH%\md5sum.exe" *.7z *.zip *.exe >md5hashes
+"%TOOLS_PATH%\sha1sum.exe" *.7z *.zip *.exe >sha1hashes
+
+rem Compress everything into a single ZIP file
+DEL Notepad2-mod.zip >NUL 2>&1
+START "" /B /WAIT "%TOOLS_PATH%\7za.exe" a -tzip -mx=9 Notepad2-mod.zip * -x!md5hashes -x!sha1hashes >NUL
+IF %ERRORLEVEL% NEQ 0 GOTO :ErrorDetected
+ECHO:Notepad2-mod.zip created successfully!
+
+POPD
 GOTO :END
 
 :END
@@ -27,7 +41,7 @@ EXIT
 
 
 :SubZipFiles
-TITLE Creating the ZIP files
+TITLE Creating the ZIP files...
 ECHO.
 
 MD "temp_zip" >NUL 2>&1
@@ -39,7 +53,7 @@ COPY "..\Notepad2.txt" "temp_zip\" /Y /V
 COPY "..\ReadMe-mod.txt" "temp_zip\Readme.txt" /Y /V
 
 PUSHD "temp_zip"
-START "" /B /WAIT "..\..\distrib\tools\7za.exe" a -tzip -mx=9^
+START "" /B /WAIT "%TOOLS_PATH%\7za.exe" a -tzip -mx=9^
  "Notepad2-mod.%NOTEPAD_VERSION%_r%buildnum%_%2.zip" "License.txt" "Notepad2.exe"^
  "Notepad2.ini" "Notepad2.txt" "ReadMe.txt" >NUL
 IF %ERRORLEVEL% NEQ 0 GOTO :ErrorDetected
@@ -58,7 +72,7 @@ IF NOT DEFINED VS100COMNTOOLS (
   GOTO :ErrorDetected
 )
 
-TITLE Building installer
+TITLE Building installer...
 ECHO:Building installer...
 
 PUSHD ..\distrib
@@ -106,13 +120,13 @@ IF %ERRORLEVEL% NEQ 0 GOTO :ErrorDetected
 devenv setup.sln /Rebuild "Lite|x64"
 IF %ERRORLEVEL% NEQ 0 GOTO :ErrorDetected
 
-rem "%PERL_PATH%\perl\bin\perl.exe" addon_build.pl
+"%PERL_PATH%\perl\bin\perl.exe" addon_build.pl
 
 MD ..\wdkbuild\packages >NUL 2>&1
-rem MOVE setup.x86-32\addon.7z      ..\wdkbuild\packages\Notepad2-mod_Addon.x86-32.7z >NUL
+MOVE setup.x86-32\addon.7z      ..\wdkbuild\packages\Notepad2-mod_Addon.x86-32.7z >NUL
 MOVE setup.x86-32\setupfull.exe ..\wdkbuild\packages\Notepad2-mod_Setup.x86-32.exe >NUL
 MOVE setup.x86-32\setuplite.exe ..\wdkbuild\packages\Notepad2-mod_Setup_Silent.x86-32.exe >NUL
-rem MOVE setup.x86-64\addon.7z      ..\wdkbuild\packages\Notepad2-mod_Addon.x86-64.7z >NUL
+MOVE setup.x86-64\addon.7z      ..\wdkbuild\packages\Notepad2-mod_Addon.x86-64.7z >NUL
 MOVE setup.x86-64\setupfull.exe ..\wdkbuild\packages\Notepad2-mod_Setup.x86-64.exe >NUL
 MOVE setup.x86-64\setuplite.exe ..\wdkbuild\packages\Notepad2-mod_Setup_Silent.x86-64.exe >NUL
 
@@ -121,11 +135,6 @@ RD setup.x86-32 setup.x86-64 >NUL 2>&1
 RD /Q /S addon >NUL 2>&1
 RD /Q /S obj >NUL 2>&1
 
-rem CD setup-bin
-rem advzip -z -4 Notepad2.zip
-rem md5sum  *.* | grep -U -v "\.(md5|sha1)" > md5hashes
-rem sha1sum *.* | grep -U -v "\.(md5|sha1)" > sha1hashes
-rem CD ..
 POPD
 GOTO :EOF
 
