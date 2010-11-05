@@ -69,8 +69,8 @@ IDI_SETUP               ICON                    "res\lite\setup.ico"
 
 #endif
 
-#if defined(_M_IX86)
+#if defined(WIN32)
 IDR_CABINET             RCDATA                  "res\cabinet.x86-32.cab"
-#elif defined(_M_AMD64) || defined(_M_X64)
+#elif defined(_WIN64)
 IDR_CABINET             RCDATA                  "res\cabinet.x86-64.cab"
 #endif

@@ -236,13 +236,21 @@ BOOL CALLBACK AboutDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lParam)
         LOGFONT lf;
 
         if (bReleaseBuild) {
+#if defined(_WIN64)
+          wsprintf(szVersion,L"Notepad2 x64 %u.%u.%0.2u (modified rev. %u)%s",
+#else
           wsprintf(szVersion,L"Notepad2 %u.%u.%0.2u (modified rev. %u)%s",
+#endif
             dwVerMajor,dwVerMinor,dwBuildNumber,dwVerRev,szExtra);
           SetDlgItemText(hwnd,IDC_VERSION,szVersion);
         }
         else {
           MultiByteToWideChar(CP_ACP,0,__DATE__,-1,szDate,COUNTOF(szDate));
+#if defined(_WIN64)
+          wsprintf(szVersion,L"Notepad2 x64 %u.%u.%0.2u%u%s %s",
+#else
           wsprintf(szVersion,L"Notepad2 %u.%u.%0.2u%u%s %s",
+#endif
             dwVerMajor,dwVerMinor,dwBuildNumber,dwVerRev,szExtra,szDate);
           SetDlgItemText(hwnd,IDC_VERSION,szVersion);
         }
