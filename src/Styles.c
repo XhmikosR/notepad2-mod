@@ -17,7 +17,9 @@
 *
 *
 ******************************************************************************/
+#if !defined(_WIN32_WINNT)
 #define _WIN32_WINNT 0x501
+#endif
 #include <windows.h>
 #include <commctrl.h>
 #include <commdlg.h>
@@ -960,27 +962,27 @@ EDITLEXER lexPS = { SCLEX_POWERSHELL, 63021, L"PowerShell Script", L"ps1; psc1",
 PEDITLEXER pLexArray[NUMLEXERS] =
 {
   &lexDefault,
-  &lexHTML,
-  &lexXML,
-  &lexCSS,
-  &lexJS,
-  &lexVBS,
+  &lexCONF, //Apache Config Scripts
+  &lexASM,
+  &lexBAT,
+  &lexINI,
   &lexCPP,
   &lexCS,
-  &lexRC,
-  &lexMAK,
+  &lexCSS,
+  &lexDIFF,
   &lexJAVA,
-  &lexVB,
+  &lexJS,
+  &lexMAK,
   &lexPAS,
-  &lexASM,
-  &lexSQL,
   &lexPL,
-  &lexPY,
-  &lexINI,
-  &lexCONF,
   &lexPS,
-  &lexBAT,
-  &lexDIFF
+  &lexPY,
+  &lexRC,
+  &lexSQL,
+  &lexVBS,
+  &lexVB,
+  &lexHTML,
+  &lexXML
 };
 
 

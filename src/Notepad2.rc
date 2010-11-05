@@ -1362,10 +1362,12 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "FileDescription", "Notepad2"
-            VALUE "FileVersion", "4.1.24"
+            VALUE "FileVersion", "4,1,24"
+            VALUE "ProductVersion", "4,1,24"
             VALUE "InternalName", "Notepad2"
             VALUE "LegalCopyright", "© Florian Balmer 2004-2010"
             VALUE "OriginalFilename", "Notepad2.exe"
+            VALUE "ProductName", "Notepad2"
         END
     END
     BLOCK "VarFileInfo"

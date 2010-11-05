@@ -17,7 +17,9 @@
 *
 *
 ******************************************************************************/
+#if !defined(_WIN32_WINNT)
 #define _WIN32_WINNT 0x501
+#endif
 #include <windows.h>
 #include <commctrl.h>
 #include <shlobj.h>
@@ -232,13 +234,21 @@ BOOL CALLBACK AboutDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lParam)
         LOGFONT lf;
 
         if (bReleaseBuild) {
+#if defined(_WIN64)
+          wsprintf(szVersion,L"Notepad2 x64 %u.%u.%0.2u%s",
+#else
           wsprintf(szVersion,L"Notepad2 %u.%u.%0.2u%s",
+#endif
             dwVerMajor,dwVerMinor,dwBuildNumber,szRevision);
           SetDlgItemText(hwnd,IDC_VERSION,szVersion);
         }
         else {
           MultiByteToWideChar(CP_ACP,0,__DATE__,-1,szDate,COUNTOF(szDate));
+#if defined(_WIN64)
+          wsprintf(szVersion,L"Notepad2 x64 %u.%u.%0.2u%s%s %s",
+#else
           wsprintf(szVersion,L"Notepad2 %u.%u.%0.2u%s%s %s",
+#endif
             dwVerMajor,dwVerMinor,dwBuildNumber,szRevision,szExtra,szDate);
           SetDlgItemText(hwnd,IDC_VERSION,szVersion);
         }
