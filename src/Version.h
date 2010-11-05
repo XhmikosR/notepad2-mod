@@ -19,6 +19,3 @@
 #define SETUP_AUTHOR_STR     "XhmikosR"
 
 #undef REBOOT_MESSAGE
-
-//Addon Specific
-#define ADDON_VERSION        4,1,24,6

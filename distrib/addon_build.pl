@@ -11,7 +11,7 @@ use File::Copy;
 
 my($SHORT_NAME) = 'np2setup';
 my($USE_LITE) = 0;
-my($VERSION_SOURCE) = '../src/Version.h';
+my(@VERSION_SOURCE) = qw(../src/Version.h ../src/Version_rev.h);
 
 my($ENTRIES_TEMPLATE) = q(
 	[General]
@@ -51,27 +51,31 @@ $ENTRIES_TEMPLATE .= $CRLF;
 ################################################################################
 
 
-sub get_version_string # in( $source_path ), out( $version_string )
+sub get_version_string # in( @source_path ), out( $version_string )
 {
-	my($source_path) = @_;
+	my(@source_path) = @_;
+	my(@version) = (4,1,24,0); # default 4.1.24.0
+	my(@key) = qw(VERSION_MAJOR VERSION_MINOR VERSION_BUILD VERSION_REV);
 
-	my($buffer);
-
-	open(my $handle, '<', $source_path) or return('');
-	binmode($handle);
-	read($handle, $buffer, -s $handle);
-	close($handle);
-
-	if ($buffer =~ /\s(\d+,\d+(?:,\d+){0,2})\s/s)
-	{
-		$buffer = $1;
-		$buffer =~ s/,/./sg;
-		return($buffer);
+	my @contents = ();
+	foreach my $filename(@source_path) {
+		open(INPUT, "<$filename") || last;  # can't open file then break
+		push(@contents,<INPUT>);
+		close(INPUT);
 	}
-	else
-	{
-		return('');
+
+	for(my $idx = 0; $idx < @key; $idx++) {
+		my $tag = $key[$idx];
+
+		foreach(@contents) {
+			if(/#define\s*$tag\s*(\d+)/) {
+				$version[$idx] = $1;
+				last;
+			}
+		}
 	}
+
+	return join('.', @version);
 }
 
 
@@ -125,7 +129,7 @@ foreach my $arch (@ARCHS)
 
 	my($entries_data) = sprintf(
 		$ENTRIES_TEMPLATE,
-		get_version_string($VERSION_SOURCE),
+		get_version_string(@VERSION_SOURCE),
 		get_date_string(),
 		"$dest_file$switch",
 	);
