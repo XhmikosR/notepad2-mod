@@ -1,7 +1,6 @@
 @ECHO OFF
 SETLOCAL
 TITLE Building Notepad2...
-SET NOTEPAD_VERSION=4.1.24
 SET PERL_PATH=G:\Installation Programs\Programs\Compiling Stuff\Other\ActivePerl-5.12.2.1202-MSWin32-x86-293621
 
 SET TOOLS_PATH=..\..\distrib\tools
@@ -9,10 +8,22 @@ SET TOOLS_PATH=..\..\distrib\tools
 CALL build.cmd
 CALL build_x64.cmd
 
-rem Get the revision
+rem Get the version
 FOR /f "tokens=3,4 delims= " %%K IN (
+  'FINDSTR /I /L /C:"define VERSION_MAJOR" "..\src\Version.h"') DO (
+  SET "VerMajor=%%K"&Call :SubVerMajor %%VerMajor:*Z=%%)
+FOR /f "tokens=3,4 delims= " %%L IN (
+  'FINDSTR /I /L /C:"define VERSION_MINOR" "..\src\Version.h"') DO (
+  SET "VerMinor=%%L"&Call :SubVerMinor %%VerMinor:*Z=%%)
+FOR /f "tokens=3,4 delims= " %%M IN (
+  'FINDSTR /I /L /C:"define VERSION_BUILD" "..\src\Version.h"') DO (
+  SET "VerBuild=%%M"&Call :SubVerBuild %%VerBuild:*Z=%%)
+FOR /f "tokens=3,4 delims= " %%N IN (
   'FINDSTR /I /L /C:"define VERSION_REV" "..\src\Version_rev.h"') DO (
-  SET "buildnum=%%K"&Call :SubRevNumber %%buildnum:*Z=%%)
+  SET "VerRev=%%N"&Call :SubVerRev %%VerRev:*Z=%%)
+
+SET NOTEPAD_VERSION=%VerMajor%.%VerMinor%.%VerBuild%
+
 
 CALL :SubZipFiles Release x86-32
 CALL :SubZipFiles Release_x64 x86-64
@@ -54,12 +65,12 @@ COPY "..\ReadMe-mod.txt" "temp_zip\Readme.txt" /Y /V
 
 PUSHD "temp_zip"
 START "" /B /WAIT "%TOOLS_PATH%\7za.exe" a -tzip -mx=9^
- "Notepad2-mod.%NOTEPAD_VERSION%_r%buildnum%_%2.zip" "License.txt" "Notepad2.exe"^
+ "Notepad2-mod.%NOTEPAD_VERSION%_r%VerRev%_%2.zip" "License.txt" "Notepad2.exe"^
  "Notepad2.ini" "Notepad2.txt" "ReadMe.txt" >NUL
 IF %ERRORLEVEL% NEQ 0 GOTO :ErrorDetected
 
-ECHO:Notepad2-mod.%NOTEPAD_VERSION%_r%buildnum%_%2.zip created successfully!
-MOVE /Y "Notepad2-mod.%NOTEPAD_VERSION%_r%buildnum%_%2.zip" "..\packages" >NUL 2>&1
+ECHO:Notepad2-mod.%NOTEPAD_VERSION%_r%VerRev%_%2.zip created successfully!
+MOVE /Y "Notepad2-mod.%NOTEPAD_VERSION%_r%VerRev%_%2.zip" "..\packages" >NUL 2>&1
 ECHO.
 POPD
 RD /S /Q "temp_zip" >NUL 2>&1
@@ -86,8 +97,8 @@ COPY /B /V /Y res\cabinet\notepad2.ini binaries\x86-32\notepad2.ini
 COPY /B /V /Y res\cabinet\notepad2.redir.ini binaries\x86-32\notepad2.redir.ini
 COPY /B /V /Y ..\Notepad2.txt binaries\x86-32\notepad2.txt
 COPY /B /V /Y ..\Readme-mod.txt binaries\x86-32\readme.txt
-rem Set the revision for the DisplayVersion
-CALL tools\BatchSubstitute.bat "0.0.0.0" %NOTEPAD_VERSION%.%buildnum% binaries\x86-32\notepad2.inf >notepad2.inf.temp
+rem Set the version for the DisplayVersion registry value
+CALL tools\BatchSubstitute.bat "0.0.0.0" %NOTEPAD_VERSION%.%VerRev% binaries\x86-32\notepad2.inf >notepad2.inf.temp
 COPY /Y binaries\x86-32\notepad2.inf notepad2.inf.orig >NUL
 MOVE /Y notepad2.inf.temp binaries\x86-32\notepad2.inf >NUL
 tools\cabutcd.exe binaries\x86-32 res\cabinet.x86-32.cab
@@ -101,8 +112,8 @@ COPY /B /V /Y res\cabinet\notepad2.ini binaries\x86-64\notepad2.ini
 COPY /B /V /Y res\cabinet\notepad2.redir.ini binaries\x86-64\notepad2.redir.ini
 COPY /B /V /Y ..\Notepad2.txt binaries\x86-64\notepad2.txt
 COPY /B /V /Y ..\Readme-mod.txt binaries\x86-64\readme.txt
-rem Set the revision for the DisplayVersion
-CALL tools\BatchSubstitute.bat "0.0.0.0" %NOTEPAD_VERSION%.%buildnum% binaries\x86-64\notepad2.inf >notepad2.inf.temp
+rem Set the version for the DisplayVersion registry value
+CALL tools\BatchSubstitute.bat "0.0.0.0" %NOTEPAD_VERSION%.%VerRev% binaries\x86-64\notepad2.inf >notepad2.inf.temp
 COPY /Y binaries\x86-64\notepad2.inf notepad2.inf.orig >NUL
 MOVE /Y notepad2.inf.temp binaries\x86-64\notepad2.inf >NUL
 tools\cabutcd.exe binaries\x86-64 res\cabinet.x86-64.cab
@@ -138,8 +149,17 @@ RD /Q /S obj >NUL 2>&1
 POPD
 GOTO :EOF
 
-:SubRevNumber
-SET buildnum=%*
+:SubVerMajor
+SET VerMajor=%*
+GOTO :EOF
+:SubVerMinor
+SET VerMinor=%*
+GOTO :EOF
+:SubVerBuild
+SET VerBuild=%*
+GOTO :EOF
+:SubVerRev
+SET VerRev=%*
 GOTO :EOF
 
 :ErrorDetected
