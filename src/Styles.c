@@ -918,9 +918,8 @@ EDITLEXER lexNSIS = { SCLEX_NSIS, 63284, L"NSIS Script", L"nsi; nsh", L"", &KeyW
 
 
 KEYWORDLIST KeyWords_INNO = {
-"code components custommessages dirs files icons ini installdelete langoptions "
-"languages messages registry run setup types tasks uninstalldelete "
-"uninstallrun _istool",
+"code components custommessages dirs files icons ini installdelete langoptions languages messages "
+"registry run setup types tasks uninstalldelete uninstallrun _istool",
 "allowcancelduringinstall allownoicons allowrootdirectory allowuncpath alwaysrestart alwaysshowcomponentslist "
 "alwaysshowdironreadypage alwaysshowgrouponreadypage alwaysusepersonalgroup appcomments appcontact appcopyright "
 "appenddefaultdirname appenddefaultgroupname appid appmodifypath appmutex appname apppublisher apppublisherurl "
@@ -936,10 +935,11 @@ KEYWORDLIST KeyWords_INNO = {
 "restartifneededbyrun setupiconfile showcomponentsizes showlanguagedialog showtaskstreelines slicesperdisk "
 "solidcompression sourcedir timestamprounding timestampsinutc titlefontname titlefontsize touchdate touchtime "
 "uninstallable uninstalldisplayicon uninstalldisplayname uninstallfilesdir uninstalllogmode uninstallrestartcomputer "
-"updateuninstalllogappname usepreviousappdir usepreviousgroup useprevioussetuptype useprevioustasks versioninfoproductname "
-"useprevioususerinfo userinfopage usesetupldr versioninfocompany versioninfocopyright versioninfodescription versioninfoproductversion "
-"versioninfotextversion versioninfoversion versioninfoproducttextversion welcomefontname welcomefontsize windowshowcaption "
-"windowstartmaximized windowresizable windowvisible wizardimagebackcolor wizardimagefile wizardimagestretch wizardsmallimagefile",
+"updateuninstalllogappname usepreviousappdir usepreviousgroup useprevioussetuptype useprevioustasks "
+"versioninfoproductname useprevioususerinfo userinfopage usesetupldr versioninfocompany versioninfocopyright "
+"versioninfodescription versioninfoproductversion versioninfotextversion versioninfoversion versioninfoproducttextversion "
+"welcomefontname welcomefontsize windowshowcaption windowstartmaximized windowresizable windowvisible wizardimagebackcolor "
+"wizardimagefile wizardimagestretch wizardsmallimagefile",
 "afterinstall attribs beforeinstall check comment components copymode description destdir destname excludes "
 "extradiskspacerequired filename flags fontinstall groupdescription hotkey infoafterfile infobeforefile iconfilename "
 "iconindex key languages licensefile messagesfile minversion name onlybelowversion parameters permissions root "
