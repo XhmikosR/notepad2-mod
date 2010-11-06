@@ -774,7 +774,7 @@ EDITLEXER lexBAT = { SCLEX_BATCH, 63016, L"Batch Files", L"bat; cmd", L"", &KeyW
                      { SCE_BAT_IDENTIFIER, 63129, L"Identifier", L"fore:#003CE6; back:#FFF1A8", L"" },
                      { SCE_BAT_OPERATOR, 63132, L"Operator", L"fore:#FF0000", L"" },
                      { MULTI_STYLE(SCE_BAT_COMMAND,SCE_BAT_HIDE,0,0), 63236, L"Command", L"bold", L"" },
-                     { SCE_BAT_LABEL, 63235, L"Label", L"fore:#C80000; back:#F4F4F4; eolfilled", L"" },
+                     { SCE_BAT_LABEL, 63235, L"Label", L"fore:#800000; back:#FFFF80; eolfilled", L"" },
                      { -1, 00000, L"", L"", L"" } } };
 
 
