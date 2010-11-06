@@ -84,7 +84,7 @@ COPY /B /V /Y ..\License.txt binaries\x86-32\license.txt
 COPY /B /V /Y res\cabinet\notepad2.inf binaries\x86-32\notepad2.inf
 COPY /B /V /Y res\cabinet\notepad2.ini binaries\x86-32\notepad2.ini
 COPY /B /V /Y res\cabinet\notepad2.redir.ini binaries\x86-32\notepad2.redir.ini
-COPY /B /V /Y res\cabinet\notepad2.txt binaries\x86-32\notepad2.txt
+COPY /B /V /Y ..\Notepad2.txt binaries\x86-32\notepad2.txt
 COPY /B /V /Y ..\Readme-mod.txt binaries\x86-32\readme.txt
 rem Set the revision for the DisplayVersion
 CALL tools\BatchSubstitute.bat "0.0.0.0" %NOTEPAD_VERSION%.%buildnum% binaries\x86-32\notepad2.inf >notepad2.inf.temp
@@ -99,7 +99,7 @@ COPY /B /V /Y ..\License.txt binaries\x86-64\license.txt
 COPY /B /V /Y res\cabinet\notepad2.inf binaries\x86-64\notepad2.inf
 COPY /B /V /Y res\cabinet\notepad2.ini binaries\x86-64\notepad2.ini
 COPY /B /V /Y res\cabinet\notepad2.redir.ini binaries\x86-64\notepad2.redir.ini
-COPY /B /V /Y res\cabinet\notepad2.txt binaries\x86-64\notepad2.txt
+COPY /B /V /Y ..\Notepad2.txt binaries\x86-64\notepad2.txt
 COPY /B /V /Y ..\Readme-mod.txt binaries\x86-64\readme.txt
 rem Set the revision for the DisplayVersion
 CALL tools\BatchSubstitute.bat "0.0.0.0" %NOTEPAD_VERSION%.%buildnum% binaries\x86-64\notepad2.inf >notepad2.inf.temp
