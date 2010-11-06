@@ -218,6 +218,11 @@ static const DWORD  dwVerMinor    = VERSION_MINOR;
 static const DWORD  dwBuildNumber = VERSION_BUILD;
 static const DWORD  dwVerRev      = VERSION_REV;
 static const WCHAR* szExtra       = L"";
+#if defined(_WIN64)
+static const WCHAR* szAppName     = L"Notepad2 x64";
+#else
+static const WCHAR* szAppName     = L"Notepad2";
+#endif
 static const BOOL   bReleaseBuild = TRUE;
 
 BOOL CALLBACK AboutDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lParam)
@@ -236,22 +241,14 @@ BOOL CALLBACK AboutDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lParam)
         LOGFONT lf;
 
         if (bReleaseBuild) {
-#if defined(_WIN64)
-          wsprintf(szVersion,L"Notepad2 x64 %u.%u.%0.2u (modified rev. %u)%s",
-#else
-          wsprintf(szVersion,L"Notepad2 %u.%u.%0.2u (modified rev. %u)%s",
-#endif
-            dwVerMajor,dwVerMinor,dwBuildNumber,dwVerRev,szExtra);
+          wsprintf(szVersion,L"%s %u.%u.%0.2u (modified rev. %u)%s",
+            szAppName,dwVerMajor,dwVerMinor,dwBuildNumber,dwVerRev,szExtra);
           SetDlgItemText(hwnd,IDC_VERSION,szVersion);
         }
         else {
           MultiByteToWideChar(CP_ACP,0,__DATE__,-1,szDate,COUNTOF(szDate));
-#if defined(_WIN64)
-          wsprintf(szVersion,L"Notepad2 x64 %u.%u.%0.2u%u%s %s",
-#else
-          wsprintf(szVersion,L"Notepad2 %u.%u.%0.2u%u%s %s",
-#endif
-            dwVerMajor,dwVerMinor,dwBuildNumber,dwVerRev,szExtra,szDate);
+          wsprintf(szVersion,L"%s %u.%u.%0.2u%u%s %s",
+            szAppName,dwVerMajor,dwVerMinor,dwBuildNumber,dwVerRev,szExtra,szDate);
           SetDlgItemText(hwnd,IDC_VERSION,szVersion);
         }
 
