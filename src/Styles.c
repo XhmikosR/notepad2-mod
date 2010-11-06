@@ -1125,10 +1125,8 @@ EDITLEXER lexPS = { SCLEX_POWERSHELL, 63021, L"PowerShell Script", L"ps1; psc1",
 
 
 KEYWORDLIST KeyWords_LUA = {
-"and break do else elseif "
-"end false for function if "
-"in local nil not or "
-"repeat return then true until while",
+"and break do else elseif end false for function if in local nil not or repeat return then "
+"true until while",
 "", "", "", "", "", "", "", "" };
 
 
@@ -1151,29 +1149,19 @@ EDITLEXER lexLUA = { SCLEX_LUA, 63298, L"Lua Script", L"lua", L"", &KeyWords_LUA
 
 
 KEYWORDLIST KeyWords_BASH = {
-"alias ar asa awk banner basename bash bc bdiff break "
-"bunzip2 bzip2 cal calendar case cat cc cd chmod cksum "
-"clear cmp col comm compress continue cp cpio crypt "
-"csplit ctags cut date dc dd declare deroff dev df diff diff3 "
-"dircmp dirname do done du echo ed egrep elif else env "
-"esac eval ex exec exit expand export expr false fc "
-"fgrep fi file find fmt fold for function functions "
-"getconf getopt getopts grep gres hash head help "
-"history iconv id if in integer jobs join kill local lc "
-"let line ln logname look ls m4 mail mailx make "
-"man mkdir more mt mv newgrp nl nm nohup ntps od "
-"pack paste patch pathchk pax pcat perl pg pr print "
-"printf ps pwd read readonly red return rev rm rmdir "
-"sed select set sh shift size sleep sort spell "
-"split start stop strings strip stty sum suspend "
-"sync tail tar tee test then time times touch tr "
-"trap true tsort tty type typeset ulimit umask unalias "
-"uname uncompress unexpand uniq unpack unset until "
-"uudecode uuencode vi vim vpax wait wc whence which "
-"while who wpaste wstart xargs zcat chgrp chown chroot dir dircolors "
-"factor groups hostid install link md5sum mkfifo "
-"mknod nice pinky printenv ptx readlink seq "
-"sha1sum shred stat su tac unlink users vdir whoami yes",
+"alias ar asa awk banner basename bash bc bdiff break bunzip2 bzip2 cal calendar case cat "
+"cc cd chmod cksum clear cmp col comm compress continue cp cpio crypt csplit ctags cut date "
+"dc dd declare deroff dev df diff diff3 dircmp dirname do done du echo ed egrep elif else "
+"env esac eval ex exec exit expand export expr false fc fgrep fi file find fmt fold for function "
+"functions getconf getopt getopts grep gres hash head help history iconv id if in integer "
+"jobs join kill local lc let line ln logname look ls m4 mail mailx make man mkdir more mt mv "
+"newgrp nl nm nohup ntps od pack paste patch pathchk pax pcat perl pg pr print printf ps pwd "
+"read readonly red return rev rm rmdir sed select set sh shift size sleep sort spell split "
+"start stop strings strip stty sum suspend sync tail tar tee test then time times touch tr "
+"trap true tsort tty type typeset ulimit umask unalias uname uncompress unexpand uniq unpack "
+"unset until uudecode uuencode vi vim vpax wait wc whence which while who wpaste wstart xargs "
+"zcat chgrp chown chroot dir dircolors factor groups hostid install link md5sum mkfifo mknod "
+"nice pinky printenv ptx readlink seq sha1sum shred stat su tac unlink users vdir whoami yes",
 "", "", "", "", "", "", "", "" };
 
 
@@ -1197,35 +1185,26 @@ EDITLEXER lexBASH = { SCLEX_BASH, 63259, L"Shell Script", L"sh", L"", &KeyWords_
 
 KEYWORDLIST KeyWords_TCL = {
 // TCL Keywords
-"after append array auto_execok "
-"auto_import auto_load auto_load_index auto_qualify "
-"beep bgerror binary break case catch cd clock "
-"close concat continue dde default echo else elseif "
-"encoding eof error eval exec exit expr fblocked "
-"fconfigure fcopy file fileevent flush for foreach format "
-"gets glob global history http if incr info "
-"interp join lappend lindex linsert list llength load "
-"loadTk lrange lreplace lsearch lset lsort memory msgcat "
-"namespace open package pid pkg::create pkg_mkIndex Platform-specific proc "
-"puts pwd re_syntax read regexp registry regsub rename "
-"resource return scan seek set socket source split "
-"string subst switch tclLog tclMacPkgSearch tclPkgSetup tclPkgUnknown tell "
-"time trace unknown unset update uplevel upvar variable "
-"vwait while",
+"after append array auto_execok auto_import auto_load auto_load_index auto_qualify beep "
+"bgerror binary break case catch cd clock close concat continue dde default echo else "
+"elseif encoding eof error eval exec exit expr fblocked fconfigure fcopy file fileevent "
+"flush for foreach format gets glob global history http if incr info interp join lappend "
+"lindex linsert list llength load loadTk lrange lreplace lsearch lset lsort memory msgcat "
+"namespace open package pid pkg::create pkg_mkIndex Platform-specific proc puts pwd "
+"re_syntax read regexp registry regsub rename resource return scan seek set socket source "
+"split string subst switch tclLog tclMacPkgSearch tclPkgSetup tclPkgUnknown tell time trace "
+"unknown unset update uplevel upvar variable vwait while",
 // TK Keywords
-"bell bind bindtags bitmap button canvas checkbutton clipboard "
-"colors console cursors destroy entry event focus font "
-"frame grab grid image Inter-client keysyms label labelframe "
-"listbox lower menu menubutton message option options pack "
-"panedwindow photo place radiobutton raise scale scrollbar selection "
-"send spinbox text tk tk_chooseColor tk_chooseDirectory tk_dialog tk_focusNext "
-"tk_getOpenFile tk_messageBox tk_optionMenu tk_popup tk_setPalette tkerror tkvars tkwait "
-"toplevel winfo wish wm",
+"bell bind bindtags bitmap button canvas checkbutton clipboard colors console cursors "
+"destroy entry event focus font frame grab grid image Inter-client keysyms label labelframe "
+"listbox lower menu menubutton message option options pack panedwindow photo place "
+"radiobutton raise scale scrollbar selection send spinbox text tk tk_chooseColor "
+"tk_chooseDirectory tk_dialog tk_focusNext tk_getOpenFile tk_messageBox tk_optionMenu "
+"tk_popup tk_setPalette tkerror tkvars tkwait toplevel winfo wish wm",
 // iTCL Keywords
-"@scope body class code common component configbody "
-"constructor define destructor hull import inherit itcl itk itk_component "
-"itk_initialize itk_interior itk_option iwidgets keep method "
-"private protected public",
+"@scope body class code common component configbody constructor define destructor hull "
+"import inherit itcl itk itk_component itk_initialize itk_interior itk_option iwidgets keep "
+"method private protected public",
 "", "", "", "", "", "" };
 
 
@@ -1248,40 +1227,37 @@ EDITLEXER lexTCL = { SCLEX_TCL, 63273, L"Tcl Script", L"tcl; itcl", L"", &KeyWor
 
 
 KEYWORDLIST KeyWords_AU3 = {
-"and byref case const continuecase continueloop default dim "
-"do else elseif endfunc endif endselect endswitch endwith enum exit exitloop false "
-"for func global if in local next not or redim return select step switch then to true "
-"until wend while with",
-"abs acos adlibdisable adlibenable asc ascw asin assign atan "
-"autoitsetoption autoitwingettitle autoitwinsettitle beep binary binarylen binarymid "
-"binarytostring bitand bitnot bitor bitrotate bitshift bitxor blockinput break call "
-"cdtray ceiling chr chrw clipget clipput consoleread consolewrite consolewriteerror "
-"controlclick controlcommand controldisable controlenable controlfocus controlgetfocus "
-"controlgethandle controlgetpos controlgettext controlhide controllistview controlmove "
-"controlsend controlsettext controlshow controltreeview cos dec dircopy dircreate "
-"dirgetsize dirmove dirremove dllcall dllcallbackfree dllcallbackgetptr dllcallbackregister "
-"dllclose dllopen dllstructcreate dllstructgetdata dllstructgetptr dllstructgetsize "
-"dllstructsetdata drivegetdrive drivegetfilesystem drivegetlabel drivegetserial drivegettype "
-"drivemapadd drivemapdel drivemapget drivesetlabel drivespacefree drivespacetotal "
+"and byref case const continuecase continueloop default dim do else elseif endfunc endif "
+"endselect endswitch endwith enum exit exitloop false for func global if in local next not "
+"or redim return select step switch then to true until wend while with",
+"abs acos adlibdisable adlibenable asc ascw asin assign atan autoitsetoption autoitwingettitle "
+"autoitwinsettitle beep binary binarylen binarymid binarytostring bitand bitnot bitor bitrotate "
+"bitshift bitxor blockinput break call cdtray ceiling chr chrw clipget clipput consoleread "
+"consolewrite consolewriteerror controlclick controlcommand controldisable controlenable "
+"controlfocus controlgetfocus controlgethandle controlgetpos controlgettext controlhide "
+"controllistview controlmove controlsend controlsettext controlshow controltreeview cos dec "
+"dircopy dircreate dirgetsize dirmove dirremove dllcall dllcallbackfree dllcallbackgetptr "
+"dllcallbackregister dllclose dllopen dllstructcreate dllstructgetdata dllstructgetptr "
+"dllstructgetsize dllstructsetdata drivegetdrive drivegetfilesystem drivegetlabel drivegetserial "
+"drivegettype drivemapadd drivemapdel drivemapget drivesetlabel drivespacefree drivespacetotal "
 "drivestatus envget envset envupdate eval execute exp filechangedir fileclose filecopy "
 "filecreatentfslink filecreateshortcut filedelete fileexists filefindfirstfile filefindnextfile "
 "filegetattrib filegetlongname filegetshortcut filegetshortname filegetsize filegettime "
-"filegetversion fileinstall filemove fileopen fileopendialog fileread filereadline "
-"filerecycle filerecycleempty filesavedialog fileselectfolder filesetattrib filesettime "
-"filewrite filewriteline floor ftpsetproxy guicreate guictrlcreateavi guictrlcreatebutton "
-"guictrlcreatecheckbox guictrlcreatecombo guictrlcreatecontextmenu guictrlcreatedate "
-"guictrlcreatedummy guictrlcreateedit guictrlcreategraphic guictrlcreategroup guictrlcreateicon "
-"guictrlcreateinput guictrlcreatelabel guictrlcreatelist guictrlcreatelistview guictrlcreatelistviewitem "
-"guictrlcreatemenu guictrlcreatemenuitem guictrlcreatemonthcal guictrlcreateobj guictrlcreatepic "
-"guictrlcreateprogress guictrlcreateradio guictrlcreateslider guictrlcreatetab guictrlcreatetabitem "
-"guictrlcreatetreeview guictrlcreatetreeviewitem guictrlcreateupdown guictrldelete "
-"guictrlgethandle guictrlgetstate guictrlread guictrlrecvmsg guictrlregisterlistviewsort "
-"guictrlsendmsg guictrlsendtodummy guictrlsetbkcolor guictrlsetcolor guictrlsetcursor "
-"guictrlsetdata guictrlsetdefbkcolor guictrlsetdefcolor guictrlsetfont guictrlsetgraphic "
-"guictrlsetimage guictrlsetlimit guictrlsetonevent guictrlsetpos guictrlsetresizing "
-"guictrlsetstate guictrlsetstyle guictrlsettip guidelete guigetcursorinfo guigetmsg "
-"guigetstyle guiregistermsg guisetaccelerators guisetbkcolor guisetcoord guisetcursor "
-"guisetfont guisethelp guiseticon guisetonevent guisetstate guisetstyle guistartgroup "
+"filegetversion fileinstall filemove fileopen fileopendialog fileread filereadline filerecycle "
+"filerecycleempty filesavedialog fileselectfolder filesetattrib filesettime filewrite filewriteline "
+"floor ftpsetproxy guicreate guictrlcreateavi guictrlcreatebutton guictrlcreatecheckbox "
+"guictrlcreatecombo guictrlcreatecontextmenu guictrlcreatedate guictrlcreatedummy guictrlcreateedit "
+"guictrlcreategraphic guictrlcreategroup guictrlcreateicon guictrlcreateinput guictrlcreatelabel "
+"guictrlcreatelist guictrlcreatelistview guictrlcreatelistviewitem guictrlcreatemenu "
+"guictrlcreatemenuitem guictrlcreatemonthcal guictrlcreateobj guictrlcreatepic guictrlcreateprogress "
+"guictrlcreateradio guictrlcreateslider guictrlcreatetab guictrlcreatetabitem guictrlcreatetreeview "
+"guictrlcreatetreeviewitem guictrlcreateupdown guictrldelete guictrlgethandle guictrlgetstate "
+"guictrlread guictrlrecvmsg guictrlregisterlistviewsort guictrlsendmsg guictrlsendtodummy "
+"guictrlsetbkcolor guictrlsetcolor guictrlsetcursor guictrlsetdata guictrlsetdefbkcolor "
+"guictrlsetdefcolor guictrlsetfont guictrlsetgraphic guictrlsetimage guictrlsetlimit guictrlsetonevent "
+"guictrlsetpos guictrlsetresizing guictrlsetstate guictrlsetstyle guictrlsettip guidelete "
+"guigetcursorinfo guigetmsg guigetstyle guiregistermsg guisetaccelerators guisetbkcolor guisetcoord "
+"guisetcursor guisetfont guisethelp guiseticon guisetonevent guisetstate guisetstyle guistartgroup "
 "guiswitch hex hotkeyset httpsetproxy hwnd inetget inetgetsize inidelete iniread inireadsection "
 "inireadsectionnames inirenamesection iniwrite iniwritesection inputbox int isadmin "
 "isarray isbinary isbool isdeclared isdllstruct isfloat ishwnd isint iskeyword isnumber "
@@ -1308,17 +1284,16 @@ KEYWORDLIST KeyWords_AU3 = {
 "wingettext wingettitle winkill winlist winmenuselectitem winminimizeall winminimizeallundo "
 "winmove winsetontop winsetstate winsettitle winsettrans winwait winwaitactive winwaitclose "
 "winwaitnotactive",
-"@appdatacommondir @appdatadir @autoitexe @autoitpid @autoitunicode "
-"@autoitversion @autoitx64 @com_eventobj @commonfilesdir @compiled @computername @comspec "
-"@cr @crlf @desktopcommondir @desktopdepth @desktopdir @desktopheight @desktoprefresh "
-"@desktopwidth @documentscommondir @error @exitcode @exitmethod @extended @favoritescommondir "
-"@favoritesdir @gui_ctrlhandle @gui_ctrlid @gui_dragfile @gui_dragid @gui_dropid @gui_winhandle "
-"@homedrive @homepath @homeshare @hotkeypressed @hour @inetgetactive @inetgetbytesread "
-"@ipaddress1 @ipaddress2 @ipaddress3 @ipaddress4 @kblayout @lf @logondnsdomain @logondomain "
-"@logonserver @mday @min @mon @mydocumentsdir @numparams @osbuild @oslang @osservicepack "
-"@ostype @osversion @processorarch @programfilesdir @programscommondir @programsdir "
-"@scriptdir @scriptfullpath @scriptlinenumber @scriptname @sec @startmenucommondir "
-"@startmenudir @startupcommondir @startupdir @sw_disable @sw_enable @sw_hide @sw_lock "
+"@appdatacommondir @appdatadir @autoitexe @autoitpid @autoitunicode @autoitversion @autoitx64 "
+"@com_eventobj @commonfilesdir @compiled @computername @comspec @cr @crlf @desktopcommondir "
+"@desktopdepth @desktopdir @desktopheight @desktoprefresh @desktopwidth @documentscommondir "
+"@error @exitcode @exitmethod @extended @favoritescommondir @favoritesdir @gui_ctrlhandle "
+"@gui_ctrlid @gui_dragfile @gui_dragid @gui_dropid @gui_winhandle @homedrive @homepath @homeshare "
+"@hotkeypressed @hour @inetgetactive @inetgetbytesread @ipaddress1 @ipaddress2 @ipaddress3 "
+"@ipaddress4 @kblayout @lf @logondnsdomain @logondomain @logonserver @mday @min @mon @mydocumentsdir "
+"@numparams @osbuild @oslang @osservicepack @ostype @osversion @processorarch @programfilesdir "
+"@programscommondir @programsdir @scriptdir @scriptfullpath @scriptlinenumber @scriptname @sec "
+"@startmenucommondir @startmenudir @startupcommondir @startupdir @sw_disable @sw_enable @sw_hide @sw_lock "
 "@sw_maximize @sw_minimize @sw_restore @sw_show @sw_showdefault @sw_showmaximized "
 "@sw_showminimized @sw_showminnoactive @sw_showna @sw_shownoactivate @sw_shownormal "
 "@sw_unlock @systemdir @tab @tempdir @tray_id @trayiconflashing @trayiconvisible @username "
@@ -1334,8 +1309,7 @@ KEYWORDLIST KeyWords_AU3 = {
 "{numpaddiv} {numpaddot} {numpadenter} {numpadmult} {numpadsub} {pause} {pgdn} {pgup} "
 "{printscreen} {ralt} {rctrl} {right} {rshift} {rwin} {rwindown} {rwinup} {scrolllock} "
 "{shiftdown} {shiftup} {sleep} {space} {tab} {up} {volume_down} {volume_mute} {volume_up}",
-"#ce #comments-end #comments-start #cs #include #include-once "
-"#notrayicon #requireadmin",
+"#ce #comments-end #comments-start #cs #include #include-once #notrayicon #requireadmin",
 "#autoit3wrapper_au3check_parameters #autoit3wrapper_au3check_stop_onwarning "
 "#autoit3wrapper_change2cui #autoit3wrapper_compression #autoit3wrapper_cvswrapper_parameters "
 "#autoit3wrapper_icon #autoit3wrapper_outfile #autoit3wrapper_outfile_type #autoit3wrapper_plugin_funcs "
