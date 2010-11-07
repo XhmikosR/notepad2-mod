@@ -14,7 +14,6 @@ set OBJDIR=%OUTDIR%\obj
 
 TITLE Building Notepad2 x86...
 call "build_base.bat" x86
-IF %ERRORLEVEL% NEQ 0 ECHO:Compilation failed!&&PAUSE&&GOTO :end
 
 rem x64
 set LIB=%WDKBASEDIR%\lib\crt\amd64;%WDKBASEDIR%\lib\win7\amd64
@@ -24,7 +23,6 @@ set OBJDIR=%OUTDIR%\obj
 
 TITLE Building Notepad2 x64...
 call "build_base.bat" x64
-IF %ERRORLEVEL% NEQ 0 ECHO:Compilation failed!&&PAUSE&&GOTO :end
 
 :end
 endlocal

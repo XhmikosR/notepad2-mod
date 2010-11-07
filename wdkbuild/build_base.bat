@@ -40,6 +40,8 @@ cl -nologo /Fo"%OBJDIR%/" /I "%SCISRC%\include" /I "%SCISRC%\src" /I "%SCISRC%\w
  /Tp "%SCISRC%\src\XPM.cxx" /Tp "%SCISRC%\win32\PlatWin.cxx" /Tp "%SCISRC%\win32\ScintillaWin.cxx"^
  /Tc "..\src\Dialogs.c" /Tc "..\src\Dlapi.c" /Tc "..\src\Edit.c" /Tc "..\src\Helpers.c"^
  /Tc "..\src\Notepad2.c" /Tc "..\src\Styles.c" /Tp "..\src\Print.cpp"
+IF %ERRORLEVEL% NEQ 0 ECHO:Compilation failed!&&PAUSE&&EXIT /B
+
 
 rem resource compiler command line
 IF /I "%1"=="x86" (
@@ -48,7 +50,10 @@ set ADDCMD=/d "WIN32"
 IF /I "%1"=="x64" (
 set ADDCMD=/d "_WIN64"
 )
+
 rc /d "_UNICODE" /d "UNICODE" %ADDCMD% /fo"%OBJDIR%/Notepad2.res" "..\src\Notepad2.rc"
+IF %ERRORLEVEL% NEQ 0 ECHO:Compilation failed!&&PAUSE&&EXIT /B
+
 
 rem linker command line
 IF /I "%1"=="x86" (
@@ -76,6 +81,9 @@ link -nologo /OUT:"%OUTDIR%/Notepad2.exe" /INCREMENTAL:NO /RELEASE %ADDCMD% /OPT
  "%OBJDIR%\ScintillaBase.obj" "%OBJDIR%\ScintillaWin.obj" "%OBJDIR%\Selection.obj" "%OBJDIR%\Style.obj"^
  "%OBJDIR%\StyleContext.obj" "%OBJDIR%\Styles.obj" "%OBJDIR%\UniConversion.obj" "%OBJDIR%\ViewStyle.obj"^
  "%OBJDIR%\WindowAccessor.obj" "%OBJDIR%\XPM.obj" "%WDK_LIB%"
+IF %ERRORLEVEL% NEQ 0 ECHO:Compilation failed!&&PAUSE&&EXIT /B
+
 
 rem manifest tool command line
 "%SDKDIR%\Bin\mt.exe" -nologo -manifest "..\res\Notepad2.exe.manifest" -outputresource:"%OUTDIR%\Notepad2.exe;#1"
+IF %ERRORLEVEL% NEQ 0 ECHO:Compilation failed!&&PAUSE&&EXIT /B
