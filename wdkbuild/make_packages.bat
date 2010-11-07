@@ -39,7 +39,7 @@ rem Compress everything into a single ZIP file
 DEL Notepad2-mod.zip >NUL 2>&1
 START "" /B /WAIT "%TOOLS_PATH%\7za.exe" a -tzip -mx=9 Notepad2-mod.zip * -x!md5hashes -x!sha1hashes >NUL
 IF %ERRORLEVEL% NEQ 0 GOTO :ErrorDetected
-ECHO:Notepad2-mod.zip created successfully!
+ECHO. && ECHO:Notepad2-mod.zip created successfully!
 
 POPD
 GOTO :END
