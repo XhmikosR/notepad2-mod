@@ -4,9 +4,9 @@ set SCISRC=..\scintilla
 rem create the objects and output directory and delete any files from previous build
 md "%OBJDIR%" >NUL 2>&1
 del "%OUTDIR%\Notepad2.exe" >NUL 2>&1
+del "%OBJDIR%\*.idb" >NUL 2>&1
 del "%OBJDIR%\*.obj" >NUL 2>&1
 del "%OBJDIR%\*.pdb" >NUL 2>&1
-del "%OBJDIR%\*.idb" >NUL 2>&1
 
 pushd ..
 call update_version.bat
@@ -42,7 +42,13 @@ cl -nologo /Fo"%OBJDIR%/" /I "%SCISRC%\include" /I "%SCISRC%\src" /I "%SCISRC%\w
  /Tc "..\src\Notepad2.c" /Tc "..\src\Styles.c" /Tp "..\src\Print.cpp"
 
 rem resource compiler command line
-rc /fo"%OBJDIR%/Notepad2.res" "..\src\Notepad2.rc"
+IF /I "%1"=="x86" (
+set ADDCMD=/d "WIN32"
+)
+IF /I "%1"=="x64" (
+set ADDCMD=/d "_WIN64"
+)
+rc /d "_UNICODE" /d "UNICODE" %ADDCMD% /fo"%OBJDIR%/Notepad2.res" "..\src\Notepad2.rc"
 
 rem linker command line
 IF /I "%1"=="x86" (
@@ -70,3 +76,6 @@ link -nologo /OUT:"%OUTDIR%/Notepad2.exe" /INCREMENTAL:NO /RELEASE %ADDCMD% /OPT
  "%OBJDIR%\ScintillaBase.obj" "%OBJDIR%\ScintillaWin.obj" "%OBJDIR%\Selection.obj" "%OBJDIR%\Style.obj"^
  "%OBJDIR%\StyleContext.obj" "%OBJDIR%\Styles.obj" "%OBJDIR%\UniConversion.obj" "%OBJDIR%\ViewStyle.obj"^
  "%OBJDIR%\WindowAccessor.obj" "%OBJDIR%\XPM.obj" "%WDK_LIB%"
+
+rem manifest tool command line
+"%SDKDIR%\Bin\mt.exe" -nologo -manifest "..\res\Notepad2.exe.manifest" -outputresource:"%OUTDIR%\Notepad2.exe;#1"
