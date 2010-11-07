@@ -21,12 +21,11 @@ IF /I "%1"=="x86" (
 set CLADDCMD=/D "STATIC_BUILD" /D "SCI_LEXER" /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE" /D "WIN32" /D "_WIN32_WINNT=0x0501"
 )
 IF /I "%1"=="x64" (
-set CLADDCMD=/D "STATIC_BUILD" /D "SCI_LEXER" /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE" /D "_WIN64" /D "_WIN32_WINNT=0x0502" /wd"4133" /wd"4244" /wd"4267"
+set CLADDCMD=/D "STATIC_BUILD" /D "SCI_LEXER" /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE" /D "_WIN64" /D "_WIN32_WINNT=0x0502" /wd4133 /wd4244 /wd4267
 )
 
-cl /Fo"%OBJDIR%/" /I "%SCISRC%\include" /I "%SCISRC%\src" /I "%SCISRC%\win32" %CLADDCMD%^
- /c /EHsc /MD /O2 /GS /GT /GL /W3 /MP /Tp^
- "%SCISRC%\src\AutoComplete.cxx" /Tp "%SCISRC%\src\CallTip.cxx" /Tp "%SCISRC%\src\CellBuffer.cxx"^
+cl /Fo"%OBJDIR%/" /I "%SCISRC%\include" /I "%SCISRC%\src" /I "%SCISRC%\win32" %CLADDCMD% /c /EHsc /MD /O2 /GS /GT /GL /W3 /MP^
+ /Tp "%SCISRC%\src\AutoComplete.cxx" /Tp "%SCISRC%\src\CallTip.cxx" /Tp "%SCISRC%\src\CellBuffer.cxx"^
  /Tp "%SCISRC%\src\CharClassify.cxx" /Tp "%SCISRC%\src\ContractionState.cxx" /Tp "%SCISRC%\src\Decoration.cxx"^
  /Tp "%SCISRC%\src\Document.cxx" /Tp "%SCISRC%\src\DocumentAccessor.cxx" /Tp "%SCISRC%\src\Editor.cxx"^
  /Tp "%SCISRC%\src\ExternalLexer.cxx" /Tp "%SCISRC%\src\Indicator.cxx" /Tp "%SCISRC%\src\KeyMap.cxx"^
