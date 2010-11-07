@@ -6,7 +6,6 @@ SET PERL_PATH=G:\Installation Programs\Programs\Compiling Stuff\Other\ActivePerl
 SET TOOLS_PATH=..\..\distrib\tools
 
 CALL build.cmd
-CALL build_x64.cmd
 
 rem Get the version
 FOR /f "tokens=3,4 delims= " %%K IN (
