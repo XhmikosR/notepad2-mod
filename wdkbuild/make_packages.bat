@@ -1,6 +1,5 @@
 @ECHO OFF
 SETLOCAL
-TITLE Building Notepad2...
 SET PERL_PATH=G:\Installation Programs\Programs\Compiling Stuff\Other\ActivePerl-5.12.2.1202-MSWin32-x86-293621
 
 SET TOOLS_PATH=..\..\distrib\tools
@@ -82,8 +81,8 @@ IF NOT DEFINED VS100COMNTOOLS (
   GOTO :ErrorDetected
 )
 
-TITLE Building installer...
-ECHO:Building installer...
+TITLE Building the installer...
+ECHO:Building the installer...
 
 PUSHD ..\distrib
 MD binaries\x86-32 >NUL 2>&1
