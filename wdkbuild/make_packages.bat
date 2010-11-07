@@ -27,7 +27,8 @@ SET NOTEPAD_VERSION=%VerMajor%.%VerMinor%.%VerBuild%
 CALL :SubZipFiles Release x86-32
 CALL :SubZipFiles Release_x64 x86-64
 
-CALL :SubInstaller
+CALL :SubInstaller x86
+CALL :SubInstaller x64
 
 rem Calulate md5/sha1 hashes
 PUSHD packages
@@ -82,66 +83,53 @@ IF NOT DEFINED VS100COMNTOOLS (
   GOTO :ErrorDetected
 )
 
-TITLE Building the installer...
-ECHO:Building the installer...
+IF /I "%1"=="x86" (
+SET ARCH=Win32
+SET BINDIR=x86-32
+SET OUTDIR=Release
+)
+IF /I "%1"=="x64" (
+SET ARCH=x64
+SET BINDIR=x86-64
+SET OUTDIR=Release_x64
+)
+
+TITLE Building %BINDIR% installer...
+ECHO:Building %BINDIR% installer...
 
 PUSHD ..\distrib
-MD binaries\x86-32 >NUL 2>&1
-MD binaries\x86-64 >NUL 2>&1
+MD binaries\%BINDIR% >NUL 2>&1
 
-COPY /B /V /Y ..\Release\Notepad2.exe binaries\x86-32\notepad2.exe
-COPY /B /V /Y ..\License.txt binaries\x86-32\license.txt
-COPY /B /V /Y res\cabinet\notepad2.inf binaries\x86-32\notepad2.inf
-COPY /B /V /Y res\cabinet\notepad2.ini binaries\x86-32\notepad2.ini
-COPY /B /V /Y res\cabinet\notepad2.redir.ini binaries\x86-32\notepad2.redir.ini
-COPY /B /V /Y ..\Notepad2.txt binaries\x86-32\notepad2.txt
-COPY /B /V /Y ..\Readme-mod.txt binaries\x86-32\readme.txt
+COPY /B /V /Y ..\%OUTDIR%\Notepad2.exe binaries\%BINDIR%\notepad2.exe
+COPY /B /V /Y ..\License.txt binaries\%BINDIR%\license.txt
+COPY /B /V /Y res\cabinet\notepad2.inf binaries\%BINDIR%\notepad2.inf
+COPY /B /V /Y res\cabinet\notepad2.ini binaries\%BINDIR%\notepad2.ini
+COPY /B /V /Y res\cabinet\notepad2.redir.ini binaries\%BINDIR%\notepad2.redir.ini
+COPY /B /V /Y ..\Notepad2.txt binaries\%BINDIR%\notepad2.txt
+COPY /B /V /Y ..\Readme-mod.txt binaries\%BINDIR%\readme.txt
 rem Set the version for the DisplayVersion registry value
-CALL tools\BatchSubstitute.bat "0.0.0.0" %NOTEPAD_VERSION%.%VerRev% binaries\x86-32\notepad2.inf >notepad2.inf.temp
-COPY /Y binaries\x86-32\notepad2.inf notepad2.inf.orig >NUL
-MOVE /Y notepad2.inf.temp binaries\x86-32\notepad2.inf >NUL
-tools\cabutcd.exe binaries\x86-32 res\cabinet.x86-32.cab
+CALL tools\BatchSubstitute.bat "0.0.0.0" %NOTEPAD_VERSION%.%VerRev% binaries\%BINDIR%\notepad2.inf >notepad2.inf.temp
+COPY /Y binaries\%BINDIR%\notepad2.inf notepad2.inf.orig >NUL
+MOVE /Y notepad2.inf.temp binaries\%BINDIR%\notepad2.inf >NUL
+tools\cabutcd.exe binaries\%BINDIR% res\cabinet.%BINDIR%.cab
 DEL notepad2.inf.orig >NUL 2>&1
-RD /Q /S binaries\x86-32 >NUL 2>&1
-
-COPY /B /V /Y ..\Release_x64\Notepad2.exe binaries\x86-64\notepad2.exe
-COPY /B /V /Y ..\License.txt binaries\x86-64\license.txt
-COPY /B /V /Y res\cabinet\notepad2.inf binaries\x86-64\notepad2.inf
-COPY /B /V /Y res\cabinet\notepad2.ini binaries\x86-64\notepad2.ini
-COPY /B /V /Y res\cabinet\notepad2.redir.ini binaries\x86-64\notepad2.redir.ini
-COPY /B /V /Y ..\Notepad2.txt binaries\x86-64\notepad2.txt
-COPY /B /V /Y ..\Readme-mod.txt binaries\x86-64\readme.txt
-rem Set the version for the DisplayVersion registry value
-CALL tools\BatchSubstitute.bat "0.0.0.0" %NOTEPAD_VERSION%.%VerRev% binaries\x86-64\notepad2.inf >notepad2.inf.temp
-COPY /Y binaries\x86-64\notepad2.inf notepad2.inf.orig >NUL
-MOVE /Y notepad2.inf.temp binaries\x86-64\notepad2.inf >NUL
-tools\cabutcd.exe binaries\x86-64 res\cabinet.x86-64.cab
-DEL notepad2.inf.orig >NUL 2>&1
-RD /Q /S binaries\x86-64 >NUL 2>&1
-RD /q binaries >NUL 2>&1
+RD /Q /S binaries\%BINDIR% >NUL 2>&1
 
 CALL "%VS100COMNTOOLS%vsvars32.bat" >NUL
-devenv setup.sln /Rebuild "Full|Win32"
+devenv setup.sln /Rebuild "Full|%ARCH%"
 IF %ERRORLEVEL% NEQ 0 GOTO :ErrorDetected
-devenv setup.sln /Rebuild "Full|x64"
-IF %ERRORLEVEL% NEQ 0 GOTO :ErrorDetected
-devenv setup.sln /Rebuild "Lite|Win32"
-IF %ERRORLEVEL% NEQ 0 GOTO :ErrorDetected
-devenv setup.sln /Rebuild "Lite|x64"
+devenv setup.sln /Rebuild "Lite|%ARCH%"
 IF %ERRORLEVEL% NEQ 0 GOTO :ErrorDetected
 
 "%PERL_PATH%\perl\bin\perl.exe" addon_build.pl
 
 MD ..\wdkbuild\packages >NUL 2>&1
-MOVE setup.x86-32\addon.7z      ..\wdkbuild\packages\Notepad2-mod_Addon.x86-32.7z >NUL
-MOVE setup.x86-32\setupfull.exe ..\wdkbuild\packages\Notepad2-mod_Setup.x86-32.exe >NUL
-MOVE setup.x86-32\setuplite.exe ..\wdkbuild\packages\Notepad2-mod_Setup_Silent.x86-32.exe >NUL
-MOVE setup.x86-64\addon.7z      ..\wdkbuild\packages\Notepad2-mod_Addon.x86-64.7z >NUL
-MOVE setup.x86-64\setupfull.exe ..\wdkbuild\packages\Notepad2-mod_Setup.x86-64.exe >NUL
-MOVE setup.x86-64\setuplite.exe ..\wdkbuild\packages\Notepad2-mod_Setup_Silent.x86-64.exe >NUL
+MOVE setup.%BINDIR%\addon.7z      ..\wdkbuild\packages\Notepad2-mod_Addon.%BINDIR%.7z >NUL
+MOVE setup.%BINDIR%\setupfull.exe ..\wdkbuild\packages\Notepad2-mod_Setup.%BINDIR%.exe >NUL
+MOVE setup.%BINDIR%\setuplite.exe ..\wdkbuild\packages\Notepad2-mod_Setup_Silent.%BINDIR%.exe >NUL
 
-RD setup.x86-32 setup.x86-64 >NUL 2>&1
-RD setup.x86-32 setup.x86-64 >NUL 2>&1
+RD setup.%BINDIR% >NUL 2>&1
+RD /Q binaries >NUL 2>&1
 RD /Q /S addon >NUL 2>&1
 RD /Q /S obj >NUL 2>&1
 
