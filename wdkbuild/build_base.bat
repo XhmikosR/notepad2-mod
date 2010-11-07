@@ -12,6 +12,10 @@ pushd ..
 call update_version.bat
 popd
 
+ECHO. && ECHO:______________________________
+ECHO:[INFO] compiling stage...
+ECHO:______________________________ && ECHO.
+
 rem compiler command line
 IF /I "%1"=="x86" (
 set CLADDCMD=/D "STATIC_BUILD" /D "SCI_LEXER" /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE" /D "WIN32" /D "_WIN32_WINNT=0x0501"
@@ -20,7 +24,7 @@ IF /I "%1"=="x64" (
 set CLADDCMD=/D "STATIC_BUILD" /D "SCI_LEXER" /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE" /D "_WIN64" /D "_WIN32_WINNT=0x0502" /wd"4133" /wd"4244" /wd"4267"
 )
 
-cl -nologo /Fo"%OBJDIR%/" /I "%SCISRC%\include" /I "%SCISRC%\src" /I "%SCISRC%\win32" %CLADDCMD%^
+cl /Fo"%OBJDIR%/" /I "%SCISRC%\include" /I "%SCISRC%\src" /I "%SCISRC%\win32" %CLADDCMD%^
  /c /EHsc /MD /O2 /GS /GT /GL /W3 /MP /Tp^
  "%SCISRC%\src\AutoComplete.cxx" /Tp "%SCISRC%\src\CallTip.cxx" /Tp "%SCISRC%\src\CellBuffer.cxx"^
  /Tp "%SCISRC%\src\CharClassify.cxx" /Tp "%SCISRC%\src\ContractionState.cxx" /Tp "%SCISRC%\src\Decoration.cxx"^
@@ -40,8 +44,11 @@ cl -nologo /Fo"%OBJDIR%/" /I "%SCISRC%\include" /I "%SCISRC%\src" /I "%SCISRC%\w
  /Tp "%SCISRC%\src\XPM.cxx" /Tp "%SCISRC%\win32\PlatWin.cxx" /Tp "%SCISRC%\win32\ScintillaWin.cxx"^
  /Tc "..\src\Dialogs.c" /Tc "..\src\Dlapi.c" /Tc "..\src\Edit.c" /Tc "..\src\Helpers.c"^
  /Tc "..\src\Notepad2.c" /Tc "..\src\Styles.c" /Tp "..\src\Print.cpp"
-IF %ERRORLEVEL% NEQ 0 ECHO:Compilation failed!&&PAUSE&&EXIT
+IF %ERRORLEVEL% NEQ 0 ECHO:[ERROR]Compilation failed!&&PAUSE&&EXIT
 
+ECHO. && ECHO:______________________________
+ECHO:[INFO] resource compiler stage...
+ECHO:______________________________ && ECHO.
 
 rem resource compiler command line
 IF /I "%1"=="x86" (
@@ -52,8 +59,11 @@ set RCADDCMD=/d "_WIN64"
 )
 
 rc /d "_UNICODE" /d "UNICODE" %RCADDCMD% /fo"%OBJDIR%/Notepad2.res" "..\src\Notepad2.rc"
-IF %ERRORLEVEL% NEQ 0 ECHO:Compilation failed!&&PAUSE&&EXIT
+IF %ERRORLEVEL% NEQ 0 ECHO:[ERROR]Compilation failed!&&PAUSE&&EXIT
 
+ECHO. && ECHO:______________________________
+ECHO:[INFO] linking stage...
+ECHO:______________________________ && ECHO.
 
 rem linker command line
 IF /I "%1"=="x86" (
@@ -65,7 +75,7 @@ set LNKADDCMD=/SUBSYSTEM:WINDOWS,5.02 /MACHINE:X64
 set WDK_LIB=msvcrt_win2003.obj
 )
 
-link -nologo /OUT:"%OUTDIR%/Notepad2.exe" /INCREMENTAL:NO /RELEASE %LNKADDCMD% /OPT:REF /OPT:ICF /DYNAMICBASE /NXCOMPAT^
+link /OUT:"%OUTDIR%/Notepad2.exe" /INCREMENTAL:NO /RELEASE %LNKADDCMD% /OPT:REF /OPT:ICF /DYNAMICBASE /NXCOMPAT^
  /MERGE:.rdata=.text /LTCG kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib shlwapi.lib comdlg32.lib^
  comctl32.lib winspool.lib imm32.lib ole32.lib oleaut32.lib psapi.lib^
  "%OBJDIR%\AutoComplete.obj" "%OBJDIR%\CallTip.obj" "%OBJDIR%\CellBuffer.obj" "%OBJDIR%\CharClassify.obj"^
@@ -81,9 +91,14 @@ link -nologo /OUT:"%OUTDIR%/Notepad2.exe" /INCREMENTAL:NO /RELEASE %LNKADDCMD% /
  "%OBJDIR%\ScintillaBase.obj" "%OBJDIR%\ScintillaWin.obj" "%OBJDIR%\Selection.obj" "%OBJDIR%\Style.obj"^
  "%OBJDIR%\StyleContext.obj" "%OBJDIR%\Styles.obj" "%OBJDIR%\UniConversion.obj" "%OBJDIR%\ViewStyle.obj"^
  "%OBJDIR%\WindowAccessor.obj" "%OBJDIR%\XPM.obj" "%WDK_LIB%"
-IF %ERRORLEVEL% NEQ 0 ECHO:Compilation failed!&&PAUSE&&EXIT
+IF %ERRORLEVEL% NEQ 0 ECHO:[ERROR]Compilation failed!&&PAUSE&&EXIT
 
+ECHO. && ECHO:______________________________
+ECHO:[INFO] manifest stage...
+ECHO:______________________________ && ECHO.
 
 rem manifest tool command line
-"%SDKDIR%\Bin\mt.exe" -nologo -manifest "..\res\Notepad2.exe.manifest" -outputresource:"%OUTDIR%\Notepad2.exe;#1"
-IF %ERRORLEVEL% NEQ 0 ECHO:Compilation failed!&&PAUSE&&EXIT
+"%SDKDIR%\Bin\mt.exe" -manifest "..\res\Notepad2.exe.manifest" -outputresource:"%OUTDIR%\Notepad2.exe;#1"
+IF %ERRORLEVEL% NEQ 0 ECHO:[ERROR]Compilation failed!&&PAUSE&&EXIT
+
+ECHO. && ECHO:______________________________

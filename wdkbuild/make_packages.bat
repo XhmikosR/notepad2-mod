@@ -3,6 +3,7 @@ SETLOCAL
 SET PERL_PATH=G:\Installation Programs\Programs\Compiling Stuff\Other\ActivePerl-5.12.2.1202-MSWin32-x86-293621
 
 SET TOOLS_PATH=..\..\distrib\tools
+CD /D %~dp0
 
 CALL build.cmd
 IF %ERRORLEVEL% NEQ 0 GOTO :ErrorDetected
@@ -95,7 +96,7 @@ SET OUTDIR=Release_x64
 )
 
 TITLE Building %BINDIR% installer...
-ECHO:Building %BINDIR% installer...
+ECHO. && ECHO:Building %BINDIR% installer...
 
 PUSHD ..\distrib
 MD binaries\%BINDIR% >NUL 2>&1

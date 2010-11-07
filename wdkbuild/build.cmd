@@ -1,5 +1,6 @@
 @echo off
 setlocal
+cd /d %~dp0
 
 rem Set the WDDK and SDK directories
 set WDKBASEDIR=C:\WinDDK\7600.16385.1
@@ -25,5 +26,6 @@ TITLE Building Notepad2 x64...
 call "build_base.bat" x64
 
 :end
+Title Finished!
 endlocal
 goto :eof
