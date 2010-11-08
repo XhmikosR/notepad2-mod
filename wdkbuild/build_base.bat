@@ -68,7 +68,7 @@ set LNKADDCMD=/SUBSYSTEM:WINDOWS,5.02 /MACHINE:X64
 set WDK_LIB=msvcrt_win2003.obj
 )
 
-link /OUT:"%OUTDIR%/Notepad2.exe" /INCREMENTAL:NO /RELEASE %LNKADDCMD% /OPT:REF /OPT:ICF /MERGE:.rdata=.text /LTCG^
+link /OUT:"%OUTDIR%/Notepad2.exe" /INCREMENTAL:NO /RELEASE %LNKADDCMD% /OPT:REF /OPT:ICF /MERGE:.rdata=.text^
  kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib shlwapi.lib comdlg32.lib comctl32.lib winspool.lib^
  imm32.lib ole32.lib oleaut32.lib psapi.lib^
  "%OBJDIR%\AutoComplete.obj" "%OBJDIR%\CallTip.obj" "%OBJDIR%\CellBuffer.obj" "%OBJDIR%\CharClassify.obj"^
