@@ -2,9 +2,26 @@
 setlocal
 cd /d %~dp0
 
-rem Set the WDDK and SDK directories
-set WDKBASEDIR=C:\WinDDK\7600.16385.1
-set SDKDIR=C:\Program Files\Microsoft SDKs\Windows\v7.1
+rem Set the WDK and SDK directories
+set "WDKBASEDIR=C:\WinDDK\7600.16385.1"
+set "SDKDIR=%PROGRAMFILES%\Microsoft SDKs\Windows\v7.1"
+
+rem Check the building environment
+IF NOT EXIST "%WDKBASEDIR%" (
+  ECHO. && ECHO:______________________________
+  ECHO:[ERROR] Specify your WDK directory
+  ECHO:______________________________ && ECHO.
+  PAUSE
+  EXIT
+)
+
+IF NOT EXIST "%SDKDIR%" (
+  ECHO. && ECHO:______________________________
+  ECHO:[ERROR] Specify your SDK directory
+  ECHO:______________________________ && ECHO.
+  PAUSE
+  EXIT
+)
 
 rem x86
 set "INCLUDE=%WDKBASEDIR%\inc\crt;%WDKBASEDIR%\inc\api;%WDKBASEDIR%\inc\api\crt\stl60;%WDKBASEDIR%\inc\ddk"
