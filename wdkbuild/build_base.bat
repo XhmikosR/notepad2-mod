@@ -8,10 +8,6 @@ del "%OBJDIR%\*.idb" >NUL 2>&1
 del "%OBJDIR%\*.obj" >NUL 2>&1
 del "%OBJDIR%\*.pdb" >NUL 2>&1
 
-pushd ..
-call update_version.bat
-popd
-
 ECHO. && ECHO:______________________________
 ECHO:[INFO] compiling stage...
 ECHO:______________________________ && ECHO.
@@ -32,7 +28,7 @@ cl /Fo"%OBJDIR%/" /I "%SCISRC%\include" /I "%SCISRC%\src" /I "%SCISRC%\win32" %C
  /Tp "%SCISRC%\src\KeyWords.cxx" /Tp "%SCISRC%\src\LexAsm.cxx" /Tp "%SCISRC%\src\LexAU3.cxx"^
  /Tp "%SCISRC%\src\LexBash.cxx" /Tp "%SCISRC%\src\LexConf.cxx" /Tp "%SCISRC%\src\LexCPP.cxx"^
  /Tp "%SCISRC%\src\LexCSS.cxx" /Tp "%SCISRC%\src\LexHTML.cxx" /Tp "%SCISRC%\src\LexLua.cxx"^
- /Tp "%SCISRC%\src\LexInnO.cxx" /Tp "%SCISRC%\src\LexNsis.cxx" /Tp "%SCISRC%\src\LexOthers.cxx"^
+ /Tp "%SCISRC%\src\LexInno.cxx" /Tp "%SCISRC%\src\LexNsis.cxx" /Tp "%SCISRC%\src\LexOthers.cxx"^
  /Tp "%SCISRC%\src\LexPascal.cxx" /Tp "%SCISRC%\src\LexPerl.cxx" /Tp "%SCISRC%\src\LexPowerShell.cxx"^
  /Tp "%SCISRC%\src\LexPython.cxx" /Tp "%SCISRC%\src\LexRuby.cxx" /Tp "%SCISRC%\src\LexSQL.cxx"^
  /Tp "%SCISRC%\src\LexTCL.cxx" /Tp "%SCISRC%\src\LexVB.cxx" /Tp "%SCISRC%\src\LineMarker.cxx"^
