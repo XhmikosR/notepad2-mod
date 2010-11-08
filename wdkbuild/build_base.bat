@@ -76,13 +76,7 @@ cl /Fo"%OBJDIR%/" /I "..\scintilla\include" /I "..\scintilla\src" /I "..\scintil
  /Tc "..\src\Styles.c"^
  /Tp "..\src\Print.cpp"
 
-IF %ERRORLEVEL% NEQ 0 (
-ECHO. && ECHO:______________________________
-ECHO:[ERROR] Compilation failed!!!
-ECHO:______________________________ && ECHO.
-PAUSE
-EXIT
-)
+IF %ERRORLEVEL% NEQ 0 GOTO :ErrorDetected
 
 ECHO. && ECHO:______________________________
 ECHO:[INFO] resource compiler stage...
@@ -97,13 +91,7 @@ set RCADDCMD=/d "_WIN64"
 )
 
 rc /d "_UNICODE" /d "UNICODE" %RCADDCMD% /fo"%OBJDIR%/Notepad2.res" "..\src\Notepad2.rc"
-IF %ERRORLEVEL% NEQ 0 (
-ECHO. && ECHO:______________________________
-ECHO:[ERROR] Compilation failed!!!
-ECHO:______________________________ && ECHO.
-PAUSE
-EXIT
-)
+IF %ERRORLEVEL% NEQ 0 GOTO :ErrorDetected
 
 ECHO. && ECHO:______________________________
 ECHO:[INFO] linking stage...
@@ -180,13 +168,7 @@ link /OUT:"%OUTDIR%/Notepad2.exe" /INCREMENTAL:NO /RELEASE %LNKADDCMD% /OPT:REF 
  "%OBJDIR%\XPM.obj"^
  "%WDK_LIB%"
 
-IF %ERRORLEVEL% NEQ 0 (
-ECHO. && ECHO:______________________________
-ECHO:[ERROR] Compilation failed!!!
-ECHO:______________________________ && ECHO.
-PAUSE
-EXIT
-)
+IF %ERRORLEVEL% NEQ 0 GOTO :ErrorDetected
 
 ECHO. && ECHO:______________________________
 ECHO:[INFO] manifest stage...
@@ -194,12 +176,16 @@ ECHO:______________________________ && ECHO.
 
 rem manifest tool command line
 "%SDKDIR%\Bin\mt.exe" -manifest "..\res\Notepad2.exe.manifest" -outputresource:"%OUTDIR%\Notepad2.exe;#1"
-IF %ERRORLEVEL% NEQ 0 (
+IF %ERRORLEVEL% NEQ 0 GOTO :ErrorDetected
+
+ECHO. && ECHO:______________________________
+GOTO :EOF
+
+
+:ErrorDetected
 ECHO. && ECHO:______________________________
 ECHO:[ERROR] Compilation failed!!!
 ECHO:______________________________ && ECHO.
+
 PAUSE
 EXIT
-)
-
-ECHO. && ECHO:______________________________
