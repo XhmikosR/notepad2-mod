@@ -1,22 +1,31 @@
 @echo off
 setlocal
-set WDKBASEDIR=C:\WinDDK\7600.16385.1
+cd /d %~dp0
 
+rem Set the WDDK and SDK directories
+set WDKBASEDIR=C:\WinDDK\7600.16385.1
+set SDKDIR=C:\Program Files\Microsoft SDKs\Windows\v7.1
+
+rem x86
 set INCLUDE=%WDKBASEDIR%\inc\crt;%WDKBASEDIR%\inc\api;%WDKBASEDIR%\inc\api\crt\stl60;%WDKBASEDIR%\inc\ddk
 set LIB=%WDKBASEDIR%\lib\crt\i386;%WDKBASEDIR%\lib\win7\i386
+set PATH=%WDKBASEDIR%\bin\x86;%WDKBASEDIR%\bin\x86\x86;%PATH%
+set OUTDIR=..\Release
+set OBJDIR=%OUTDIR%\obj
 
-md "..\Release\obj" >NUL 2>&1
-del "..\Release\*.exe" >NUL 2>&1
-del "..\Release\obj\*.obj" >NUL 2>&1
-del "..\Release\obj\*.pdb" >NUL 2>&1
-del "..\Release\obj\*.idb" >NUL 2>&1
+TITLE Building Notepad2 x86...
+call "build_base.bat" x86
 
-"%WDKBASEDIR%\bin\x86\x86\cl.exe" @cl.txt
-IF %ERRORLEVEL% NEQ 0 ECHO:Compilation failed!&&PAUSE&&EXIT
-"%WDKBASEDIR%\bin\x86\rc.exe" /fo"../Release/obj/Notepad2.res" "..\src\Notepad2.rc"
-IF %ERRORLEVEL% NEQ 0 ECHO:Compilation failed!&&PAUSE&&EXIT
-"%WDKBASEDIR%\bin\x86\x86\link.exe" @link.txt
-IF %ERRORLEVEL% NEQ 0 ECHO:Compilation failed!&&PAUSE&&EXIT
+rem x64
+set LIB=%WDKBASEDIR%\lib\crt\amd64;%WDKBASEDIR%\lib\win7\amd64
+set PATH=%WDKBASEDIR%\bin\x86;%WDKBASEDIR%\bin\x86\amd64;%PATH%
+set OUTDIR=..\Release_x64
+set OBJDIR=%OUTDIR%\obj
 
+TITLE Building Notepad2 x64...
+call "build_base.bat" x64
+
+:end
+TITLE Finished!
 endlocal
-rem pause
+goto :eof
