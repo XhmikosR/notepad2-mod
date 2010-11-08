@@ -42,8 +42,8 @@ CALL :SubZipFiles Release x86-32
 CALL :SubZipFiles Release_x64 x86-64
 
 IF DEFINED VS100COMNTOOLS (
-CALL :SubInstaller x86
-CALL :SubInstaller x64
+  CALL :SubInstaller x86
+  CALL :SubInstaller x64
 )
 
 rem Calulate md5/sha1 hashes
