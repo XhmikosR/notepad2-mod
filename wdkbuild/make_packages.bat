@@ -1,6 +1,19 @@
 @ECHO OFF
 SETLOCAL
-SET PERL_PATH=G:\Installation Programs\Programs\Compiling Stuff\Other\ActivePerl-5.12.2.1202-MSWin32-x86-293621
+SET "PERL_PATH=G:\Installation Programs\Programs\Compiling Stuff\Other\ActivePerl-5.12.2.1202-MSWin32-x86-293621"
+
+rem Check the building environment
+IF NOT EXIST "%PERL_PATH%" (
+  ECHO. && ECHO:______________________________
+  ECHO:[INFO] The Perl direcotry wasn't specified; the addon won't be built
+  ECHO:______________________________ && ECHO.
+)
+
+IF NOT DEFINED VS100COMNTOOLS (
+  ECHO. && ECHO:______________________________
+  ECHO:[INFO] Visual Studio 2010 wasn't found; the installer won't be built
+  ECHO:______________________________ && ECHO.
+)
 
 SET TOOLS_PATH=..\..\distrib\tools
 CD /D %~dp0
@@ -28,8 +41,10 @@ SET NOTEPAD_VERSION=%VerMajor%.%VerMinor%.%VerBuild%
 CALL :SubZipFiles Release x86-32
 CALL :SubZipFiles Release_x64 x86-64
 
+IF DEFINED VS100COMNTOOLS (
 CALL :SubInstaller x86
 CALL :SubInstaller x64
+)
 
 rem Calulate md5/sha1 hashes
 PUSHD packages
@@ -40,7 +55,10 @@ rem Compress everything into a single ZIP file
 DEL Notepad2-mod.zip >NUL 2>&1
 START "" /B /WAIT "%TOOLS_PATH%\7za.exe" a -tzip -mx=9 Notepad2-mod.zip * -x!md5hashes -x!sha1hashes >NUL
 IF %ERRORLEVEL% NEQ 0 GOTO :ErrorDetected
-ECHO. && ECHO:Notepad2-mod.zip created successfully!
+
+ECHO. && ECHO:______________________________
+ECHO:[INFO] Notepad2-mod.zip created successfully!
+ECHO:______________________________ && ECHO.
 
 POPD
 GOTO :END
@@ -53,8 +71,11 @@ EXIT
 
 
 :SubZipFiles
-TITLE Creating the ZIP files...
-ECHO.
+TITLE Creating the %2 ZIP file...
+
+ECHO. && ECHO:______________________________
+ECHO:[INFO] Creating the %2 ZIP file...
+ECHO:______________________________ && ECHO.
 
 MD "temp_zip" >NUL 2>&1
 MD "packages" >NUL 2>&1
@@ -70,20 +91,16 @@ START "" /B /WAIT "%TOOLS_PATH%\7za.exe" a -tzip -mx=9^
  "Notepad2.ini" "Notepad2.txt" "ReadMe.txt" >NUL
 IF %ERRORLEVEL% NEQ 0 GOTO :ErrorDetected
 
-ECHO:Notepad2-mod.%NOTEPAD_VERSION%_r%VerRev%_%2.zip created successfully!
+ECHO. && ECHO:______________________________
+ECHO:[INFO] ECHO:Notepad2-mod.%NOTEPAD_VERSION%_r%VerRev%_%2.zip created successfully!
+ECHO:______________________________ && ECHO.
+
 MOVE /Y "Notepad2-mod.%NOTEPAD_VERSION%_r%VerRev%_%2.zip" "..\packages" >NUL 2>&1
-ECHO.
 POPD
 RD /S /Q "temp_zip" >NUL 2>&1
 GOTO :EOF
 
 :SubInstaller
-IF NOT DEFINED VS100COMNTOOLS (
-  ECHO:Visual Studio 2010 NOT FOUND!!! && PAUSE
-  ECHO.
-  GOTO :ErrorDetected
-)
-
 IF /I "%1"=="x86" (
 SET ARCH=Win32
 SET BINDIR=x86-32
@@ -96,7 +113,10 @@ SET OUTDIR=Release_x64
 )
 
 TITLE Building %BINDIR% installer...
-ECHO. && ECHO:Building %BINDIR% installer...
+
+ECHO. && ECHO:______________________________
+ECHO:[INFO] Building %BINDIR% installer...
+ECHO:______________________________ && ECHO.
 
 PUSHD ..\distrib
 MD binaries\%BINDIR% >NUL 2>&1
@@ -122,13 +142,18 @@ IF %ERRORLEVEL% NEQ 0 GOTO :ErrorDetected
 devenv setup.sln /Rebuild "Lite|%ARCH%"
 IF %ERRORLEVEL% NEQ 0 GOTO :ErrorDetected
 
+IF EXIST "%PERL_PATH%" (
 "%PERL_PATH%\perl\bin\perl.exe" addon_build.pl
+)
 
 MD ..\wdkbuild\packages >NUL 2>&1
+IF EXIST "%PERL_PATH%" (
 MOVE setup.%BINDIR%\addon.7z      ..\wdkbuild\packages\Notepad2-mod_Addon.%BINDIR%.7z >NUL
+)
 MOVE setup.%BINDIR%\setupfull.exe ..\wdkbuild\packages\Notepad2-mod_Setup.%BINDIR%.exe >NUL
 MOVE setup.%BINDIR%\setuplite.exe ..\wdkbuild\packages\Notepad2-mod_Setup_Silent.%BINDIR%.exe >NUL
 
+rem Cleanup
 RD setup.%BINDIR% >NUL 2>&1
 RD /Q binaries >NUL 2>&1
 RD /Q /S addon >NUL 2>&1
@@ -151,9 +176,10 @@ SET VerRev=%*
 GOTO :EOF
 
 :ErrorDetected
-ECHO. && ECHO.
-ECHO:Compilation FAILED!!!
-ECHO. && ECHO.
+ECHO. && ECHO:______________________________
+ECHO:[ERROR] Compilation failed!!!
+ECHO:______________________________ && ECHO.
+
 ENDLOCAL
 PAUSE
 EXIT
