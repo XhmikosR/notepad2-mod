@@ -92,7 +92,7 @@ START "" /B /WAIT "%TOOLS_PATH%\7za.exe" a -tzip -mx=9^
 IF %ERRORLEVEL% NEQ 0 GOTO :ErrorDetected
 
 ECHO. && ECHO:______________________________
-ECHO:[INFO] ECHO:Notepad2-mod.%NP2_VER%_r%VerRev%_%2.zip created successfully!
+ECHO:[INFO] Notepad2-mod.%NP2_VER%_r%VerRev%_%2.zip created successfully!
 ECHO:______________________________ && ECHO.
 
 MOVE /Y "Notepad2-mod.%NP2_VER%_r%VerRev%_%2.zip" "..\packages" >NUL 2>&1
