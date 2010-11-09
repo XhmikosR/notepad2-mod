@@ -218,6 +218,9 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Version.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\scintilla\include\Accessor.h">
       <Filter>Scintilla\include</Filter>
     </ClInclude>
@@ -228,9 +231,6 @@
       <Filter>Scintilla\include</Filter>
     </ClInclude>
     <ClInclude Include="..\scintilla\include\PropSet.h">
-      <Filter>Scintilla\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\scintilla\include\SString.h">
       <Filter>Scintilla\include</Filter>
     </ClInclude>
     <ClInclude Include="..\scintilla\include\SciLexer.h">

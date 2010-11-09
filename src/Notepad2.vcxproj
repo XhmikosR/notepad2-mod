@@ -169,7 +169,7 @@ update_version.bat</Command>
     </ClCompile>
     <Link>
       <AdditionalDependencies>comctl32.lib;shlwapi.lib;imm32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -295,11 +295,11 @@ update_version.bat</Command>
     <ClInclude Include="SciCall.h" />
     <ClInclude Include="Styles.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Version.h" />
     <ClInclude Include="..\scintilla\include\Accessor.h" />
     <ClInclude Include="..\scintilla\include\KeyWords.h" />
     <ClInclude Include="..\scintilla\include\Platform.h" />
     <ClInclude Include="..\scintilla\include\PropSet.h" />
-    <ClInclude Include="..\scintilla\include\SString.h" />
     <ClInclude Include="..\scintilla\include\SciLexer.h" />
     <ClInclude Include="..\scintilla\include\Scintilla.h" />
     <ClInclude Include="..\scintilla\include\ScintillaWidget.h" />
