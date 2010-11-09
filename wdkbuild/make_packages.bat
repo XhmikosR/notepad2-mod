@@ -3,23 +3,14 @@ SETLOCAL
 SET "PERL_PATH=G:\Installation Programs\Programs\Compiling Stuff\Other\ActivePerl-5.12.2.1202-MSWin32-x86-293621"
 
 rem Check the building environment
-IF NOT EXIST "%PERL_PATH%" (
-  ECHO. && ECHO:______________________________
-  ECHO:[INFO] The Perl direcotry wasn't specified; the addon won't be built
-  ECHO:______________________________ && ECHO.
-)
-
-IF NOT DEFINED VS100COMNTOOLS (
-  ECHO. && ECHO:______________________________
-  ECHO:[INFO] Visual Studio 2010 wasn't found; the installer won't be built
-  ECHO:______________________________ && ECHO.
-)
+IF NOT EXIST "%PERL_PATH%" CALL :SUBMSG "INFO" "The Perl direcotry wasn't specified; the addon won't be built"
+IF NOT DEFINED VS100COMNTOOLS CALL :SUBMSG "INFO" "Visual Studio 2010 wasn't found; the installer won't be built"
 
 CD /D %~dp0
 SET TOOLS_PATH=..\..\distrib\tools
 
 CALL build.cmd
-IF %ERRORLEVEL% NEQ 0 GOTO :ErrorDetected
+IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
 rem Get the version
 FOR /f "tokens=3,4 delims= " %%K IN (
@@ -54,28 +45,23 @@ PUSHD packages
 rem Compress everything into a single ZIP file
 DEL Notepad2-mod.zip >NUL 2>&1
 START "" /B /WAIT "%TOOLS_PATH%\7za.exe" a -tzip -mx=9 Notepad2-mod.zip * -x!md5hashes -x!sha1hashes >NUL
-IF %ERRORLEVEL% NEQ 0 GOTO :ErrorDetected
+IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
-ECHO. && ECHO:______________________________
-ECHO:[INFO] Notepad2-mod.zip created successfully!
-ECHO:______________________________ && ECHO.
+CALL :SUBMSG "INFO" "Notepad2-mod.zip created successfully!"
 
 POPD
-GOTO :END
 
 :END
 TITLE Finished!
-ECHO. && ECHO.
-ENDLOCAL && PAUSE
-EXIT
+ECHO.
+ENDLOCAL
+PAUSE
+EXIT /B
 
 
 :SubZipFiles
 TITLE Creating the %2 ZIP file...
-
-ECHO. && ECHO:______________________________
-ECHO:[INFO] Creating the %2 ZIP file...
-ECHO:______________________________ && ECHO.
+CALL :SUBMSG "INFO" "Creating the %2 ZIP file..."
 
 MD "temp_zip" >NUL 2>&1
 MD "packages" >NUL 2>&1
@@ -89,11 +75,9 @@ PUSHD "temp_zip"
 START "" /B /WAIT "%TOOLS_PATH%\7za.exe" a -tzip -mx=9^
  "Notepad2-mod.%NP2_VER%_r%VerRev%_%2.zip" "License.txt" "Notepad2.exe"^
  "Notepad2.ini" "Notepad2.txt" "ReadMe.txt" >NUL
-IF %ERRORLEVEL% NEQ 0 GOTO :ErrorDetected
+IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
-ECHO. && ECHO:______________________________
-ECHO:[INFO] Notepad2-mod.%NP2_VER%_r%VerRev%_%2.zip created successfully!
-ECHO:______________________________ && ECHO.
+CALL :SUBMSG "INFO" "Notepad2-mod.%NP2_VER%_r%VerRev%_%2.zip created successfully!"
 
 MOVE /Y "Notepad2-mod.%NP2_VER%_r%VerRev%_%2.zip" "..\packages" >NUL 2>&1
 POPD
@@ -113,10 +97,7 @@ IF /I "%1"=="x64" (
 )
 
 TITLE Building %BINDIR% installer...
-
-ECHO. && ECHO:______________________________
-ECHO:[INFO] Building %BINDIR% installer...
-ECHO:______________________________ && ECHO.
+CALL :SUBMSG "INFO" "Building %BINDIR% installer..."
 
 PUSHD ..\distrib
 MD binaries\%BINDIR% >NUL 2>&1
@@ -138,9 +119,9 @@ RD /Q /S binaries\%BINDIR% >NUL 2>&1
 
 CALL "%VS100COMNTOOLS%vsvars32.bat" >NUL
 devenv setup.sln /Rebuild "Full|%ARCH%"
-IF %ERRORLEVEL% NEQ 0 GOTO :ErrorDetected
+IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 devenv setup.sln /Rebuild "Lite|%ARCH%"
-IF %ERRORLEVEL% NEQ 0 GOTO :ErrorDetected
+IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
 IF EXIST "%PERL_PATH%" (
   "%PERL_PATH%\perl\bin\perl.exe" addon_build.pl
@@ -175,11 +156,13 @@ GOTO :EOF
 SET VerRev=%*
 GOTO :EOF
 
-:ErrorDetected
-ECHO. && ECHO:______________________________
-ECHO:[ERROR] Compilation failed!!!
-ECHO:______________________________ && ECHO.
-
-ENDLOCAL
-PAUSE
-EXIT
+:SUBMSG
+ECHO.&&ECHO:______________________________
+ECHO:[%~1] %~2
+ECHO:______________________________&&ECHO.
+IF /I "%~1"=="ERROR" (
+  PAUSE
+  EXIT
+) ELSE (
+  EXIT /B
+)

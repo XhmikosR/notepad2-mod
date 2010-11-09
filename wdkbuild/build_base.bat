@@ -1,25 +1,26 @@
 @ECHO OFF
 
-rem create the objects and output directory and delete any files from previous build
-md "%OBJDIR%" >NUL 2>&1
-del "%OUTDIR%\Notepad2.exe" >NUL 2>&1
-del "%OBJDIR%\*.idb" >NUL 2>&1
-del "%OBJDIR%\*.obj" >NUL 2>&1
-del "%OBJDIR%\*.pdb" >NUL 2>&1
+IF /I "%1"=="" CALL :SUBMSG "ERROR" "Don't run this script directly, use build.cmd instead!"
 
-ECHO. && ECHO:______________________________
-ECHO:[INFO] compiling stage...
-ECHO:______________________________ && ECHO.
+rem create the objects and output directory and delete any files from previous build
+MD "%OBJDIR%" >NUL 2>&1
+DEL "%OUTDIR%\Notepad2.exe" >NUL 2>&1
+DEL "%OBJDIR%\*.idb" >NUL 2>&1
+DEL "%OBJDIR%\*.obj" >NUL 2>&1
+DEL "%OBJDIR%\*.pdb" >NUL 2>&1
+
+TITLE Building Notepad2 %1...
+CALL :SUBMSG "INFO" "%1 compilation started!"
 
 rem compiler command line
-IF /I "%1"=="x86" (
-  set CLADDCMD=/D "STATIC_BUILD" /D "SCI_LEXER" /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE" /D "WIN32" /D "_WIN32_WINNT=0x0501"
-)
-IF /I "%1"=="x64" (
-  set CLADDCMD=/D "STATIC_BUILD" /D "SCI_LEXER" /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE" /D "_WIN64" /D "_WIN32_WINNT=0x0502" /wd4133 /wd4244 /wd4267
-)
+CALL :SUBMSG "INFO" "compiling stage..."
 
-cl /Fo"%OBJDIR%/" /I "..\scintilla\include" /I "..\scintilla\src" /I "..\scintilla\win32" %CLADDCMD% /c /EHsc /MD /O2 /GS /GT /GL /W3 /MP^
+IF /I "%1"=="x86" (SET CLADDCMD=/D "WIN32" /D "_WIN32_WINNT=0x0501")
+IF /I "%1"=="x64" (SET CLADDCMD=/D "_WIN64" /D "_WIN32_WINNT=0x0502" /wd4133 /wd4244 /wd4267)
+
+cl /Fo"%OBJDIR%/" /I "..\scintilla\include" /I "..\scintilla\src" /I "..\scintilla\win32"^
+ /D "STATIC_BUILD" /D "SCI_LEXER" /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE" %CLADDCMD%^
+ /c /EHsc /MD /O2 /GS /GT /GL /W3 /MP^
  /Tp "..\scintilla\src\AutoComplete.cxx"^
  /Tp "..\scintilla\src\CallTip.cxx"^
  /Tp "..\scintilla\src\CellBuffer.cxx"^
@@ -76,35 +77,27 @@ cl /Fo"%OBJDIR%/" /I "..\scintilla\include" /I "..\scintilla\src" /I "..\scintil
  /Tc "..\src\Styles.c"^
  /Tp "..\src\Print.cpp"
 
-IF %ERRORLEVEL% NEQ 0 GOTO :ErrorDetected
-
-ECHO. && ECHO:______________________________
-ECHO:[INFO] resource compiler stage...
-ECHO:______________________________ && ECHO.
+IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
 rem resource compiler command line
-IF /I "%1"=="x86" (
-  set RCADDCMD=/d "WIN32"
-)
-IF /I "%1"=="x64" (
-  set RCADDCMD=/d "_WIN64"
-)
+CALL :SUBMSG "INFO" "resource compiler stage..."
+
+IF /I "%1"=="x86" (SET RCADDCMD=/d "WIN32")
+IF /I "%1"=="x64" (SET RCADDCMD=/d "_WIN64")
 
 rc /d "_UNICODE" /d "UNICODE" %RCADDCMD% /fo"%OBJDIR%/Notepad2.res" "..\src\Notepad2.rc"
-IF %ERRORLEVEL% NEQ 0 GOTO :ErrorDetected
-
-ECHO. && ECHO:______________________________
-ECHO:[INFO] linking stage...
-ECHO:______________________________ && ECHO.
+IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
 rem linker command line
+CALL :SUBMSG "INFO" "linking stage..."
+
 IF /I "%1"=="x86" (
-  set LNKADDCMD=/SUBSYSTEM:WINDOWS,5.01 /MACHINE:X86
-  set WDK_LIB=msvcrt_winxp.obj
+  SET LNKADDCMD=/SUBSYSTEM:WINDOWS,5.01 /MACHINE:X86
+  SET WDK_LIB=msvcrt_winxp.obj
 )
 IF /I "%1"=="x64" (
-  set LNKADDCMD=/SUBSYSTEM:WINDOWS,5.02 /MACHINE:X64
-  set WDK_LIB=msvcrt_win2003.obj
+  SET LNKADDCMD=/SUBSYSTEM:WINDOWS,5.02 /MACHINE:X64
+  SET WDK_LIB=msvcrt_win2003.obj
 )
 
 link /OUT:"%OUTDIR%/Notepad2.exe" /INCREMENTAL:NO /RELEASE %LNKADDCMD% /OPT:REF /OPT:ICF /DYNAMICBASE /NXCOMPAT^
@@ -168,24 +161,24 @@ link /OUT:"%OUTDIR%/Notepad2.exe" /INCREMENTAL:NO /RELEASE %LNKADDCMD% /OPT:REF 
  "%OBJDIR%\XPM.obj"^
  "%WDK_LIB%"
 
-IF %ERRORLEVEL% NEQ 0 GOTO :ErrorDetected
-
-ECHO. && ECHO:______________________________
-ECHO:[INFO] manifest stage...
-ECHO:______________________________ && ECHO.
+IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
 rem manifest tool command line
+CALL :SUBMSG "INFO" "manifest stage..."
 "%SDKDIR%\Bin\mt.exe" -manifest "..\res\Notepad2.exe.manifest" -outputresource:"%OUTDIR%\Notepad2.exe;#1"
-IF %ERRORLEVEL% NEQ 0 GOTO :ErrorDetected
+IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
-ECHO. && ECHO:______________________________
-GOTO :EOF
+CALL :SUBMSG "INFO" "%1 compilation finished!"
+EXIT /B
 
 
-:ErrorDetected
-ECHO. && ECHO:______________________________
-ECHO:[ERROR] Compilation failed!!!
-ECHO:______________________________ && ECHO.
-
-PAUSE
-EXIT
+:SUBMSG
+ECHO.&&ECHO:______________________________
+ECHO:[%~1] %~2
+ECHO:______________________________&&ECHO.
+IF /I "%~1"=="ERROR" (
+  PAUSE
+  EXIT
+) ELSE (
+  EXIT /B
+)
