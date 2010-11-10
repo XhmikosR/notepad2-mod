@@ -1,0 +1,379 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>Notepad2</ProjectName>
+    <ProjectGuid>{A39FCE76-EE3C-4357-9969-0EBA6FC6039D}</ProjectGuid>
+    <RootNamespace>Notepad2</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>Intel Parallel Composer 2011</PlatformToolset>
+    <InterproceduralOptimization>true</InterproceduralOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>Intel Parallel Composer 2011</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>Intel Parallel Composer 2011</PlatformToolset>
+    <InterproceduralOptimization>true</InterproceduralOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>Intel Parallel Composer 2011</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)bin\ICL12\$(Configuration)_$(Platform)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)bin\ICL12\$(Configuration)_$(Platform)\obj\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)bin\ICL12\$(Configuration)_$(Platform)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)bin\ICL12\$(Configuration)_$(Platform)\obj\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)bin\ICL12\$(Configuration)_$(Platform)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)bin\ICL12\$(Configuration)_$(Platform)\obj\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)bin\ICL12\$(Configuration)_$(Platform)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)bin\ICL12\$(Configuration)_$(Platform)\obj\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <PreBuildEvent>
+      <Message>Generating SVN revision...</Message>
+      <Command>cd ..
+update_version.bat
+</Command>
+    </PreBuildEvent>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\scintilla\include;..\scintilla\src;..\scintilla\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;STATIC_BUILD;SCI_LEXER;NDEBUG;UNICODE;_UNICODE;_CRT_SECURE_NO_WARNINGS;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalOptions>/SUBSYSTEM:WINDOWS,5.0 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>comctl32.lib;shlwapi.lib;imm32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <PreBuildEvent>
+      <Message>Generating SVN revision...</Message>
+      <Command>cd ..
+update_version.bat
+</Command>
+    </PreBuildEvent>
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\scintilla\include;..\scintilla\src;..\scintilla\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;STATIC_BUILD;SCI_LEXER;NDEBUG;UNICODE;_UNICODE;_CRT_SECURE_NO_WARNINGS;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalOptions>/SUBSYSTEM:WINDOWS,5.02 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>comctl32.lib;shlwapi.lib;imm32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <PreBuildEvent>
+      <Message>Generating SVN revision...</Message>
+      <Command>cd ..
+update_version.bat
+</Command>
+    </PreBuildEvent>
+    <ClCompile>
+      <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>..\scintilla\include;..\scintilla\src;..\scintilla\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;STATIC_BUILD;SCI_LEXER;NDEBUG;UNICODE;_UNICODE;_CRT_SECURE_NO_WARNINGS;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <GlobalOptimizations>true</GlobalOptimizations>
+      <OptimizeForWindowsApplication>true</OptimizeForWindowsApplication>
+      <GenerateAlternateCodePaths>SSSE3</GenerateAlternateCodePaths>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalOptions>/SUBSYSTEM:WINDOWS,5.0 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>comctl32.lib;shlwapi.lib;imm32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>NotSet</SubSystem>
+      <LargeAddressAware>true</LargeAddressAware>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <Manifest>
+      <AdditionalManifestFiles>..\res\Notepad2.exe.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <PreBuildEvent>
+      <Message>Generating SVN revision...</Message>
+      <Command>cd ..
+update_version.bat
+</Command>
+    </PreBuildEvent>
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>..\scintilla\include;..\scintilla\src;..\scintilla\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;STATIC_BUILD;SCI_LEXER;NDEBUG;UNICODE;_UNICODE;_CRT_SECURE_NO_WARNINGS;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4133;4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <GlobalOptimizations>true</GlobalOptimizations>
+      <OptimizeForWindowsApplication>true</OptimizeForWindowsApplication>
+      <GenerateAlternateCodePaths>SSSE3</GenerateAlternateCodePaths>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalOptions>/SUBSYSTEM:WINDOWS,5.02 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>comctl32.lib;shlwapi.lib;imm32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>NotSet</SubSystem>
+      <LargeAddressAware>true</LargeAddressAware>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+    <Manifest>
+      <AdditionalManifestFiles>..\res\Notepad2.exe.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="Dialogs.h" />
+    <ClInclude Include="Dlapi.h" />
+    <ClInclude Include="Edit.h" />
+    <ClInclude Include="Helpers.h" />
+    <ClInclude Include="Notepad2.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="SciCall.h" />
+    <ClInclude Include="Styles.h" />
+    <ClInclude Include="Version.h" />
+    <ClInclude Include="..\scintilla\win32\PlatformRes.h" />
+    <ClInclude Include="..\scintilla\src\AutoComplete.h" />
+    <ClInclude Include="..\scintilla\src\CallTip.h" />
+    <ClInclude Include="..\scintilla\src\CellBuffer.h" />
+    <ClInclude Include="..\scintilla\src\CharacterSet.h" />
+    <ClInclude Include="..\scintilla\src\CharClassify.h" />
+    <ClInclude Include="..\scintilla\src\ContractionState.h" />
+    <ClInclude Include="..\scintilla\src\Decoration.h" />
+    <ClInclude Include="..\scintilla\src\Document.h" />
+    <ClInclude Include="..\scintilla\src\DocumentAccessor.h" />
+    <ClInclude Include="..\scintilla\src\Editor.h" />
+    <ClInclude Include="..\scintilla\src\ExternalLexer.h" />
+    <ClInclude Include="..\scintilla\src\Indicator.h" />
+    <ClInclude Include="..\scintilla\src\KeyMap.h" />
+    <ClInclude Include="..\scintilla\src\LineMarker.h" />
+    <ClInclude Include="..\scintilla\src\Partitioning.h" />
+    <ClInclude Include="..\scintilla\src\PerLine.h" />
+    <ClInclude Include="..\scintilla\src\PositionCache.h" />
+    <ClInclude Include="..\scintilla\src\RESearch.h" />
+    <ClInclude Include="..\scintilla\src\RunStyles.h" />
+    <ClInclude Include="..\scintilla\src\ScintillaBase.h" />
+    <ClInclude Include="..\scintilla\src\Selection.h" />
+    <ClInclude Include="..\scintilla\src\SplitVector.h" />
+    <ClInclude Include="..\scintilla\src\Style.h" />
+    <ClInclude Include="..\scintilla\src\StyleContext.h" />
+    <ClInclude Include="..\scintilla\src\SVector.h" />
+    <ClInclude Include="..\scintilla\src\UniConversion.h" />
+    <ClInclude Include="..\scintilla\src\ViewStyle.h" />
+    <ClInclude Include="..\scintilla\src\XPM.h" />
+    <ClInclude Include="..\scintilla\include\Accessor.h" />
+    <ClInclude Include="..\scintilla\include\KeyWords.h" />
+    <ClInclude Include="..\scintilla\include\Platform.h" />
+    <ClInclude Include="..\scintilla\include\PropSet.h" />
+    <ClInclude Include="..\scintilla\include\SciLexer.h" />
+    <ClInclude Include="..\scintilla\include\Scintilla.h" />
+    <ClInclude Include="..\scintilla\include\ScintillaWidget.h" />
+    <ClInclude Include="..\scintilla\include\WindowAccessor.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\res\Copy.cur" />
+    <None Include="..\res\Encoding.bmp" />
+    <None Include="..\scintilla\win32\Margin.cur" />
+    <None Include="..\res\Next.bmp" />
+    <None Include="..\res\Notepad2.ico" />
+    <None Include="..\res\Open.bmp" />
+    <None Include="..\res\Pick.bmp" />
+    <None Include="..\res\Prev.bmp" />
+    <None Include="..\res\Run.ico" />
+    <None Include="..\res\Styles.ico" />
+    <None Include="..\res\Toolbar.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="..\res\Notepad2.exe.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Notepad2.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Dialogs.c" />
+    <ClCompile Include="Dlapi.c" />
+    <ClCompile Include="Edit.c" />
+    <ClCompile Include="Helpers.c" />
+    <ClCompile Include="Notepad2.c" />
+    <ClCompile Include="Print.cpp" />
+    <ClCompile Include="Styles.c" />
+    <ClCompile Include="..\scintilla\win32\PlatWin.cxx" />
+    <ClCompile Include="..\scintilla\win32\ScintillaWin.cxx" />
+    <ClCompile Include="..\scintilla\src\AutoComplete.cxx" />
+    <ClCompile Include="..\scintilla\src\CallTip.cxx" />
+    <ClCompile Include="..\scintilla\src\CellBuffer.cxx" />
+    <ClCompile Include="..\scintilla\src\CharClassify.cxx" />
+    <ClCompile Include="..\scintilla\src\ContractionState.cxx" />
+    <ClCompile Include="..\scintilla\src\Decoration.cxx" />
+    <ClCompile Include="..\scintilla\src\Document.cxx" />
+    <ClCompile Include="..\scintilla\src\DocumentAccessor.cxx" />
+    <ClCompile Include="..\scintilla\src\Editor.cxx" />
+    <ClCompile Include="..\scintilla\src\ExternalLexer.cxx" />
+    <ClCompile Include="..\scintilla\src\Indicator.cxx" />
+    <ClCompile Include="..\scintilla\src\KeyMap.cxx" />
+    <ClCompile Include="..\scintilla\src\KeyWords.cxx" />
+    <ClCompile Include="..\scintilla\src\LexAsm.cxx" />
+    <ClCompile Include="..\scintilla\src\LexAU3.cxx" />
+    <ClCompile Include="..\scintilla\src\LexBash.cxx" />
+    <ClCompile Include="..\scintilla\src\LexConf.cxx" />
+    <ClCompile Include="..\scintilla\src\LexCPP.cxx" />
+    <ClCompile Include="..\scintilla\src\LexCSS.cxx" />
+    <ClCompile Include="..\scintilla\src\LexHTML.cxx" />
+    <ClCompile Include="..\scintilla\src\LexInno.cxx" />
+    <ClCompile Include="..\scintilla\src\LexLua.cxx" />
+    <ClCompile Include="..\scintilla\src\LexNsis.cxx" />
+    <ClCompile Include="..\scintilla\src\LexOthers.cxx" />
+    <ClCompile Include="..\scintilla\src\LexPascal.cxx" />
+    <ClCompile Include="..\scintilla\src\LexPerl.cxx" />
+    <ClCompile Include="..\scintilla\src\LexPowerShell.cxx" />
+    <ClCompile Include="..\scintilla\src\LexPython.cxx" />
+    <ClCompile Include="..\scintilla\src\LexRuby.cxx" />
+    <ClCompile Include="..\scintilla\src\LexSQL.cxx" />
+    <ClCompile Include="..\scintilla\src\LexTCL.cxx" />
+    <ClCompile Include="..\scintilla\src\LexVB.cxx" />
+    <ClCompile Include="..\scintilla\src\LineMarker.cxx" />
+    <ClCompile Include="..\scintilla\src\PerLine.cxx" />
+    <ClCompile Include="..\scintilla\src\PositionCache.cxx" />
+    <ClCompile Include="..\scintilla\src\PropSet.cxx" />
+    <ClCompile Include="..\scintilla\src\RESearch.cxx" />
+    <ClCompile Include="..\scintilla\src\RunStyles.cxx" />
+    <ClCompile Include="..\scintilla\src\ScintillaBase.cxx" />
+    <ClCompile Include="..\scintilla\src\Selection.cxx" />
+    <ClCompile Include="..\scintilla\src\Style.cxx" />
+    <ClCompile Include="..\scintilla\src\StyleContext.cxx" />
+    <ClCompile Include="..\scintilla\src\UniConversion.cxx" />
+    <ClCompile Include="..\scintilla\src\ViewStyle.cxx" />
+    <ClCompile Include="..\scintilla\src\WindowAccessor.cxx" />
+    <ClCompile Include="..\scintilla\src\XPM.cxx" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
