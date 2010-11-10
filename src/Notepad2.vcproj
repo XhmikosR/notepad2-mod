@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)ICL11\$(ConfigurationName)_$(PlatformName)\"
-			IntermediateDirectory="$(SolutionDir)ICL11\$(ConfigurationName)_$(PlatformName)\"
+			OutputDirectory="$(SolutionDir)bin\ICL11\$(ConfigurationName)_$(PlatformName)\"
+			IntermediateDirectory="$(SolutionDir)bin\ICL11\$(ConfigurationName)_$(PlatformName)\obj\"
 			ConfigurationType="1"
 			>
 			<Tool
@@ -98,8 +98,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(SolutionDir)ICL11\$(ConfigurationName)_$(PlatformName)\"
-			IntermediateDirectory="$(SolutionDir)ICL11\$(ConfigurationName)_$(PlatformName)\"
+			OutputDirectory="$(SolutionDir)bin\ICL11\$(ConfigurationName)_$(PlatformName)\"
+			IntermediateDirectory="$(SolutionDir)bin\ICL11\$(ConfigurationName)_$(PlatformName)\obj\"
 			ConfigurationType="1"
 			>
 			<Tool
@@ -176,8 +176,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)ICL11\$(ConfigurationName)_$(PlatformName)\"
-			IntermediateDirectory="$(SolutionDir)ICL11\$(ConfigurationName)_$(PlatformName)\"
+			OutputDirectory="$(SolutionDir)bin\ICL11\$(ConfigurationName)_$(PlatformName)\"
+			IntermediateDirectory="$(SolutionDir)bin\ICL11\$(ConfigurationName)_$(PlatformName)\obj\"
 			ConfigurationType="1"
 			WholeProgramOptimization="1"
 			>
@@ -200,7 +200,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/MP"
+				AdditionalOptions=""
 				Optimization="2"
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
@@ -264,8 +264,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(SolutionDir)ICL11\$(ConfigurationName)_$(PlatformName)\"
-			IntermediateDirectory="$(SolutionDir)ICL11\$(ConfigurationName)_$(PlatformName)\"
+			OutputDirectory="$(SolutionDir)bin\ICL11\$(ConfigurationName)_$(PlatformName)\"
+			IntermediateDirectory="$(SolutionDir)bin\ICL11\$(ConfigurationName)_$(PlatformName)\obj\"
 			ConfigurationType="1"
 			WholeProgramOptimization="1"
 			>
@@ -289,7 +289,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/MP"
+				AdditionalOptions=""
 				Optimization="2"
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
