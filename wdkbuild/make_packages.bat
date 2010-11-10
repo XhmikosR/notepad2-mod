@@ -63,8 +63,7 @@ EXIT /B
 TITLE Creating the %2 ZIP file...
 CALL :SUBMSG "INFO" "Creating the %2 ZIP file..."
 
-MD "temp_zip" >NUL 2>&1
-MD "packages" >NUL 2>&1
+MD "temp_zip" "packages" >NUL 2>&1
 COPY "..\License.txt" "temp_zip\" /Y /V
 COPY "..\%1\Notepad2.exe" "temp_zip\" /Y /V
 COPY "..\distrib\res\cabinet\notepad2.ini" "temp_zip\Notepad2.ini" /Y /V
@@ -137,8 +136,7 @@ MOVE setup.%BINDIR%\setuplite.exe ..\wdkbuild\packages\Notepad2-mod_Setup_Silent
 rem Cleanup
 RD setup.%BINDIR% >NUL 2>&1
 RD /Q binaries >NUL 2>&1
-RD /Q /S addon >NUL 2>&1
-RD /Q /S obj >NUL 2>&1
+RD /Q /S addon obj >NUL 2>&1
 
 POPD
 GOTO :EOF
