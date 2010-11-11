@@ -110,6 +110,7 @@ update_version.bat
     <ResourceCompile>
       <PreprocessorDefinitions>_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/SUBSYSTEM:WINDOWS,5.0 %(AdditionalOptions)</AdditionalOptions>
@@ -132,7 +133,7 @@ update_version.bat
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\scintilla\include;..\scintilla\src;..\scintilla\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;STATIC_BUILD;SCI_LEXER;NDEBUG;UNICODE;_UNICODE;_CRT_SECURE_NO_WARNINGS;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WIN64;STATIC_BUILD;SCI_LEXER;NDEBUG;UNICODE;_UNICODE;_CRT_SECURE_NO_WARNINGS;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -144,6 +145,7 @@ update_version.bat
     <ResourceCompile>
       <PreprocessorDefinitions>_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/SUBSYSTEM:WINDOWS,5.02 %(AdditionalOptions)</AdditionalOptions>
@@ -184,6 +186,7 @@ update_version.bat
     <ResourceCompile>
       <PreprocessorDefinitions>_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/SUBSYSTEM:WINDOWS,5.0 %(AdditionalOptions)</AdditionalOptions>
@@ -219,7 +222,7 @@ update_version.bat
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <AdditionalIncludeDirectories>..\scintilla\include;..\scintilla\src;..\scintilla\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;STATIC_BUILD;SCI_LEXER;NDEBUG;UNICODE;_UNICODE;_CRT_SECURE_NO_WARNINGS;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WIN64;STATIC_BUILD;SCI_LEXER;NDEBUG;UNICODE;_UNICODE;_CRT_SECURE_NO_WARNINGS;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
@@ -234,6 +237,7 @@ update_version.bat
     <ResourceCompile>
       <PreprocessorDefinitions>_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/SUBSYSTEM:WINDOWS,5.02 %(AdditionalOptions)</AdditionalOptions>
