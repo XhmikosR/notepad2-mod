@@ -715,31 +715,6 @@ EDITLEXER lexPL = { SCLEX_PERL, 63014, L"Perl Script", L"pl; pm; cgi; pod", L"",
                     { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_RUBY = {
-"__FILE__ __LINE__ alias and begin break case class def defined? do else elsif end ensure "
-"false for in if module next nil not or redo rescue retry return self super then true "
-"undef unless until when while yield",
-"", "", "", "", "", "", "", "" };
-
-EDITLEXER lexRUBY = { SCLEX_RUBY, 63304, L"Ruby", L"rb;ruby", L"", &KeyWords_RUBY, {
-                    { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
-                    //{ SCE_P_DEFAULT, L"Default", L"", L"" },
-                    { SCE_P_COMMENTLINE, 63127, L"Comment", L"fore:#007F00", L"" },
-                    { SCE_P_COMMENTBLOCK, 63305, L"Comment Block", L"fore:#007F00", L"" },
-                    { SCE_P_WORD, 63128, L"Keyword", L"fore:#00007F;bold", L"" },
-                    { SCE_P_IDENTIFIER, 63129, L"Identifier", L"", L"" },
-                    { SCE_P_NUMBER, 63130, L"Number", L"fore:#007F7F", L"" },
-                    { SCE_P_OPERATOR, 63132, L"Operator", L"bold", L"" },
-                    { SCE_P_STRING, 63211, L"String double quoted", L"fore:#FF8000", L"" },
-                    { SCE_P_CHARACTER, 63212, L"String single quoted", L"fore:#FF8000", L"" },
-                    { SCE_P_STRINGEOL, 63303, L"String not closed", L"fore:#FF8000", L"" },
-                    { SCE_P_TRIPLEDOUBLE, 63244, L"String triple double quotes", L"fore:#FF8000", L"" },
-                    { SCE_P_TRIPLE, 63245, L"String triple single quotes", L"fore:#FF8000", L"" },
-                    { SCE_P_CLASSNAME, 63246, L"Class name", L"fore:#0000FF;bold", L"" },
-                    { SCE_P_DEFNAME, 63247, L"Function name", L"fore:#007F7F;bold", L"" },
-                    { -1, 00000, L"", L"", L"" } } };
-
-
 KEYWORDLIST KeyWords_INI = {
 "", "", "", "", "", "", "", "", "" };
 
@@ -832,140 +807,6 @@ EDITLEXER lexSQL = { SCLEX_SQL, 63018, L"SQL Query", L"sql", L"", &KeyWords_SQL,
                      { SCE_SQL_NUMBER, 63130, L"Number", L"fore:#FF0000", L"" },
                      { SCE_SQL_OPERATOR, 63132, L"Operator", L"bold; fore:#800080", L"" },
                      { -1, 00000, L"", L"", L"" } } };
-
-
-KEYWORDLIST KeyWords_NSIS = {
-"!addincludedir !addplugindir !appendfile !cd !define !delfile !echo !else !endif !error "
-"!execute !if !ifdef !ifmacrodef !ifmacrondef !ifndef !include !insertmacro !macro "
-"!macroend !packhdr !system !tempfile !undef !verbose !warning "
-".onguiend .onguiinit .oninit .oninstfailed .oninstsuccess .onmouseoversection "
-".onrebootfailed .onselchange .onuserabort .onverifyinstdir "
-"un.onguiend un.onguiinit un.oninit un.onrebootfailed un.onuninstfailed "
-"un.onuninstsuccess un.onuserabort "
-"abort addbrandingimage addsize allowrootdirinstall allowskipfiles autoclosewindow "
-"bannertrimpath bgfont bggradient brandingtext bringtofront call callinstdll "
-"caption changeui checkbitmap clearerrors completedtext componenttext copyfiles "
-"crccheck createdirectory createfont createshortcut delete deleteinisec deleteinistr "
-"deleteregkey deleteregvalue detailprint detailsbuttontext dirstate dirtext dirvar "
-"dirverify enablewindow enumregkey enumregvalue exch exec execshell execwait "
-"expandenvstrings file filebufsize fileclose fileerrortext fileopen fileread filereadbyte "
-"fileseek filewrite filewritebyte findclose findfirst findnext findwindow flushini "
-"getcurinsttype getcurrentaddress getdlgitem getdllversion getdllversionlocal geterrorlevel "
-"getfiletime getfiletimelocal getfullpathname getfunctionaddress getinstdirerror "
-"getlabeladdress gettempfilename goto hidewindow icon ifabort iferrors iffileexists "
-"ifrebootflag ifsilent initpluginsdir installbuttontext installcolors installdir "
-"installdirregkey instprogressflags insttypegettext insttypesettext intcmp intcmpu intfmt "
-"intop iswindow langstring licensebkcolor licensedata licenseforceselection licenselangstring "
-"licensetext loadlanguagefile lockwindow logset logtext messagebox miscbuttontext name nop "
-"outfile page pop push quit readenvstr readinistr readregdword readregstr reboot regdll "
-"rename requestexecutionlevel reservefile return rmdir searchpath sectiongetflags "
-"sectiongetinsttypes sectiongetsize sectiongettext sectionin sectionsetflags sectionsetinsttypes "
-"sectionsetsize sectionsettext sendmessage setautoclose setbrandingimage setcompress setcompressor "
-"setcompressordictsize setctlcolors setcurinsttype setdatablockoptimize setdatesave setdetailsprint "
-"setdetailsview seterrorlevel seterrors setfileattributes setfont setoutpath setoverwrite "
-"setpluginunload setrebootflag setregview setshellvarcontext setsilent showinstdetails "
-"showuninstdetails showwindow silentinstall silentuninstall sleep spacetexts strcmp strcmps "
-"strcpy strlen subcaption uninstallbuttontext uninstallcaption uninstallicon uninstallsubcaption "
-"uninstalltext uninstpage unregdll var viaddversionkey viproductversion windowicon writeinistr "
-"writeregbin writeregdword writeregexpandstr writeregstr writeuninstaller xpstyle",
-"${nsisdir} $0 $1 $2 $3 $4 $5 $6 $7 $8 $9 $r0 $r1 $r2 $r3 $r4 $r5 $r6 $r7 $r8 $r9 "
-"$instdir $outdir $cmdline $language "
-"$programfiles $programfiles32 $programfiles64 $commonfiles $commonfiles32 $commonfiles64 "
-"$desktop $exedir $exefile $exepath $windir $sysdir $temp $startmenu $smprograms $smstartup "
-"$quicklaunch $documents $sendto $recent $favorites $music $pictures $videos $nethood $fonts "
-"$templates $appdata $localappdata $printhood $internet_cache $cookies $history $profile "
-"$admintools $resources $resources_localized $cdburn_area $hwndparent $pluginsdir "
-"${__date__} ${__file__} ${__function__} ${__global__} ${__line__} ${__pageex__} ${__section__} "
-"${__time__} ${__timestamp__} ${__uninstall__}",
-"oname rebootok nonfatal ifempty nounload silent filesonly short "
-"mb_ok mb_okcancel mb_abortretryignore mb_retrycancel mb_yesno mb_yesnocancel mb_iconexclamation "
-"mb_iconinformation mb_iconquestion mb_iconstop mb_usericon mb_topmost mb_setforeground mb_right "
-"mb_rtlreading mb_defbutton1 mb_defbutton2 mb_defbutton3 mb_defbutton4 idabort idcancel idignore "
-"idno idok idretry idyes sd "
-"current all timeout imgid resizetofit listonly textonly both branding "
-"hkcr hkey_classes_root hklm hkey_local_machine hkcu hkey_current_user hku  hkey_users "
-"hkcc hkey_current_config hkdd hkey_dyn_data hkpd hkey_performance_data shctx shell_context silent"
-"left right top bottom true false on off italic underline strike trimleft trimright trimcenter "
-"idd_license idd_dir idd_selcom idd_inst idd_instfiles idd_uninst idd_verify force windows nocustom "
-"customstring componentsonlyoncustom gray none user highest admin lang hide show nevershow normal "
-"silent silentlog auto solid final zlib bzip2 lzma try ifnewer ifdiff lastused manual alwaysoff "
-"normal file_attribute_normal archive file_attribute_archive hidden file_attribute_hidden "
-"offline file_attribute_offline readonly file_attribute_readonly system file_attribute_system "
-"temporary file_attribute_temporary custom license components directory instfiles uninstconfirm 32 64 "
-"enablecancel",
-"", "", "", "", "", "" };
-
-
-EDITLEXER lexNSIS = { SCLEX_NSIS, 63284, L"NSIS Script", L"nsi; nsh", L"", &KeyWords_NSIS, {
-                      { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
-                    //{ SCE_NSIS_DEFAULT, L"Default", L"", L"" },
-                      { MULTI_STYLE(SCE_NSIS_COMMENT,SCE_NSIS_COMMENTBOX,0,0), 63127, L"Comment", L"fore:#008000", L"" },
-                      { MULTI_STYLE(SCE_NSIS_STRINGDQ,SCE_NSIS_STRINGLQ,SCE_NSIS_STRINGRQ,0), 63131, L"String", L"fore:#666666; back:#EEEEEE", L"" },
-                      { SCE_NSIS_FUNCTION, 63277, L"Function", L"fore:#0033CC", L"" },
-                      { SCE_NSIS_VARIABLE, 63249, L"Variable", L"fore:#CC3300", L"" },
-                      { SCE_NSIS_STRINGVAR, 63285, L"Variable within String", L"fore:#CC3300; back:#EEEEEE", L"" },
-                      { SCE_NSIS_NUMBER, 63130, L"Number", L"fore:#FF0000", L"" },
-                      { SCE_NSIS_LABEL, 63286, L"Constant", L"fore:#FF9900", L"" },
-                    //{ SCE_NSIS_USERDEFINED, L"User Defined", L"", L"" },
-                      { SCE_NSIS_SECTIONDEF, 63232, L"Section", L"fore:#0033CC", L"" },
-                      { SCE_NSIS_SUBSECTIONDEF, 63287, L"Sub Section", L"fore:#0033CC", L"" },
-                      { SCE_NSIS_SECTIONGROUP, 63288, L"Section Group", L"fore:#0033CC", L"" },
-                      { SCE_NSIS_FUNCTIONDEF, 63289, L"Function Definition", L"fore:#0033CC", L"" },
-                      { SCE_NSIS_PAGEEX, 63290, L"PageEx", L"fore:#0033CC", L"" },
-                      { SCE_NSIS_IFDEFINEDEF, 63291, L"If Definition", L"fore:#0033CC", L"" },
-                      { SCE_NSIS_MACRODEF, 63292, L"Macro Definition", L"fore:#0033CC", L"" },
-                      { -1, 00000, L"", L"", L"" } } };
-
-
-KEYWORDLIST KeyWords_INNO = {
-"code components custommessages dirs files icons ini installdelete langoptions languages messages "
-"registry run setup types tasks uninstalldelete uninstallrun _istool",
-"allowcancelduringinstall allownoicons allowrootdirectory allowuncpath alwaysrestart alwaysshowcomponentslist "
-"alwaysshowdironreadypage alwaysshowgrouponreadypage alwaysusepersonalgroup appcomments appcontact appcopyright "
-"appenddefaultdirname appenddefaultgroupname appid appmodifypath appmutex appname apppublisher apppublisherurl "
-"appreadmefile appsupporturl appupdatesurl appvername appversion architecturesallowed "
-"architecturesinstallin64bitmode backcolor backcolor2 backcolordirection backsolid changesassociations "
-"changesenvironment compression copyrightfontname copyrightfontsize createappdir createuninstallregkey "
-"defaultdirname defaultgroupname defaultuserinfoname defaultuserinfoorg defaultuserinfoserial dialogfontname "
-"dialogfontsize direxistswarning disabledirpage disablefinishedpage disableprogramgrouppage disablereadymemo "
-"disablereadypage disablestartupprompt diskclustersize diskslicesize diskspanning enabledirdoesntexistwarning "
-"encryption extradiskspacerequired flatcomponentslist infoafterfile infobeforefile internalcompresslevel "
-"languagedetectionmethod languagecodepage languageid languagename licensefile mergeduplicatefiles minversion "
-"onlybelowversion outputbasefilename outputdir outputmanifestfile password privilegesrequired reservebytes "
-"restartifneededbyrun setupiconfile showcomponentsizes showlanguagedialog showtaskstreelines slicesperdisk "
-"solidcompression sourcedir timestamprounding timestampsinutc titlefontname titlefontsize touchdate touchtime "
-"uninstallable uninstalldisplayicon uninstalldisplayname uninstallfilesdir uninstalllogmode uninstallrestartcomputer "
-"updateuninstalllogappname usepreviousappdir usepreviousgroup useprevioussetuptype useprevioustasks "
-"versioninfoproductname useprevioususerinfo userinfopage usesetupldr versioninfocompany versioninfocopyright "
-"versioninfodescription versioninfoproductversion versioninfotextversion versioninfoversion versioninfoproducttextversion "
-"welcomefontname welcomefontsize windowshowcaption windowstartmaximized windowresizable windowvisible wizardimagebackcolor "
-"wizardimagefile wizardimagestretch wizardsmallimagefile",
-"afterinstall attribs beforeinstall check comment components copymode description destdir destname excludes "
-"extradiskspacerequired filename flags fontinstall groupdescription hotkey infoafterfile infobeforefile iconfilename "
-"iconindex key languages licensefile messagesfile minversion name onlybelowversion parameters permissions root "
-"runonceid section source statusmsg string subkey tasks terminalservicesaware type types valuedata valuename valuetype workingdir",
-"append define dim else emit endif endsub error expr file for if ifdef "
-"ifexist ifndef ifnexist include insert pragma sub undef",
-"begin break case const continue do downto else end except finally for "
-"function if of procedure repeat then to try until uses var while with",
-"", "", "", "" };
-
-
-EDITLEXER lexINNO = { SCLEX_INNOSETUP, 63293, L"Inno Setup Script", L"iss", L"", &KeyWords_INNO, {
-                      { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
-                    //{ SCE_INNO_DEFAULT, L"Default", L"", L"" },
-                      { SCE_INNO_COMMENT, 63127, L"Comment", L"fore:#008000", L"" },
-                      { SCE_INNO_KEYWORD, 63128, L"Keyword", L"fore:#0000FF", L"" },
-                      { SCE_INNO_PARAMETER, 63294, L"Parameter", L"fore:#0000FF", L"" },
-                      { SCE_INNO_SECTION, 63232, L"Section", L"fore:#000080; bold", L"" },
-                      { SCE_INNO_PREPROC, 63133, L"Preprocessor", L"fore:#CC0000", L"" },
-                      { SCE_INNO_INLINE_EXPANSION, 63295, L"Inline Expansion", L"fore:#800080", L"" },
-                      { SCE_INNO_COMMENT_PASCAL, 63296, L"Pascal Comment", L"fore:#008000", L"" },
-                      { SCE_INNO_KEYWORD_PASCAL, 63297, L"Pascal Keyword", L"fore:#0000FF", L"" },
-                    //{ SCE_INNO_KEYWORD_USER, L"User Defined", L"", L"" },
-                      { MULTI_STYLE(SCE_INNO_STRING_DOUBLE,SCE_INNO_STRING_SINGLE,0,0), 63131, L"String", L"fore:#008080", L"" },
-                    //{ SCE_INNO_IDENTIFIER, L"Identifier", L"", L"" },
-                      { -1, 00000, L"", L"", L"" } } };
 
 
 KEYWORDLIST KeyWords_PY = {
@@ -1121,6 +962,165 @@ EDITLEXER lexPS = { SCLEX_POWERSHELL, 63021, L"PowerShell Script", L"ps1; psc1",
                     { SCE_POWERSHELL_VARIABLE, 63249, L"Variable", L"fore:#0A246A", L"" },
                     { SCE_POWERSHELL_CMDLET, 63250, L"Cmdlet", L"fore:#804000; back:#FFF1A8", L"" },
                     { SCE_POWERSHELL_ALIAS, 63251, L"Alias", L"bold; fore:#0A246A", L"" },
+                    { -1, 00000, L"", L"", L"" } } };
+
+
+KEYWORDLIST KeyWords_NSIS = {
+"!addincludedir !addplugindir !appendfile !cd !define !delfile !echo !else !endif !error "
+"!execute !if !ifdef !ifmacrodef !ifmacrondef !ifndef !include !insertmacro !macro "
+"!macroend !packhdr !system !tempfile !undef !verbose !warning "
+".onguiend .onguiinit .oninit .oninstfailed .oninstsuccess .onmouseoversection "
+".onrebootfailed .onselchange .onuserabort .onverifyinstdir "
+"un.onguiend un.onguiinit un.oninit un.onrebootfailed un.onuninstfailed "
+"un.onuninstsuccess un.onuserabort "
+"abort addbrandingimage addsize allowrootdirinstall allowskipfiles autoclosewindow "
+"bannertrimpath bgfont bggradient brandingtext bringtofront call callinstdll "
+"caption changeui checkbitmap clearerrors completedtext componenttext copyfiles "
+"crccheck createdirectory createfont createshortcut delete deleteinisec deleteinistr "
+"deleteregkey deleteregvalue detailprint detailsbuttontext dirstate dirtext dirvar "
+"dirverify enablewindow enumregkey enumregvalue exch exec execshell execwait "
+"expandenvstrings file filebufsize fileclose fileerrortext fileopen fileread filereadbyte "
+"fileseek filewrite filewritebyte findclose findfirst findnext findwindow flushini "
+"getcurinsttype getcurrentaddress getdlgitem getdllversion getdllversionlocal geterrorlevel "
+"getfiletime getfiletimelocal getfullpathname getfunctionaddress getinstdirerror "
+"getlabeladdress gettempfilename goto hidewindow icon ifabort iferrors iffileexists "
+"ifrebootflag ifsilent initpluginsdir installbuttontext installcolors installdir "
+"installdirregkey instprogressflags insttypegettext insttypesettext intcmp intcmpu intfmt "
+"intop iswindow langstring licensebkcolor licensedata licenseforceselection licenselangstring "
+"licensetext loadlanguagefile lockwindow logset logtext messagebox miscbuttontext name nop "
+"outfile page pop push quit readenvstr readinistr readregdword readregstr reboot regdll "
+"rename requestexecutionlevel reservefile return rmdir searchpath sectiongetflags "
+"sectiongetinsttypes sectiongetsize sectiongettext sectionin sectionsetflags sectionsetinsttypes "
+"sectionsetsize sectionsettext sendmessage setautoclose setbrandingimage setcompress setcompressor "
+"setcompressordictsize setctlcolors setcurinsttype setdatablockoptimize setdatesave setdetailsprint "
+"setdetailsview seterrorlevel seterrors setfileattributes setfont setoutpath setoverwrite "
+"setpluginunload setrebootflag setregview setshellvarcontext setsilent showinstdetails "
+"showuninstdetails showwindow silentinstall silentuninstall sleep spacetexts strcmp strcmps "
+"strcpy strlen subcaption uninstallbuttontext uninstallcaption uninstallicon uninstallsubcaption "
+"uninstalltext uninstpage unregdll var viaddversionkey viproductversion windowicon writeinistr "
+"writeregbin writeregdword writeregexpandstr writeregstr writeuninstaller xpstyle",
+"${nsisdir} $0 $1 $2 $3 $4 $5 $6 $7 $8 $9 $r0 $r1 $r2 $r3 $r4 $r5 $r6 $r7 $r8 $r9 "
+"$instdir $outdir $cmdline $language "
+"$programfiles $programfiles32 $programfiles64 $commonfiles $commonfiles32 $commonfiles64 "
+"$desktop $exedir $exefile $exepath $windir $sysdir $temp $startmenu $smprograms $smstartup "
+"$quicklaunch $documents $sendto $recent $favorites $music $pictures $videos $nethood $fonts "
+"$templates $appdata $localappdata $printhood $internet_cache $cookies $history $profile "
+"$admintools $resources $resources_localized $cdburn_area $hwndparent $pluginsdir "
+"${__date__} ${__file__} ${__function__} ${__global__} ${__line__} ${__pageex__} ${__section__} "
+"${__time__} ${__timestamp__} ${__uninstall__}",
+"oname rebootok nonfatal ifempty nounload silent filesonly short "
+"mb_ok mb_okcancel mb_abortretryignore mb_retrycancel mb_yesno mb_yesnocancel mb_iconexclamation "
+"mb_iconinformation mb_iconquestion mb_iconstop mb_usericon mb_topmost mb_setforeground mb_right "
+"mb_rtlreading mb_defbutton1 mb_defbutton2 mb_defbutton3 mb_defbutton4 idabort idcancel idignore "
+"idno idok idretry idyes sd "
+"current all timeout imgid resizetofit listonly textonly both branding "
+"hkcr hkey_classes_root hklm hkey_local_machine hkcu hkey_current_user hku  hkey_users "
+"hkcc hkey_current_config hkdd hkey_dyn_data hkpd hkey_performance_data shctx shell_context silent"
+"left right top bottom true false on off italic underline strike trimleft trimright trimcenter "
+"idd_license idd_dir idd_selcom idd_inst idd_instfiles idd_uninst idd_verify force windows nocustom "
+"customstring componentsonlyoncustom gray none user highest admin lang hide show nevershow normal "
+"silent silentlog auto solid final zlib bzip2 lzma try ifnewer ifdiff lastused manual alwaysoff "
+"normal file_attribute_normal archive file_attribute_archive hidden file_attribute_hidden "
+"offline file_attribute_offline readonly file_attribute_readonly system file_attribute_system "
+"temporary file_attribute_temporary custom license components directory instfiles uninstconfirm 32 64 "
+"enablecancel",
+"", "", "", "", "", "" };
+
+
+EDITLEXER lexNSIS = { SCLEX_NSIS, 63284, L"NSIS Script", L"nsi; nsh", L"", &KeyWords_NSIS, {
+                      { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
+                    //{ SCE_NSIS_DEFAULT, L"Default", L"", L"" },
+                      { MULTI_STYLE(SCE_NSIS_COMMENT,SCE_NSIS_COMMENTBOX,0,0), 63127, L"Comment", L"fore:#008000", L"" },
+                      { MULTI_STYLE(SCE_NSIS_STRINGDQ,SCE_NSIS_STRINGLQ,SCE_NSIS_STRINGRQ,0), 63131, L"String", L"fore:#666666; back:#EEEEEE", L"" },
+                      { SCE_NSIS_FUNCTION, 63277, L"Function", L"fore:#0033CC", L"" },
+                      { SCE_NSIS_VARIABLE, 63249, L"Variable", L"fore:#CC3300", L"" },
+                      { SCE_NSIS_STRINGVAR, 63285, L"Variable within String", L"fore:#CC3300; back:#EEEEEE", L"" },
+                      { SCE_NSIS_NUMBER, 63130, L"Number", L"fore:#FF0000", L"" },
+                      { SCE_NSIS_LABEL, 63286, L"Constant", L"fore:#FF9900", L"" },
+                    //{ SCE_NSIS_USERDEFINED, L"User Defined", L"", L"" },
+                      { SCE_NSIS_SECTIONDEF, 63232, L"Section", L"fore:#0033CC", L"" },
+                      { SCE_NSIS_SUBSECTIONDEF, 63287, L"Sub Section", L"fore:#0033CC", L"" },
+                      { SCE_NSIS_SECTIONGROUP, 63288, L"Section Group", L"fore:#0033CC", L"" },
+                      { SCE_NSIS_FUNCTIONDEF, 63289, L"Function Definition", L"fore:#0033CC", L"" },
+                      { SCE_NSIS_PAGEEX, 63290, L"PageEx", L"fore:#0033CC", L"" },
+                      { SCE_NSIS_IFDEFINEDEF, 63291, L"If Definition", L"fore:#0033CC", L"" },
+                      { SCE_NSIS_MACRODEF, 63292, L"Macro Definition", L"fore:#0033CC", L"" },
+                      { -1, 00000, L"", L"", L"" } } };
+
+
+KEYWORDLIST KeyWords_INNO = {
+"code components custommessages dirs files icons ini installdelete langoptions languages messages "
+"registry run setup types tasks uninstalldelete uninstallrun _istool",
+"allowcancelduringinstall allownoicons allowrootdirectory allowuncpath alwaysrestart alwaysshowcomponentslist "
+"alwaysshowdironreadypage alwaysshowgrouponreadypage alwaysusepersonalgroup appcomments appcontact appcopyright "
+"appenddefaultdirname appenddefaultgroupname appid appmodifypath appmutex appname apppublisher apppublisherurl "
+"appreadmefile appsupporturl appupdatesurl appvername appversion architecturesallowed "
+"architecturesinstallin64bitmode backcolor backcolor2 backcolordirection backsolid changesassociations "
+"changesenvironment compression copyrightfontname copyrightfontsize createappdir createuninstallregkey "
+"defaultdirname defaultgroupname defaultuserinfoname defaultuserinfoorg defaultuserinfoserial dialogfontname "
+"dialogfontsize direxistswarning disabledirpage disablefinishedpage disableprogramgrouppage disablereadymemo "
+"disablereadypage disablestartupprompt diskclustersize diskslicesize diskspanning enabledirdoesntexistwarning "
+"encryption extradiskspacerequired flatcomponentslist infoafterfile infobeforefile internalcompresslevel "
+"languagedetectionmethod languagecodepage languageid languagename licensefile mergeduplicatefiles minversion "
+"onlybelowversion outputbasefilename outputdir outputmanifestfile password privilegesrequired reservebytes "
+"restartifneededbyrun setupiconfile showcomponentsizes showlanguagedialog showtaskstreelines slicesperdisk "
+"solidcompression sourcedir timestamprounding timestampsinutc titlefontname titlefontsize touchdate touchtime "
+"uninstallable uninstalldisplayicon uninstalldisplayname uninstallfilesdir uninstalllogmode uninstallrestartcomputer "
+"updateuninstalllogappname usepreviousappdir usepreviousgroup useprevioussetuptype useprevioustasks "
+"versioninfoproductname useprevioususerinfo userinfopage usesetupldr versioninfocompany versioninfocopyright "
+"versioninfodescription versioninfoproductversion versioninfotextversion versioninfoversion versioninfoproducttextversion "
+"welcomefontname welcomefontsize windowshowcaption windowstartmaximized windowresizable windowvisible wizardimagebackcolor "
+"wizardimagefile wizardimagestretch wizardsmallimagefile",
+"afterinstall attribs beforeinstall check comment components copymode description destdir destname excludes "
+"extradiskspacerequired filename flags fontinstall groupdescription hotkey infoafterfile infobeforefile iconfilename "
+"iconindex key languages licensefile messagesfile minversion name onlybelowversion parameters permissions root "
+"runonceid section source statusmsg string subkey tasks terminalservicesaware type types valuedata valuename valuetype workingdir",
+"append define dim else emit endif endsub error expr file for if ifdef "
+"ifexist ifndef ifnexist include insert pragma sub undef",
+"begin break case const continue do downto else end except finally for "
+"function if of procedure repeat then to try until uses var while with",
+"", "", "", "" };
+
+
+EDITLEXER lexINNO = { SCLEX_INNOSETUP, 63293, L"Inno Setup Script", L"iss", L"", &KeyWords_INNO, {
+                      { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
+                    //{ SCE_INNO_DEFAULT, L"Default", L"", L"" },
+                      { SCE_INNO_COMMENT, 63127, L"Comment", L"fore:#008000", L"" },
+                      { SCE_INNO_KEYWORD, 63128, L"Keyword", L"fore:#0000FF", L"" },
+                      { SCE_INNO_PARAMETER, 63294, L"Parameter", L"fore:#0000FF", L"" },
+                      { SCE_INNO_SECTION, 63232, L"Section", L"fore:#000080; bold", L"" },
+                      { SCE_INNO_PREPROC, 63133, L"Preprocessor", L"fore:#CC0000", L"" },
+                      { SCE_INNO_INLINE_EXPANSION, 63295, L"Inline Expansion", L"fore:#800080", L"" },
+                      { SCE_INNO_COMMENT_PASCAL, 63296, L"Pascal Comment", L"fore:#008000", L"" },
+                      { SCE_INNO_KEYWORD_PASCAL, 63297, L"Pascal Keyword", L"fore:#0000FF", L"" },
+                    //{ SCE_INNO_KEYWORD_USER, L"User Defined", L"", L"" },
+                      { MULTI_STYLE(SCE_INNO_STRING_DOUBLE,SCE_INNO_STRING_SINGLE,0,0), 63131, L"String", L"fore:#008080", L"" },
+                    //{ SCE_INNO_IDENTIFIER, L"Identifier", L"", L"" },
+                      { -1, 00000, L"", L"", L"" } } };
+
+
+KEYWORDLIST KeyWords_RUBY = {
+"__FILE__ __LINE__ alias and begin break case class def defined? do else elsif end ensure "
+"false for in if module next nil not or redo rescue retry return self super then true "
+"undef unless until when while yield",
+"", "", "", "", "", "", "", "" };
+
+EDITLEXER lexRUBY = { SCLEX_RUBY, 63304, L"Ruby", L"rb;ruby", L"", &KeyWords_RUBY, {
+                    { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
+                    //{ SCE_P_DEFAULT, L"Default", L"", L"" },
+                    { SCE_P_COMMENTLINE, 63127, L"Comment", L"fore:#007F00", L"" },
+                    { SCE_P_COMMENTBLOCK, 63305, L"Comment Block", L"fore:#007F00", L"" },
+                    { SCE_P_WORD, 63128, L"Keyword", L"fore:#00007F;bold", L"" },
+                    { SCE_P_IDENTIFIER, 63129, L"Identifier", L"", L"" },
+                    { SCE_P_NUMBER, 63130, L"Number", L"fore:#007F7F", L"" },
+                    { SCE_P_OPERATOR, 63132, L"Operator", L"bold", L"" },
+                    { SCE_P_STRING, 63211, L"String double quoted", L"fore:#FF8000", L"" },
+                    { SCE_P_CHARACTER, 63212, L"String single quoted", L"fore:#FF8000", L"" },
+                    { SCE_P_STRINGEOL, 63303, L"String not closed", L"fore:#FF8000", L"" },
+                    { SCE_P_TRIPLEDOUBLE, 63244, L"String triple double quotes", L"fore:#FF8000", L"" },
+                    { SCE_P_TRIPLE, 63245, L"String triple single quotes", L"fore:#FF8000", L"" },
+                    { SCE_P_CLASSNAME, 63246, L"Class name", L"fore:#0000FF;bold", L"" },
+                    { SCE_P_DEFNAME, 63247, L"Function name", L"fore:#007F7F;bold", L"" },
                     { -1, 00000, L"", L"", L"" } } };
 
 
