@@ -377,5 +377,8 @@
     <ClCompile Include="..\scintilla\src\XPM.cxx">
       <Filter>Scintilla\src</Filter>
     </ClCompile>
+    <ClCompile Include="..\scintilla\src\LexAHK.cxx">
+      <Filter>Scintilla\src</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

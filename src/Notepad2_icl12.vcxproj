@@ -317,6 +317,7 @@ update_version.bat
     <ResourceCompile Include="Notepad2.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\scintilla\src\LexAHK.cxx" />
     <ClCompile Include="Dialogs.c" />
     <ClCompile Include="Dlapi.c" />
     <ClCompile Include="Edit.c" />

@@ -32,6 +32,7 @@ cl /Fo"%OBJDIR%/" /I "..\scintilla\include" /I "..\scintilla\src" /I "..\scintil
  /Tp "..\scintilla\src\Indicator.cxx"^
  /Tp "..\scintilla\src\KeyMap.cxx"^
  /Tp "..\scintilla\src\KeyWords.cxx"^
+ /Tp "..\scintilla\src\LexAHK.cxx"^
  /Tp "..\scintilla\src\LexAsm.cxx"^
  /Tp "..\scintilla\src\LexAU3.cxx"^
  /Tp "..\scintilla\src\LexBash.cxx"^
@@ -118,6 +119,7 @@ link /OUT:"%OUTDIR%/Notepad2.exe" /INCREMENTAL:NO /RELEASE %LNKADDCMD% /OPT:REF 
  "%OBJDIR%\Indicator.obj"^
  "%OBJDIR%\KeyMap.obj"^
  "%OBJDIR%\KeyWords.obj"^
+ "%OBJDIR%\LexAHK.obj"^
  "%OBJDIR%\LexAsm.obj"^
  "%OBJDIR%\LexAU3.obj"^
  "%OBJDIR%\LexBash.obj"^

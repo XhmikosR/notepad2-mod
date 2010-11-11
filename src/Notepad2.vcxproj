@@ -230,6 +230,7 @@ update_version.bat</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\scintilla\src\LexAHK.cxx" />
     <ClCompile Include="..\scintilla\src\LexAU3.cxx" />
     <ClCompile Include="..\scintilla\src\LexBash.cxx" />
     <ClCompile Include="..\scintilla\src\LexInno.cxx" />

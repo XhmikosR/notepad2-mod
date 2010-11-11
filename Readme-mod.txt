@@ -4,8 +4,8 @@ version using patches by Kai Liu and others.
 Notable changes:
 * Code folding
 * Support for registry-based Notepad replacement
-* Syntax highlighting support for AutoIt3, Bash, LaTeX, Lua, Ruby, Tcl,
-  NSIS and Inno Setup scripts
+* Syntax highlighting support for AutoHotKey, AutoIt3, Bash, LaTeX, Lua, Ruby,
+  Tcl, NSIS and Inno Setup scripts
 * Native x86-64 support
 
 Operating System: Windows XP, Vista, 7 both 32-bit and 64-bit 

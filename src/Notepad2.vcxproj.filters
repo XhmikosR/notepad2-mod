@@ -192,6 +192,9 @@
     <ClCompile Include="..\scintilla\src\LexRuby.cxx">
       <Filter>Scintilla\src</Filter>
     </ClCompile>
+    <ClCompile Include="..\scintilla\src\LexAHK.cxx">
+      <Filter>Scintilla\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dialogs.h">
