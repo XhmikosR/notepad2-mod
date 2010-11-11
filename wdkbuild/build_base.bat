@@ -4,7 +4,7 @@ IF /I "%1"=="" CALL :SUBMSG "ERROR" "Don't run this script directly, use build.c
 
 rem create the objects and output directory and delete any files from previous build
 MD "%OBJDIR%" >NUL 2>&1
-DEL "%OUTDIR%\Notepad2.exe"
+DEL "%OUTDIR%\Notepad2.exe" >NUL 2>&1
 DEL "%OBJDIR%\*.idb" "%OBJDIR%\*.obj" "%OBJDIR%\*.pdb" "%OBJDIR%\*.res" >NUL 2>&1
 
 TITLE Building Notepad2 %1...
