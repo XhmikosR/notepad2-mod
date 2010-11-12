@@ -233,12 +233,6 @@
     <ClCompile Include="Styles.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\scintilla\win32\PlatWin.cxx">
-      <Filter>Scintilla\win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\scintilla\win32\ScintillaWin.cxx">
-      <Filter>Scintilla\win32</Filter>
-    </ClCompile>
     <ClCompile Include="..\scintilla\src\AutoComplete.cxx">
       <Filter>Scintilla\src</Filter>
     </ClCompile>
@@ -379,6 +373,12 @@
     </ClCompile>
     <ClCompile Include="..\scintilla\src\LexAHK.cxx">
       <Filter>Scintilla\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scintilla\win32\PlatWin.cxx">
+      <Filter>Scintilla\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scintilla\win32\ScintillaWin.cxx">
+      <Filter>Scintilla\win32</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

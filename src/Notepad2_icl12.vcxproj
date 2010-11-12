@@ -263,7 +263,14 @@ update_version.bat
     <ClInclude Include="SciCall.h" />
     <ClInclude Include="Styles.h" />
     <ClInclude Include="Version.h" />
-    <ClInclude Include="..\scintilla\win32\PlatformRes.h" />
+    <ClInclude Include="..\scintilla\include\Accessor.h" />
+    <ClInclude Include="..\scintilla\include\KeyWords.h" />
+    <ClInclude Include="..\scintilla\include\Platform.h" />
+    <ClInclude Include="..\scintilla\include\PropSet.h" />
+    <ClInclude Include="..\scintilla\include\SciLexer.h" />
+    <ClInclude Include="..\scintilla\include\Scintilla.h" />
+    <ClInclude Include="..\scintilla\include\ScintillaWidget.h" />
+    <ClInclude Include="..\scintilla\include\WindowAccessor.h" />
     <ClInclude Include="..\scintilla\src\AutoComplete.h" />
     <ClInclude Include="..\scintilla\src\CallTip.h" />
     <ClInclude Include="..\scintilla\src\CellBuffer.h" />
@@ -292,14 +299,7 @@ update_version.bat
     <ClInclude Include="..\scintilla\src\UniConversion.h" />
     <ClInclude Include="..\scintilla\src\ViewStyle.h" />
     <ClInclude Include="..\scintilla\src\XPM.h" />
-    <ClInclude Include="..\scintilla\include\Accessor.h" />
-    <ClInclude Include="..\scintilla\include\KeyWords.h" />
-    <ClInclude Include="..\scintilla\include\Platform.h" />
-    <ClInclude Include="..\scintilla\include\PropSet.h" />
-    <ClInclude Include="..\scintilla\include\SciLexer.h" />
-    <ClInclude Include="..\scintilla\include\Scintilla.h" />
-    <ClInclude Include="..\scintilla\include\ScintillaWidget.h" />
-    <ClInclude Include="..\scintilla\include\WindowAccessor.h" />
+    <ClInclude Include="..\scintilla\win32\PlatformRes.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\res\Copy.cur" />
@@ -321,7 +321,6 @@ update_version.bat
     <ResourceCompile Include="Notepad2.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\scintilla\src\LexAHK.cxx" />
     <ClCompile Include="Dialogs.c" />
     <ClCompile Include="Dlapi.c" />
     <ClCompile Include="Edit.c" />
@@ -329,8 +328,6 @@ update_version.bat
     <ClCompile Include="Notepad2.c" />
     <ClCompile Include="Print.cpp" />
     <ClCompile Include="Styles.c" />
-    <ClCompile Include="..\scintilla\win32\PlatWin.cxx" />
-    <ClCompile Include="..\scintilla\win32\ScintillaWin.cxx" />
     <ClCompile Include="..\scintilla\src\AutoComplete.cxx" />
     <ClCompile Include="..\scintilla\src\CallTip.cxx" />
     <ClCompile Include="..\scintilla\src\CellBuffer.cxx" />
@@ -344,6 +341,7 @@ update_version.bat
     <ClCompile Include="..\scintilla\src\Indicator.cxx" />
     <ClCompile Include="..\scintilla\src\KeyMap.cxx" />
     <ClCompile Include="..\scintilla\src\KeyWords.cxx" />
+    <ClCompile Include="..\scintilla\src\LexAHK.cxx" />
     <ClCompile Include="..\scintilla\src\LexAsm.cxx" />
     <ClCompile Include="..\scintilla\src\LexAU3.cxx" />
     <ClCompile Include="..\scintilla\src\LexBash.cxx" />
@@ -377,6 +375,8 @@ update_version.bat
     <ClCompile Include="..\scintilla\src\ViewStyle.cxx" />
     <ClCompile Include="..\scintilla\src\WindowAccessor.cxx" />
     <ClCompile Include="..\scintilla\src\XPM.cxx" />
+    <ClCompile Include="..\scintilla\win32\PlatWin.cxx" />
+    <ClCompile Include="..\scintilla\win32\ScintillaWin.cxx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
