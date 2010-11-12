@@ -84,22 +84,22 @@ TITLE Building %BINDIR% installer...
 CALL :SUBMSG "INFO" "Building %BINDIR% installer..."
 
 PUSHD ..\distrib
-MD binaries\%BINDIR% >NUL 2>&1
+MD temp\%BINDIR% >NUL 2>&1
 
-COPY /B /V /Y ..\%OUTDIR%\Notepad2.exe binaries\%BINDIR%\notepad2.exe
-COPY /B /V /Y ..\License.txt binaries\%BINDIR%\license.txt
-COPY /B /V /Y res\cabinet\notepad2.inf binaries\%BINDIR%\notepad2.inf
-COPY /B /V /Y res\cabinet\notepad2.ini binaries\%BINDIR%\notepad2.ini
-COPY /B /V /Y res\cabinet\notepad2.redir.ini binaries\%BINDIR%\notepad2.redir.ini
-COPY /B /V /Y ..\Notepad2.txt binaries\%BINDIR%\notepad2.txt
-COPY /B /V /Y ..\Readme-mod.txt binaries\%BINDIR%\readme.txt
+COPY /B /V /Y ..\%OUTDIR%\Notepad2.exe temp\%BINDIR%\notepad2.exe
+COPY /B /V /Y ..\License.txt temp\%BINDIR%\license.txt
+COPY /B /V /Y res\cabinet\notepad2.inf temp\%BINDIR%\notepad2.inf
+COPY /B /V /Y res\cabinet\notepad2.ini temp\%BINDIR%\notepad2.ini
+COPY /B /V /Y res\cabinet\notepad2.redir.ini temp\%BINDIR%\notepad2.redir.ini
+COPY /B /V /Y ..\Notepad2.txt temp\%BINDIR%\notepad2.txt
+COPY /B /V /Y ..\Readme-mod.txt temp\%BINDIR%\readme.txt
 rem Set the version for the DisplayVersion registry value
-CALL tools\BatchSubstitute.bat "0.0.0.0" %NP2_VER%.%VerRev% binaries\%BINDIR%\notepad2.inf >notepad2.inf.temp
-COPY /Y binaries\%BINDIR%\notepad2.inf notepad2.inf.orig >NUL
-MOVE /Y notepad2.inf.temp binaries\%BINDIR%\notepad2.inf >NUL
-tools\cabutcd.exe binaries\%BINDIR% res\cabinet.%BINDIR%.cab
+CALL tools\BatchSubstitute.bat "0.0.0.0" %NP2_VER%.%VerRev% temp\%BINDIR%\notepad2.inf >notepad2.inf.tmp
+COPY /Y temp\%BINDIR%\notepad2.inf notepad2.inf.orig >NUL
+MOVE /Y notepad2.inf.tmp temp\%BINDIR%\notepad2.inf >NUL
+tools\cabutcd.exe temp\%BINDIR% res\cabinet.%BINDIR%.cab
 DEL notepad2.inf.orig >NUL 2>&1
-RD /Q /S binaries\%BINDIR% >NUL 2>&1
+RD /Q /S temp\%BINDIR% >NUL 2>&1
 
 CALL "%VS100COMNTOOLS%vsvars32.bat" >NUL
 devenv setup.sln /Rebuild "Full|%ARCH%"
@@ -120,7 +120,7 @@ MOVE setup.%BINDIR%\setuplite.exe ..\wdkbuild\packages\Notepad2-mod_Setup_Silent
 
 rem Cleanup
 RD setup.%BINDIR% >NUL 2>&1
-RD /Q binaries >NUL 2>&1
+RD /Q temp >NUL 2>&1
 RD /Q /S addon obj >NUL 2>&1
 
 POPD
