@@ -6,5 +6,5 @@ GOTO :EOF
 
 :NoSubWCRev
 ECHO:NoSubWCRev
-ECHO:#define VERSION_REV 0 > src\Version_rev.h
+ECHO:#define VERSION_REV 0 >src\Version_rev.h
 COPY /Y res\Notepad2.exe.manifest.template res\Notepad2.exe.manifest

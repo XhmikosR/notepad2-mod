@@ -1,3 +1,6 @@
+Notepad2-mod 4.1.24 has been created with Scintilla 2.12. See Notepad2 Readme
+for more information. You can use WDK 7.1, or MSVC 2010, or ICL 12 to build it.
+
 This version of Notepad2 has been modified from Florian Balmer's original
 version using patches by Kai Liu and others.
 
