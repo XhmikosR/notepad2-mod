@@ -11,7 +11,7 @@ Notable changes:
   Tcl, NSIS and Inno Setup scripts
 * Native x86-64 support
 
-Operating System: Windows XP, Vista, 7 both 32-bit and 64-bit 
+Supported Operating Systems: Windows XP, Vista, 7 both 32-bit and 64-bit 
 
 More information:
 * Source code and binaries:   http://code.google.com/p/notepad2-mod/

@@ -5,6 +5,6 @@ IF %ERRORLEVEL% NEQ 0 GOTO :NoSubWCRev
 GOTO :EOF
 
 :NoSubWCRev
-ECHO:NoSubWCRev
+ECHO:NoSubWCRev, will use VERSION_REV=0
 ECHO:#define VERSION_REV 0 >src\Version_rev.h
 COPY /Y res\Notepad2.exe.manifest.template res\Notepad2.exe.manifest
