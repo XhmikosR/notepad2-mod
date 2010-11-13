@@ -16,5 +16,5 @@ Supported Operating Systems: Windows XP, Vista, 7 both 32-bit and 64-bit
 More information:
 * Source code and binaries:   http://code.google.com/p/notepad2-mod/
 * Kai Liu's website:          http://code.kliu.org/misc/notepad2/
-* Code folding usage guide:   http://code.kliu.org/misc/notepad2/folding.html
+* Code folding usage guide:   http://code.google.com/p/notepad2-mod/wiki/CodeFoldingUsageNotes
 * Official Notepad2 website:  http://www.flos-freeware.ch/notepad2.html
