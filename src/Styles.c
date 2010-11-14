@@ -1082,7 +1082,7 @@ KEYWORDLIST KeyWords_INNO = {
 "", "", "", "" };
 
 
-EDITLEXER lexINNO = { SCLEX_INNOSETUP, 63293, L"Inno Setup Script", L"iss", L"", &KeyWords_INNO, {
+EDITLEXER lexINNO = { SCLEX_INNOSETUP, 63293, L"Inno Setup Script", L"iss; isl; islu", L"", &KeyWords_INNO, {
                       { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
                     //{ SCE_INNO_DEFAULT, L"Default", L"", L"" },
                       { SCE_INNO_COMMENT, 63127, L"Comment", L"fore:#008000", L"" },
@@ -1105,7 +1105,7 @@ KEYWORDLIST KeyWords_RUBY = {
 "undef unless until when while yield",
 "", "", "", "", "", "", "", "" };
 
-EDITLEXER lexRUBY = { SCLEX_RUBY, 63304, L"Ruby", L"rb;ruby", L"", &KeyWords_RUBY, {
+EDITLEXER lexRUBY = { SCLEX_RUBY, 63304, L"Ruby", L"rb; ruby", L"", &KeyWords_RUBY, {
                     { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
                     //{ SCE_P_DEFAULT, L"Default", L"", L"" },
                     { SCE_P_COMMENTLINE, 63127, L"Comment", L"fore:#007F00", L"" },
