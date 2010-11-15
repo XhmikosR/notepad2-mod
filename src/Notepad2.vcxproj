@@ -87,7 +87,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\scintilla\include;..\scintilla\src;..\scintilla\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\scintilla\include;..\scintilla\lexers;..\scintilla\lexlib;..\scintilla\src;..\scintilla\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;STATIC_BUILD;SCI_LEXER;UNICODE;_UNICODE;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -104,11 +104,14 @@
       <TargetMachine>MachineX86</TargetMachine>
       <MinimumRequiredVersion>5.01</MinimumRequiredVersion>
     </Link>
+    <Manifest>
+      <AdditionalManifestFiles>..\res\Notepad2.exe.manifest</AdditionalManifestFiles>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\scintilla\include;..\scintilla\src;..\scintilla\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\scintilla\include;..\scintilla\lexers;..\scintilla\lexlib;..\scintilla\src;..\scintilla\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_WIN64;STATIC_BUILD;SCI_LEXER;UNICODE;_UNICODE;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -125,12 +128,15 @@
       <SubSystem>Windows</SubSystem>
       <MinimumRequiredVersion>5.02</MinimumRequiredVersion>
     </Link>
+    <Manifest>
+      <AdditionalManifestFiles>..\res\Notepad2.exe.manifest</AdditionalManifestFiles>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>..\scintilla\include;..\scintilla\src;..\scintilla\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\scintilla\include;..\scintilla\lexers;..\scintilla\lexlib;..\scintilla\src;..\scintilla\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;STATIC_BUILD;SCI_LEXER;NDEBUG;UNICODE;_UNICODE;_CRT_SECURE_NO_WARNINGS;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -158,13 +164,16 @@
       <LargeAddressAware>true</LargeAddressAware>
       <MinimumRequiredVersion>5.01</MinimumRequiredVersion>
     </Link>
+    <Manifest>
+      <AdditionalManifestFiles>..\res\Notepad2.exe.manifest</AdditionalManifestFiles>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <OmitFramePointers>true</OmitFramePointers>
-      <AdditionalIncludeDirectories>..\scintilla\include;..\scintilla\src;..\scintilla\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\scintilla\include;..\scintilla\lexers;..\scintilla\lexlib;..\scintilla\src;..\scintilla\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_WIN64;STATIC_BUILD;SCI_LEXER;NDEBUG;UNICODE;_UNICODE;_CRT_SECURE_NO_WARNINGS;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -177,7 +186,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <DisableSpecificWarnings>4244;4267</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4133;4244;4267</DisableSpecificWarnings>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
     </ClCompile>
@@ -192,8 +201,54 @@
       <LargeAddressAware>true</LargeAddressAware>
       <MinimumRequiredVersion>5.02</MinimumRequiredVersion>
     </Link>
+    <Manifest>
+      <AdditionalManifestFiles>..\res\Notepad2.exe.manifest</AdditionalManifestFiles>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\scintilla\lexers\LexAsm.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexConf.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexCPP.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexCSS.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexHTML.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexOthers.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexPascal.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexPerl.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexPowerShell.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexPython.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexSQL.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexVB.cxx" />
+    <ClCompile Include="..\scintilla\lexlib\Accessor.cxx" />
+    <ClCompile Include="..\scintilla\lexlib\CharacterSet.cxx" />
+    <ClCompile Include="..\scintilla\lexlib\LexerBase.cxx" />
+    <ClCompile Include="..\scintilla\lexlib\LexerModule.cxx" />
+    <ClCompile Include="..\scintilla\lexlib\LexerSimple.cxx" />
+    <ClCompile Include="..\scintilla\lexlib\PropSetSimple.cxx" />
+    <ClCompile Include="..\scintilla\lexlib\StyleContext.cxx" />
+    <ClCompile Include="..\scintilla\lexlib\WordList.cxx" />
+    <ClCompile Include="..\scintilla\src\AutoComplete.cxx" />
+    <ClCompile Include="..\scintilla\src\CallTip.cxx" />
+    <ClCompile Include="..\scintilla\src\Catalogue.cxx" />
+    <ClCompile Include="..\scintilla\src\CellBuffer.cxx" />
+    <ClCompile Include="..\scintilla\src\CharClassify.cxx" />
+    <ClCompile Include="..\scintilla\src\ContractionState.cxx" />
+    <ClCompile Include="..\scintilla\src\Decoration.cxx" />
+    <ClCompile Include="..\scintilla\src\Document.cxx" />
+    <ClCompile Include="..\scintilla\src\Editor.cxx" />
+    <ClCompile Include="..\scintilla\src\ExternalLexer.cxx" />
+    <ClCompile Include="..\scintilla\src\Indicator.cxx" />
+    <ClCompile Include="..\scintilla\src\KeyMap.cxx" />
+    <ClCompile Include="..\scintilla\src\LineMarker.cxx" />
+    <ClCompile Include="..\scintilla\src\PerLine.cxx" />
+    <ClCompile Include="..\scintilla\src\PositionCache.cxx" />
+    <ClCompile Include="..\scintilla\src\RESearch.cxx" />
+    <ClCompile Include="..\scintilla\src\RunStyles.cxx" />
+    <ClCompile Include="..\scintilla\src\ScintillaBase.cxx" />
+    <ClCompile Include="..\scintilla\src\Selection.cxx" />
+    <ClCompile Include="..\scintilla\src\Style.cxx" />
+    <ClCompile Include="..\scintilla\src\UniConversion.cxx" />
+    <ClCompile Include="..\scintilla\src\ViewStyle.cxx" />
+    <ClCompile Include="..\scintilla\src\XPM.cxx" />
     <ClCompile Include="Dialogs.c" />
     <ClCompile Include="Dlapi.c" />
     <ClCompile Include="Edit.c" />
@@ -201,76 +256,36 @@
     <ClCompile Include="Notepad2.c" />
     <ClCompile Include="Print.cpp" />
     <ClCompile Include="Styles.c" />
-    <ClCompile Include="..\scintilla\src\AutoComplete.cxx" />
-    <ClCompile Include="..\scintilla\src\CallTip.cxx" />
-    <ClCompile Include="..\scintilla\src\CellBuffer.cxx" />
-    <ClCompile Include="..\scintilla\src\CharClassify.cxx" />
-    <ClCompile Include="..\scintilla\src\ContractionState.cxx" />
-    <ClCompile Include="..\scintilla\src\Decoration.cxx" />
-    <ClCompile Include="..\scintilla\src\Document.cxx" />
-    <ClCompile Include="..\scintilla\src\DocumentAccessor.cxx" />
-    <ClCompile Include="..\scintilla\src\Editor.cxx" />
-    <ClCompile Include="..\scintilla\src\ExternalLexer.cxx" />
-    <ClCompile Include="..\scintilla\src\Indicator.cxx" />
-    <ClCompile Include="..\scintilla\src\KeyMap.cxx" />
-    <ClCompile Include="..\scintilla\src\KeyWords.cxx" />
-    <ClCompile Include="..\scintilla\src\LexAsm.cxx" />
-    <ClCompile Include="..\scintilla\src\LexCPP.cxx" />
-    <ClCompile Include="..\scintilla\src\LexCSS.cxx" />
-    <ClCompile Include="..\scintilla\src\LexConf.cxx" />
-    <ClCompile Include="..\scintilla\src\LexHTML.cxx" />
-    <ClCompile Include="..\scintilla\src\LexOthers.cxx" />
-    <ClCompile Include="..\scintilla\src\LexPascal.cxx" />
-    <ClCompile Include="..\scintilla\src\LexPerl.cxx" />
-    <ClCompile Include="..\scintilla\src\LexPowerShell.cxx" />
-    <ClCompile Include="..\scintilla\src\LexPython.cxx" />
-    <ClCompile Include="..\scintilla\src\LexSQL.cxx" />
-    <ClCompile Include="..\scintilla\src\LexVB.cxx" />
-    <ClCompile Include="..\scintilla\src\LineMarker.cxx" />
-    <ClCompile Include="..\scintilla\src\PerLine.cxx" />
-    <ClCompile Include="..\scintilla\src\PositionCache.cxx" />
-    <ClCompile Include="..\scintilla\src\PropSet.cxx" />
-    <ClCompile Include="..\scintilla\src\RESearch.cxx" />
-    <ClCompile Include="..\scintilla\src\RunStyles.cxx" />
-    <ClCompile Include="..\scintilla\src\ScintillaBase.cxx" />
-    <ClCompile Include="..\scintilla\src\Selection.cxx" />
-    <ClCompile Include="..\scintilla\src\Style.cxx" />
-    <ClCompile Include="..\scintilla\src\StyleContext.cxx" />
-    <ClCompile Include="..\scintilla\src\UniConversion.cxx" />
-    <ClCompile Include="..\scintilla\src\ViewStyle.cxx" />
-    <ClCompile Include="..\scintilla\src\WindowAccessor.cxx" />
-    <ClCompile Include="..\scintilla\src\XPM.cxx" />
     <ClCompile Include="..\scintilla\win32\PlatWin.cxx" />
     <ClCompile Include="..\scintilla\win32\ScintillaWin.cxx" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Dialogs.h" />
-    <ClInclude Include="Dlapi.h" />
-    <ClInclude Include="Edit.h" />
-    <ClInclude Include="Helpers.h" />
-    <ClInclude Include="Notepad2.h" />
-    <ClInclude Include="Styles.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="Version.h" />
-    <ClInclude Include="..\scintilla\include\Accessor.h" />
-    <ClInclude Include="..\scintilla\include\KeyWords.h" />
+    <ClInclude Include="..\scintilla\include\ILexer.h" />
     <ClInclude Include="..\scintilla\include\Platform.h" />
-    <ClInclude Include="..\scintilla\include\PropSet.h" />
     <ClInclude Include="..\scintilla\include\SciLexer.h" />
     <ClInclude Include="..\scintilla\include\Scintilla.h" />
     <ClInclude Include="..\scintilla\include\ScintillaWidget.h" />
-    <ClInclude Include="..\scintilla\include\WindowAccessor.h" />
+    <ClInclude Include="..\scintilla\lexlib\Accessor.h" />
+    <ClInclude Include="..\scintilla\lexlib\CharacterSet.h" />
+    <ClInclude Include="..\scintilla\lexlib\LexAccessor.h" />
+    <ClInclude Include="..\scintilla\lexlib\LexerBase.h" />
+    <ClInclude Include="..\scintilla\lexlib\LexerModule.h" />
+    <ClInclude Include="..\scintilla\lexlib\LexerSimple.h" />
+    <ClInclude Include="..\scintilla\lexlib\OptionSet.h" />
+    <ClInclude Include="..\scintilla\lexlib\PropSetSimple.h" />
+    <ClInclude Include="..\scintilla\lexlib\StyleContext.h" />
+    <ClInclude Include="..\scintilla\lexlib\WordList.h" />
     <ClInclude Include="..\scintilla\src\AutoComplete.h" />
     <ClInclude Include="..\scintilla\src\CallTip.h" />
+    <ClInclude Include="..\scintilla\src\Catalogue.h" />
     <ClInclude Include="..\scintilla\src\CellBuffer.h" />
     <ClInclude Include="..\scintilla\src\CharClassify.h" />
-    <ClInclude Include="..\scintilla\src\CharacterSet.h" />
     <ClInclude Include="..\scintilla\src\ContractionState.h" />
     <ClInclude Include="..\scintilla\src\Decoration.h" />
     <ClInclude Include="..\scintilla\src\Document.h" />
-    <ClInclude Include="..\scintilla\src\DocumentAccessor.h" />
     <ClInclude Include="..\scintilla\src\Editor.h" />
     <ClInclude Include="..\scintilla\src\ExternalLexer.h" />
+    <ClInclude Include="..\scintilla\src\FontQuality.h" />
     <ClInclude Include="..\scintilla\src\Indicator.h" />
     <ClInclude Include="..\scintilla\src\KeyMap.h" />
     <ClInclude Include="..\scintilla\src\LineMarker.h" />
@@ -279,15 +294,22 @@
     <ClInclude Include="..\scintilla\src\PositionCache.h" />
     <ClInclude Include="..\scintilla\src\RESearch.h" />
     <ClInclude Include="..\scintilla\src\RunStyles.h" />
-    <ClInclude Include="..\scintilla\src\SVector.h" />
     <ClInclude Include="..\scintilla\src\ScintillaBase.h" />
     <ClInclude Include="..\scintilla\src\Selection.h" />
     <ClInclude Include="..\scintilla\src\SplitVector.h" />
     <ClInclude Include="..\scintilla\src\Style.h" />
-    <ClInclude Include="..\scintilla\src\StyleContext.h" />
+    <ClInclude Include="..\scintilla\src\SVector.h" />
     <ClInclude Include="..\scintilla\src\UniConversion.h" />
     <ClInclude Include="..\scintilla\src\ViewStyle.h" />
     <ClInclude Include="..\scintilla\src\XPM.h" />
+    <ClInclude Include="Dialogs.h" />
+    <ClInclude Include="Dlapi.h" />
+    <ClInclude Include="Edit.h" />
+    <ClInclude Include="Helpers.h" />
+    <ClInclude Include="Notepad2.h" />
+    <ClInclude Include="SciCall.h" />
+    <ClInclude Include="Styles.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="..\scintilla\win32\PlatformRes.h" />
   </ItemGroup>
   <ItemGroup>

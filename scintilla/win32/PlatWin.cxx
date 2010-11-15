@@ -26,6 +26,13 @@
 #include "XPM.h"
 #include "FontQuality.h"
 
+// We want to use multi monitor functions, but via LoadLibrary etc
+// Luckily microsoft has done the heavy lifting for us, so we'll just use their stub functions!
+#if (defined(_MSC_VER) && (MSC_VER > 1200)) || defined(__BORLANDC__)
+#define COMPILE_MULTIMON_STUBS
+#include "MultiMon.h"
+#endif
+
 #ifndef IDC_HAND
 #define IDC_HAND MAKEINTRESOURCE(32649)
 #endif
@@ -1031,25 +1038,36 @@ void Window::SetPosition(PRectangle rc) {
 void Window::SetPositionRelative(PRectangle rc, Window w) {
 	LONG style = ::GetWindowLong(reinterpret_cast<HWND>(wid), GWL_STYLE);
 	if (style & WS_POPUP) {
-		RECT rcOther;
-		::GetWindowRect(reinterpret_cast<HWND>(w.GetID()), &rcOther);
-		rc.Move(rcOther.left, rcOther.top);
+		POINT ptOther = {0, 0};
+		::ClientToScreen(reinterpret_cast<HWND>(w.GetID()), &ptOther);
+		rc.Move(ptOther.x, ptOther.y);
 
-		// Retrieve desktop bounds and make sure window popup's origin isn't left-top of the screen.
-		RECT rcDesktop = {0, 0, 0, 0};
-#ifdef SM_XVIRTUALSCREEN
-		rcDesktop.left = ::GetSystemMetrics(SM_XVIRTUALSCREEN);
-		rcDesktop.top = ::GetSystemMetrics(SM_YVIRTUALSCREEN);
-		rcDesktop.right = rcDesktop.left + ::GetSystemMetrics(SM_CXVIRTUALSCREEN);
-		rcDesktop.bottom = rcDesktop.top + ::GetSystemMetrics(SM_CYVIRTUALSCREEN);
+		// This #ifdef is for VC 98 which has problems with MultiMon.h under some conditions.
+#ifdef MONITOR_DEFAULTTONULL
+		// We're using the stub functionality of MultiMon.h to decay gracefully on machines
+		// (ie, pre Win2000, Win95) that do not support the newer functions.
+		RECT rcMonitor;
+		memcpy(&rcMonitor, &rc, sizeof(rcMonitor));  // RECT and Rectangle are the same really.
+		MONITORINFO mi = {0};
+		mi.cbSize = sizeof(mi);
+
+		HMONITOR hMonitor = ::MonitorFromRect(&rcMonitor, MONITOR_DEFAULTTONEAREST);
+		// If hMonitor is NULL, that's just the main screen anyways.
+		::GetMonitorInfo(hMonitor, &mi);
+
+		// Now clamp our desired rectangle to fit inside the work area
+		// This way, the menu will fit wholly on one screen. An improvement even
+		// if you don't have a second monitor on the left... Menu's appears half on
+		// one screen and half on the other are just U.G.L.Y.!
+		if (rc.right > mi.rcWork.right)
+			rc.Move(mi.rcWork.right - rc.right, 0);
+		if (rc.bottom > mi.rcWork.bottom)
+			rc.Move(0, mi.rcWork.bottom - rc.bottom);
+		if (rc.left < mi.rcWork.left)
+			rc.Move(mi.rcWork.left - rc.left, 0);
+		if (rc.top < mi.rcWork.top)
+			rc.Move(0, mi.rcWork.top - rc.top);
 #endif
-
-		if (rc.left < rcDesktop.left) {
-			rc.Move(rcDesktop.left - rc.left,0);
-		}
-		if (rc.top < rcDesktop.top) {
-			rc.Move(0,rcDesktop.top - rc.top);
-		}
 	}
 	SetPosition(rc);
 }
@@ -1133,15 +1151,15 @@ void Window::SetTitle(const char *s) {
 
 /* Returns rectangle of monitor pt is on, both rect and pt are in Window's
    coordinates */
-#ifdef MULTIPLE_MONITOR_SUPPORT
 PRectangle Window::GetMonitorRect(Point pt) {
+#ifdef MONITOR_DEFAULTTONULL
 	// MonitorFromPoint and GetMonitorInfo are not available on Windows 95 so are not used.
 	// There could be conditional code and dynamic loading in a future version
 	// so this would work on those platforms where they are available.
 	PRectangle rcPosition = GetPosition();
 	POINT ptDesktop = {pt.x + rcPosition.left, pt.y + rcPosition.top};
 	HMONITOR hMonitor = ::MonitorFromPoint(ptDesktop, MONITOR_DEFAULTTONEAREST);
-	MONITORINFOEX mi;
+	MONITORINFO mi = {0};
 	memset(&mi, 0, sizeof(mi));
 	mi.cbSize = sizeof(mi);
 	if (::GetMonitorInfo(hMonitor, &mi)) {
@@ -1151,13 +1169,13 @@ PRectangle Window::GetMonitorRect(Point pt) {
 			mi.rcWork.right - rcPosition.left,
 			mi.rcWork.bottom - rcPosition.top);
 		return rcMonitor;
+	} else {
+		return PRectangle();
 	}
-}
 #else
-PRectangle Window::GetMonitorRect(Point) {
 	return PRectangle();
-}
 #endif
+}
 
 struct ListItemData {
 	const char *text;
@@ -1305,7 +1323,6 @@ class ListBoxX : public ListBox {
 	int NcHitTest(WPARAM, LPARAM) const;
 	void CentreItem(int);
 	void Paint(HDC);
-	void Erase(HDC);
 	static LRESULT PASCAL ControlWndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);
 
 	static const Point ItemInset;	// Padding around whole item
