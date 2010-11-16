@@ -21,6 +21,7 @@ notepad2.inf=1
 notepad2.ini=1
 notepad2.txt=1
 readme.txt=1
+readme-mod.txt=1
 notepad2.redir.ini=1
 
 [DestinationDirs]
@@ -36,6 +37,7 @@ Notepad2.exe
 Notepad2.ini,notepad2.redir.ini
 Notepad2.txt
 Readme.txt
+Readme-mod.txt
 Uninstall.inf,notepad2.inf
 
 [Notepad2Profile.Files]

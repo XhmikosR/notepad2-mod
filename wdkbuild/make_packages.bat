@@ -53,12 +53,13 @@ COPY "..\License.txt" "temp_zip\" /Y /V
 COPY "..\%1\Notepad2.exe" "temp_zip\" /Y /V
 COPY "..\distrib\res\cabinet\notepad2.ini" "temp_zip\Notepad2.ini" /Y /V
 COPY "..\Notepad2.txt" "temp_zip\" /Y /V
-COPY "..\ReadMe-mod.txt" "temp_zip\Readme.txt" /Y /V
+COPY "..\Readme.txt" "temp_zip\" /Y /V
+COPY "..\Readme-mod.txt" "temp_zip\" /Y /V
 
 PUSHD "temp_zip"
 START "" /B /WAIT "%TOOLS_PATH%\7za.exe" a -tzip -mx=9^
  "Notepad2-mod.%NP2_VER%_r%VerRev%_%2.zip" "License.txt" "Notepad2.exe"^
- "Notepad2.ini" "Notepad2.txt" "ReadMe.txt" >NUL
+ "Notepad2.ini" "Notepad2.txt" "Readme.txt" "Readme-mod.txt" >NUL
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
 CALL :SUBMSG "INFO" "Notepad2-mod.%NP2_VER%_r%VerRev%_%2.zip created successfully!"
@@ -92,7 +93,8 @@ COPY /B /V /Y res\cabinet\notepad2.inf temp\%BINDIR%\notepad2.inf
 COPY /B /V /Y res\cabinet\notepad2.ini temp\%BINDIR%\notepad2.ini
 COPY /B /V /Y res\cabinet\notepad2.redir.ini temp\%BINDIR%\notepad2.redir.ini
 COPY /B /V /Y ..\Notepad2.txt temp\%BINDIR%\notepad2.txt
-COPY /B /V /Y ..\Readme-mod.txt temp\%BINDIR%\readme.txt
+COPY /B /V /Y ..\Readme.txt temp\%BINDIR%\readme.txt
+COPY /B /V /Y ..\Readme-mod.txt temp\%BINDIR%\readme-mod.txt
 rem Set the version for the DisplayVersion registry value
 CALL tools\BatchSubstitute.bat "0.0.0.0" %NP2_VER%.%VerRev% temp\%BINDIR%\notepad2.inf >notepad2.inf.tmp
 COPY /Y temp\%BINDIR%\notepad2.inf notepad2.inf.orig >NUL
