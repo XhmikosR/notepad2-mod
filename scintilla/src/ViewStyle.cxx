@@ -129,6 +129,7 @@ ViewStyle::ViewStyle(const ViewStyle &source) {
 	caretStyle = source.caretStyle;
 	caretWidth = source.caretWidth;
 	someStylesProtected = false;
+	someStylesForceCase = false;
 	leftMarginWidth = source.leftMarginWidth;
 	rightMarginWidth = source.rightMarginWidth;
 	for (int i=0; i < margins; i++) {
@@ -213,6 +214,7 @@ void ViewStyle::Init(size_t stylesSize_) {
 	caretStyle = CARETSTYLE_LINE;
 	caretWidth = 1;
 	someStylesProtected = false;
+	someStylesForceCase = false;
 
 	hotspotForegroundSet = false;
 	hotspotForeground.desired = ColourDesired(0, 0, 0xff);
@@ -295,6 +297,7 @@ void ViewStyle::Refresh(Surface &surface) {
 	maxAscent = styles[STYLE_DEFAULT].ascent;
 	maxDescent = styles[STYLE_DEFAULT].descent;
 	someStylesProtected = false;
+	someStylesForceCase = false;
 	for (unsigned int i=0; i<stylesSize; i++) {
 		if (i != STYLE_DEFAULT) {
 			styles[i].Realise(surface, zoomLevel, &styles[STYLE_DEFAULT], extraFontFlag);
@@ -305,6 +308,9 @@ void ViewStyle::Refresh(Surface &surface) {
 		}
 		if (styles[i].IsProtected()) {
 			someStylesProtected = true;
+		}
+		if (styles[i].caseForce != Style::caseMixed) {
+			someStylesForceCase = true;
 		}
 	}
 	maxAscent += extraAscent;

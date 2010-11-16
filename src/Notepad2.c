@@ -1499,11 +1499,6 @@ LRESULT MsgCreate(HWND hwnd,WPARAM wParam,LPARAM lParam)
   SciCall_SetMarginMask(MARGIN_FOLD_INDEX, SC_MASK_FOLDERS);
   SciCall_SetMarginWidth(MARGIN_FOLD_INDEX, (bShowCodeFolding) ? 11 : 0);
   SciCall_SetMarginSensitive(MARGIN_FOLD_INDEX, TRUE);
-  SciCall_SetProperty("fold", "1");
-  SciCall_SetProperty("fold.compact", "0");
-  SciCall_SetProperty("fold.comment", "1");
-  SciCall_SetProperty("fold.html", "1");
-  SciCall_SetProperty("fold.preprocessor", "1");
   SciCall_MarkerDefine(SC_MARKNUM_FOLDEROPEN, SC_MARK_BOXMINUS);
   SciCall_MarkerDefine(SC_MARKNUM_FOLDER, SC_MARK_BOXPLUS);
   SciCall_MarkerDefine(SC_MARKNUM_FOLDERSUB, SC_MARK_VLINE);
