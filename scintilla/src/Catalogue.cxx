@@ -84,6 +84,7 @@ int Scintilla_LinkLexers() {
 /* notepad2-mod custom code, comment out the unused lexers */
 //	LINK_LEXER(lmAbaqus);
 //	LINK_LEXER(lmAda);
+	LINK_LEXER(lmAHK);
 //	LINK_LEXER(lmAns1);
 //	LINK_LEXER(lmAPDL);
 	LINK_LEXER(lmAsm);
