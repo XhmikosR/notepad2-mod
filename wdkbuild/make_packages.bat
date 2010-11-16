@@ -1,9 +1,9 @@
 @ECHO OFF
 SETLOCAL
-SET "PERL_PATH=G:\Installation Programs\Programs\Compiling Stuff\Other\ActivePerl-5.12.2.1202-MSWin32-x86-293621"
+rem SET "PERL_PATH=G:\Installation Programs\Programs\Compiling Stuff\Other\ActivePerl-5.12.2.1202-MSWin32-x86-293621"
 
 rem Check the building environment
-IF NOT EXIST "%PERL_PATH%" CALL :SUBMSG "INFO" "The Perl direcotry wasn't found; the addon won't be built"
+rem IF NOT EXIST "%PERL_PATH%" CALL :SUBMSG "INFO" "The Perl direcotry wasn't found; the addon won't be built"
 IF NOT DEFINED VS100COMNTOOLS CALL :SUBMSG "INFO" "Visual Studio 2010 wasn't found; the installer won't be built"
 
 CD /D %~dp0
@@ -105,19 +105,19 @@ RD /Q /S temp\%BINDIR% >NUL 2>&1
 CALL "%VS100COMNTOOLS%vsvars32.bat" >NUL
 devenv setup.sln /Rebuild "Full|%ARCH%"
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
-devenv setup.sln /Rebuild "Lite|%ARCH%"
-IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
+rem devenv setup.sln /Rebuild "Lite|%ARCH%"
+rem IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
-IF EXIST "%PERL_PATH%" (
-  "%PERL_PATH%\perl\bin\perl.exe" addon_build.pl
-)
+rem IF EXIST "%PERL_PATH%" (
+rem   "%PERL_PATH%\perl\bin\perl.exe" addon_build.pl
+rem )
 
 MD ..\wdkbuild\packages >NUL 2>&1
-IF EXIST "%PERL_PATH%" (
-  MOVE setup.%BINDIR%\addon.7z    ..\wdkbuild\packages\Notepad2-mod_Addon.%BINDIR%.7z >NUL
-)
+rem IF EXIST "%PERL_PATH%" (
+rem   MOVE setup.%BINDIR%\addon.7z    ..\wdkbuild\packages\Notepad2-mod_Addon.%BINDIR%.7z >NUL
+rem )
 MOVE setup.%BINDIR%\setupfull.exe ..\wdkbuild\packages\Notepad2-mod_Setup.%BINDIR%.exe >NUL
-MOVE setup.%BINDIR%\setuplite.exe ..\wdkbuild\packages\Notepad2-mod_Setup_Silent.%BINDIR%.exe >NUL
+rem MOVE setup.%BINDIR%\setuplite.exe ..\wdkbuild\packages\Notepad2-mod_Setup_Silent.%BINDIR%.exe >NUL
 
 rem Cleanup
 RD /Q setup.%BINDIR% temp >NUL 2>&1
