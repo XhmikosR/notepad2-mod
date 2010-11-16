@@ -3,11 +3,10 @@ SETLOCAL
 SET "PERL_PATH=G:\Installation Programs\Programs\Compiling Stuff\Other\ActivePerl-5.12.2.1202-MSWin32-x86-293621"
 
 rem Check the building environment
-IF NOT EXIST "%PERL_PATH%" CALL :SUBMSG "INFO" "The Perl direcotry wasn't specified; the addon won't be built"
+IF NOT EXIST "%PERL_PATH%" CALL :SUBMSG "INFO" "The Perl direcotry wasn't found; the addon won't be built"
 IF NOT DEFINED VS100COMNTOOLS CALL :SUBMSG "INFO" "Visual Studio 2010 wasn't found; the installer won't be built"
 
 CD /D %~dp0
-SET TOOLS_PATH=..\..\distrib\tools
 
 CALL build.cmd
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
@@ -24,12 +23,12 @@ IF DEFINED VS100COMNTOOLS (
 
 rem Calulate md5/sha1 hashes
 PUSHD packages
-"%TOOLS_PATH%\md5sum.exe" *.7z *.zip *.exe >md5hashes
-"%TOOLS_PATH%\sha1sum.exe" *.7z *.zip *.exe >sha1hashes
+rem "..\..\distrib\tools\md5sum.exe" *.7z *.zip *.exe >md5hashes
+rem "..\..\distrib\tools\sha1sum.exe" *.7z *.zip *.exe >sha1hashes
 
 rem Compress everything into a single ZIP file
 DEL Notepad2-mod.zip >NUL 2>&1
-START "" /B /WAIT "%TOOLS_PATH%\7za.exe" a -tzip -mx=9 Notepad2-mod.zip * -x!md5hashes -x!sha1hashes >NUL
+START "" /B /WAIT "..\..\distrib\tools\7za.exe" a -tzip -mx=9 Notepad2-mod.zip * -x!md5hashes -x!sha1hashes >NUL
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
 CALL :SUBMSG "INFO" "Notepad2-mod.zip created successfully!"
@@ -49,15 +48,15 @@ TITLE Creating the %2 ZIP file...
 CALL :SUBMSG "INFO" "Creating the %2 ZIP file..."
 
 MD "temp_zip" "packages" >NUL 2>&1
-COPY "..\License.txt" "temp_zip\" /Y /V
-COPY "..\%1\Notepad2.exe" "temp_zip\" /Y /V
-COPY "..\distrib\res\cabinet\notepad2.ini" "temp_zip\Notepad2.ini" /Y /V
-COPY "..\Notepad2.txt" "temp_zip\" /Y /V
-COPY "..\Readme.txt" "temp_zip\" /Y /V
-COPY "..\Readme-mod.txt" "temp_zip\" /Y /V
+COPY /Y /V "..\License.txt" "temp_zip\"
+COPY /Y /V "..\%1\Notepad2.exe" "temp_zip\"
+COPY /Y /V "..\distrib\res\cabinet\notepad2.ini" "temp_zip\Notepad2.ini"
+COPY /Y /V "..\Notepad2.txt" "temp_zip\"
+COPY /Y /V "..\Readme.txt" "temp_zip\"
+COPY /Y /V "..\Readme-mod.txt" "temp_zip\"
 
 PUSHD "temp_zip"
-START "" /B /WAIT "%TOOLS_PATH%\7za.exe" a -tzip -mx=9^
+START "" /B /WAIT "..\..\distrib\tools\7za.exe" a -tzip -mx=9^
  "Notepad2-mod.%NP2_VER%_r%VerRev%_%2.zip" "License.txt" "Notepad2.exe"^
  "Notepad2.ini" "Notepad2.txt" "Readme.txt" "Readme-mod.txt" >NUL
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
@@ -121,8 +120,7 @@ MOVE setup.%BINDIR%\setupfull.exe ..\wdkbuild\packages\Notepad2-mod_Setup.%BINDI
 MOVE setup.%BINDIR%\setuplite.exe ..\wdkbuild\packages\Notepad2-mod_Setup_Silent.%BINDIR%.exe >NUL
 
 rem Cleanup
-RD setup.%BINDIR% >NUL 2>&1
-RD /Q temp >NUL 2>&1
+RD /Q setup.%BINDIR% temp >NUL 2>&1
 RD /Q /S addon obj >NUL 2>&1
 
 POPD
