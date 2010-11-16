@@ -112,8 +112,9 @@
 #define SCLEX_SML 97
 #define SCLEX_MARKDOWN 98
 #define SCLEX_TXT2TAGS 99
-#define SCLEX_AHK 100
 #define SCLEX_AUTOMATIC 1000
+/* notepad2-mod custom code for the AutoHotKey lexer start */
+#define SCLEX_AHK 200
 #define SCE_AHK_DEFAULT 0
 #define SCE_AHK_COMMENTLINE 1
 #define SCE_AHK_COMMENTBLOCK 2
@@ -135,6 +136,7 @@
 #define SCE_AHK_WORD_UD 18
 #define SCE_AHK_VARREFKW 19
 #define SCE_AHK_ERROR 20
+/* notepad2-mod custom code for the AutoHotKey lexer end */
 #define SCE_P_DEFAULT 0
 #define SCE_P_COMMENTLINE 1
 #define SCE_P_NUMBER 2

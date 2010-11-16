@@ -871,6 +871,7 @@ void SCI_METHOD LexerCPP::Fold(unsigned int startPos, int length, int initStyle,
 				levelNext--;
 			}
 		}
+		/* notepad2-mod custom code start */
 		/* Disable explicit folding; it can often cause problems with non-aware code
 		if (options.foldComment && options.foldCommentExplicit && (style == SCE_C_COMMENTLINE)) {
 			if ((ch == '/') && (chNext == '/')) {
@@ -882,7 +883,7 @@ void SCI_METHOD LexerCPP::Fold(unsigned int startPos, int length, int initStyle,
 				}
 			}
 		}
-		*/
+		*/ /* notepad2-mod custom code end */
 		if (options.foldPreprocessor && (style == SCE_C_PREPROCESSOR)) {
 			if (ch == '#') {
 				unsigned int j = i + 1;

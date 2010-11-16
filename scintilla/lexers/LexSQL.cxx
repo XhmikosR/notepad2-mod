@@ -266,6 +266,7 @@ static void FoldSQLDoc(unsigned int startPos, int length, int initStyle,
 				levelNext--;
 			}
 		}
+		/* notepad2-mod custom code start */
 		/* Disable explicit folding; it can often cause problems with non-aware code
 		if (foldComment && (style == SCE_SQL_COMMENTLINE)) {
 			// MySQL needs -- comments to be followed by space or control char
@@ -279,7 +280,7 @@ static void FoldSQLDoc(unsigned int startPos, int length, int initStyle,
 				}
 			}
 		}
-		*/
+		*/ /* notepad2-mod custom code end */
 		if (style == SCE_SQL_OPERATOR) {
 			if (ch == '(') {
 				levelNext++;

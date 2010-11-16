@@ -12,9 +12,11 @@
 #include <stdio.h>
 #include <time.h>
 
+/* notepad2-mod custom code start */
 #if !defined(_WIN32_WINNT)
 #define _WIN32_WINNT 0x0500
 #endif
+/* notepad2-mod custom code end */
 #include <windows.h>
 #include <commctrl.h>
 #include <richedit.h>
@@ -219,18 +221,6 @@ static void SetLogFont(LOGFONTA &lf, const char *faceName, int characterSet, int
 	lf.lfCharSet = static_cast<BYTE>(characterSet);
 	lf.lfQuality = Win32MapFontQuality(extraFontFlag);
 	strncpy(lf.lfFaceName, faceName, sizeof(lf.lfFaceName));
-
-		if ( lstrcmpiA(faceName, "Calibri") == 0 ||
-			 lstrcmpiA(faceName, "Cambria") == 0 ||
-			 lstrcmpiA(faceName, "Candara") == 0 ||
-			 lstrcmpiA(faceName, "Consolas") == 0 ||
-			 lstrcmpiA(faceName, "Constantia") == 0 ||
-			 lstrcmpiA(faceName, "Corbel") == 0 ||
-			 lstrcmpiA(faceName, "Segoe UI") == 0 )
-		{
-			// For ClearType-specific fonts, we should enforce ClearType
-			lf.lfQuality = CLEARTYPE_QUALITY;
-		}
 }
 
 /**

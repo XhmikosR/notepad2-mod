@@ -5335,6 +5335,7 @@ int Editor::KeyCommand(unsigned int iMessage) {
 	return 0;
 }
 
+/* notepad2-mod custom code start */
 int Editor::KeyDefault(int key, int modifiers) {
 	// SCN_KEY is normally not sent for key codes >= 256 or on Windows; but this
 	// notification is needed for the code folding keyboard commands, and this
@@ -5350,6 +5351,7 @@ int Editor::KeyDefault(int key, int modifiers) {
 		scn.modifiers = modifiers;
 		NotifyParent(scn);
 	}
+/* notepad2-mod custom code end */
 
 	return 0;
 }
