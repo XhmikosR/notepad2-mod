@@ -14,14 +14,6 @@
 #include <string>
 #include <vector>
 
-// With Borland C++ 5.5, including <string> includes Windows.h leading to defining
-// FindText to FindTextA which makes calls here to Document::FindText fail.
-#ifdef __BORLANDC__
-#ifdef FindText
-#undef FindText
-#endif
-#endif
-
 #include "Platform.h"
 
 #include "ILexer.h"
@@ -552,7 +544,7 @@ int Document::NextPosition(int pos, int moveDir) const {
 				// See http://msdn.microsoft.com/en-us/library/cc194792%28v=MSDN.10%29.aspx
 				// http://msdn.microsoft.com/en-us/library/cc194790.aspx
 				if ((pos - 1) <= posStartLine) {
-					return posStartLine - 1;
+					return pos - 1;
 				} else if (IsDBCSLeadByte(cb.CharAt(pos - 1))) {
 					// Must actually be trail byte
 					return pos - 2;

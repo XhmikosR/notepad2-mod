@@ -30,7 +30,7 @@
 
 // We want to use multi monitor functions, but via LoadLibrary etc
 // Luckily microsoft has done the heavy lifting for us, so we'll just use their stub functions!
-#if (defined(_MSC_VER) && (MSC_VER > 1200)) || defined(__BORLANDC__)
+#if defined(_MSC_VER) && (MSC_VER > 1200)
 #define COMPILE_MULTIMON_STUBS
 #include "MultiMon.h"
 #endif
