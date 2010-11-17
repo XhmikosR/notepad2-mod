@@ -1108,19 +1108,19 @@ KEYWORDLIST KeyWords_RUBY = {
 EDITLEXER lexRUBY = { SCLEX_RUBY, 63304, L"Ruby", L"rb; ruby", L"", &KeyWords_RUBY, {
                     { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
                     //{ SCE_P_DEFAULT, L"Default", L"", L"" },
-                    { SCE_P_COMMENTLINE, 63127, L"Comment", L"fore:#007F00", L"" },
+                    { SCE_RB_COMMENTLINE, 63127, L"Comment", L"fore:#007F00", L"" },
                     { SCE_P_COMMENTBLOCK, 63305, L"Comment Block", L"fore:#007F00", L"" },
-                    { SCE_P_WORD, 63128, L"Keyword", L"fore:#00007F;bold", L"" },
-                    { SCE_P_IDENTIFIER, 63129, L"Identifier", L"", L"" },
-                    { SCE_P_NUMBER, 63130, L"Number", L"fore:#007F7F", L"" },
-                    { SCE_P_OPERATOR, 63132, L"Operator", L"bold", L"" },
-                    { SCE_P_STRING, 63211, L"String double quoted", L"fore:#FF8000", L"" },
-                    { SCE_P_CHARACTER, 63212, L"String single quoted", L"fore:#FF8000", L"" },
+                    { SCE_RB_WORD, 63128, L"Keyword", L"fore:#00007F;bold", L"" },
+                    { SCE_RB_IDENTIFIER, 63129, L"Identifier", L"", L"" },
+                    { SCE_RB_NUMBER, 63130, L"Number", L"fore:#007F7F", L"" },
+                    { SCE_RB_OPERATOR, 63132, L"Operator", L"bold", L"" },
+                    { SCE_RB_STRING, 63211, L"String double quoted", L"fore:#FF8000", L"" },
+                    { SCE_RB_CHARACTER, 63212, L"String single quoted", L"fore:#FF8000", L"" },
                     { SCE_P_STRINGEOL, 63303, L"String not closed", L"fore:#FF8000", L"" },
                     { SCE_P_TRIPLEDOUBLE, 63244, L"String triple double quotes", L"fore:#FF8000", L"" },
                     { SCE_P_TRIPLE, 63245, L"String triple single quotes", L"fore:#FF8000", L"" },
-                    { SCE_P_CLASSNAME, 63246, L"Class name", L"fore:#0000FF;bold", L"" },
-                    { SCE_P_DEFNAME, 63247, L"Function name", L"fore:#007F7F;bold", L"" },
+                    { SCE_RB_CLASSNAME, 63246, L"Class name", L"fore:#0000FF;bold", L"" },
+                    { SCE_RB_DEFNAME, 63247, L"Function name", L"fore:#007F7F;bold", L"" },
                     { -1, 00000, L"", L"", L"" } } };
 
 
