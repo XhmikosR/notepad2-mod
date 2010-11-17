@@ -32,7 +32,6 @@
 extern "C" {
 #include "dialogs.h"
 #include "helpers.h"
-#include "scicall.h"
 }
 #include "resource.h"
 

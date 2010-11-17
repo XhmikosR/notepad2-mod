@@ -1763,16 +1763,16 @@ void Style_SetLexer(HWND hwnd,PEDITLEXER pLexNew)
 
   if (pLexNew->iLexer == SCLEX_CPP) {
     SendMessage(hwnd,SCI_SETPROPERTY,(WPARAM)"styling.within.preprocessor",(LPARAM)"1");
-    SendMessage(hwnd,SCI_SETPROPERTY,(WPARAM)"lexer.cpp.track.preprocessor",(LPARAM)"0");
+    SciCall_SetProperty("lexer.cpp.track.preprocessor", "0");
   }
   else if (pLexNew->iLexer == SCLEX_PASCAL)
     SendMessage(hwnd,SCI_SETPROPERTY,(WPARAM)"lexer.pascal.smart.highlighting",(LPARAM)"1");
-  else if (pLexNew->iLexer == SCLEX_NSIS)
-    SendMessage(hwnd,SCI_SETPROPERTY,(WPARAM)"nsis.ignorecase",(LPARAM)"1");
   else if (pLexNew->iLexer == SCLEX_SQL) {
     SendMessage(hwnd,SCI_SETPROPERTY,(WPARAM)"sql.backslash.escapes",(LPARAM)"1");
     SendMessage(hwnd,SCI_SETPROPERTY,(WPARAM)"lexer.sql.backticks.identifier",(LPARAM)"1");
   }
+  else if (pLexNew->iLexer == SCLEX_NSIS)
+    SciCall_SetProperty("nsis.ignorecase", "1");
 
   // Code folding
   SciCall_SetProperty("fold", "1");
