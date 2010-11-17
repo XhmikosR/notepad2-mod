@@ -15,10 +15,6 @@
 #ifdef _MSC_VER
 #pragma warning(disable: 4786)
 #endif
-#ifdef __BORLANDC__
-// Borland C++ displays warnings in vector header without this
-#pragma option -w-ccc -w-rch
-#endif
 
 #include <string>
 #include <vector>

@@ -2,7 +2,7 @@
 /** @file LexSQL.cxx
  ** Lexer for SQL, including PL/SQL and SQL*Plus.
  **/
-// Copyright 1998-2005 by Neil Hodgson <neilh@scintilla.org>
+// Copyright 1998-2010 by Neil Hodgson <neilh@scintilla.org>
 // The License.txt file describes the conditions under which this software may be distributed.
 
 #include <stdlib.h>
@@ -70,6 +70,11 @@ static void ColouriseSQLDoc(unsigned int startPos, int length, int initStyle, Wo
 	bool sqlBackslashEscapes = styler.GetPropertyInt("sql.backslash.escapes", 0) != 0;
 
 	bool sqlBackticksIdentifier = styler.GetPropertyInt("lexer.sql.backticks.identifier", 0) != 0;
+
+	// property lexer.sql.numbersign.comment
+	//  If "lexer.sql.numbersign.comment" property is set to 0 a line beginning with '#' will not be a comment.
+	bool sqlNumbersignComment = styler.GetPropertyInt("lexer.sql.numbersign.comment", 1) != 0;
+
 	int styleBeforeDCKeyword = SCE_SQL_DEFAULT;
 	for (; sc.More(); sc.Forward()) {
 		// Determine if the current state should terminate.
@@ -206,7 +211,7 @@ static void ColouriseSQLDoc(unsigned int startPos, int length, int initStyle, Wo
 				// Perhaps we should enforce that with proper property:
 //~ 			} else if (sc.Match("-- ")) {
 				sc.SetState(SCE_SQL_COMMENTLINE);
-			} else if (sc.ch == '#') {
+			} else if (sc.ch == '#' && sqlNumbersignComment) {
 				sc.SetState(SCE_SQL_COMMENTLINEDOC);
 			} else if (sc.ch == '\'') {
 				sc.SetState(SCE_SQL_CHARACTER);
@@ -234,6 +239,7 @@ static void FoldSQLDoc(unsigned int startPos, int length, int initStyle,
 	bool foldComment = styler.GetPropertyInt("fold.comment") != 0;
 	bool foldCompact = styler.GetPropertyInt("fold.compact", 1) != 0;
 	bool foldOnlyBegin = styler.GetPropertyInt("fold.sql.only.begin", 0) != 0;
+	bool foldAtElse = styler.GetPropertyInt("fold.at.else", 0) != 0;
 
 	// property fold.sql.exists
 	//	Enables "EXISTS" to end a fold as is started by "IF" in "DROP TABLE IF EXISTS".
@@ -302,13 +308,21 @@ static void FoldSQLDoc(unsigned int startPos, int length, int initStyle,
 			} else {
 				s[j] = '\0';
 			}
-			if ((!foldOnlyBegin) && (strcmp(s, "if") == 0 || strcmp(s, "loop") == 0)) {
+			if ((!foldOnlyBegin) && (
+				strcmp(s, "if") == 0 ||
+				strcmp(s, "loop") == 0 ||
+				strcmp(s, "case") == 0)) {
 				if (endFound) {
-					// ignore
+					// ignore because we are into "end if;" or "end loop;" or "end case;"
 					endFound = false;
 				} else {
 					levelNext++;
 				}
+			} else if ((!foldOnlyBegin) && (
+				// folding for else & elsif block only if foldAtElse is set.
+				foldAtElse && (strcmp(s, "elsif") == 0 || strcmp(s, "else") == 0))) {
+				// we are in same case "} else {" in C language
+				levelCurrent--;
 			} else if (strcmp(s, "begin") == 0) {
 				levelNext++;
 			} else if ((strcmp(s, "end") == 0) ||
