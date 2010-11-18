@@ -1108,17 +1108,12 @@ KEYWORDLIST KeyWords_RUBY = {
 EDITLEXER lexRUBY = { SCLEX_RUBY, 63304, L"Ruby", L"rb; ruby", L"", &KeyWords_RUBY, {
                     { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
                     //{ SCE_P_DEFAULT, L"Default", L"", L"" },
-                    { SCE_RB_COMMENTLINE, 63127, L"Comment", L"fore:#007F00", L"" },
-                    { SCE_P_COMMENTBLOCK, 63305, L"Comment Block", L"fore:#007F00", L"" },
+                    { MULTI_STYLE(SCE_RB_COMMENTLINE,SCE_P_COMMENTBLOCK,0,0), 63127, L"Comment", L"fore:#007F00", L"" },
                     { SCE_RB_WORD, 63128, L"Keyword", L"fore:#00007F;bold", L"" },
                     { SCE_RB_IDENTIFIER, 63129, L"Identifier", L"", L"" },
                     { SCE_RB_NUMBER, 63130, L"Number", L"fore:#007F7F", L"" },
                     { SCE_RB_OPERATOR, 63132, L"Operator", L"bold", L"" },
-                    { SCE_RB_STRING, 63211, L"String double quoted", L"fore:#FF8000", L"" },
-                    { SCE_RB_CHARACTER, 63212, L"String single quoted", L"fore:#FF8000", L"" },
-                    { SCE_P_STRINGEOL, 63303, L"String not closed", L"fore:#FF8000", L"" },
-                    { SCE_P_TRIPLEDOUBLE, 63244, L"String triple double quotes", L"fore:#FF8000", L"" },
-                    { SCE_P_TRIPLE, 63245, L"String triple single quotes", L"fore:#FF8000", L"" },
+                    { MULTI_STYLE(SCE_RB_STRING,SCE_RB_CHARACTER,SCE_P_STRINGEOL,0), 63131, L"String", L"fore:#FF8000", L"" },
                     { SCE_RB_CLASSNAME, 63246, L"Class name", L"fore:#0000FF;bold", L"" },
                     { SCE_RB_DEFNAME, 63247, L"Function name", L"fore:#007F7F;bold", L"" },
                     { -1, 00000, L"", L"", L"" } } };
@@ -1133,18 +1128,15 @@ KEYWORDLIST KeyWords_LUA = {
 EDITLEXER lexLUA = { SCLEX_LUA, 63298, L"Lua Script", L"lua", L"", &KeyWords_LUA, {
                     { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
                     //{ SCE_LUA_DEFAULT, L"Default", L"", L"" },
-                    { SCE_LUA_COMMENT, 63127, L"Comment", L"fore:#007F00", L"" },
-                    { SCE_LUA_COMMENTLINE, 63299, L"Comment Line", L"fore:#007F00", L"" },
-                    { SCE_LUA_COMMENTDOC, 63300, L"Comment Doc", L"fore:#007F00", L"" },
+                    { MULTI_STYLE(SCE_LUA_COMMENT,SCE_LUA_COMMENTLINE,SCE_LUA_COMMENTDOC,0), 63127, L"Comment", L"fore:#007F00", L"" },
                     { SCE_LUA_NUMBER, 63130, L"Number", L"fore:#007F7F", L"" },
                     { SCE_LUA_WORD, 63128, L"Keyword", L"fore:#00007F;bold", L"" },
-                    { SCE_LUA_STRING, 63131, L"String", L"fore:#FF0000", L"" },
-                    { SCE_LUA_CHARACTER, 63301, L"Character", L"", L"" },
+                    { MULTI_STYLE(SCE_LUA_STRING,SCE_LUA_STRINGEOL,0,0), 63131, L"String", L"fore:#FF0000", L"" },
                     { SCE_LUA_LITERALSTRING, 63302, L"Literal String", L"fore:#FF0000", L"" },
+                    { SCE_LUA_CHARACTER, 63301, L"Character", L"", L"" },
                     { SCE_LUA_PREPROCESSOR, 63133, L"Preprocessor", L"", L"" },
                     { SCE_LUA_OPERATOR, 63132, L"Operator", L"", L"" },
                     { SCE_LUA_IDENTIFIER, 63129, L"Identifier", L"", L"" },
-                    { SCE_LUA_STRINGEOL, 63303, L"String not closed", L"fore:#FF0000", L"" },
                     { -1, 00000, L"", L"", L"" } } };
 
 
