@@ -1451,6 +1451,8 @@ EDITLEXER lexAHK = { SCLEX_AHK, 63306, L"AutoHotKey Script", L"ahk", L"", &KeyWo
 
 
 // This array holds all the lexers...
+// Don't forget to change the number in Style_SetHTMLLexer and Style_SetXMLLexer
+// if you change this array
 PEDITLEXER pLexArray[NUMLEXERS] =
 {
   &lexDefault,
