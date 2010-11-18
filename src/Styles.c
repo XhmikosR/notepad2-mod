@@ -959,6 +959,8 @@ EDITLEXER lexPS = { SCLEX_POWERSHELL, 63021, L"PowerShell Script", L"ps1; psc1",
 
 
 // This array holds all the lexers...
+// Don't forget to change the number in Style_SetHTMLLexer and Style_SetXMLLexer
+// if you change this array
 PEDITLEXER pLexArray[NUMLEXERS] =
 {
   &lexDefault,
@@ -1814,7 +1816,7 @@ void Style_SetDefaultLexer(HWND hwnd)
 //
 void Style_SetHTMLLexer(HWND hwnd)
 {
-  Style_SetLexer(hwnd,pLexArray[1]);
+  Style_SetLexer(hwnd,pLexArray[20]);
 }
 
 
@@ -1824,7 +1826,7 @@ void Style_SetHTMLLexer(HWND hwnd)
 //
 void Style_SetXMLLexer(HWND hwnd)
 {
-  Style_SetLexer(hwnd,pLexArray[2]);
+  Style_SetLexer(hwnd,pLexArray[21]);
 }
 
 
