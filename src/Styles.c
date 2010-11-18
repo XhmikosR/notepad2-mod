@@ -2384,7 +2384,7 @@ void Style_SetDefaultLexer(HWND hwnd)
 //
 void Style_SetHTMLLexer(HWND hwnd)
 {
-  Style_SetLexer(hwnd,pLexArray[1]);
+  Style_SetLexer(hwnd,pLexArray[30]);
 }
 
 
@@ -2394,7 +2394,7 @@ void Style_SetHTMLLexer(HWND hwnd)
 //
 void Style_SetXMLLexer(HWND hwnd)
 {
-  Style_SetLexer(hwnd,pLexArray[2]);
+  Style_SetLexer(hwnd,pLexArray[31]);
 }
 
 
