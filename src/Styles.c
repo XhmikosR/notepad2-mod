@@ -1425,7 +1425,7 @@ KEYWORDLIST KeyWords_AHK = {
 
 
 EDITLEXER lexAHK = { SCLEX_AHK, 63306, L"AutoHotKey Script", L"ahk", L"", &KeyWords_AHK, {
-                    { STYLE_DEFAULT, 63106, L"Default", L"fore:#C0C0C0; bold", L"" },
+                    { STYLE_DEFAULT, 63126, L"Default", L"fore:#C0C0C0; bold", L"" },
                     //{ SCE_AHK_DEFAULT, L"Default", L"", L"" },
                     { SCE_AHK_COMMENTLINE, 63127, L"Comment", L"italics; fore:#008000", L"" },
                     { SCE_AHK_COMMENTBLOCK, 63305, L"Comment Block", L"italics; fore:#008040", L"" },
