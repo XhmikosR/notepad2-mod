@@ -33,6 +33,7 @@ VS_VERSION_INFO     VERSIONINFO
             VALUE "FileDescription", SETUP_TITLE_STR
             VALUE "FileVersion", STRINGIFY(VERSION_MAJOR) ", " STRINGIFY(VERSION_MINOR) ", " STRINGIFY(VERSION_BUILD) ", " STRINGIFY(VERSION_REV)
             VALUE "InternalName", SETUP_TITLE_STR
+            //VALUE "OriginalFilename", "Notepad2-mod_Setup.exe"
             //VALUE "LegalCopyright", "Copyright © 2010"
             VALUE "ProductName", SETUP_TITLE_STR
             VALUE "ProductVersion", STRINGIFY(VERSION_MAJOR) ", " STRINGIFY(VERSION_MINOR) ", " STRINGIFY(VERSION_BUILD) ", " STRINGIFY(VERSION_REV)
