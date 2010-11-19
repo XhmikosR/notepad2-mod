@@ -1014,7 +1014,7 @@ KEYWORDLIST KeyWords_NSIS = {
 "mb_rtlreading mb_defbutton1 mb_defbutton2 mb_defbutton3 mb_defbutton4 idabort idcancel idignore "
 "idno idok idretry idyes sd "
 "current all timeout imgid resizetofit listonly textonly both branding "
-"hkcr hkey_classes_root hklm hkey_local_machine hkcu hkey_current_user hku  hkey_users "
+"hkcr hkey_classes_root hklm hkey_local_machine hkcu hkey_current_user hku hkey_users "
 "hkcc hkey_current_config hkdd hkey_dyn_data hkpd hkey_performance_data shctx shell_context silent"
 "left right top bottom true false on off italic underline strike trimleft trimright trimcenter "
 "idd_license idd_dir idd_selcom idd_inst idd_instfiles idd_uninst idd_verify force windows nocustom "
@@ -1054,31 +1054,32 @@ KEYWORDLIST KeyWords_INNO = {
 "allowcancelduringinstall allownoicons allowrootdirectory allowuncpath alwaysrestart alwaysshowcomponentslist "
 "alwaysshowdironreadypage alwaysshowgrouponreadypage alwaysusepersonalgroup appcomments appcontact appcopyright "
 "appenddefaultdirname appenddefaultgroupname appid appmodifypath appmutex appname apppublisher apppublisherurl "
-"appreadmefile appsupporturl appupdatesurl appvername appversion architecturesallowed "
-"architecturesinstallin64bitmode backcolor backcolor2 backcolordirection backsolid changesassociations "
-"changesenvironment compression copyrightfontname copyrightfontsize createappdir createuninstallregkey "
-"defaultdirname defaultgroupname defaultuserinfoname defaultuserinfoorg defaultuserinfoserial dialogfontname "
-"dialogfontsize direxistswarning disabledirpage disablefinishedpage disableprogramgrouppage disablereadymemo "
+"appreadmefile appsupportphone appsupporturl appupdatesurl appvername appversion architecturesallowed "
+"architecturesinstallin64bitmode backcolor backcolor2 backcolordirection backsolid beveledlabel changesassociations "
+"changesenvironment compression compressionthreads copyrightfontname copyrightfontsize createappdir "
+"createuninstallregkey defaultdirname defaultgroupname defaultuserinfoname defaultuserinfoorg defaultuserinfoserial "
+"dialogfontname dialogfontsize direxistswarning disabledirpage disablefinishedpage disableprogramgrouppage disablereadymemo "
 "disablereadypage disablestartupprompt diskclustersize diskslicesize diskspanning enabledirdoesntexistwarning "
 "encryption extradiskspacerequired flatcomponentslist infoafterfile infobeforefile internalcompresslevel "
 "languagedetectionmethod languagecodepage languageid languagename licensefile mergeduplicatefiles minversion "
 "onlybelowversion outputbasefilename outputdir outputmanifestfile password privilegesrequired reservebytes "
-"restartifneededbyrun setupiconfile showcomponentsizes showlanguagedialog showtaskstreelines slicesperdisk "
-"solidcompression sourcedir timestamprounding timestampsinutc titlefontname titlefontsize touchdate touchtime "
-"uninstallable uninstalldisplayicon uninstalldisplayname uninstallfilesdir uninstalllogmode uninstallrestartcomputer "
-"updateuninstalllogappname usepreviousappdir usepreviousgroup useprevioussetuptype useprevioustasks "
-"versioninfoproductname useprevioususerinfo userinfopage usesetupldr versioninfocompany versioninfocopyright "
+"restartifneededbyrun righttoleft setupiconfile setuplogging showcomponentsizes showlanguagedialog showtaskstreelines "
+"showundisplayablelanguages signeduninstaller signeduninstallerdir signtool slicesperdisk "
+"solidcompression sourcedir strongassemblyname timestamprounding timestampsinutc titlefontname titlefontsize touchdate "
+"touchtime uninstallable uninstalldisplayicon uninstalldisplayname uninstallfilesdir uninstalldisplaysize uninstalllogmode "
+"uninstallrestartcomputer updateuninstalllogappname usepreviousappdir usepreviousgroup usepreviouslanguage useprevioussetuptype "
+"useprevioustasks verb versioninfoproductname useprevioususerinfo userinfopage usesetupldr versioninfocompany versioninfocopyright "
 "versioninfodescription versioninfoproductversion versioninfotextversion versioninfoversion versioninfoproducttextversion "
 "welcomefontname welcomefontsize windowshowcaption windowstartmaximized windowresizable windowvisible wizardimagebackcolor "
 "wizardimagefile wizardimagestretch wizardsmallimagefile",
 "afterinstall attribs beforeinstall check comment components copymode description destdir destname excludes "
 "extradiskspacerequired filename flags fontinstall groupdescription hotkey infoafterfile infobeforefile iconfilename "
-"iconindex key languages licensefile messagesfile minversion name onlybelowversion parameters permissions root "
-"runonceid section source statusmsg string subkey tasks terminalservicesaware type types valuedata valuename valuetype workingdir",
-"append define dim else emit endif endsub error expr file for if ifdef "
-"ifexist ifndef ifnexist include insert pragma sub undef",
-"begin break case const continue do downto else end except finally for "
-"function if of procedure repeat then to try until uses var while with",
+"iconindex key languages licensefile messagesfile minversion name onlybelowversion parameters permissions root runonceid "
+"section source statusmsg string subkey tasks terminalservicesaware type types valuedata valuename valuetype workingdir",
+"append define dim else emit elif endif endsub error expr file for if "
+"ifdef ifexist ifndef ifnexist include insert pragma sub undef",
+"and begin break case const continue do downto else end except finally for function "
+"if not of or procedure repeat then to try type until uses var while with",
 "", "", "", "" };
 
 
@@ -1095,7 +1096,7 @@ EDITLEXER lexINNO = { SCLEX_INNOSETUP, 63293, L"Inno Setup Script", L"iss; isl; 
                       { SCE_INNO_KEYWORD_PASCAL, 63297, L"Pascal Keyword", L"fore:#0000FF", L"" },
                     //{ SCE_INNO_KEYWORD_USER, L"User Defined", L"", L"" },
                       { MULTI_STYLE(SCE_INNO_STRING_DOUBLE,SCE_INNO_STRING_SINGLE,0,0), 63131, L"String", L"fore:#008080", L"" },
-                    //{ SCE_INNO_IDENTIFIER, L"Identifier", L"", L"" },
+                    //{ SCE_INNO_IDENTIFIER, 63129, L"Identifier", L"", L"" },
                       { -1, 00000, L"", L"", L"" } } };
 
 
