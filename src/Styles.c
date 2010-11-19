@@ -1321,16 +1321,16 @@ KEYWORDLIST KeyWords_AU3 = {
 EDITLEXER lexAU3 = { SCLEX_AU3, 63276, L"AutoIt3", L"au3", L"", &KeyWords_AU3, {
                      { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
                      { MULTI_STYLE(SCE_AU3_COMMENT,SCE_AU3_COMMENTBLOCK,0,0), 63127, L"Comment", L"fore:#008000", L"" },
-                     { SCE_AU3_NUMBER, 63130, L"Number", L"fore:#FF0000", L"" },
-                     { SCE_AU3_FUNCTION, 63277, L"Function", L"fore:#0A246A; bold", L"" },
-                     { SCE_AU3_KEYWORD, 63128, L"Keyword", L"fore:#0A246A; bold", L"" },
+                     { SCE_AU3_NUMBER, 63130, L"Number", L"fore:#008080", L"" },
+                     { SCE_AU3_FUNCTION, 63277, L"Function", L"fore:#0000FF", L"" },
+                     { SCE_AU3_KEYWORD, 63128, L"Keyword", L"fore:#0000FF", L"" },
                      { SCE_AU3_MACRO, 63278, L"Macro", L"fore:#0080FF", L"" },
-                     { SCE_AU3_STRING, 63131, L"String", L"fore:#008000", L"" },
-                     { SCE_AU3_OPERATOR, 63132, L"Operator", L"", L"" },
-                     { SCE_AU3_VARIABLE, 63249, L"Variable", L"", L"" },
-                     { SCE_AU3_SENT, 63279, L"Send Key", L"fore:#0080FF", L"" },
-                     { SCE_AU3_PREPROCESSOR, 63133, L"Preprocessor", L"fore:#808080", L"" },
-                     { SCE_AU3_SPECIAL, 63280, L"Special", L"fore:#808080", L"" },
+                     { SCE_AU3_STRING, 63131, L"String", L"fore:#008080", L"" },
+                     { SCE_AU3_OPERATOR, 63132, L"Operator", L"#C000C0", L"" },
+                     { SCE_AU3_VARIABLE, 63249, L"Variable", L"fore:#808000", L"" },
+                     { SCE_AU3_SENT, 63279, L"Send Key", L"fore:#FF0000", L"" },
+                     { SCE_AU3_PREPROCESSOR, 63133, L"Preprocessor", L"fore:#FF8000", L"" },
+                     { SCE_AU3_SPECIAL, 63280, L"Special", L"fore:#FF8000", L"" },
                      { -1, 00000, L"", L"", L"" } } };
 
 
