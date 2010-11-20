@@ -257,6 +257,7 @@ static void FoldSQLDoc(unsigned int startPos, int length, int initStyle,
 	int styleNext = styler.StyleAt(startPos);
 	int style = initStyle;
 	bool endFound = false;
+	bool isUnfoldingIgnored = false;
 	for (unsigned int i = startPos; i < endPos; i++) {
 		char ch = chNext;
 		chNext = styler.SafeGetCharAt(i + 1);
@@ -264,6 +265,12 @@ static void FoldSQLDoc(unsigned int startPos, int length, int initStyle,
 		style = styleNext;
 		styleNext = styler.StyleAt(i + 1);
 		bool atEOL = (ch == '\r' && chNext != '\n') || (ch == '\n');
+		if (atEOL || (ch == ';')) {
+			// set endFound to false if EOL is reached or ';' is found
+			endFound = false;
+			isUnfoldingIgnored = false;
+		}
+
 		if (foldComment && IsStreamCommentStyle(style)) {
 			if (!IsStreamCommentStyle(stylePrev)) {
 				levelNext++;
@@ -311,15 +318,30 @@ static void FoldSQLDoc(unsigned int startPos, int length, int initStyle,
 			} else {
 				s[j] = '\0';
 			}
-			if ((!foldOnlyBegin) && (
-				strcmp(s, "if") == 0 ||
+			if (strcmp(s, "if") == 0 ||
 				strcmp(s, "loop") == 0 ||
-				strcmp(s, "case") == 0)) {
+				strcmp(s, "case") == 0) {
 				if (endFound) {
-					// ignore because we are into "end if;" or "end loop;" or "end case;"
 					endFound = false;
+					if (foldOnlyBegin && !isUnfoldingIgnored) {
+						// this end isn't for begin block, but for if block ("end if;")
+						// or loop block ("end loop;") or case block ("end case;")
+						// so ignore previous "end" by increment levelNext.
+						levelNext++;
+					}
 				} else {
-					levelNext++;
+					if (!foldOnlyBegin) {
+						if (levelCurrent > levelNext) {
+							levelCurrent = levelNext;
+						}
+						levelNext++;
+					} else {
+						if (levelCurrent > levelNext) {
+							// doesn't include this line into the folding block
+							// because doesn't hide if, loop or case (eg "end; if" or "end; loop" or "end; case")
+							levelCurrent = levelNext;
+						}
+					}
 				}
 			} else if ((!foldOnlyBegin) && (
 				// folding for else & elsif block only if foldAtElse is set.
@@ -339,6 +361,7 @@ static void FoldSQLDoc(unsigned int startPos, int length, int initStyle,
 				levelNext--;
 				if (levelNext < SC_FOLDLEVELBASE) {
 					levelNext = SC_FOLDLEVELBASE;
+					isUnfoldingIgnored = true;
 				}
 			}
 		}
@@ -355,7 +378,6 @@ static void FoldSQLDoc(unsigned int startPos, int length, int initStyle,
 			lineCurrent++;
 			levelCurrent = levelNext;
 			visibleChars = 0;
-			endFound = false;
 		}
 		if (!isspacechar(ch)) {
 			visibleChars++;
