@@ -1072,7 +1072,7 @@ KEYWORDLIST KeyWords_INNO = {
 "versioninfodescription versioninfoproductversion versioninfotextversion versioninfoversion versioninfoproducttextversion "
 "welcomefontname welcomefontsize windowshowcaption windowstartmaximized windowresizable windowvisible wizardimagebackcolor "
 "wizardimagefile wizardimagestretch wizardsmallimagefile",
-"afterinstall attribs beforeinstall check comment components copymode description destdir destname excludes "
+"appusermodelid afterinstall attribs beforeinstall check comment components copymode description destdir destname excludes "
 "extradiskspacerequired filename flags fontinstall groupdescription hotkey infoafterfile infobeforefile iconfilename "
 "iconindex key languages licensefile messagesfile minversion name onlybelowversion parameters permissions root runonceid "
 "section source statusmsg string subkey tasks terminalservicesaware type types valuedata valuename valuetype workingdir",
