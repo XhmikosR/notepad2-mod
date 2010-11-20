@@ -87,7 +87,7 @@ void LexInterface::Colourise(int start, int end) {
 
 Document::Document() {
 	refCount = 0;
-#ifdef unix
+#ifdef __unix__
 	eolMode = SC_EOL_LF;
 #else
 	eolMode = SC_EOL_CRLF;
