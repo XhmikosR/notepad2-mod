@@ -130,8 +130,8 @@ MD ..\wdkbuild\packages >NUL 2>&1
 rem IF EXIST "%PERL_PATH%" (
 rem   MOVE setup.%BINDIR%\addon.7z    ..\wdkbuild\packages\Notepad2-mod_Addon.%BINDIR%.7z >NUL
 rem )
-MOVE setup.%BINDIR%\setupfull.exe ..\wdkbuild\packages\Notepad2-mod_Setup.%BINDIR%.exe >NUL
-rem MOVE setup.%BINDIR%\setuplite.exe ..\wdkbuild\packages\Notepad2-mod_Setup_Silent.%BINDIR%.exe >NUL
+MOVE setup.%BINDIR%\setupfull.exe ..\wdkbuild\packages\Notepad2-mod.%NP2_VER%_r%VerRev%_%BINDIR%_Setup.exe >NUL
+rem MOVE setup.%BINDIR%\setuplite.exe ..\wdkbuild\packages\Notepad2-mod.%NP2_VER%_r%VerRev%_%BINDIR%_Setup_Silent.exe >NUL
 
 rem Cleanup
 RD /Q setup.%BINDIR% temp >NUL 2>&1
