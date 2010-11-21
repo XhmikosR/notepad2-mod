@@ -45,13 +45,20 @@ Notepad2.ini,,,0x00000010
 
 [Notepad2.AddReg]
 ; Allow the uninstallation of Notepad2
+HKLM,"%REG_UNIS%","Contact",0,"http://code.google.com/p/notepad2-mod/"
 HKLM,"%REG_UNIS%","DisplayIcon",0,"%16422%\Notepad2\Notepad2.exe"
 HKLM,"%REG_UNIS%","DisplayName",0,"Notepad2 (Notepad Replacement)"
 HKLM,"%REG_UNIS%","DisplayVersion",0,"0.0.0.0"
+HKLM,"%REG_UNIS%","EstimatedSize",0x10001,"1111"
+HKLM,"%REG_UNIS%","HelpLink",0,"http://code.google.com/p/notepad2-mod/"
+HKLM,"%REG_UNIS%","InstallLocation",0,"%16422%\Notepad2\"
 HKLM,"%REG_UNIS%","NoModify",0x10001,1
 HKLM,"%REG_UNIS%","NoRepair",0x10001,1
 HKLM,"%REG_UNIS%","Publisher",0,"XhmikosR"
+HKLM,"%REG_UNIS%","Readme",0,"%16422%\Notepad2\Readme-mod.txt"
 HKLM,"%REG_UNIS%","UninstallString",0,"rundll32.exe advpack.dll,LaunchINFSectionEx ""%16422%\Notepad2\Uninstall.inf"",DefaultUninstall,,8,N"
+HKLM,"%REG_UNIS%","URLInfoAbout",0,"http://code.google.com/p/notepad2-mod/"
+HKLM,"%REG_UNIS%","URLUpdateInfo",0,"http://code.google.com/p/notepad2-mod/"
 ; Soft replacement of Windows Notepad with Notepad2
 HKLM,"%REG_IFEO%","Debugger",0,"""%16422%\Notepad2\Notepad2.exe"" /z"
 ; Registration needed for Windows 7 jump lists to work properly with Notepad2

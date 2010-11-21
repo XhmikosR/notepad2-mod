@@ -94,13 +94,27 @@ COPY /B /V /Y res\cabinet\notepad2.redir.ini temp\%BINDIR%\notepad2.redir.ini
 COPY /B /V /Y ..\Notepad2.txt temp\%BINDIR%\notepad2.txt
 COPY /B /V /Y ..\Readme.txt temp\%BINDIR%\readme.txt
 COPY /B /V /Y ..\Readme-mod.txt temp\%BINDIR%\readme-mod.txt
+
 rem Set the version for the DisplayVersion registry value
-CALL tools\BatchSubstitute.bat "0.0.0.0" %NP2_VER%.%VerRev% temp\%BINDIR%\notepad2.inf >notepad2.inf.tmp
+CALL tools\BatchSubstitute.bat "0.0.0.0" "%NP2_VER%.%VerRev%" temp\%BINDIR%\notepad2.inf >notepad2.inf.tmp
 COPY /Y temp\%BINDIR%\notepad2.inf notepad2.inf.orig >NUL
 MOVE /Y notepad2.inf.tmp temp\%BINDIR%\notepad2.inf >NUL
+
+rem get the size and put it in the inf file
+PUSHD temp\%BINDIR%
+FOR /F "tokens=*" %%a IN ('"DIR /-C | FIND "bytes" | FIND /V "free""') DO SET summaryout=%%a
+FOR /F "tokens=1,2 delims=)" %%a IN ("%summaryout%") DO SET filesout=%%a&set sizeout=%%b
+SET /A sizeout=%sizeout:bytes=%/1024
+POPD
+
+CALL tools\BatchSubstitute.bat "1111" "%sizeout%" temp\%BINDIR%\notepad2.inf >notepad2.inf.tmp
+COPY /Y temp\%BINDIR%\notepad2.inf notepad2.inf.orig >NUL
+MOVE /Y notepad2.inf.tmp temp\%BINDIR%\notepad2.inf >NUL
+
 tools\cabutcd.exe temp\%BINDIR% res\cabinet.%BINDIR%.cab
 DEL notepad2.inf.orig >NUL 2>&1
 RD /Q /S temp\%BINDIR% >NUL 2>&1
+
 
 CALL "%VS100COMNTOOLS%vsvars32.bat" >NUL
 devenv setup.sln /Rebuild "Full|%ARCH%"
