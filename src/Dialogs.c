@@ -40,7 +40,6 @@
 extern HWND  hwndMain;
 extern HWND  hwndEdit;
 extern HINSTANCE g_hInstance;
-extern LPMALLOC  g_lpMalloc;
 extern DWORD dwLastIOError;
 extern BOOL bSkipUnicodeDetection;
 extern BOOL bLoadASCIIasUTF8;
@@ -198,7 +197,7 @@ BOOL GetDirectory(HWND hwndParent,int iTitle,LPWSTR pszFolder,LPCWSTR pszBase,BO
   {
     SHGetPathFromIDList(pidl,pszFolder);
 
-    g_lpMalloc->lpVtbl->Free(g_lpMalloc,pidl);
+    CoTaskMemFree(pidl);
 
     fOk = TRUE;
   }

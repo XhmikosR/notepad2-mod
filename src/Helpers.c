@@ -1340,7 +1340,6 @@ void PathCanonicalizeEx(LPWSTR lpSrc)
 //
 //  Works fine with Windows 95!
 //
-extern LPMALLOC g_lpMalloc;
 
 DWORD GetLongPathNameEx(LPCWSTR lpszShortPath,LPWSTR lpszLongPath,DWORD cchBuffer)
 {
@@ -1372,7 +1371,7 @@ DWORD GetLongPathNameEx(LPCWSTR lpszShortPath,LPWSTR lpszLongPath,DWORD cchBuffe
     {
       if (SHGetPathFromIDList(pidl,lpszLongPath))
         fSucceeded = FALSE;
-      g_lpMalloc->lpVtbl->Free(g_lpMalloc,pidl);
+      CoTaskMemFree(pidl);
     }
   }
 

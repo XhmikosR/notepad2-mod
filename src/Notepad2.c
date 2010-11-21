@@ -258,7 +258,6 @@ int   iSortOptions = 0;
 BOOL      fIsElevated = FALSE;
 WCHAR     wchWndClass[16] = WC_NOTEPAD2;
 
-LPMALLOC  g_lpMalloc;
 HINSTANCE g_hInstance;
 HANDLE    g_hScintilla;
 UINT16    g_uWinVer;
@@ -568,7 +567,6 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInst,
 
   // Init OLE and Common Controls
   OleInitialize(NULL);
-  SHGetMalloc(&g_lpMalloc);
 
   icex.dwSize = sizeof(INITCOMMONCONTROLSEX);
   icex.dwICC  = ICC_WIN95_CLASSES|ICC_COOL_CLASSES|ICC_BAR_CLASSES|ICC_USEREX_CLASSES;
@@ -612,7 +610,6 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInst,
   if (hModUxTheme)
     FreeLibrary(hModUxTheme);
 
-  g_lpMalloc->lpVtbl->Release(g_lpMalloc);
   OleUninitialize();
 
   return(msg.wParam);

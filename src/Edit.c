@@ -41,7 +41,6 @@
 extern HWND  hwndMain;
 extern HWND  hwndEdit;
 extern HINSTANCE g_hInstance;
-extern LPMALLOC  g_lpMalloc;
 extern DWORD dwLastIOError;
 extern HWND hDlgFindReplace;
 extern UINT cpLastFind;

@@ -29,10 +29,6 @@
 
 
 
-//==== Global LPMALLOC instance ===============================================
-extern LPMALLOC g_lpMalloc;
-
-
 
 //==== DirList ================================================================
 
@@ -141,7 +137,7 @@ BOOL DirList_Destroy(HWND hwnd)
   //{
 
     if (lpdl->pidl)
-      g_lpMalloc->lpVtbl->Free(g_lpMalloc,lpdl->pidl);
+      CoTaskMemFree(lpdl->pidl);
 
     //lpMalloc->lpVtbl->Release(lpMalloc);
 
@@ -356,9 +352,7 @@ int DirList_Fill(HWND hwnd,LPCWSTR lpszDir,DWORD grfFlags,LPCWSTR lpszFileSpec,
                 if (DirList_MatchFilter(lpsf,pidlEntry,&dlf))
                 {
 
-                  lplvid = g_lpMalloc->lpVtbl->Alloc(
-                                                g_lpMalloc,
-                                                sizeof(LV_ITEMDATA));
+                  lplvid = CoTaskMemAlloc(sizeof(LV_ITEMDATA));
 
                   lplvid->pidl = pidlEntry;
                   lplvid->lpsf = lpsf;
@@ -396,7 +390,7 @@ int DirList_Fill(HWND hwnd,LPCWSTR lpszDir,DWORD grfFlags,LPCWSTR lpszFileSpec,
     } // SHGetDesktopFolder()
 
     if (lpdl->pidl)
-      g_lpMalloc->lpVtbl->Free(g_lpMalloc,lpdl->pidl);
+      CoTaskMemFree(lpdl->pidl);
 
     if (lpdl->lpsf && lpdl->lpsf->lpVtbl)
       lpdl->lpsf->lpVtbl->Release(lpdl->lpsf);
@@ -677,10 +671,10 @@ BOOL DirList_DeleteItem(HWND hwnd,LPARAM lParam)
 
       // Free mem
       LPLV_ITEMDATA lplvid = (LPLV_ITEMDATA)lvi.lParam;
-      g_lpMalloc->lpVtbl->Free(g_lpMalloc,lplvid->pidl);
+      CoTaskMemFree(lplvid->pidl);
       lplvid->lpsf->lpVtbl->Release(lplvid->lpsf);
 
-      g_lpMalloc->lpVtbl->Free(g_lpMalloc,lplvid);
+      CoTaskMemFree(lplvid);
 
       //lpMalloc->lpVtbl->Release(lpMalloc);
 
@@ -1342,9 +1336,7 @@ int DriveBox_Fill(HWND hwnd)
                                       di.dwDescriptionId <= SHDID_COMPUTER_OTHER))
                 {
 
-                  lpdcid = g_lpMalloc->lpVtbl->Alloc(
-                                                g_lpMalloc,
-                                                sizeof(DC_ITEMDATA));
+                  lpdcid = CoTaskMemAlloc(sizeof(DC_ITEMDATA));
 
                   //lpdcid->pidl = IL_Copy(lpMalloc,pidlEntry);
                   lpdcid->pidl = pidlEntry;
@@ -1397,7 +1389,7 @@ int DriveBox_Fill(HWND hwnd)
 
         } // IShellFolder::BindToObject()
 
-        g_lpMalloc->lpVtbl->Free(g_lpMalloc,pidl);
+        CoTaskMemFree(pidl);
 
       } // SHGetSpecialFolderLocation()
 
@@ -1581,12 +1573,12 @@ LRESULT DriveBox_DeleteItem(HWND hwnd,LPARAM lParam)
   //SHGetMalloc(&lpMalloc);
 
   // Free pidl
-  g_lpMalloc->lpVtbl->Free(g_lpMalloc,lpdcid->pidl);
+  CoTaskMemFree(lpdcid->pidl);
   // Release lpsf
   lpdcid->lpsf->lpVtbl->Release(lpdcid->lpsf);
 
   // Free lpdcid itself
-  g_lpMalloc->lpVtbl->Free(g_lpMalloc,lpdcid);
+  CoTaskMemFree(lpdcid);
 
   // Release lpMalloc
   //lpMalloc->lpVtbl->Release(lpMalloc);
