@@ -3434,6 +3434,7 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
 
         if( iNextLine != -1 )
         {
+            SciCall_EnsureVisible(iNextLine);
             SendMessage( hwndEdit , SCI_GOTOLINE , iNextLine , 0 );
             SendMessage( hwndEdit , SCI_SETYCARETPOLICY , CARET_SLOP|CARET_STRICT|CARET_EVEN , 10 );
             SendMessage( hwndEdit , SCI_SCROLLCARET , 0 , 0 );
@@ -3457,6 +3458,7 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
 
         if( iNextLine != -1 )
         {
+            SciCall_EnsureVisible(iNextLine);
             SendMessage( hwndEdit , SCI_GOTOLINE , iNextLine , 0 );
             SendMessage( hwndEdit , SCI_SETYCARETPOLICY , CARET_SLOP|CARET_STRICT|CARET_EVEN , 10 );
             SendMessage( hwndEdit , SCI_SCROLLCARET , 0 , 0 );
