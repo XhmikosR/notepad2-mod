@@ -103,6 +103,10 @@
 #define IDD_INFOBOX                     125
 #define IDD_INFOBOX2                    126
 #define IDD_INFOBOX3                    127
+#define IDC_BACKSLASHHELP               151
+#define IDC_REGEXPHELP                  152
+#define IDC_WILDCARDHELP                153
+#define IDC_WILDCARDSEARCH              154
 #define IDACC_FIND                      200
 #define IDACC_REPLACE                   201
 #define IDACC_SAVEPOS                   202
@@ -127,6 +131,9 @@
 #define IDS_FILTER_INI                  10016
 #define IDS_OPENWITH                    10017
 #define IDS_FAVORITES                   10018
+#define IDS_BACKSLASHHELP               10019
+#define IDS_REGEXPHELP                  10020
+#define IDS_WILDCARDHELP                10021
 #define CMD_ESCAPE                      20000
 #define CMD_SHIFTESC                    20001
 #define CMD_CTRLENTER                   20002
@@ -194,6 +201,14 @@
 #define IDM_LINEENDINGS_LF              40201
 #define IDM_LINEENDINGS_CR              40202
 #define IDM_LINEENDINGS_SETDEFAULT      40203
+#define IDM_EDIT_BOOKMARKTOGGLE         40250
+#define IDM_EDIT_BOOKMARKNEXT           40251
+#define IDM_EDIT_BOOKMARKCLEAR          40252
+#define IDM_EDIT_BOOKMARKPREV           40253
+#define BME_EDIT_BOOKMARKTOGGLE         40254
+#define BME_EDIT_BOOKMARKNEXT           40255
+#define BME_EDIT_BOOKMARKCLEAR          40256
+#define BME_EDIT_BOOKMARKPREV           40257
 #define IDM_EDIT_UNDO                   40300
 #define IDM_EDIT_REDO                   40301
 #define IDM_EDIT_CUT                    40302

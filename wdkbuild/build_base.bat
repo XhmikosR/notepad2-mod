@@ -17,7 +17,7 @@ IF /I "%1"=="x86" (SET CLADDCMD=/D "WIN32" /D "_WIN32_WINNT=0x0501")
 IF /I "%1"=="x64" (SET CLADDCMD=/D "_WIN64" /D "_WIN32_WINNT=0x0502" /wd4133 /wd4244 /wd4267)
 
 cl /Fo"%OBJDIR%/" /I "..\scintilla\include" /I "..\scintilla\lexers" /I "..\scintilla\lexlib" /I "..\scintilla\src" /I "..\scintilla\win32"^
- /D "STATIC_BUILD" /D "SCI_LEXER" /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE" %CLADDCMD%^
+ /D "STATIC_BUILD" /D "SCI_LEXER" /D "BOOKMARK_EDITION" /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE" %CLADDCMD%^
  /c /EHsc /MD /O2 /GS /GT /GL /W3 /MP^
  /Tp "..\scintilla\lexers\LexAHK.cxx"^
  /Tp "..\scintilla\lexers\LexAsm.cxx"^
@@ -88,7 +88,7 @@ CALL :SUBMSG "INFO" "resource compiler stage..."
 IF /I "%1"=="x86" (SET RCADDCMD=/d "WIN32")
 IF /I "%1"=="x64" (SET RCADDCMD=/d "_WIN64")
 
-rc /d "_UNICODE" /d "UNICODE" %RCADDCMD% /fo"%OBJDIR%/Notepad2.res" "..\src\Notepad2.rc"
+rc /d "_UNICODE" /d "UNICODE" /d "BOOKMARK_EDITION" %RCADDCMD% /fo"%OBJDIR%/Notepad2.res" "..\src\Notepad2.rc"
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
 rem linker command line

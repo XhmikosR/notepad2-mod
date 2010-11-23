@@ -225,12 +225,27 @@ BEGIN
                                                     IDM_EDIT_SELTOMATCHINGBRACE
 
         END
+#ifdef BOOKMARK_EDITION
+        POPUP "Bookmarks"
+        BEGIN
+            MENUITEM "Toggle\tCtrl+F2",             BME_EDIT_BOOKMARKTOGGLE
+            MENUITEM SEPARATOR
+            MENUITEM "Goto Next\tF2",               BME_EDIT_BOOKMARKNEXT
+            MENUITEM "Goto Previous\tShift+F2",     BME_EDIT_BOOKMARKPREV
+            MENUITEM SEPARATOR
+            MENUITEM "Clear All\tAlt+F2",           BME_EDIT_BOOKMARKCLEAR
+        END
+#endif
         MENUITEM SEPARATOR
         MENUITEM "&Find...\tCtrl+F",            IDM_EDIT_FIND
         MENUITEM "Sa&ve Find Text\tAlt+F3",     IDM_EDIT_SAVEFIND
         MENUITEM "Find Ne&xt\tF3",              IDM_EDIT_FINDNEXT
         MENUITEM "Find Pre&vious\tShift+F3",    IDM_EDIT_FINDPREV
+#ifdef BOOKMARK_EDITION
+        MENUITEM "Select To Ne&xt\tAlt+Ctrl+F3", IDM_EDIT_SELTONEXT
+#else
         MENUITEM "Select To Ne&xt\tF2",         IDM_EDIT_SELTONEXT
+#endif
         MENUITEM "R&eplace...\tCtrl+H",         IDM_EDIT_REPLACE
         MENUITEM "&Goto...\tCtrl+G",            IDM_EDIT_GOTOLINE
     END
@@ -482,11 +497,22 @@ BEGIN
     VK_F12,         IDM_VIEW_SCHEMECONFIG,  VIRTKEY, CONTROL, NOINVERT
     VK_F12,         IDM_VIEW_FONT,          VIRTKEY, ALT, NOINVERT
     VK_F12,         IDM_VIEW_USE2NDDEFAULT, VIRTKEY, SHIFT, NOINVERT
-    VK_F2,          IDM_EDIT_SELTONEXT,     VIRTKEY, NOINVERT
-    VK_F2,          IDM_EDIT_SELTOPREV,     VIRTKEY, SHIFT, NOINVERT
+#ifdef BOOKMARK_EDITION
+    VK_F2,          BME_EDIT_BOOKMARKNEXT,  VIRTKEY, NOINVERT
+    VK_F2,          BME_EDIT_BOOKMARKTOGGLE, VIRTKEY, CONTROL, NOINVERT
+    VK_F2,          BME_EDIT_BOOKMARKCLEAR, VIRTKEY, ALT, NOINVERT
+    VK_F2,          BME_EDIT_BOOKMARKPREV,  VIRTKEY, SHIFT, NOINVERT
+#endif
     VK_F3,          IDM_EDIT_FINDNEXT,      VIRTKEY, NOINVERT
     VK_F3,          CMD_FINDNEXTSEL,        VIRTKEY, CONTROL, NOINVERT
     VK_F3,          IDM_EDIT_SAVEFIND,      VIRTKEY, ALT, NOINVERT
+#ifdef BOOKMARK_EDITION
+    VK_F3,          IDM_EDIT_SELTONEXT,     VIRTKEY, CONTROL, ALT, NOINVERT
+    VK_F3,          IDM_EDIT_SELTOPREV,     VIRTKEY, SHIFT, ALT, NOINVERT
+#else
+    VK_F2,          IDM_EDIT_SELTONEXT,     VIRTKEY, NOINVERT
+    VK_F2,          IDM_EDIT_SELTOPREV,     VIRTKEY, SHIFT, NOINVERT
+#endif
     VK_F3,          IDM_EDIT_FINDPREV,      VIRTKEY, SHIFT, NOINVERT
     VK_F3,          CMD_FINDPREVSEL,        VIRTKEY, SHIFT, CONTROL, 
                                                     NOINVERT
@@ -595,10 +621,17 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,7,49,89,10
     CONTROL         "Match &beginning of word only",IDC_FINDSTART,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,7,61,110,10
+#ifdef BOOKMARK_EDITION
+    CONTROL         "Regular &expression search",IDC_FINDREGEXP,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,73,96,10
+    CONTROL         "&Transform backslashes",IDC_FINDTRANSFORMBS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,85,85,10
+#else
     CONTROL         "Regular &expression search",IDC_FINDREGEXP,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,7,73,101,10
     CONTROL         "&Transform backslashes",IDC_FINDTRANSFORMBS,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,7,85,89,10
+#endif
     CONTROL         "&Don't wrap around",IDC_NOWRAP,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,125,37,75,10
     CONTROL         "C&lose after find",IDC_FINDCLOSE,"Button",
@@ -610,6 +643,12 @@ BEGIN
     PUSHBUTTON      "Close",IDCANCEL,215,75,50,14
     CONTROL         "<a>Goto Replace (Ctrl+H)</a>",IDC_TOGGLEFINDREPLACE,
                     "SysLink",0x0,125,85,74,10
+#ifdef BOOKMARK_EDITION
+    CONTROL         "<a>(?)</a>",IDC_BACKSLASHHELP,"SysLink",0x0,96,85,14,10
+    CONTROL         "<a>(?)</a>",IDC_REGEXPHELP,"SysLink",0x0,106,73,14,10
+    CONTROL         "W&ildcard Search",IDC_WILDCARDSEARCH,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,61,63,10
+    CONTROL         "<a>(?)</a>",IDC_WILDCARDHELP,"SysLink",0x0,191,61,14,10
+#endif
 END
 
 IDD_REPLACE DIALOGEX 0, 0, 272, 130
@@ -630,10 +669,17 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,7,78,89,10
     CONTROL         "Match &beginning of word only",IDC_FINDSTART,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,7,90,110,10
+#ifdef BOOKMARK_EDITION
+    CONTROL         "Regular &expression search",IDC_FINDREGEXP,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,102,97,10
+    CONTROL         "&Transform backslashes",IDC_FINDTRANSFORMBS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,114,86,10
+#else
     CONTROL         "Regular &expression search",IDC_FINDREGEXP,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,7,102,101,10
     CONTROL         "&Transform backslashes",IDC_FINDTRANSFORMBS,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,7,114,89,10
+#endif
     CONTROL         "&Don't wrap around",IDC_NOWRAP,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,125,66,75,10
     CONTROL         "C&lose after replace",IDC_FINDCLOSE,"Button",
@@ -646,6 +692,12 @@ BEGIN
     PUSHBUTTON      "Close",IDCANCEL,215,92,50,14
     CONTROL         "<a>Goto Find (Ctrl+F)</a>",IDC_TOGGLEFINDREPLACE,
                     "SysLink",0x0,125,114,74,10
+#ifdef BOOKMARK_EDITION
+    CONTROL         "<a>(?)</a>",IDC_BACKSLASHHELP,"SysLink",0x0,94,114,14,10
+    CONTROL         "<a>(?)</a>",IDC_REGEXPHELP,"SysLink",0x0,107,102,14,10
+    CONTROL         "W&ildcard Search",IDC_WILDCARDSEARCH,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,90,63,10
+    CONTROL         "<a>(?)</a>",IDC_WILDCARDHELP,"SysLink",0x0,191,90,14,10
+#endif
 END
 
 IDD_RUN DIALOGEX 0, 0, 224, 85
@@ -1395,8 +1447,13 @@ BEGIN
     IDS_UNTITLED            "Untitled"
     IDS_TITLEEXCERPT        """%s"""
     IDS_READONLY            "(Read Only)"
+#ifdef BOOKMARK_EDITION
+    IDS_DOCPOS              "Ln %s / %s    Col %s   Sel %s   Sel Ln %s"
+    IDS_DOCPOS2             "Ln %s / %s    Col %s / %s    Sel %s   Sel Ln %s"
+#else
     IDS_DOCPOS              "Ln %s : %s   Col %s   Sel %s"
     IDS_DOCPOS2             "Ln %s : %s   Col %s : %s   Sel %s"
+#endif
     IDS_DOCSIZE             "%s"
     IDS_LOADFILE            "Loading ""%s""..."
     IDS_SAVEFILE            "Saving ""%s""..."
@@ -1406,6 +1463,15 @@ BEGIN
     IDS_FILTER_ALL          "All files (*.*)|*.*|"
     IDS_FILTER_EXE          "Executable files (*.exe;*.com;*.bat;*.cmd;*.lnk;*.pif)|*.exe;*.com;*.bat;*.cmd;*.lnk;*.pif|All files (*.*)|*.*|"
 END
+
+#ifdef BOOKMARK_EDITION
+STRINGTABLE 
+BEGIN
+    IDS_BACKSLASHHELP       "Backslash Transformations\n\n\\a\tAlert (BEL, Ascii 7)\n\\b\tBackspace (BS, Ascii 8)\n\\f\tFormfeed (FF, Ascii 12)\n\\n\tNewline (LF, Ascii 10)\n\\r\tCarriage return (CR, Ascii 13)\n\\t\tHorizontal Tab (HT, Ascii 9)\n\\v\tVertical Tab (VT, Ascii 11)\n\\ooo\tOctal Value\n\\xhh\tHexadecimal Value\n\\\\\tBackslash"
+    IDS_REGEXPHELP          "RegExp Syntax (Single Lines Only)\n\n.\tAny character\n^\tStart of a line\n$\tEnd of a line\n\\<\tStart of a word\n\\>\tEnd of a word\n[...]\tA set of chars ([abc]) or a range ([a-z])\n[^...]\tChars NOT in the set or range\n\\d\tAny decimal digit\n\\D\tAny non-digit char\n\\s\tAny whitespace char\n\\S\tNot a whitespace char\n\\w\tAny ""word"" char\n\\W\tAny ""non-word"" char\n\\xHH\tChar with hex code HH\n*\tMatches preceding 0 or more times\n+\tMatches preceding 1 or more times\n\\(\tStart of a region\n\\)\tEnd of a region\n\\n\tRefers to a region when replacing (n is 1-9)\n"
+    IDS_WILDCARDHELP        "Wildcard Search\n\n*\tMatches zero or more characters.\n?\tMatches exactly one character. "
+END
+#endif
 
 STRINGTABLE 
 BEGIN

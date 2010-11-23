@@ -7,6 +7,7 @@ version using patches by Kai Liu and others.
 
 Notable changes:
 * Code folding
+* Support for bookmarks
 * Support for registry-based Notepad replacement
 * Syntax highlighting support for AutoHotKey, AutoIt3, Bash, LaTeX, Lua, Ruby,
   Tcl, NSIS and Inno Setup scripts
@@ -19,3 +20,4 @@ More information:
 * Code folding usage guide:   http://code.google.com/p/notepad2-mod/wiki/CodeFoldingUsageNotes
 * Official Notepad2 website:  http://www.flos-freeware.ch/notepad2.html
 * Kai Liu's website:          http://code.kliu.org/misc/notepad2/
+* Bookmark Edition website:   http://www.rlvision.com/notepad2/about.asp

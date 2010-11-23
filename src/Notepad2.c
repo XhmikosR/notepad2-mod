@@ -265,6 +265,70 @@ WCHAR     g_wchAppUserModelID[64];
 
 
 
+#ifdef BOOKMARK_EDITION
+    //Graphics for bookmark indicator
+    /* XPM */
+    static char * bookmark_pixmap[] = {
+    "11 11 44 1",
+    " 	c #EBE9ED",
+    ".	c #E5E3E7",
+    "+	c #767C6D",
+    "@	c #2A3120",
+    "#	c #1B2312",
+    "$	c #333B28",
+    "%	c #E3E1E5",
+    "&	c #D8D6DA",
+    "*	c #444D38",
+    "=	c #3F5C19",
+    "-	c #63AD00",
+    ";	c #73C900",
+    ">	c #64AF00",
+    ",	c #3D5718",
+    "'	c #3E4634",
+    ")	c #7B8172",
+    "!	c #42601A",
+    "~	c #74CB00",
+    "{	c #71C600",
+    "]	c #3A5317",
+    "^	c #707668",
+    "/	c #3F4931",
+    "(	c #262C1D",
+    "_	c #2F3A1E",
+    ":	c #72C700",
+    "<	c #74CA00",
+    "[	c #0E1109",
+    "}	c #3C462F",
+    "|	c #62AC00",
+    "1	c #21271A",
+    "2	c #7A8071",
+    "3	c #405D19",
+    "4	c #3D5A18",
+    "5	c #D9D7DB",
+    "6	c #4E5841",
+    "7	c #72C800",
+    "8	c #63AC00",
+    "9	c #3F5B19",
+    "0	c #3D4533",
+    "a	c #DFDDE0",
+    "b	c #353E29",
+    "c	c #29331B",
+    "d	c #7B8272",
+    "e	c #DDDBDF",
+    "           ",
+    "  .+@#$+%  ",
+    " &*=-;>,'  ",
+    " )!~~~~{]^ ",
+    " /-~~~~~>( ",
+    " _:~~~~~<[ ",
+    " }|~~~~~|1 ",
+    " 23~~~~;4+ ",
+    " 56=|7890  ",
+    "  a2bc}de  ",
+    "           "};
+#endif
+
+
+
 //=============================================================================
 //
 // Flags
@@ -3353,6 +3417,104 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
       break;
 
 
+#ifdef BOOKMARK_EDITION
+    // Main Bookmark Functions
+    //case IDM_EDIT_BOOKMARKNEXT:
+     case BME_EDIT_BOOKMARKNEXT:
+    {
+        int iPos = SendMessage( hwndEdit , SCI_GETCURRENTPOS , 0 , 0);
+        int iLine = SendMessage( hwndEdit , SCI_LINEFROMPOSITION , iPos , 0 );
+
+        int bitmask = 1;
+        int iNextLine = SendMessage( hwndEdit , SCI_MARKERNEXT , iLine+1 , bitmask );
+        if( iNextLine == -1 )
+        {
+            iNextLine = SendMessage( hwndEdit , SCI_MARKERNEXT , 0 , bitmask );
+        }
+
+        if( iNextLine != -1 )
+        {
+            SendMessage( hwndEdit , SCI_GOTOLINE , iNextLine , 0 );
+            SendMessage( hwndEdit , SCI_SETYCARETPOLICY , CARET_SLOP|CARET_STRICT|CARET_EVEN , 10 );
+            SendMessage( hwndEdit , SCI_SCROLLCARET , 0 , 0 );
+        }
+        break;
+    }
+
+    //case IDM_EDIT_BOOKMARKPREV:
+    case BME_EDIT_BOOKMARKPREV:
+    {
+        int iPos = SendMessage( hwndEdit , SCI_GETCURRENTPOS , 0 , 0);
+        int iLine = SendMessage( hwndEdit , SCI_LINEFROMPOSITION , iPos , 0 );
+
+        int bitmask = 1;
+        int iNextLine = SendMessage( hwndEdit , SCI_MARKERPREVIOUS , iLine-1 , bitmask );
+        if( iNextLine == -1 )
+        {
+            int nLines = SendMessage( hwndEdit , SCI_GETLINECOUNT , 0 , 0 );
+            iNextLine = SendMessage( hwndEdit , SCI_MARKERPREVIOUS , nLines , bitmask );
+        }
+
+        if( iNextLine != -1 )
+        {
+            SendMessage( hwndEdit , SCI_GOTOLINE , iNextLine , 0 );
+            SendMessage( hwndEdit , SCI_SETYCARETPOLICY , CARET_SLOP|CARET_STRICT|CARET_EVEN , 10 );
+            SendMessage( hwndEdit , SCI_SCROLLCARET , 0 , 0 );
+        }
+
+        break;
+    }
+
+    //case IDM_EDIT_BOOKMARKTOGGLE:
+    case BME_EDIT_BOOKMARKTOGGLE:
+    {
+        int iPos = SendMessage( hwndEdit , SCI_GETCURRENTPOS , 0 , 0);
+        int iLine = SendMessage( hwndEdit , SCI_LINEFROMPOSITION , iPos , 0 );
+
+        int bitmask = SendMessage( hwndEdit , SCI_MARKERGET , iLine , 0 );
+        if( bitmask & 1 )
+        {
+            // unset
+            SendMessage( hwndEdit , SCI_MARKERDELETE , iLine , 0 );
+        }
+        else
+        {
+            // define (behöver bara göra detta en gång egentligen)
+            //SendMessage( hwndEdit , SCI_MARKERSETBACK , 0 , 74 | (203 << 8) | (0 << 16) ); //behöver bara göra detta en gång egentligen
+            //SendMessage( hwndEdit , SCI_MARKERDEFINE , 0 , SC_MARK_ARROWS );    //behöver bara göra detta en gång egentligen
+
+            if( bShowSelectionMargin )
+            {
+                SendMessage( hwndEdit , SCI_MARKERDEFINEPIXMAP , 0 , (LPARAM)bookmark_pixmap );
+            }
+            else
+            {
+                SendMessage( hwndEdit , SCI_MARKERSETBACK , 0 , 216 | (255 << 8) | (216 << 16) );
+                SendMessage( hwndEdit , SCI_MARKERDEFINE , 0 , SC_MARK_BACKGROUND );
+            }
+
+
+            //SendMessage( hwndEdit , SCI_MARKERSETBACK , 0 , 180 | (255 << 8) | (180 << 16) ); //behöver bara göra detta en gång egentligen
+            //SendMessage( hwndEdit , SCI_MARKERDEFINE , 0 , SC_MARK_BACKGROUND );    //behöver bara göra detta en gång egentligen
+
+            // set
+            SendMessage( hwndEdit , SCI_MARKERADD , iLine , 0 );
+            //SendMessage( hwndEdit , SCI_MARKERADD , iLine , 1 );
+        }
+
+        break;
+    }
+
+    //case IDM_EDIT_BOOKMARKCLEAR:
+    case BME_EDIT_BOOKMARKCLEAR:
+    {
+        SendMessage( hwndEdit , SCI_MARKERDELETEALL , -1 , 0 );
+
+        break;
+    }
+#endif
+
+
     case IDM_EDIT_FINDNEXT:
     case IDM_EDIT_FINDPREV:
     case IDM_EDIT_SELTONEXT:
@@ -3602,6 +3764,20 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
     case IDM_VIEW_MARGIN:
       bShowSelectionMargin = (bShowSelectionMargin) ? FALSE : TRUE;
       SendMessage(hwndEdit,SCI_SETMARGINWIDTHN,1,(bShowSelectionMargin)?16:0);
+
+#ifdef BOOKMARK_EDITION
+        //Depending on if the margin is visible or not, choose different bookmark indication
+        if( bShowSelectionMargin )
+        {
+            SendMessage( hwndEdit , SCI_MARKERDEFINEPIXMAP , 0 , (LPARAM)bookmark_pixmap );
+        }
+        else
+        {
+            SendMessage( hwndEdit , SCI_MARKERSETBACK , 0 , 216 | (255 << 8) | (216 << 16) );
+            SendMessage( hwndEdit , SCI_MARKERDEFINE , 0 , SC_MARK_BACKGROUND );
+        }
+#endif
+
       break;
 
 
@@ -4701,6 +4877,23 @@ LRESULT MsgNotify(HWND hwnd,WPARAM wParam,LPARAM lParam)
               int iCurLine = SendMessage(hwndEdit,SCI_LINEFROMPOSITION,(WPARAM)iCurPos,0);
               int iLineLength = SendMessage(hwndEdit,SCI_LINELENGTH,iCurLine,0);
               //int iIndentBefore = SendMessage(hwndEdit,SCI_GETLINEINDENTATION,(WPARAM)iCurLine-1,0);
+
+#ifdef BOOKMARK_EDITION
+            // Move bookmark along with line if inserting lines (pressing return at beginning of line) because Scintilla does not do this for us
+            if( iCurLine > 0 )
+            {
+                int iPrevLineLength = SendMessage(hwndEdit,SCI_GETLINEENDPOSITION,iCurLine-1,0) - SendMessage(hwndEdit,SCI_POSITIONFROMLINE,iCurLine-1,0)  ;
+                if( iPrevLineLength == 0 )
+                {
+                    int bitmask = SendMessage( hwndEdit , SCI_MARKERGET , iCurLine-1 , 0 );
+                    if( bitmask & 1 )
+                    {
+                        SendMessage( hwndEdit , SCI_MARKERDELETE , iCurLine-1 , 0 );
+                        SendMessage( hwndEdit , SCI_MARKERADD , iCurLine , 0 );
+                    }
+                }
+            }
+#endif
 
               if (iCurLine > 0/* && iLineLength <= 2*/)
               {
@@ -6069,6 +6262,16 @@ void UpdateStatusbar()
   WCHAR tchOvrMode[32];
   WCHAR tchLexerName[128];
 
+#ifdef BOOKMARK_EDITION
+    int iSelStart;
+    int iSelEnd;
+    int iLineStart;
+    int iLineEnd;
+    int iStartOfLinePos;
+    int iLinesSelected;
+    WCHAR tchLinesSelected[32];
+#endif
+
   if (!bShowStatusbar)
     return;
 
@@ -6100,10 +6303,30 @@ void UpdateStatusbar()
   else
     lstrcpy(tchSel,L"--");
 
+#ifdef BOOKMARK_EDITION
+    // Print number of lines selected lines in statusbar
+    iSelStart = SendMessage( hwndEdit , SCI_GETSELECTIONSTART , 0 , 0 );
+    iSelEnd = SendMessage( hwndEdit , SCI_GETSELECTIONEND , 0 , 0 );
+    iLineStart = SendMessage( hwndEdit , SCI_LINEFROMPOSITION , iSelStart , 0 );
+    iLineEnd = SendMessage( hwndEdit , SCI_LINEFROMPOSITION , iSelEnd , 0 );
+    iStartOfLinePos = SendMessage( hwndEdit , SCI_POSITIONFROMLINE , iLineEnd , 0 );
+    iLinesSelected = iLineEnd - iLineStart;
+    if( iSelStart != iSelEnd  &&  iStartOfLinePos != iSelEnd ) iLinesSelected += 1;
+    wsprintf(tchLinesSelected,L"%i",iLinesSelected);
+    FormatNumberStr(tchLinesSelected);
+
+    if (!bMarkLongLines)
+        FormatString(tchDocPos,COUNTOF(tchDocPos),IDS_DOCPOS,tchLn,tchLines,tchCol,tchSel,tchLinesSelected);
+    else
+        FormatString(tchDocPos,COUNTOF(tchDocPos),IDS_DOCPOS2,tchLn,tchLines,tchCol,tchCols,tchSel,tchLinesSelected);
+
+#else
+
   if (!bMarkLongLines)
     FormatString(tchDocPos,COUNTOF(tchDocPos),IDS_DOCPOS,tchLn,tchLines,tchCol,tchSel);
   else
     FormatString(tchDocPos,COUNTOF(tchDocPos),IDS_DOCPOS2,tchLn,tchLines,tchCol,tchCols,tchSel);
+#endif
 
   iBytes = SendMessage(hwndEdit,SCI_GETLENGTH,0,0);
   StrFormatByteSize(iBytes,tchBytes,COUNTOF(tchBytes));
