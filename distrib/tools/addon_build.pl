@@ -11,7 +11,7 @@ use File::Copy;
 
 my($SHORT_NAME) = 'np2setup';
 my($USE_LITE) = 0;
-my(@VERSION_SOURCE) = qw(../src/Version.h ../src/Version_rev.h);
+my(@VERSION_SOURCE) = qw(../../src/Version.h ../../src/Version_rev.h);
 
 my($ENTRIES_TEMPLATE) = q(
 	[General]
@@ -102,7 +102,7 @@ sub get_date_string # in( ), out( $date_string )
 
 foreach my $arch (@ARCHS)
 {
-	my($source_dir) = "setup.$arch";
+	my($source_dir) = "../setup.$arch";
 	next unless (-d $source_dir);
 
 	my($dest_file) = "$SHORT_NAME.exe";

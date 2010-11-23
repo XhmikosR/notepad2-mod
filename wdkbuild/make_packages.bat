@@ -123,7 +123,9 @@ rem devenv setup.sln /Rebuild "Lite|%ARCH%"
 rem IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
 rem IF EXIST "%PERL_PATH%" (
+rem   PUSHD tools
 rem   "%PERL_PATH%\perl\bin\perl.exe" addon_build.pl
+rem   POPD
 rem )
 
 MD ..\wdkbuild\packages >NUL 2>&1
@@ -135,7 +137,7 @@ rem MOVE setup.%BINDIR%\setuplite.exe ..\wdkbuild\packages\Notepad2-mod.%NP2_VER
 
 rem Cleanup
 RD /Q setup.%BINDIR% temp >NUL 2>&1
-RD /Q /S addon obj >NUL 2>&1
+RD /Q /S tools\addon obj >NUL 2>&1
 
 POPD
 GOTO :EOF
