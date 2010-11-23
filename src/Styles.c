@@ -1351,7 +1351,7 @@ EDITLEXER lexAU3 = { SCLEX_AU3, 63276, L"AutoIt3", L"au3", L"", &KeyWords_AU3, {
                      { -1, 00000, L"", L"", L"" } } };
 
 
-EDITLEXER lexLATEX = { SCLEX_LATEX, 63281, L"LaTeX Files", L"tex; latex", L"", &KeyWords_NULL, {
+EDITLEXER lexLATEX = { SCLEX_LATEX, 63281, L"LaTeX Files", L"tex; latex; sty", L"", &KeyWords_NULL, {
                        { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
                        { SCE_L_COMMAND, 63236, L"Command", L"fore:#0000FF", L"" },
                        { SCE_L_TAG, 63282, L"Tag", L"fore:#0000FF", L"" },
