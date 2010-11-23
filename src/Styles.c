@@ -3160,7 +3160,7 @@ int Style_GetLexerIconId(PEDITLEXER plex)
 //
 //  Style_AddLexerToTreeView()
 //
-void Style_AddLexerToTreeView(HWND hwnd,PEDITLEXER plex)
+HTREEITEM Style_AddLexerToTreeView(HWND hwnd,PEDITLEXER plex)
 {
   int i = 0;
   WCHAR tch[128];
@@ -3199,6 +3199,8 @@ void Style_AddLexerToTreeView(HWND hwnd,PEDITLEXER plex)
     TreeView_InsertItem(hwnd,&tvis);
     i++;
   }
+
+  return hTreeNode;
 }
 
 
@@ -3248,6 +3250,8 @@ BOOL CALLBACK Style_ConfigDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lPara
         int i;
         SHFILEINFO shfi;
         LOGFONT lf;
+        HTREEITEM currentLex;
+        int found = 0;
 
         hwndTV = GetDlgItem(hwnd,IDC_STYLELIST);
         fDragging = FALSE;
@@ -3258,14 +3262,21 @@ BOOL CALLBACK Style_ConfigDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lPara
 
         // Add lexers
         for (i = 0; i < NUMLEXERS; i++)
-          Style_AddLexerToTreeView(hwndTV,pLexArray[i]);
+        {
+          if (!found && lstrcmp(pLexArray[i]->pszName,pLexCurrent->pszName) == 0)
+          {
+              found = 1;
+              currentLex = Style_AddLexerToTreeView(hwndTV,pLexArray[i]);
+          }
+          else
+              Style_AddLexerToTreeView(hwndTV,pLexArray[i]);
+        }
 
-        pCurrentLexer = 0;
         pCurrentStyle = 0;
 
         //SetExplorerTheme(hwndTV);
         //TreeView_Expand(hwndTV,TreeView_GetRoot(hwndTV),TVE_EXPAND);
-        TreeView_Select(hwndTV,TreeView_GetRoot(hwndTV),TVGN_CARET);
+        TreeView_Select(hwndTV,currentLex,TVGN_CARET);
 
         SendDlgItemMessage(hwnd,IDC_STYLEEDIT,EM_LIMITTEXT,COUNTOF(lexDefault.Styles[0].szValue)-1,0);
 
