@@ -3436,8 +3436,9 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
         {
             SciCall_EnsureVisible(iNextLine);
             SendMessage( hwndEdit , SCI_GOTOLINE , iNextLine , 0 );
-            SendMessage( hwndEdit , SCI_SETYCARETPOLICY , CARET_SLOP|CARET_STRICT|CARET_EVEN , 10 );
-            SendMessage( hwndEdit , SCI_SCROLLCARET , 0 , 0 );
+            SciCall_SetYCaretPolicy(CARET_SLOP|CARET_STRICT|CARET_EVEN,10);
+            SciCall_ScrollCaret();
+            SciCall_SetYCaretPolicy(CARET_EVEN,0);
         }
         break;
     }
@@ -3460,8 +3461,9 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
         {
             SciCall_EnsureVisible(iNextLine);
             SendMessage( hwndEdit , SCI_GOTOLINE , iNextLine , 0 );
-            SendMessage( hwndEdit , SCI_SETYCARETPOLICY , CARET_SLOP|CARET_STRICT|CARET_EVEN , 10 );
-            SendMessage( hwndEdit , SCI_SCROLLCARET , 0 , 0 );
+            SciCall_SetYCaretPolicy(CARET_SLOP|CARET_STRICT|CARET_EVEN,10);
+            SciCall_ScrollCaret();
+            SciCall_SetYCaretPolicy(CARET_EVEN,0);
         }
 
         break;
