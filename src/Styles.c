@@ -1094,7 +1094,7 @@ KEYWORDLIST KeyWords_RUBY = {
 "undef unless until when while yield",
 "", "", "", "", "", "", "", "" };
 
-EDITLEXER lexRUBY = { SCLEX_RUBY, 63304, L"Ruby", L"rb; ruby", L"", &KeyWords_RUBY, {
+EDITLEXER lexRUBY = { SCLEX_RUBY, 63304, L"Ruby Script", L"rb; ruby", L"", &KeyWords_RUBY, {
                     { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
                     //{ SCE_P_DEFAULT, L"Default", L"", L"" },
                     { MULTI_STYLE(SCE_RB_COMMENTLINE,SCE_P_COMMENTBLOCK,0,0), 63127, L"Comment", L"fore:#007F00", L"" },
@@ -1335,7 +1335,7 @@ KEYWORDLIST KeyWords_AU3 = {
 "", "", "" };
 
 
-EDITLEXER lexAU3 = { SCLEX_AU3, 63276, L"AutoIt3", L"au3", L"", &KeyWords_AU3, {
+EDITLEXER lexAU3 = { SCLEX_AU3, 63276, L"AutoIt3 Script", L"au3", L"", &KeyWords_AU3, {
                      { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
                      { MULTI_STYLE(SCE_AU3_COMMENT,SCE_AU3_COMMENTBLOCK,0,0), 63127, L"Comment", L"fore:#008000", L"" },
                      { SCE_AU3_NUMBER, 63130, L"Number", L"fore:#008080", L"" },
