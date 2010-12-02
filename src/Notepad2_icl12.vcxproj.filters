@@ -362,6 +362,15 @@
     <ClInclude Include="..\scintilla\lexlib\OptionSet.h">
       <Filter>Scintilla\lexlib</Filter>
     </ClInclude>
+    <ClInclude Include="..\scintilla\lexlib\PropSetSimple.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\lexlib\StyleContext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\lexlib\WordList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\res\Copy.cur">
