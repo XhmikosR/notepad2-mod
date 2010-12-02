@@ -35,7 +35,6 @@ CALL "build_base.bat" x64
 
 :END
 TITLE Building Notepad2 - Finished!
-TITLE Finished!
 ENDLOCAL
 EXIT /B
 
