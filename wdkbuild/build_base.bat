@@ -4,7 +4,7 @@ IF /I "%1"=="" CALL :SUBMSG "ERROR" "Don't run this script directly, use build.c
 
 rem create the objects and output directory and delete any files from previous build
 MD "%OBJDIR%" >NUL 2>&1
-DEL "%OUTDIR%\Notepad2.exe" >NUL 2>&1
+DEL "%BINDIR%\Notepad2.exe" >NUL 2>&1
 DEL "%OBJDIR%\*.idb" "%OBJDIR%\*.obj" "%OBJDIR%\*.pdb" "%OBJDIR%\*.res" >NUL 2>&1
 
 TITLE Building Notepad2 %1...
@@ -103,7 +103,7 @@ IF /I "%1"=="x64" (
   SET WDK_LIB=msvcrt_win2003.obj
 )
 
-link /OUT:"%OUTDIR%/Notepad2.exe" /INCREMENTAL:NO /RELEASE %LNKADDCMD% /OPT:REF /OPT:ICF /DYNAMICBASE /NXCOMPAT^
+link /OUT:"%BINDIR%/Notepad2.exe" /INCREMENTAL:NO /RELEASE %LNKADDCMD% /OPT:REF /OPT:ICF /DYNAMICBASE /NXCOMPAT^
  /MERGE:.rdata=.text /LTCG kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib shlwapi.lib comdlg32.lib^
  comctl32.lib winspool.lib imm32.lib ole32.lib oleaut32.lib psapi.lib^
  "%OBJDIR%\Accessor.obj"^
@@ -173,7 +173,7 @@ IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
 rem manifest tool command line
 CALL :SUBMSG "INFO" "manifest stage..."
-"%SDKDIR%\Bin\mt.exe" -manifest "..\res\Notepad2.exe.manifest" -outputresource:"%OUTDIR%\Notepad2.exe;#1"
+"%SDKDIR%\Bin\mt.exe" -manifest "..\res\Notepad2.exe.manifest" -outputresource:"%BINDIR%\Notepad2.exe;#1"
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
 CALL :SUBMSG "INFO" "%1 compilation finished!"
