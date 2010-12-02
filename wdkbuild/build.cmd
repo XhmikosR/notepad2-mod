@@ -33,10 +33,12 @@ SET "OBJDIR=%BINDIR%\obj"
 TITLE Building Notepad2 x64...
 CALL "build_base.bat" x64
 
-:end
+:END
+TITLE Building Notepad2 - Finished!
 TITLE Finished!
 ENDLOCAL
 EXIT /B
+
 
 :SUBMSG
 ECHO.&&ECHO:______________________________
