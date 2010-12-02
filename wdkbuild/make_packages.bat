@@ -1,6 +1,6 @@
 @ECHO OFF
 SETLOCAL
-rem SET "PERL_PATH=G:\Installation Programs\Programs\Compiling Stuff\Other\ActivePerl-5.12.2.1202-MSWin32-x86-293621"
+rem SET "PERL_PATH=H:\progs\thirdparty\ActivePerl-5.12.2.1202-MSWin32-x86-293621"
 
 rem Check the building environment
 rem IF NOT EXIST "%PERL_PATH%" CALL :SUBMSG "INFO" "The Perl direcotry wasn't found; the addon won't be built"
@@ -21,12 +21,9 @@ IF DEFINED VS100COMNTOOLS (
   CALL :SubInstaller x64
 )
 
-rem Calulate md5/sha1 hashes
-PUSHD packages
-rem "..\..\distrib\tools\md5sum.exe" *.7z *.zip *.exe >md5hashes
-rem "..\..\distrib\tools\sha1sum.exe" *.7z *.zip *.exe >sha1hashes
-
 rem Compress everything into a single ZIP file
+PUSHD packages
+
 DEL Notepad2-mod.zip >NUL 2>&1
 START "" /B /WAIT "..\..\distrib\tools\7za.exe" a -tzip -mx=9 Notepad2-mod.zip * -x!md5hashes -x!sha1hashes >NUL
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
