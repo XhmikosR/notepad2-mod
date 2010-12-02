@@ -1094,7 +1094,7 @@ KEYWORDLIST KeyWords_RUBY = {
 "undef unless until when while yield",
 "", "", "", "", "", "", "", "" };
 
-EDITLEXER lexRUBY = { SCLEX_RUBY, 63304, L"Ruby Script", L"rb; ruby", L"", &KeyWords_RUBY, {
+EDITLEXER lexRUBY = { SCLEX_RUBY, 63304, L"Ruby Script", L"rb; ruby; rbw; rake; rjs; Rakefile", L"", &KeyWords_RUBY, {
                     { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
                     //{ SCE_P_DEFAULT, L"Default", L"", L"" },
                     { MULTI_STYLE(SCE_RB_COMMENTLINE,SCE_P_COMMENTBLOCK,0,0), 63127, L"Comment", L"fore:#007F00", L"" },
@@ -1104,7 +1104,7 @@ EDITLEXER lexRUBY = { SCLEX_RUBY, 63304, L"Ruby Script", L"rb; ruby", L"", &KeyW
                     { SCE_RB_OPERATOR, 63132, L"Operator", L"bold", L"" },
                     { MULTI_STYLE(SCE_RB_STRING,SCE_RB_CHARACTER,SCE_P_STRINGEOL,0), 63131, L"String", L"fore:#FF8000", L"" },
                     { SCE_RB_CLASSNAME, 63246, L"Class name", L"fore:#0000FF", L"" },
-                    { SCE_RB_DEFNAME, 63247, L"Function name", L"fore:#007F7F", L"" },
+                    { SCE_RB_DEFNAME, 63247, L"Function name", L"fore:#007F7F; bold", L"" },
                     { SCE_RB_POD, 63314, L"POD", L"fore:#004000; back:#C0FFC0; eolfilled", L"" },
                     { SCE_RB_REGEX, 63315, L"Regex", L"fore:#000000; back:#A0FFA0", L"" },
                     { SCE_RB_SYMBOL, 63316, L"Symbol", L"fore:#C0A030", L"" },
@@ -1442,12 +1442,12 @@ KEYWORDLIST KeyWords_AHK = {
 "", "", "", "", "", "", "", "" };
 
 
-EDITLEXER lexAHK = { SCLEX_AHK, 63305, L"AutoHotKey Script", L"ahk", L"", &KeyWords_AHK, {
+EDITLEXER lexAHK = { SCLEX_AHK, 63305, L"AutoHotKey Script", L"ahk; ia; scriptlet", L"", &KeyWords_AHK, {
                     { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
                     //{ SCE_AHK_DEFAULT, L"Default", L"", L"" },
                     { MULTI_STYLE(SCE_AHK_COMMENTLINE,SCE_AHK_COMMENTBLOCK,0,0), 63127, L"Comment", L"fore:#008000", L"" },
                     { SCE_AHK_ESCAPE, 63306, L"Escape", L"fore:#FF8000", L"" },
-                    { SCE_AHK_SYNOPERATOR, 63307, L"Syntax Operator", L"fore:#B000B0", L"" },
+                    { SCE_AHK_SYNOPERATOR, 63307, L"Syntax Operator", L"fore:#7F200F", L"" },
                     { SCE_AHK_EXPOPERATOR, 63308, L"Expression operator", L"", L"" },
                     { SCE_AHK_STRING, 63131, L"String", L"fore:#FF8000", L"" },
                     { SCE_AHK_NUMBER, 63130, L"Number", L"fore:#008080", L"" },
