@@ -1577,6 +1577,10 @@ BOOL MRU_AddFile(LPMRULIST pmru,LPCWSTR pszFile,BOOL bRelativePath,BOOL bUnexpan
   }
   else
     pmru->pszItems[0] = StrDup(pszFile);
+
+  // Needed to make W7 jump lists work when NP2 is not explicitly associated
+  if (IsW7()) SHAddToRecentDocs(SHARD_PATHW, pszFile);
+
   return(1);
 }
 
