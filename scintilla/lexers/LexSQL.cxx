@@ -258,6 +258,9 @@ static void FoldSQLDoc(unsigned int startPos, int length, int initStyle,
 	int style = initStyle;
 	bool endFound = false;
 	bool isUnfoldingIgnored = false;
+	// this statementFound flag avoids to fold when the statement is on only one line by ignoring ELSE or ELSIF
+	// eg. "IF condition1 THEN ... ELSIF condition2 THEN ... ELSE ... END IF;"
+	bool statementFound = false;
 	for (unsigned int i = startPos; i < endPos; i++) {
 		char ch = chNext;
 		chNext = styler.SafeGetCharAt(i + 1);
@@ -266,7 +269,7 @@ static void FoldSQLDoc(unsigned int startPos, int length, int initStyle,
 		styleNext = styler.StyleAt(i + 1);
 		bool atEOL = (ch == '\r' && chNext != '\n') || (ch == '\n');
 		if (atEOL || (ch == ';')) {
-			// set endFound to false if EOL is reached or ';' is found
+			// set endFound and isUnfoldingIgnored to false if EOL is reached or ';' is found
 			endFound = false;
 			isUnfoldingIgnored = false;
 		}
@@ -326,24 +329,24 @@ static void FoldSQLDoc(unsigned int startPos, int length, int initStyle,
 						// so ignore previous "end" by increment levelNext.
 						levelNext++;
 					}
-				} else {
-					if (!foldOnlyBegin) {
-						if (levelCurrent > levelNext) {
-							levelCurrent = levelNext;
-						}
-						levelNext++;
-					} else {
-						if (levelCurrent > levelNext) {
-							// doesn't include this line into the folding block
-							// because doesn't hide if, loop or case (eg "end; if" or "end; loop" or "end; case")
-							levelCurrent = levelNext;
-						}
+				} else if (!foldOnlyBegin) {
+					statementFound = true;
+					if (levelCurrent > levelNext) {
+						levelCurrent = levelNext;
 					}
+					levelNext++;
+				} else if (levelCurrent > levelNext) {
+					// doesn't include this line into the folding block
+					// because doesn't hide IF, LOOP or CASE (eg "END; IF" or "END; LOOP" or "END; CASE")
+					levelCurrent = levelNext;
 				}
 			} else if ((!foldOnlyBegin) && (
-				// folding for else & elsif block only if foldAtElse is set.
-				foldAtElse && (strcmp(s, "elsif") == 0 || strcmp(s, "else") == 0))) {
-				// we are in same case "} else {" in C language
+				// folding for ELSE and ELSIF block only if foldAtElse is set
+				// and IF or CASE aren't on only one line with ELSE or ELSIF (with flag statementFound)
+				foldAtElse && !statementFound && (strcmp(s, "elsif") == 0 || strcmp(s, "else") == 0))) {
+				// prevent also ELSIF and ELSE are on the same line (eg. "ELSIF condition2 THEN ... ELSE ... END IF;")
+				statementFound = true;
+				// we are in same case "} ELSE {" in C language
 				levelCurrent--;
 			} else if (strcmp(s, "begin") == 0) {
 				levelNext++;
@@ -375,6 +378,7 @@ static void FoldSQLDoc(unsigned int startPos, int length, int initStyle,
 			lineCurrent++;
 			levelCurrent = levelNext;
 			visibleChars = 0;
+			statementFound = false;
 		}
 		if (!isspacechar(ch)) {
 			visibleChars++;

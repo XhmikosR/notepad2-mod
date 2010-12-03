@@ -708,7 +708,7 @@ void Editor::SetRectangularRange() {
 			if (line == lineAnchor)
 				sel.SetSelection(range);
 			else
-				sel.AddSelection(range);
+				sel.AddSelectionWithoutTrim(range);
 		}
 	}
 }
