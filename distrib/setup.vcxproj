@@ -113,7 +113,6 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;UNICODE;_WIN32_WINNT=0x0600;SETUP_LITE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>
       </AdditionalOptions>
-      <WholeProgramOptimization>true</WholeProgramOptimization>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Midl>
@@ -132,11 +131,10 @@
       <AdditionalDependencies>comctl32.lib;advpack.lib;cabinet.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/STUB:dosstub.bin</AdditionalOptions>
       <OptimizeReferences>true</OptimizeReferences>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <SubSystem>Windows</SubSystem>
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
       <MinimumRequiredVersion>5.01</MinimumRequiredVersion>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>res\lite\setup.manifest</AdditionalManifestFiles>
@@ -151,8 +149,8 @@
       <PreprocessorDefinitions>_WIN64;NDEBUG;_WINDOWS;UNICODE;_WIN32_WINNT=0x0600;SETUP_LITE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>
       </AdditionalOptions>
-      <WholeProgramOptimization>true</WholeProgramOptimization>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DisableSpecificWarnings>4267</DisableSpecificWarnings>
     </ClCompile>
     <Midl>
       <TypeLibraryName>.\bin.x86-32\setup.tlb</TypeLibraryName>
@@ -170,11 +168,10 @@
       <AdditionalDependencies>comctl32.lib;advpack.lib;cabinet.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/STUB:dosstub.bin</AdditionalOptions>
       <OptimizeReferences>true</OptimizeReferences>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <SubSystem>Windows</SubSystem>
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
       <MinimumRequiredVersion>5.02</MinimumRequiredVersion>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>res\lite\setup.manifest</AdditionalManifestFiles>
@@ -189,7 +186,6 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;UNICODE;_WIN32_WINNT=0x0600;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>
       </AdditionalOptions>
-      <WholeProgramOptimization>true</WholeProgramOptimization>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Midl>
@@ -208,10 +204,9 @@
       <AdditionalDependencies>comctl32.lib;advpack.lib;cabinet.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/STUB:dosstub.bin</AdditionalOptions>
       <OptimizeReferences>true</OptimizeReferences>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <SubSystem>Windows</SubSystem>
       <MinimumRequiredVersion>5.01</MinimumRequiredVersion>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>res\full\setup.manifest</AdditionalManifestFiles>
@@ -226,8 +221,8 @@
       <PreprocessorDefinitions>_WIN64;NDEBUG;_WINDOWS;UNICODE;_WIN32_WINNT=0x0600;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>
       </AdditionalOptions>
-      <WholeProgramOptimization>true</WholeProgramOptimization>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DisableSpecificWarnings>4267</DisableSpecificWarnings>
     </ClCompile>
     <Midl>
       <TypeLibraryName>.\bin.x86-32\setup.tlb</TypeLibraryName>
@@ -245,10 +240,9 @@
       <AdditionalDependencies>comctl32.lib;advpack.lib;cabinet.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/STUB:dosstub.bin</AdditionalOptions>
       <OptimizeReferences>true</OptimizeReferences>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <SubSystem>Windows</SubSystem>
       <MinimumRequiredVersion>5.02</MinimumRequiredVersion>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>res\full\setup.manifest</AdditionalManifestFiles>
