@@ -14,24 +14,32 @@ PUSHD ..
 CALL "update_version.bat"
 POPD
 
-rem x86
+:x86
 SET "INCLUDE=%WDKBASEDIR%\inc\crt;%WDKBASEDIR%\inc\api;%WDKBASEDIR%\inc\api\crt\stl60;%WDKBASEDIR%\inc\ddk"
 SET "LIB=%WDKBASEDIR%\lib\crt\i386;%WDKBASEDIR%\lib\win7\i386"
 SET "PATH=%WDKBASEDIR%\bin\x86;%WDKBASEDIR%\bin\x86\x86;%PATH%"
 SET "BINDIR=..\Release"
 SET "OBJDIR=%BINDIR%\obj"
+MD "%OBJDIR%" >NUL 2>&1
 
 TITLE Building Notepad2 x86...
-CALL "build_base.bat" x86
+ECHO. && ECHO.
+rem nmake -f makefile.mak /NOLOGO clean
+nmake -f makefile.mak /NOLOGO
+IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
-rem x64
+:x64
 SET "LIB=%WDKBASEDIR%\lib\crt\amd64;%WDKBASEDIR%\lib\win7\amd64"
 SET "PATH=%WDKBASEDIR%\bin\x86;%WDKBASEDIR%\bin\x86\amd64;%PATH%"
 SET "BINDIR=..\Release_x64"
 SET "OBJDIR=%BINDIR%\obj"
+MD "%OBJDIR%" >NUL 2>&1
 
 TITLE Building Notepad2 x64...
-CALL "build_base.bat" x64
+ECHO. && ECHO.
+rem nmake x64=1 -f makefile.mak /NOLOGO clean
+nmake x64=1 -f makefile.mak /NOLOGO
+IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
 :END
 TITLE Building Notepad2 - Finished!

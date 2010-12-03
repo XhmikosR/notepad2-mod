@@ -8,8 +8,7 @@ IF NOT DEFINED VS100COMNTOOLS CALL :SUBMSG "INFO" "Visual Studio 2010 wasn't fou
 
 CD /D %~dp0
 
-CALL build.cmd
-IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
+CALL "build.cmd"
 
 CALL :SubVersion
 
@@ -22,7 +21,7 @@ IF DEFINED VS100COMNTOOLS (
 )
 
 rem Compress everything into a single ZIP file
-PUSHD packages
+PUSHD "packages"
 
 DEL Notepad2-mod.zip >NUL 2>&1
 START "" /B /WAIT "..\..\distrib\tools\7za.exe" a -tzip -mx=9 Notepad2-mod.zip * -x!md5hashes -x!sha1hashes >NUL
@@ -65,6 +64,7 @@ POPD
 RD /S /Q "temp_zip" >NUL 2>&1
 GOTO :EOF
 
+
 :SubInstaller
 IF /I "%1"=="x86" (
   SET ARCH=Win32
@@ -80,7 +80,7 @@ IF /I "%1"=="x64" (
 TITLE Building %BINDIR% installer...
 CALL :SUBMSG "INFO" "Building %BINDIR% installer..."
 
-PUSHD ..\distrib
+PUSHD "..\distrib"
 MD temp\%BINDIR% >NUL 2>&1
 
 COPY /B /V /Y ..\%OUTDIR%\Notepad2.exe temp\%BINDIR%\notepad2.exe
@@ -139,6 +139,7 @@ RD /Q /S tools\addon obj >NUL 2>&1
 POPD
 GOTO :EOF
 
+
 :SubVersion
 rem Get the version
 FOR /f "tokens=3,4 delims= " %%K IN (
@@ -157,18 +158,23 @@ FOR /f "tokens=3,4 delims= " %%N IN (
 SET NP2_VER=%VerMajor%.%VerMinor%.%VerBuild%
 GOTO :EOF
 
+
 :SubVerMajor
 SET VerMajor=%*
 GOTO :EOF
+
 :SubVerMinor
 SET VerMinor=%*
 GOTO :EOF
+
 :SubVerBuild
 SET VerBuild=%*
 GOTO :EOF
+
 :SubVerRev
 SET VerRev=%*
 GOTO :EOF
+
 
 :SUBMSG
 ECHO.&&ECHO:______________________________
