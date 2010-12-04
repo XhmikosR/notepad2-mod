@@ -142,16 +142,16 @@ GOTO :EOF
 
 :SubVersion
 rem Get the version
-FOR /f "tokens=3,4 delims= " %%K IN (
+FOR /F "tokens=3,4 delims= " %%K IN (
   'FINDSTR /I /L /C:"define VERSION_MAJOR" "..\src\Version.h"') DO (
   SET "VerMajor=%%K"&Call :SubVerMajor %%VerMajor:*Z=%%)
-FOR /f "tokens=3,4 delims= " %%L IN (
+FOR /F "tokens=3,4 delims= " %%L IN (
   'FINDSTR /I /L /C:"define VERSION_MINOR" "..\src\Version.h"') DO (
   SET "VerMinor=%%L"&Call :SubVerMinor %%VerMinor:*Z=%%)
-FOR /f "tokens=3,4 delims= " %%M IN (
+FOR /F "tokens=3,4 delims= " %%M IN (
   'FINDSTR /I /L /C:"define VERSION_BUILD" "..\src\Version.h"') DO (
   SET "VerBuild=%%M"&Call :SubVerBuild %%VerBuild:*Z=%%)
-FOR /f "tokens=3,4 delims= " %%N IN (
+FOR /F "tokens=3,4 delims= " %%N IN (
   'FINDSTR /I /L /C:"define VERSION_REV" "..\src\Version_rev.h"') DO (
   SET "VerRev=%%N"&Call :SubVerRev %%VerRev:*Z=%%)
 

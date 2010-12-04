@@ -36,9 +36,9 @@ APP=$(BINDIR)\Notepad2.exe
 ALL:	$(APP)
 
 clean:
-	-@ del "$(APP)" "$(OBJDIR)\*.idb" "$(OBJDIR)\*.obj" "$(BINDIR)\*.pdb" \
+	-@ DEL "$(APP)" "$(OBJDIR)\*.idb" "$(OBJDIR)\*.obj" "$(BINDIR)\*.pdb" \
 	"$(OBJDIR)\*.res" >NUL 2>&1
-	-@ rd /q "$(OBJDIR)" "$(BINDIR)" >NUL 2>&1
+	-@ RMDIR /Q "$(OBJDIR)" "$(BINDIR)" >NUL 2>&1
 
 
 OBJECTS= \
