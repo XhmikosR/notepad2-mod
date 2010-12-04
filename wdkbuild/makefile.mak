@@ -1,3 +1,6 @@
+# See License.txt for legal notes.
+# Use build.cmd and set there your WDK and SDK directories.
+
 CC=cl
 RC=rc
 LD=link
@@ -35,6 +38,7 @@ ALL:	$(APP)
 clean:
 	-@ del "$(APP)" "$(OBJDIR)\*.idb" "$(OBJDIR)\*.obj" "$(BINDIR)\*.pdb" \
 	"$(OBJDIR)\*.res" >NUL 2>&1
+	-@ rd /q "$(OBJDIR)" "$(BINDIR)" >NUL 2>&1
 
 
 OBJECTS= \
