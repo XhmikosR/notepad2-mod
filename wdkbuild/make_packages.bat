@@ -22,13 +22,12 @@ IF DEFINED VS100COMNTOOLS (
 
 rem Compress everything into a single ZIP file
 PUSHD "packages"
+DEL "Notepad2-mod.zip" >NUL 2>&1
 
-DEL Notepad2-mod.zip >NUL 2>&1
-START "" /B /WAIT "..\..\distrib\tools\7za.exe" a -tzip -mx=9 Notepad2-mod.zip * -x!md5hashes -x!sha1hashes >NUL
+START "" /B /WAIT "..\..\distrib\tools\7za.exe" a -tzip -mx=9 Notepad2-mod.zip * >NUL
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
 CALL :SUBMSG "INFO" "Notepad2-mod.zip created successfully!"
-
 POPD
 
 :END
@@ -67,50 +66,50 @@ GOTO :EOF
 
 :SubInstaller
 IF /I "%1"=="x86" (
-  SET ARCH=Win32
-  SET BINDIR=x86-32
-  SET OUTDIR=Release
+  SET "ARCH=Win32"
+  SET "BINDIR=x86-32"
+  SET "OUTDIR=Release"
 )
 IF /I "%1"=="x64" (
-  SET ARCH=x64
-  SET BINDIR=x86-64
-  SET OUTDIR=Release_x64
+  SET "ARCH=x64"
+  SET "BINDIR=x86-64"
+  SET "OUTDIR=Release_x64"
 )
 
 TITLE Building %BINDIR% installer...
 CALL :SUBMSG "INFO" "Building %BINDIR% installer..."
 
 PUSHD "..\distrib"
-MD temp\%BINDIR% >NUL 2>&1
+MD "temp\%BINDIR%" >NUL 2>&1
 
-COPY /B /V /Y ..\%OUTDIR%\Notepad2.exe temp\%BINDIR%\notepad2.exe
-COPY /B /V /Y ..\License.txt temp\%BINDIR%\license.txt
-COPY /B /V /Y res\cabinet\notepad2.inf temp\%BINDIR%\notepad2.inf
-COPY /B /V /Y res\cabinet\notepad2.ini temp\%BINDIR%\notepad2.ini
-COPY /B /V /Y res\cabinet\notepad2.redir.ini temp\%BINDIR%\notepad2.redir.ini
-COPY /B /V /Y ..\Notepad2.txt temp\%BINDIR%\notepad2.txt
-COPY /B /V /Y ..\Readme.txt temp\%BINDIR%\readme.txt
-COPY /B /V /Y ..\Readme-mod.txt temp\%BINDIR%\readme-mod.txt
+COPY /B /V /Y "..\%OUTDIR%\Notepad2.exe" "temp\%BINDIR%\notepad2.exe"
+COPY /B /V /Y "..\License.txt" "temp\%BINDIR%\license.txt"
+COPY /B /V /Y "res\cabinet\notepad2.inf" "temp\%BINDIR%\notepad2.inf"
+COPY /B /V /Y "res\cabinet\notepad2.ini" "temp\%BINDIR%\notepad2.ini"
+COPY /B /V /Y "res\cabinet\notepad2.redir.ini" "temp\%BINDIR%\notepad2.redir.ini"
+COPY /B /V /Y "..\Notepad2.txt" "temp\%BINDIR%\notepad2.txt"
+COPY /B /V /Y "..\Readme.txt" "temp\%BINDIR%\readme.txt"
+COPY /B /V /Y "..\Readme-mod.txt" "temp\%BINDIR%\readme-mod.txt"
 
 rem Set the version for the DisplayVersion registry value
-CALL tools\BatchSubstitute.bat "0.0.0.0" "%NP2_VER%.%VerRev%" temp\%BINDIR%\notepad2.inf >notepad2.inf.tmp
-COPY /Y temp\%BINDIR%\notepad2.inf notepad2.inf.orig >NUL
-MOVE /Y notepad2.inf.tmp temp\%BINDIR%\notepad2.inf >NUL
+CALL tools\BatchSubstitute.bat "0.0.0.0" "%NP2_VER%.%VerRev%" "temp\%BINDIR%\notepad2.inf" >notepad2.inf.tmp
+COPY /Y "temp\%BINDIR%\notepad2.inf" "notepad2.inf.orig" >NUL
+MOVE /Y "notepad2.inf.tmp" "temp\%BINDIR%\notepad2.inf" >NUL
 
 rem get the size and put it in the inf file
-PUSHD temp\%BINDIR%
+PUSHD "temp\%BINDIR%"
 FOR /F "tokens=*" %%a IN ('"DIR /-C | FIND "bytes" | FIND /V "free""') DO SET summaryout=%%a
 FOR /F "tokens=1,2 delims=)" %%a IN ("%summaryout%") DO SET filesout=%%a&set sizeout=%%b
 SET /A sizeout=%sizeout:bytes=%/1024
 POPD
 
-CALL tools\BatchSubstitute.bat "1111" "%sizeout%" temp\%BINDIR%\notepad2.inf >notepad2.inf.tmp
-COPY /Y temp\%BINDIR%\notepad2.inf notepad2.inf.orig >NUL
-MOVE /Y notepad2.inf.tmp temp\%BINDIR%\notepad2.inf >NUL
+CALL tools\BatchSubstitute.bat "1111" "%sizeout%" "temp\%BINDIR%\notepad2.inf" >notepad2.inf.tmp
+COPY /Y "temp\%BINDIR%\notepad2.inf" "notepad2.inf.orig" >NUL
+MOVE /Y "notepad2.inf.tmp" "temp\%BINDIR%\notepad2.inf" >NUL
 
-tools\cabutcd.exe temp\%BINDIR% res\cabinet.%BINDIR%.cab
-DEL notepad2.inf.orig >NUL 2>&1
-RD /Q /S temp\%BINDIR% >NUL 2>&1
+tools\cabutcd.exe "temp\%BINDIR%" "res\cabinet.%BINDIR%.cab"
+DEL "notepad2.inf.orig" >NUL 2>&1
+RD /Q /S "temp\%BINDIR%" >NUL 2>&1
 
 
 CALL "%VS100COMNTOOLS%vsvars32.bat" >NUL
@@ -120,21 +119,21 @@ rem devenv setup.sln /Rebuild "Lite|%ARCH%"
 rem IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
 rem IF EXIST "%PERL_PATH%" (
-rem   PUSHD tools
-rem   "%PERL_PATH%\perl\bin\perl.exe" addon_build.pl
+rem   PUSHD "tools"
+rem   "%PERL_PATH%\perl\bin\perl.exe" "addon_build.pl"
 rem   POPD
 rem )
 
-MD ..\wdkbuild\packages >NUL 2>&1
+MD "..\wdkbuild\packages" >NUL 2>&1
 rem IF EXIST "%PERL_PATH%" (
-rem   MOVE setup.%BINDIR%\addon.7z    ..\wdkbuild\packages\Notepad2-mod.%NP2_VER%_r%VerRev%_%BINDIR%_Addon.7z >NUL
+rem   MOVE "setup.%BINDIR%\addon.7z"    "..\wdkbuild\packages\Notepad2-mod.%NP2_VER%_r%VerRev%_%BINDIR%_Addon.7z" >NUL
 rem )
-MOVE setup.%BINDIR%\setupfull.exe ..\wdkbuild\packages\Notepad2-mod.%NP2_VER%_r%VerRev%_%BINDIR%_Setup.exe >NUL
-rem MOVE setup.%BINDIR%\setuplite.exe ..\wdkbuild\packages\Notepad2-mod.%NP2_VER%_r%VerRev%_%BINDIR%_Setup_Silent.exe >NUL
+MOVE "setup.%BINDIR%\setupfull.exe" "..\wdkbuild\packages\Notepad2-mod.%NP2_VER%_r%VerRev%_%BINDIR%_Setup.exe" >NUL
+rem MOVE "setup.%BINDIR%\setuplite.exe" "..\wdkbuild\packages\Notepad2-mod.%NP2_VER%_r%VerRev%_%BINDIR%_Setup_Silent.exe" >NUL
 
 rem Cleanup
-RD /Q setup.%BINDIR% temp >NUL 2>&1
-RD /Q /S tools\addon obj >NUL 2>&1
+RD /Q "setup.%BINDIR%" "temp" >NUL 2>&1
+RD /Q /S "tools\addon" "obj" >NUL 2>&1
 
 POPD
 GOTO :EOF
