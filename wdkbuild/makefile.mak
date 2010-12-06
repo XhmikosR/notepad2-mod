@@ -200,10 +200,11 @@ $(OBJDIR)\Document.obj: $(SCISRC)\Document.cxx $(SCIINC)\Platform.h \
 $(OBJDIR)\Editor.obj: $(SCISRC)\Editor.cxx $(SCIINC)\Platform.h \
 	$(SCIINC)\Scintilla.h $(SCISRC)\ContractionState.h $(SCISRC)\SVector.h \
 	$(SCISRC)\SplitVector.h $(SCISRC)\Partitioning.h $(SCISRC)\CellBuffer.h \
-	$(SCISRC)\KeyMap.h $(SCISRC)\RunStyles.h $(SCISRC)\Indicator.h $(SCISRC)\XPM.h \
-	$(SCISRC)\LineMarker.h $(SCISRC)\Style.h $(SCISRC)\ViewStyle.h \
-	$(SCISRC)\CharClassify.h $(SCISRC)\Decoration.h $(SCISRC)\Document.h \
-	$(SCISRC)\Editor.h $(SCISRC)\Selection.h $(SCISRC)\PositionCache.h
+	$(SCISRC)\KeyMap.h $(SCISRC)\RunStyles.h $(SCISRC)\Indicator.h \
+	$(SCISRC)\XPM.h $(SCISRC)\LineMarker.h $(SCISRC)\Style.h \
+	$(SCISRC)\ViewStyle.h $(SCISRC)\CharClassify.h $(SCISRC)\Decoration.h \
+	$(SCISRC)\Document.h $(SCISRC)\Editor.h $(SCISRC)\Selection.h \
+	$(SCISRC)\PositionCache.h
 $(OBJDIR)\ExternalLexer.obj: $(SCISRC)\ExternalLexer.cxx $(SCIINC)\Platform.h \
 	$(SCIINC)\Scintilla.h $(SCIINC)\SciLexer.h $(SCILIB)\Accessor.h \
 	$(SCISRC)\ExternalLexer.h
@@ -261,15 +262,20 @@ $(OBJDIR)\ScintillaWin.obj: $(SCIWIN)\ScintillaWin.cxx $(SCIINC)\Platform.h \
 	$(SCISRC)\UniConversion.h
 
 # src
-$(OBJDIR)\Dialogs.obj: $(SRC)\Dialogs.c $(SRC)\Notepad2.h $(SRC)\Edit.h $(SRC)\Helpers.h \
-	$(SRC)\Dlapi.h $(SRC)\Dialogs.h $(SRC)\resource.h $(SRC)\Version.h $(SRC)\Version_rev.h
+$(OBJDIR)\Dialogs.obj: $(SRC)\Dialogs.c $(SRC)\Notepad2.h $(SRC)\Edit.h \
+	$(SRC)\Helpers.h $(SRC)\Dlapi.h $(SRC)\Dialogs.h $(SRC)\resource.h \
+	$(SRC)\Version.h $(SRC)\Version_rev.h
 $(OBJDIR)\Dlapi.obj: $(SRC)\Dlapi.c $(SRC)\Dlapi.h
-$(OBJDIR)\Edit.obj: $(SRC)\Edit.c $(SRC)\Notepad2.h $(SRC)\Helpers.h $(SRC)\Dialogs.h \
-	$(SRC)\Styles.h $(SRC)\Edit.h $(SRC)\SciCall.h $(SRC)\resource.h
+$(OBJDIR)\Edit.obj: $(SRC)\Edit.c $(SRC)\Notepad2.h $(SRC)\Helpers.h \
+	$(SRC)\Dialogs.h $(SRC)\Styles.h $(SRC)\Edit.h $(SRC)\SciCall.h \
+	$(SRC)\resource.h
 $(OBJDIR)\Helpers.obj: $(SRC)\Helpers.c $(SRC)\Helpers.h
-$(OBJDIR)\Notepad2.obj: $(SRC)\Notepad2.c $(SRC)\Edit.h $(SRC)\Styles.h $(SRC)\Helpers.h \
-	$(SRC)\Dialogs.h $(SRC)\Notepad2.h $(SRC)\SciCall.h $(SRC)\resource.h
+$(OBJDIR)\Notepad2.obj: $(SRC)\Notepad2.c $(SRC)\Edit.h $(SRC)\Styles.h \
+	$(SRC)\Helpers.h $(SRC)\Dialogs.h $(SRC)\Notepad2.h $(SRC)\SciCall.h \
+	$(SRC)\resource.h
 $(OBJDIR)\Notepad2.res: $(SRC)\Notepad2.rc $(SRC)\Version.h $(SRC)\Version_rev.h
-$(OBJDIR)\Print.obj: $(SRC)\Print.cpp $(SRC)\Dialogs.h $(SRC)\Helpers.h $(SRC)\resource.h
-$(OBJDIR)\Styles.obj: $(SRC)\Styles.c $(SRC)\Dialogs.h $(SRC)\Helpers.h $(SRC)\Notepad2.h \
-	$(SRC)\Edit.h $(SRC)\Styles.h $(SRC)\SciCall.h $(SRC)\resource.h
+$(OBJDIR)\Print.obj: $(SRC)\Print.cpp $(SRC)\Dialogs.h $(SRC)\Helpers.h \
+	$(SRC)\resource.h
+$(OBJDIR)\Styles.obj: $(SRC)\Styles.c $(SRC)\Dialogs.h $(SRC)\Helpers.h \
+	$(SRC)\Notepad2.h $(SRC)\Edit.h $(SRC)\Styles.h $(SRC)\SciCall.h \
+	$(SRC)\resource.h
