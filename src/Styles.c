@@ -1097,7 +1097,7 @@ KEYWORDLIST KeyWords_RUBY = {
 EDITLEXER lexRUBY = { SCLEX_RUBY, 63304, L"Ruby Script", L"rb; ruby; rbw; rake; rjs; Rakefile", L"", &KeyWords_RUBY, {
                     { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
                     //{ SCE_P_DEFAULT, L"Default", L"", L"" },
-                    { MULTI_STYLE(SCE_RB_COMMENTLINE,SCE_P_COMMENTBLOCK,0,0), 63127, L"Comment", L"fore:#007F00", L"" },
+                    { MULTI_STYLE(SCE_RB_COMMENTLINE,SCE_P_COMMENTBLOCK,0,0), 63127, L"Comment", L"fore:#008000", L"" },
                     { SCE_RB_WORD, 63128, L"Keyword", L"fore:#00007F", L"" },
                     { SCE_RB_IDENTIFIER, 63129, L"Identifier", L"", L"" },
                     { SCE_RB_NUMBER, 63130, L"Number", L"fore:#008080", L"" },
@@ -1143,7 +1143,7 @@ KEYWORDLIST KeyWords_LUA = {
 EDITLEXER lexLUA = { SCLEX_LUA, 63298, L"Lua Script", L"lua", L"", &KeyWords_LUA, {
                     { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
                     //{ SCE_LUA_DEFAULT, L"Default", L"", L"" },
-                    { MULTI_STYLE(SCE_LUA_COMMENT,SCE_LUA_COMMENTLINE,SCE_LUA_COMMENTDOC,0), 63127, L"Comment", L"fore:#007F00", L"" },
+                    { MULTI_STYLE(SCE_LUA_COMMENT,SCE_LUA_COMMENTLINE,SCE_LUA_COMMENTDOC,0), 63127, L"Comment", L"fore:#008000", L"" },
                     { SCE_LUA_NUMBER, 63130, L"Number", L"fore:#008080", L"" },
                     { SCE_LUA_WORD, 63128, L"Keyword", L"fore:#00007F", L"" },
                     { SCE_LUA_WORD2, 63321, L"Basic Functions", L"fore:#00007F", L"" },
