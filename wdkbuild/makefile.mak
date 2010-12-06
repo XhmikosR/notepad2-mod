@@ -6,9 +6,15 @@ RC=rc
 LD=link
 MT=$(SDKDIR)\Bin\mt.exe
 
+SCIINC=..\scintilla\include
+SCILEX=..\scintilla\lexers
+SCILIB=..\scintilla\lexlib
+SCISRC=..\scintilla\src
+SCIWIN=..\scintilla\win32
+SRC=..\src
+
 DEFINES=/D "STATIC_BUILD" /D "SCI_LEXER" /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE"
-INCLUDEDIRS=/I "..\scintilla\include" /I "..\scintilla\lexers" /I "..\scintilla\lexlib" \
-		/I "..\scintilla\src" /I "..\scintilla\win32"
+INCLUDEDIRS=/I "$(SCIINC)" /I "$(SCILEX)" /I "$(SCILIB)" /I "$(SCISRC)" /I "$(SCIWIN)"
 CXXFLAGS=/nologo /c /EHsc /MD /O1 /W3 $(DEFINES) $(INCLUDEDIRS)
 RFLAGS=/d "_UNICODE" /d "UNICODE" /d "BOOKMARK_EDITION"
 LIBS=kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib shlwapi.lib comdlg32.lib \
@@ -34,9 +40,9 @@ APP=$(BINDIR)\Notepad2.exe
 ALL:	$(APP)
 
 clean:
-	-@ del "$(APP)" "$(OBJDIR)\*.idb" "$(OBJDIR)\*.obj" "$(BINDIR)\*.pdb" \
+	-@ DEL "$(APP)" "$(OBJDIR)\*.idb" "$(OBJDIR)\*.obj" "$(BINDIR)\*.pdb" \
 	"$(OBJDIR)\*.res" >NUL 2>&1
-	-@ rd /q "$(OBJDIR)" "$(BINDIR)" >NUL 2>&1
+	-@ RMDIR /Q "$(OBJDIR)" "$(BINDIR)" >NUL 2>&1
 
 
 OBJECTS= \
@@ -95,25 +101,25 @@ OBJECTS= \
 	$(OBJDIR)\Notepad2.res
 
 
-{..\scintilla\lexers}.cxx{$(OBJDIR)}.obj:
+{$(SCILEX)}.cxx{$(OBJDIR)}.obj:
 	@$(CC) $(CXXFLAGS) /Fo"$(OBJDIR)/" /Tp "$<"
 
-{..\scintilla\lexlib}.cxx{$(OBJDIR)}.obj:
+{$(SCILIB)}.cxx{$(OBJDIR)}.obj:
 	@$(CC) $(CXXFLAGS) /Fo"$(OBJDIR)/" /Tp "$<"
 
-{..\scintilla\src}.cxx{$(OBJDIR)}.obj:
+{$(SCISRC)}.cxx{$(OBJDIR)}.obj:
 	@$(CC) $(CXXFLAGS) /Fo"$(OBJDIR)/" /Tp "$<"
 
-{..\scintilla\win32}.cxx{$(OBJDIR)}.obj:
+{$(SCIWIN)}.cxx{$(OBJDIR)}.obj:
 	@$(CC) $(CXXFLAGS) /Fo"$(OBJDIR)/" /Tp "$<"
 
-{..\src}.cpp{$(OBJDIR)}.obj:
+{$(SRC)}.cpp{$(OBJDIR)}.obj:
 	@$(CC) $(CXXFLAGS) /Fo"$(OBJDIR)/" /Tp "$<"
 
-{..\src}.c{$(OBJDIR)}.obj:
+{$(SRC)}.c{$(OBJDIR)}.obj:
 	@$(CC) $(CFLAGS) /Fo"$(OBJDIR)/" /Tc "$<"
 
-{..\src}.rc{$(OBJDIR)}.res:
+{$(SRC)}.rc{$(OBJDIR)}.res:
 	@$(RC) $(RFLAGS) /Fo"$@" "$<"
 
 
@@ -124,148 +130,128 @@ $(APP): $(OBJECTS)
 
 # Dependencies
 
-LEX_HEADERS= ..\scintilla\include\ILexer.h ..\scintilla\include\Scintilla.h \
-			..\scintilla\include\SciLexer.h ..\scintilla\lexlib\Accessor.h \
-			..\scintilla\lexlib\CharacterSet.h ..\scintilla\lexlib\LexAccessor.h \
-			..\scintilla\lexlib\LexerModule.h ..\scintilla\lexlib\StyleContext.h
+LEX_HEADERS= $(SCIINC)\ILexer.h $(SCIINC)\Scintilla.h $(SCIINC)\SciLexer.h \
+			$(SCILIB)\Accessor.h $(SCILIB)\CharacterSet.h $(SCILIB)\LexAccessor.h \
+			$(SCILIB)\LexerModule.h $(SCILIB)\StyleContext.h
 
 # scintilla\lexers
-$(OBJDIR)\LexAsm.obj: ..\scintilla\lexers\LexAsm.cxx $(LEX_HEADERS)
-$(OBJDIR)\LexConf.obj: ..\scintilla\lexers\LexConf.cxx $(LEX_HEADERS)
-$(OBJDIR)\LexCPP.obj: ..\scintilla\lexers\LexCPP.cxx $(LEX_HEADERS)
-$(OBJDIR)\LexCSS.obj: ..\scintilla\lexers\LexCSS.cxx $(LEX_HEADERS)
-$(OBJDIR)\LexHTML.obj: ..\scintilla\lexers\LexHTML.cxx $(LEX_HEADERS)
-$(OBJDIR)\LexOthers.obj: ..\scintilla\lexers\LexOthers.cxx $(LEX_HEADERS)
-$(OBJDIR)\LexPascal.obj: ..\scintilla\lexers\LexPascal.cxx $(LEX_HEADERS)
-$(OBJDIR)\LexPerl.obj: ..\scintilla\lexers\LexPerl.cxx $(LEX_HEADERS)
-$(OBJDIR)\LexPowerShell.obj: ..\scintilla\lexers\LexPowerShell.cxx $(LEX_HEADERS)
-$(OBJDIR)\LexPython.obj: ..\scintilla\lexers\LexPython.cxx $(LEX_HEADERS)
-$(OBJDIR)\LexSQL.obj: ..\scintilla\lexers\LexSQL.cxx $(LEX_HEADERS)
-$(OBJDIR)\LexVB.obj: ..\scintilla\lexers\LexVB.cxx $(LEX_HEADERS)
+$(OBJDIR)\LexAsm.obj: $(SCILEX)\LexAsm.cxx $(LEX_HEADERS)
+$(OBJDIR)\LexConf.obj: $(SCILEX)\LexConf.cxx $(LEX_HEADERS)
+$(OBJDIR)\LexCPP.obj: $(SCILEX)\LexCPP.cxx $(LEX_HEADERS)
+$(OBJDIR)\LexCSS.obj: $(SCILEX)\LexCSS.cxx $(LEX_HEADERS)
+$(OBJDIR)\LexHTML.obj: $(SCILEX)\LexHTML.cxx $(LEX_HEADERS)
+$(OBJDIR)\LexOthers.obj: $(SCILEX)\LexOthers.cxx $(LEX_HEADERS)
+$(OBJDIR)\LexPascal.obj: $(SCILEX)\LexPascal.cxx $(LEX_HEADERS)
+$(OBJDIR)\LexPerl.obj: $(SCILEX)\LexPerl.cxx $(LEX_HEADERS)
+$(OBJDIR)\LexPowerShell.obj: $(SCILEX)\LexPowerShell.cxx $(LEX_HEADERS)
+$(OBJDIR)\LexPython.obj: $(SCILEX)\LexPython.cxx $(LEX_HEADERS)
+$(OBJDIR)\LexSQL.obj: $(SCILEX)\LexSQL.cxx $(LEX_HEADERS)
+$(OBJDIR)\LexVB.obj: $(SCILEX)\LexVB.cxx $(LEX_HEADERS)
 
 # scintilla\lexlib
-$(OBJDIR)\Accessor.obj: ..\scintilla\lexlib\Accessor.cxx ..\scintilla\lexlib\Accessor.h
-$(OBJDIR)\CharacterSet.obj: ..\scintilla\lexlib\CharacterSet.cxx ..\scintilla\lexlib\CharacterSet.h
-$(OBJDIR)\LexerBase.obj: ..\scintilla\lexlib\LexerBase.cxx ..\scintilla\lexlib\LexerBase.h
-$(OBJDIR)\LexerModule.obj: ..\scintilla\lexlib\LexerModule.cxx ..\scintilla\lexlib\LexerModule.h
-$(OBJDIR)\LexerSimple.obj: ..\scintilla\lexlib\LexerSimple.cxx ..\scintilla\lexlib\LexerSimple.h
-$(OBJDIR)\PropSetSimple.obj: ..\scintilla\lexlib\PropSetSimple.cxx ..\scintilla\include\Platform.h
-$(OBJDIR)\StyleContext.obj: ..\scintilla\lexlib\StyleContext.cxx ..\scintilla\lexlib\Accessor.h \
-	..\scintilla\lexlib\StyleContext.h
-$(OBJDIR)\WordList.obj: ..\scintilla\lexlib\WordList.cxx ..\scintilla\lexlib\WordList.h
+$(OBJDIR)\Accessor.obj: $(SCILIB)\Accessor.cxx $(SCILIB)\Accessor.h
+$(OBJDIR)\CharacterSet.obj: $(SCILIB)\CharacterSet.cxx $(SCILIB)\CharacterSet.h
+$(OBJDIR)\LexerBase.obj: $(SCILIB)\LexerBase.cxx $(SCILIB)\LexerBase.h
+$(OBJDIR)\LexerModule.obj: $(SCILIB)\LexerModule.cxx $(SCILIB)\LexerModule.h
+$(OBJDIR)\LexerSimple.obj: $(SCILIB)\LexerSimple.cxx $(SCILIB)\LexerSimple.h
+$(OBJDIR)\PropSetSimple.obj: $(SCILIB)\PropSetSimple.cxx $(SCIINC)\Platform.h
+$(OBJDIR)\StyleContext.obj: $(SCILIB)\StyleContext.cxx $(SCILIB)\Accessor.h \
+	$(SCILIB)\StyleContext.h
+$(OBJDIR)\WordList.obj: $(SCILIB)\WordList.cxx $(SCILIB)\WordList.h
 
 # scintilla\src
-$(OBJDIR)\AutoComplete.obj: ..\scintilla\src\AutoComplete.cxx ..\scintilla\include\Platform.h \
-	..\scintilla\src\AutoComplete.h
-$(OBJDIR)\CallTip.obj: ..\scintilla\src\CallTip.cxx ..\scintilla\include\Platform.h \
-	..\scintilla\include\Scintilla.h ..\scintilla\src\CallTip.h
-$(OBJDIR)\Catalogue.obj: ..\scintilla\src\Catalogue.cxx
-$(OBJDIR)\CellBuffer.obj: ..\scintilla\src\CellBuffer.cxx ..\scintilla\include\Platform.h \
-	..\scintilla\include\Scintilla.h ..\scintilla\src\SVector.h ..\scintilla\src\SplitVector.h \
-	..\scintilla\src\Partitioning.h ..\scintilla\src\CellBuffer.h
-$(OBJDIR)\CharClassify.obj: ..\scintilla\src\CharClassify.cxx ..\scintilla\src\CharClassify.h
-$(OBJDIR)\ContractionState.obj: ..\scintilla\src\ContractionState.cxx ..\scintilla\include\Platform.h \
-	..\scintilla\src\ContractionState.h
-$(OBJDIR)\Decoration.obj: ..\scintilla\src\Decoration.cxx ..\scintilla\include\Platform.h \
-	..\scintilla\include\Scintilla.h ..\scintilla\src\SplitVector.h ..\scintilla\src\Partitioning.h \
-	..\scintilla\src\RunStyles.h ..\scintilla\src\Decoration.h
-$(OBJDIR)\Document.obj: ..\scintilla\src\Document.cxx ..\scintilla\include\Platform.h \
-	..\scintilla\include\Scintilla.h ..\scintilla\src\SVector.h ..\scintilla\src\SplitVector.h \
-	..\scintilla\src\Partitioning.h ..\scintilla\src\RunStyles.h ..\scintilla\src\CellBuffer.h \
-	..\scintilla\src\CharClassify.h ..\scintilla\src\Decoration.h ..\scintilla\src\Document.h \
-	..\scintilla\src\RESearch.h ..\scintilla\src\PerLine.h
-$(OBJDIR)\Editor.obj: ..\scintilla\src\Editor.cxx ..\scintilla\include\Platform.h \
-	..\scintilla\include\Scintilla.h ..\scintilla\src\ContractionState.h ..\scintilla\src\SVector.h \
-	..\scintilla\src\SplitVector.h ..\scintilla\src\Partitioning.h ..\scintilla\src\CellBuffer.h \
-	..\scintilla\src\KeyMap.h ..\scintilla\src\RunStyles.h ..\scintilla\src\Indicator.h \
-	..\scintilla\src\XPM.h ..\scintilla\src\LineMarker.h ..\scintilla\src\Style.h \
-	..\scintilla\src\ViewStyle.h ..\scintilla\src\CharClassify.h ..\scintilla\src\Decoration.h \
-	..\scintilla\src\Document.h ..\scintilla\src\Editor.h ..\scintilla\src\Selection.h \
-	..\scintilla\src\PositionCache.h
-$(OBJDIR)\ExternalLexer.obj: ..\scintilla\src\ExternalLexer.cxx ..\scintilla\include\Platform.h \
-	..\scintilla\include\Scintilla.h ..\scintilla\include\SciLexer.h \
-	..\scintilla\lexlib\Accessor.h ..\scintilla\src\ExternalLexer.h
-$(OBJDIR)\Indicator.obj: ..\scintilla\src\Indicator.cxx ..\scintilla\include\Platform.h \
-	..\scintilla\include\Scintilla.h ..\scintilla\src\Indicator.h
-$(OBJDIR)\KeyMap.obj: ..\scintilla\src\KeyMap.cxx ..\scintilla\include\Platform.h \
-	..\scintilla\include\Scintilla.h ..\scintilla\src\KeyMap.h
-$(OBJDIR)\LineMarker.obj: ..\scintilla\src\LineMarker.cxx ..\scintilla\include\Platform.h \
-	..\scintilla\include\Scintilla.h ..\scintilla\src\XPM.h ..\scintilla\src\LineMarker.h
-$(OBJDIR)\PerLine.obj: ..\scintilla\src\PerLine.cxx ..\scintilla\include\Platform.h \
-	..\scintilla\include\Scintilla.h ..\scintilla\src\SVector.h ..\scintilla\src\SplitVector.h \
-	..\scintilla\src\Partitioning.h ..\scintilla\src\RunStyles.h ..\scintilla\src\PerLine.h
-$(OBJDIR)\PositionCache.obj: ..\scintilla\src\PositionCache.cxx ..\scintilla\src\SplitVector.h \
-	..\scintilla\src\Partitioning.h ..\scintilla\src\RunStyles.h ..\scintilla\src\ContractionState.h \
-	..\scintilla\src\CellBuffer.h ..\scintilla\src\KeyMap.h ..\scintilla\src\Indicator.h \
-	..\scintilla\src\XPM.h ..\scintilla\src\LineMarker.h ..\scintilla\src\Style.h \
-	..\scintilla\src\ViewStyle.h ..\scintilla\src\CharClassify.h ..\scintilla\src\Decoration.h \
-	..\scintilla\src\Document.h ..\scintilla\src\Selection.h ..\scintilla\src\PositionCache.h
-$(OBJDIR)\RESearch.obj: ..\scintilla\src\RESearch.cxx ..\scintilla\src\CharClassify.h \
-	..\scintilla\src\RESearch.h
-$(OBJDIR)\RunStyles.obj: ..\scintilla\src\RunStyles.cxx ..\scintilla\include\Platform.h \
-	..\scintilla\include\Scintilla.h ..\scintilla\src\SplitVector.h ..\scintilla\src\Partitioning.h \
-	..\scintilla\src\RunStyles.h
-$(OBJDIR)\ScintillaBase.obj: ..\scintilla\src\ScintillaBase.cxx ..\scintilla\include\Platform.h \
-	..\scintilla\include\Scintilla.h \
-	..\scintilla\src\ContractionState.h ..\scintilla\src\SVector.h ..\scintilla\src\SplitVector.h \
-	..\scintilla\src\Partitioning.h ..\scintilla\src\RunStyles.h ..\scintilla\src\CellBuffer.h \
-	..\scintilla\src\CallTip.h ..\scintilla\src\KeyMap.h ..\scintilla\src\Indicator.h \
-	..\scintilla\src\XPM.h ..\scintilla\src\LineMarker.h ..\scintilla\src\Style.h \
-	..\scintilla\src\ViewStyle.h ..\scintilla\src\AutoComplete.h ..\scintilla\src\CharClassify.h \
-	..\scintilla\src\Decoration.h ..\scintilla\src\Document.h ..\scintilla\src\Editor.h \
-	..\scintilla\src\Selection.h ..\scintilla\src\ScintillaBase.h
-$(OBJDIR)\Selection.obj: ..\scintilla\src\Selection.cxx ..\scintilla\include\Platform.h \
-	..\scintilla\include\Scintilla.h ..\scintilla\src\Selection.h
-$(OBJDIR)\Style.obj: ..\scintilla\src\Style.cxx ..\scintilla\include\Platform.h \
-	..\scintilla\include\Scintilla.h ..\scintilla\src\Style.h
-$(OBJDIR)\UniConversion.obj: ..\scintilla\src\UniConversion.cxx ..\scintilla\src\UniConversion.h
-$(OBJDIR)\ViewStyle.obj: ..\scintilla\src\ViewStyle.cxx ..\scintilla\include\Platform.h \
-	..\scintilla\include\Scintilla.h ..\scintilla\src\SplitVector.h ..\scintilla\src\Partitioning.h \
-	..\scintilla\src\RunStyles.h ..\scintilla\src\Indicator.h ..\scintilla\src\XPM.h \
-	..\scintilla\src\LineMarker.h ..\scintilla\src\Style.h ..\scintilla\src\ViewStyle.h
-$(OBJDIR)\XPM.obj: ..\scintilla\src\XPM.cxx ..\scintilla\include\Platform.h ..\scintilla\src\XPM.h
+$(OBJDIR)\AutoComplete.obj: $(SCISRC)\AutoComplete.cxx $(SCIINC)\Platform.h \
+	$(SCISRC)\AutoComplete.h
+$(OBJDIR)\CallTip.obj: $(SCISRC)\CallTip.cxx $(SCIINC)\Platform.h \
+	$(SCIINC)\Scintilla.h $(SCISRC)\CallTip.h
+$(OBJDIR)\Catalogue.obj: $(SCISRC)\Catalogue.cxx
+$(OBJDIR)\CellBuffer.obj: $(SCISRC)\CellBuffer.cxx $(SCIINC)\Platform.h \
+	$(SCIINC)\Scintilla.h $(SCISRC)\SVector.h $(SCISRC)\SplitVector.h \
+	$(SCISRC)\Partitioning.h $(SCISRC)\CellBuffer.h
+$(OBJDIR)\CharClassify.obj: $(SCISRC)\CharClassify.cxx $(SCISRC)\CharClassify.h
+$(OBJDIR)\ContractionState.obj: $(SCISRC)\ContractionState.cxx \
+	$(SCIINC)\Platform.h $(SCISRC)\ContractionState.h
+$(OBJDIR)\Decoration.obj: $(SCISRC)\Decoration.cxx $(SCIINC)\Platform.h \
+	$(SCIINC)\Scintilla.h $(SCISRC)\SplitVector.h $(SCISRC)\Partitioning.h \
+	$(SCISRC)\RunStyles.h $(SCISRC)\Decoration.h
+$(OBJDIR)\Document.obj: $(SCISRC)\Document.cxx $(SCIINC)\Platform.h \
+	$(SCIINC)\Scintilla.h $(SCISRC)\SVector.h $(SCISRC)\SplitVector.h \
+	$(SCISRC)\Partitioning.h $(SCISRC)\RunStyles.h $(SCISRC)\CellBuffer.h \
+	$(SCISRC)\CharClassify.h $(SCISRC)\Decoration.h $(SCISRC)\Document.h \
+	$(SCISRC)\RESearch.h $(SCISRC)\PerLine.h
+$(OBJDIR)\Editor.obj: $(SCISRC)\Editor.cxx $(SCIINC)\Platform.h \
+	$(SCIINC)\Scintilla.h $(SCISRC)\ContractionState.h $(SCISRC)\SVector.h \
+	$(SCISRC)\SplitVector.h $(SCISRC)\Partitioning.h $(SCISRC)\CellBuffer.h \
+	$(SCISRC)\KeyMap.h $(SCISRC)\RunStyles.h $(SCISRC)\Indicator.h $(SCISRC)\XPM.h \
+	$(SCISRC)\LineMarker.h $(SCISRC)\Style.h $(SCISRC)\ViewStyle.h \
+	$(SCISRC)\CharClassify.h $(SCISRC)\Decoration.h $(SCISRC)\Document.h \
+	$(SCISRC)\Editor.h $(SCISRC)\Selection.h $(SCISRC)\PositionCache.h
+$(OBJDIR)\ExternalLexer.obj: $(SCISRC)\ExternalLexer.cxx $(SCIINC)\Platform.h \
+	$(SCIINC)\Scintilla.h $(SCIINC)\SciLexer.h $(SCILIB)\Accessor.h \
+	$(SCISRC)\ExternalLexer.h
+$(OBJDIR)\Indicator.obj: $(SCISRC)\Indicator.cxx $(SCIINC)\Platform.h \
+	$(SCIINC)\Scintilla.h $(SCISRC)\Indicator.h
+$(OBJDIR)\KeyMap.obj: $(SCISRC)\KeyMap.cxx $(SCIINC)\Platform.h \
+	$(SCIINC)\Scintilla.h $(SCISRC)\KeyMap.h
+$(OBJDIR)\LineMarker.obj: $(SCISRC)\LineMarker.cxx $(SCIINC)\Platform.h \
+	$(SCIINC)\Scintilla.h $(SCISRC)\XPM.h $(SCISRC)\LineMarker.h
+$(OBJDIR)\PerLine.obj: $(SCISRC)\PerLine.cxx $(SCIINC)\Platform.h \
+	$(SCIINC)\Scintilla.h $(SCISRC)\SVector.h $(SCISRC)\SplitVector.h \
+	$(SCISRC)\Partitioning.h $(SCISRC)\RunStyles.h $(SCISRC)\PerLine.h
+$(OBJDIR)\PositionCache.obj: $(SCISRC)\PositionCache.cxx $(SCISRC)\SplitVector.h \
+	$(SCISRC)\Partitioning.h $(SCISRC)\RunStyles.h $(SCISRC)\ContractionState.h \
+	$(SCISRC)\CellBuffer.h $(SCISRC)\KeyMap.h $(SCISRC)\Indicator.h \
+	$(SCISRC)\XPM.h $(SCISRC)\LineMarker.h $(SCISRC)\Style.h \
+	$(SCISRC)\ViewStyle.h $(SCISRC)\CharClassify.h $(SCISRC)\Decoration.h \
+	$(SCISRC)\Document.h $(SCISRC)\Selection.h $(SCISRC)\PositionCache.h
+$(OBJDIR)\RESearch.obj: $(SCISRC)\RESearch.cxx $(SCISRC)\CharClassify.h \
+	$(SCISRC)\RESearch.h
+$(OBJDIR)\RunStyles.obj: $(SCISRC)\RunStyles.cxx $(SCIINC)\Platform.h \
+	$(SCIINC)\Scintilla.h $(SCISRC)\SplitVector.h $(SCISRC)\Partitioning.h \
+	$(SCISRC)\RunStyles.h
+$(OBJDIR)\ScintillaBase.obj: $(SCISRC)\ScintillaBase.cxx $(SCIINC)\Platform.h \
+	$(SCIINC)\Scintilla.h \
+	$(SCISRC)\ContractionState.h $(SCISRC)\SVector.h $(SCISRC)\SplitVector.h \
+	$(SCISRC)\Partitioning.h $(SCISRC)\RunStyles.h $(SCISRC)\CellBuffer.h \
+	$(SCISRC)\CallTip.h $(SCISRC)\KeyMap.h $(SCISRC)\Indicator.h \
+	$(SCISRC)\XPM.h $(SCISRC)\LineMarker.h $(SCISRC)\Style.h \
+	$(SCISRC)\ViewStyle.h $(SCISRC)\AutoComplete.h $(SCISRC)\CharClassify.h \
+	$(SCISRC)\Decoration.h $(SCISRC)\Document.h $(SCISRC)\Editor.h \
+	$(SCISRC)\Selection.h $(SCISRC)\ScintillaBase.h
+$(OBJDIR)\Selection.obj: $(SCISRC)\Selection.cxx $(SCIINC)\Platform.h \
+	$(SCIINC)\Scintilla.h $(SCISRC)\Selection.h
+$(OBJDIR)\Style.obj: $(SCISRC)\Style.cxx $(SCIINC)\Platform.h \
+	$(SCIINC)\Scintilla.h $(SCISRC)\Style.h
+$(OBJDIR)\UniConversion.obj: $(SCISRC)\UniConversion.cxx $(SCISRC)\UniConversion.h
+$(OBJDIR)\ViewStyle.obj: $(SCISRC)\ViewStyle.cxx $(SCIINC)\Platform.h \
+	$(SCIINC)\Scintilla.h $(SCISRC)\SplitVector.h $(SCISRC)\Partitioning.h \
+	$(SCISRC)\RunStyles.h $(SCISRC)\Indicator.h $(SCISRC)\XPM.h \
+	$(SCISRC)\LineMarker.h $(SCISRC)\Style.h $(SCISRC)\ViewStyle.h
+$(OBJDIR)\XPM.obj: $(SCISRC)\XPM.cxx $(SCIINC)\Platform.h $(SCISRC)\XPM.h
 
 # scintilla\win32
-$(OBJDIR)\PlatWin.obj: ..\scintilla\win32\PlatWin.cxx ..\scintilla\include\Platform.h \
-	..\scintilla\win32\PlatformRes.h ..\scintilla\src\UniConversion.h ..\scintilla\src\XPM.h
-$(OBJDIR)\ScintillaWin.obj: ..\scintilla\win32\ScintillaWin.cxx ..\scintilla\include\Platform.h \
-	..\scintilla\include\Scintilla.h ..\scintilla\src\ContractionState.h ..\scintilla\src\SVector.h \
-	..\scintilla\src\SplitVector.h ..\scintilla\src\Partitioning.h ..\scintilla\src\RunStyles.h \
-	..\scintilla\src\CellBuffer.h ..\scintilla\src\CallTip.h ..\scintilla\src\KeyMap.h \
-	..\scintilla\src\Indicator.h ..\scintilla\src\XPM.h ..\scintilla\src\LineMarker.h \
-	..\scintilla\src\Style.h ..\scintilla\src\AutoComplete.h ..\scintilla\src\ViewStyle.h \
-	..\scintilla\src\CharClassify.h ..\scintilla\src\Decoration.h ..\scintilla\src\Document.h \
-	..\scintilla\src\Editor.h ..\scintilla\src\ScintillaBase.h ..\scintilla\src\Selection.h \
-	..\scintilla\src\UniConversion.h
+$(OBJDIR)\PlatWin.obj: $(SCIWIN)\PlatWin.cxx $(SCIINC)\Platform.h \
+	$(SCIWIN)\PlatformRes.h $(SCISRC)\UniConversion.h $(SCISRC)\XPM.h
+$(OBJDIR)\ScintillaWin.obj: $(SCIWIN)\ScintillaWin.cxx $(SCIINC)\Platform.h \
+	$(SCIINC)\Scintilla.h $(SCISRC)\ContractionState.h $(SCISRC)\SVector.h \
+	$(SCISRC)\SplitVector.h $(SCISRC)\Partitioning.h $(SCISRC)\RunStyles.h \
+	$(SCISRC)\CellBuffer.h $(SCISRC)\CallTip.h $(SCISRC)\KeyMap.h \
+	$(SCISRC)\Indicator.h $(SCISRC)\XPM.h $(SCISRC)\LineMarker.h \
+	$(SCISRC)\Style.h $(SCISRC)\AutoComplete.h $(SCISRC)\ViewStyle.h \
+	$(SCISRC)\CharClassify.h $(SCISRC)\Decoration.h $(SCISRC)\Document.h \
+	$(SCISRC)\Editor.h $(SCISRC)\ScintillaBase.h $(SCISRC)\Selection.h \
+	$(SCISRC)\UniConversion.h
 
 # src
-$(OBJDIR)\Dialogs.obj: ..\src\Dialogs.c ..\src\Notepad2.h \
-		..\src\Edit.h \
-		..\src\Helpers.h \
-		..\src\Dlapi.h \
-		..\src\Dialogs.h \
-		..\src\resource.h
-$(OBJDIR)\Dlapi.obj: ..\src\Dlapi.c ..\src\Dlapi.h
-$(OBJDIR)\Edit.obj: ..\src\Edit.c ..\src\Notepad2.h \
-		..\src\Helpers.h \
-		..\src\Dialogs.h \
-		..\src\Styles.h \
-		..\src\Edit.h \
-		..\src\resource.h
-$(OBJDIR)\Helpers.obj: ..\src\Helpers.c ..\src\Helpers.h
-$(OBJDIR)\Notepad2.obj: ..\src\Notepad2.c ..\src\Edit.h \
-		..\src\Styles.h \
-		..\src\Helpers.h \
-		..\src\Dialogs.h \
-		..\src\Notepad2.h \
-		..\src\resource.h
-$(OBJDIR)\Notepad2.res: ..\src\Notepad2.rc
-$(OBJDIR)\Print.obj: ..\src\Print.cpp ..\src\Dialogs.h \
-		..\src\Helpers.h \
-		..\src\resource.h
-$(OBJDIR)\Styles.obj: ..\src\Styles.c ..\src\Dialogs.h \
-		..\src\Helpers.h \
-		..\src\Notepad2.h \
-		..\src\Edit.h \
-		..\src\Styles.h \
-		..\src\resource.h
+$(OBJDIR)\Dialogs.obj: $(SRC)\Dialogs.c $(SRC)\Notepad2.h $(SRC)\Edit.h $(SRC)\Helpers.h \
+	$(SRC)\Dlapi.h $(SRC)\Dialogs.h $(SRC)\resource.h
+$(OBJDIR)\Dlapi.obj: $(SRC)\Dlapi.c $(SRC)\Dlapi.h
+$(OBJDIR)\Edit.obj: $(SRC)\Edit.c $(SRC)\Notepad2.h $(SRC)\Helpers.h $(SRC)\Dialogs.h \
+	$(SRC)\Styles.h $(SRC)\Edit.h $(SRC)\resource.h
+$(OBJDIR)\Helpers.obj: $(SRC)\Helpers.c $(SRC)\Helpers.h
+$(OBJDIR)\Notepad2.obj: $(SRC)\Notepad2.c $(SRC)\Edit.h $(SRC)\Styles.h $(SRC)\Helpers.h \
+	$(SRC)\Dialogs.h $(SRC)\Notepad2.h $(SRC)\resource.h
+$(OBJDIR)\Notepad2.res: $(SRC)\Notepad2.rc
+$(OBJDIR)\Print.obj: $(SRC)\Print.cpp $(SRC)\Dialogs.h $(SRC)\Helpers.h $(SRC)\resource.h
+$(OBJDIR)\Styles.obj: $(SRC)\Styles.c $(SRC)\Dialogs.h $(SRC)\Helpers.h $(SRC)\Notepad2.h \
+	$(SRC)\Edit.h $(SRC)\Styles.h $(SRC)\resource.h
