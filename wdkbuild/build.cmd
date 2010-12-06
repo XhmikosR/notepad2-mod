@@ -64,22 +64,19 @@ POPD
 :x86
 SET "INCLUDE=%WDKBASEDIR%\inc\crt;%WDKBASEDIR%\inc\api;%WDKBASEDIR%\inc\api\crt\stl60;%WDKBASEDIR%\inc\ddk"
 SET "LIB=%WDKBASEDIR%\lib\crt\i386;%WDKBASEDIR%\lib\win7\i386"
-SET "PATH=%WDKBASEDIR%\bin\x86;%WDKBASEDIR%\bin\x86\x86;%PATH%"
-SET "BINDIR=..\Release"
-SET "OBJDIR=%BINDIR%\obj"
+SET "FPATH=%WDKBASEDIR%\bin\x86;%WDKBASEDIR%\bin\x86\x86;%SDKDIR%\Bin"
+SET "PATH=%FPATH%"
 
 TITLE Building Notepad2 x86...
 ECHO. && ECHO.
 
 IF /I "%BUILDTYPE%" == "Build" (
-MD "%OBJDIR%" >NUL 2>&1
 CALL :SUBNMAKEx86
 GOTO :x64
 )
 
 IF /I "%BUILDTYPE%" == "Rebuild" (
 CALL :SUBNMAKEx86 clean
-MD "%OBJDIR%" >NUL 2>&1
 CALL :SUBNMAKEx86
 GOTO :x64
 )
@@ -89,22 +86,19 @@ IF /I "%BUILDTYPE%" == "Clean" CALL :SUBNMAKEx86 clean
 
 :x64
 SET "LIB=%WDKBASEDIR%\lib\crt\amd64;%WDKBASEDIR%\lib\win7\amd64"
-SET "PATH=%WDKBASEDIR%\bin\x86;%WDKBASEDIR%\bin\x86\amd64;%PATH%"
-SET "BINDIR=..\Release_x64"
-SET "OBJDIR=%BINDIR%\obj"
+SET "FPATH=%WDKBASEDIR%\bin\x86;%WDKBASEDIR%\bin\x86\amd64;%SDKDIR%\Bin"
+SET "PATH=%FPATH%"
 
 TITLE Building Notepad2 x64...
 ECHO. && ECHO.
 
 IF /I "%BUILDTYPE%" == "Build" (
-MD "%OBJDIR%" >NUL 2>&1
 CALL :SUBNMAKEx64
 GOTO :END
 )
 
 IF /I "%BUILDTYPE%" == "Rebuild" (
 CALL :SUBNMAKEx64 clean
-MD "%OBJDIR%" >NUL 2>&1
 CALL :SUBNMAKEx64
 GOTO :END
 )

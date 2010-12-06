@@ -4,7 +4,15 @@
 CC=cl
 RC=rc
 LD=link
-MT=$(SDKDIR)\Bin\mt.exe
+MT=mt
+
+!IFDEF x64
+BINDIR=..\Release_x64
+!ELSE
+BINDIR=..\Release
+!ENDIF
+OBJDIR=$(BINDIR)\obj
+APP=$(BINDIR)\Notepad2.exe
 
 SCIINC=..\scintilla\include
 SCILEX=..\scintilla\lexers
@@ -35,13 +43,17 @@ LIBS=$(LIBS) msvcrt_winxp.obj
 LDFLAGS=$(LDFLAGS) /SUBSYSTEM:WINDOWS,5.01 /MACHINE:X86 $(LIBS)
 !ENDIF
 
-CFLAGS=$(CXXFLAGS)
-APP=$(BINDIR)\Notepad2.exe
 
+.PHONY:	ALL CHECKDIRS
 
-ALL:	$(APP)
+CHECKDIRS: $(OBJDIR)
 
-clean:
+$(OBJDIR):
+		-@ MD "$(OBJDIR)" >NUL 2>&1
+
+ALL:	CHECKDIRS $(APP)
+
+CLEAN:
 	-@ DEL "$(APP)" "$(OBJDIR)\*.idb" "$(OBJDIR)\*.obj" "$(BINDIR)\*.pdb" \
 	"$(OBJDIR)\*.res" >NUL 2>&1
 	-@ RMDIR /Q "$(OBJDIR)" "$(BINDIR)" >NUL 2>&1
@@ -127,7 +139,7 @@ OBJECTS= \
 	@$(CC) $(CXXFLAGS) /Fo"$(OBJDIR)/" /Tp "$<"
 
 {$(SRC)}.c{$(OBJDIR)}.obj:
-	@$(CC) $(CFLAGS) /Fo"$(OBJDIR)/" /Tc "$<"
+	@$(CC) $(CXXFLAGS) /Fo"$(OBJDIR)/" /Tc "$<"
 
 {$(SRC)}.rc{$(OBJDIR)}.res:
 	@$(RC) $(RFLAGS) /Fo"$@" "$<"
