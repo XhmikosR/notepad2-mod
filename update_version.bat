@@ -1,11 +1,11 @@
 @ECHO OFF
-SubWCRev . "src\Version_in.h" "src\Version_rev.h"
+SubWCRev . "src\Version_in.h" "src\Version_rev.h" -f
 IF %ERRORLEVEL% NEQ 0 GOTO :NoSubWCRev
-SubWCRev . "res\Notepad2.exe.manifest.conf" "res\Notepad2.exe.manifest" >NUL
+SubWCRev . "res\Notepad2.exe.manifest.conf" "res\Notepad2.exe.manifest" -f >NUL
 IF %ERRORLEVEL% NEQ 0 GOTO :NoSubWCRev
-SubWCRev . "distrib\res\full\setup.manifest.conf" "distrib\res\full\setup.manifest" >NUL
+SubWCRev . "distrib\res\full\setup.manifest.conf" "distrib\res\full\setup.manifest" -f >NUL
 IF %ERRORLEVEL% NEQ 0 GOTO :NoSubWCRev
-SubWCRev . "distrib\res\lite\setup.manifest.conf" "distrib\res\lite\setup.manifest" >NUL
+SubWCRev . "distrib\res\lite\setup.manifest.conf" "distrib\res\lite\setup.manifest" -f >NUL
 IF %ERRORLEVEL% NEQ 0 GOTO :NoSubWCRev
 GOTO :EOF
 
