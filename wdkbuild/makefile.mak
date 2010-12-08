@@ -6,6 +6,7 @@ RC=rc
 LD=link
 MT=mt
 
+
 !IFDEF x64
 BINDIR=..\Release_x64
 !ELSE
@@ -14,20 +15,24 @@ BINDIR=..\Release
 OBJDIR=$(BINDIR)\obj
 APP=$(BINDIR)\Notepad2.exe
 
+
 SCIINC=..\scintilla\include
 SCILEX=..\scintilla\lexers
 SCILIB=..\scintilla\lexlib
 SCISRC=..\scintilla\src
 SCIWIN=..\scintilla\win32
 SRC=..\src
+RES=..\res
+
 
 DEFINES=/D "STATIC_BUILD" /D "SCI_LEXER" /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE"
 INCLUDEDIRS=/I "$(SCIINC)" /I "$(SCILEX)" /I "$(SCILIB)" /I "$(SCISRC)" /I "$(SCIWIN)"
-CXXFLAGS=/nologo /c /EHsc /MD /O1 /W3 $(DEFINES) $(INCLUDEDIRS)
-RFLAGS=/d "_UNICODE" /d "UNICODE" /d "BOOKMARK_EDITION"
+CXXFLAGS=/nologo /c /Fo"$(OBJDIR)/" /EHsc /MD /O1 /W3 /MP $(DEFINES) $(INCLUDEDIRS)
 LIBS=kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib shlwapi.lib comdlg32.lib \
 		comctl32.lib winspool.lib imm32.lib ole32.lib oleaut32.lib psapi.lib
 LDFLAGS=/NOLOGO /INCREMENTAL:NO /RELEASE /OPT:REF /OPT:ICF /MERGE:.rdata=.text
+RFLAGS=/d "_UNICODE" /d "UNICODE"
+
 
 !IFDEF x64
 CXXFLAGS=$(CXXFLAGS) /D "_WIN64" /D "_WIN32_WINNT=0x0502" /wd4133 /wd4244 /wd4267
@@ -41,13 +46,14 @@ LIBS=$(LIBS) msvcrt_winxp.obj
 LDFLAGS=$(LDFLAGS) /SUBSYSTEM:WINDOWS,5.01 /MACHINE:X86 $(LIBS)
 !ENDIF
 
+CCOMMAND=@$(CC) $(CXXFLAGS) /Tc $<
+CPPCOMMAND=@$(CC) $(CXXFLAGS) /Tp $<
+
 
 .PHONY:	ALL CHECKDIRS
 
-CHECKDIRS: $(OBJDIR)
-
-$(OBJDIR):
-		-@ MD "$(OBJDIR)" >NUL 2>&1
+CHECKDIRS:
+		-@ MKDIR "$(OBJDIR)" >NUL 2>&1
 
 ALL:	CHECKDIRS $(APP)
 
@@ -108,36 +114,34 @@ OBJECTS= \
 	$(OBJDIR)\Edit.obj \
 	$(OBJDIR)\Helpers.obj \
 	$(OBJDIR)\Notepad2.obj \
+	$(OBJDIR)\Notepad2.res \
 	$(OBJDIR)\Print.obj \
-	$(OBJDIR)\Styles.obj \
-	$(OBJDIR)\Notepad2.res
+	$(OBJDIR)\Styles.obj
 
 
-{$(SCILEX)}.cxx{$(OBJDIR)}.obj:
-	@$(CC) $(CXXFLAGS) /Fo"$(OBJDIR)/" /Tp "$<"
+{$(SCILEX)}.cxx{$(OBJDIR)}.obj::
+	$(CPPCOMMAND)
 
-{$(SCILIB)}.cxx{$(OBJDIR)}.obj:
-	@$(CC) $(CXXFLAGS) /Fo"$(OBJDIR)/" /Tp "$<"
+{$(SCILIB)}.cxx{$(OBJDIR)}.obj::
+	$(CPPCOMMAND)
 
-{$(SCISRC)}.cxx{$(OBJDIR)}.obj:
-	@$(CC) $(CXXFLAGS) /Fo"$(OBJDIR)/" /Tp "$<"
+{$(SCISRC)}.cxx{$(OBJDIR)}.obj::
+	$(CPPCOMMAND)
 
-{$(SCIWIN)}.cxx{$(OBJDIR)}.obj:
-	@$(CC) $(CXXFLAGS) /Fo"$(OBJDIR)/" /Tp "$<"
+{$(SCIWIN)}.cxx{$(OBJDIR)}.obj::
+	$(CPPCOMMAND)
 
-{$(SRC)}.cpp{$(OBJDIR)}.obj:
-	@$(CC) $(CXXFLAGS) /Fo"$(OBJDIR)/" /Tp "$<"
+{$(SRC)}.cpp{$(OBJDIR)}.obj::
+	$(CPPCOMMAND)
 
-{$(SRC)}.c{$(OBJDIR)}.obj:
-	@$(CC) $(CXXFLAGS) /Fo"$(OBJDIR)/" /Tc "$<"
-
-{$(SRC)}.rc{$(OBJDIR)}.res:
-	@$(RC) $(RFLAGS) /Fo"$@" "$<"
+{$(SRC)}.c{$(OBJDIR)}.obj::
+	$(CCOMMAND)
 
 
 $(APP): $(OBJECTS)
+	@$(RC) $(RFLAGS) /fo"$(OBJDIR)\Notepad2.res" "$(SRC)\Notepad2.rc"
 	@$(LD) $(LDFLAGS) /OUT:"$(APP)" $(OBJECTS)
-	@"$(MT)" -nologo -manifest "..\res\Notepad2.exe.manifest" -outputresource:"$(APP);#1"
+	@$(MT) -nologo -manifest "$(RES)\Notepad2.exe.manifest" -outputresource:"$(APP);#1"
 
 
 # Dependencies
