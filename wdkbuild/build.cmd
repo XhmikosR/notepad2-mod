@@ -113,12 +113,12 @@ EXIT /B
 
 
 :SUBNMAKEx86
-nmake -f makefile.mak /NOLOGO %1
+nmake -f "makefile.mak" /NOLOGO %1
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 EXIT /B
 
 :SUBNMAKEx64
-nmake x64=1 -f makefile.mak /NOLOGO %1
+nmake x64=1 -f "makefile.mak" /NOLOGO %1
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 EXIT /B
 
