@@ -1,5 +1,18 @@
-# See License.txt for legal notes.
-# Use build.cmd and set there your WDK and SDK directories.
+#******************************************************************************
+#*
+#* Notepad2-mod
+#*
+#* makefile.mak
+#*   makefile for building Notepad2 with WDK
+#*
+#* See License.txt for details about distribution and modification.
+#*
+#*                                       (c) XhmikosR 2010
+#*                                       http://code.google.com/p/notepad2-mod/
+#*
+#* Use build.cmd and set there your WDK and SDK directories.
+#*
+#******************************************************************************
 
 CC=cl
 RC=rc

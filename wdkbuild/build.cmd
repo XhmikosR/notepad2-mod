@@ -1,4 +1,18 @@
 @ECHO OFF
+rem ******************************************************************************
+rem *
+rem * Notepad2-mod
+rem *
+rem * build.cmd
+rem *   Batch file "wrapper" for makefile.mak, used to build Notepad2 with WDK
+rem *
+rem * See License.txt for details about distribution and modification.
+rem *
+rem *                                       (c) XhmikosR 2010
+rem *                                       http://code.google.com/p/notepad2-mod/
+rem *
+rem ******************************************************************************
+
 SETLOCAL
 CD /D %~dp0
 

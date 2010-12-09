@@ -1729,7 +1729,13 @@ static void FoldRbDoc(unsigned int startPos, int length, int initStyle,
                           ) {
 				levelCurrent++;
             }
-        }
+		} else if (style == SCE_RB_HERE_DELIM) {
+			if (styler.SafeGetCharAt(i-2) == '<' && styler.SafeGetCharAt(i-1) == '<') {
+				levelCurrent++;
+			} else if (styleNext == SCE_RB_DEFAULT) {
+				levelCurrent--;
+			}
+		}
 		if (atEOL) {
 			int lev = levelPrev;
 			if (visibleChars == 0 && foldCompact)
