@@ -21,12 +21,14 @@ GOTO :CHECK
 :SHOWHELP
 TITLE "build.cmd %1"
 ECHO.
-ECHO:Usage:  build.cmd [Clean^|Build^|Rebuild]
+ECHO:Usage:  build.cmd [Clean^|Build^|Rebuild] [x86^|x64^|all]
 ECHO.
 ECHO:Edit "build.cmd" and set your WDK and SDK directories.
 ECHO:You shouldn't need to make any changes other than that.
 ECHO.
-ECHO:Executing "build.cmd" will use the defaults: "build.bat Build"
+ECHO:Executing "build.cmd" will use the defaults: "build.cmd build all"
+ECHO:If you skip an argument the default one will be used. Example:
+ECHO:"build.cmd rebuild" is equivalent to "build.cmd rebuild all"
 ECHO.
 ENDLOCAL
 EXIT /B
@@ -35,23 +37,33 @@ EXIT /B
 REM Check for the switches
 IF "%1" == "" (
 SET BUILDTYPE=Build
+SET ARCH=all
 ) ELSE (
-IF /I "%1" == "Build" SET BUILDTYPE=Build&&GOTO :START
-IF /I "%1" == "/Build" SET BUILDTYPE=Build&&GOTO :START
-IF /I "%1" == "-Build" SET BUILDTYPE=Build&&GOTO :START
-IF /I "%1" == "--Build" SET BUILDTYPE=Build&&GOTO :START
-IF /I "%1" == "Clean" SET BUILDTYPE=Clean&&GOTO :START
-IF /I "%1" == "/Clean" SET BUILDTYPE=Clean&&GOTO :START
-IF /I "%1" == "-Clean" SET BUILDTYPE=Clean&&GOTO :START
-IF /I "%1" == "--Clean" SET BUILDTYPE=Clean&&GOTO :START
-IF /I "%1" == "Rebuild" SET BUILDTYPE=Rebuild&&GOTO :START
-IF /I "%1" == "/Rebuild" SET BUILDTYPE=Rebuild&&GOTO :START
-IF /I "%1" == "-Rebuild" SET BUILDTYPE=Rebuild&&GOTO :START
-IF /I "%1" == "--Rebuild" SET BUILDTYPE=Rebuild&&GOTO :START
-ECHO.
-ECHO:Unsupported commandline switch!
-ECHO:Run "build.cmd help" for details about the commandline switches.
-CALL :SUBMSG "ERROR" "Compilation failed!"
+IF /I "%1" == "Build" SET BUILDTYPE=Build
+IF /I "%1" == "/Build" SET BUILDTYPE=Build
+IF /I "%1" == "-Build" SET BUILDTYPE=Build
+IF /I "%1" == "--Build" SET BUILDTYPE=Build
+IF /I "%1" == "Clean" SET BUILDTYPE=Clean
+IF /I "%1" == "/Clean" SET BUILDTYPE=Clean
+IF /I "%1" == "-Clean" SET BUILDTYPE=Clean
+IF /I "%1" == "--Clean" SET BUILDTYPE=Clean
+IF /I "%1" == "Rebuild" SET BUILDTYPE=Rebuild
+IF /I "%1" == "/Rebuild" SET BUILDTYPE=Rebuild
+IF /I "%1" == "-Rebuild" SET BUILDTYPE=Rebuild
+IF /I "%1" == "--Rebuild" SET BUILDTYPE=Rebuild
+IF /I "%2" == "x86" SET ARCH=x86
+IF /I "%2" == "/x86" SET ARCH=x86
+IF /I "%2" == "-x86" SET ARCH=x86
+IF /I "%2" == "--x86" SET ARCH=x86
+IF /I "%2" == "x64" SET ARCH=x64
+IF /I "%2" == "/x64" SET ARCH=x64
+IF /I "%2" == "-x64" SET ARCH=x64
+IF /I "%2" == "--x64" SET ARCH=x64
+IF /I "%2" == "all" SET ARCH=all
+IF /I "%2" == "/all" SET ARCH=all
+IF /I "%2" == "-all" SET ARCH=all
+IF /I "%2" == "--all" SET ARCH=all
+GOTO :START
 )
 
 
@@ -65,43 +77,53 @@ SET "LIB=%WDKBASEDIR%\lib\crt\i386;%WDKBASEDIR%\lib\win7\i386"
 SET "FPATH=%WDKBASEDIR%\bin\x86;%WDKBASEDIR%\bin\x86\x86;%SDKDIR%\Bin"
 SET "PATH=%FPATH%"
 
+IF /I "%ARCH%" == "x64" GOTO :x64
+
 TITLE Building Notepad2 x86...
 ECHO. && ECHO.
 
 IF /I "%BUILDTYPE%" == "Build" (
-CALL :SUBNMAKEx86
-GOTO :x64
+CALL :SUBNMAKE
+IF /I "%ARCH%" == "x86" GOTO :END
+IF /I "%ARCH%" == "x64" GOTO :x64
+IF /I "%ARCH%" == "all" GOTO :x64
 )
 
 IF /I "%BUILDTYPE%" == "Rebuild" (
-CALL :SUBNMAKEx86 clean
-CALL :SUBNMAKEx86
-GOTO :x64
+CALL :SUBNMAKE clean
+CALL :SUBNMAKE
+IF /I "%ARCH%" == "x86" GOTO :END
+IF /I "%ARCH%" == "x64" GOTO :x64
+IF /I "%ARCH%" == "all" GOTO :x64
 )
 
-IF /I "%BUILDTYPE%" == "Clean" CALL :SUBNMAKEx86 clean
-
+IF /I "%BUILDTYPE%" == "Clean" CALL :SUBNMAKE clean
+IF /I "%ARCH%" == "x86" GOTO :END
+IF /I "%ARCH%" == "x64" GOTO :x64
+IF /I "%ARCH%" == "all" GOTO :x64
 
 :x64
 SET "LIB=%WDKBASEDIR%\lib\crt\amd64;%WDKBASEDIR%\lib\win7\amd64"
 SET "FPATH=%WDKBASEDIR%\bin\x86;%WDKBASEDIR%\bin\x86\amd64;%SDKDIR%\Bin"
 SET "PATH=%FPATH%"
 
+IF /I "%ARCH%" == "x86" GOTO :END
+
 TITLE Building Notepad2 x64...
 ECHO. && ECHO.
 
 IF /I "%BUILDTYPE%" == "Build" (
-CALL :SUBNMAKEx64
+CALL :SUBNMAKE "x64=1"
 GOTO :END
 )
 
 IF /I "%BUILDTYPE%" == "Rebuild" (
-CALL :SUBNMAKEx64 clean
-CALL :SUBNMAKEx64
+CALL :SUBNMAKE "x64=1" clean
+CALL :SUBNMAKE "x64=1"
 GOTO :END
 )
 
-IF /I "%BUILDTYPE%" == "Clean" CALL :SUBNMAKEx64 clean
+IF /I "%BUILDTYPE%" == "Clean" CALL :SUBNMAKE "x64=1" clean
 
 
 :END
@@ -110,13 +132,8 @@ ENDLOCAL
 EXIT /B
 
 
-:SUBNMAKEx86
-nmake -f "makefile.mak" /NOLOGO %1
-IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
-EXIT /B
-
-:SUBNMAKEx64
-nmake x64=1 -f "makefile.mak" /NOLOGO %1
+:SUBNMAKE
+nmake /NOLOGO /f "makefile.mak" %~1 %2
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 EXIT /B
 
