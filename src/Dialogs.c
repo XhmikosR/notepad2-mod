@@ -218,9 +218,9 @@ static const DWORD  dwBuildNumber = VERSION_BUILD;
 static const DWORD  dwVerRev      = VERSION_REV;
 static const WCHAR* szExtra       = L"";
 #if defined(_WIN64)
-static const WCHAR* szAppName     = L"Notepad2 x64";
+static const WCHAR* szAppName     = APPNAME_STRW_X64;
 #else
-static const WCHAR* szAppName     = L"Notepad2";
+static const WCHAR* szAppName     = APPNAME_STRW;
 #endif
 static const BOOL   bReleaseBuild = TRUE;
 
@@ -240,7 +240,7 @@ BOOL CALLBACK AboutDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lParam)
         LOGFONT lf;
 
         if (bReleaseBuild) {
-          wsprintf(szVersion,L"%s %u.%u.%0.2u (modified rev. %u)%s",
+          wsprintf(szVersion,L"%s %u.%u.%0.2u rev. %u%s",
             szAppName,dwVerMajor,dwVerMinor,dwBuildNumber,dwVerRev,szExtra);
           SetDlgItemText(hwnd,IDC_VERSION,szVersion);
         }

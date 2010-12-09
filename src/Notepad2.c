@@ -584,7 +584,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInst,
         (LPWSTR)&lpMsgBuf,
         0,
         NULL);
-    MessageBox(NULL,(LPCWSTR)lpMsgBuf,L"Notepad2",MB_OK|MB_ICONEXCLAMATION);
+    MessageBox(NULL,(LPCWSTR)lpMsgBuf,L"Notepad2-mod",MB_OK|MB_ICONEXCLAMATION);
     LocalFree(lpMsgBuf);
     return(0);
   }
