@@ -26,7 +26,9 @@ ECHO.
 ECHO:Edit "build.cmd" and set your WDK and SDK directories.
 ECHO:You shouldn't need to make any changes other than that.
 ECHO.
-ECHO:Executing "build.cmd" will use the defaults: "build.bat build all"
+ECHO:Executing "build.cmd" will use the defaults: "build.cmd build all"
+ECHO:If you skip an argument the default one will be used. Example:
+ECHO:"build.cmd rebuild" is equivalent to "build.cmd rebuild all"
 ECHO.
 ENDLOCAL
 EXIT /B
