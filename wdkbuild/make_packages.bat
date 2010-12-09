@@ -1,4 +1,19 @@
 @ECHO OFF
+rem ******************************************************************************
+rem *
+rem * Notepad2-mod
+rem *
+rem * make_packages.bat
+rem *   Batch file for building Notepad2 with WDK
+rem *   and creating the installer/zip packages
+rem *
+rem * See License.txt for details about distribution and modification.
+rem *
+rem *                                       (c) XhmikosR 2010
+rem *                                       http://code.google.com/p/notepad2-mod/
+rem *
+rem ******************************************************************************
+
 SETLOCAL
 rem SET "PERL_PATH=H:\progs\thirdparty\ActivePerl-5.12.2.1202-MSWin32-x86-293621"
 
