@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
   <assemblyIdentity
-    name="Notepad2 Setup"
+    name="Notepad2-mod Setup"
     processorArchitecture="*"
     version="4.1.24.0"
     type="win32"
   />
-  <description>Notepad2 Setup</description>
+  <description>Notepad2-mod Setup</description>
   <dependency>
     <dependentAssembly>
       <assemblyIdentity
@@ -35,4 +35,10 @@
       <supportedOS Id="{35138b9a-5d96-4fbd-8e2d-a2440225f93a}" />
     </application>
   </compatibility>
+  <asmv3:application xmlns:asmv3="urn:schemas-microsoft-com:asm.v3">
+    <asmv3:windowsSettings
+         xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings">
+      <dpiAware>true</dpiAware>
+    </asmv3:windowsSettings>
+  </asmv3:application>
 </assembly>
