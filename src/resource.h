@@ -34,6 +34,7 @@
 #define IDC_RESIZEGRIP4                 101
 #define IDC_NOUNICODEDETECTION          101
 #define IDC_EMAIL                       102
+#define IDC_MOD_PAGE                    102
 #define IDC_STYLEEDIT                   102
 #define IDC_FINDCASE                    102
 #define IDC_OPENWITHDESCR               102
@@ -56,6 +57,7 @@
 #define IDC_ENCODINGFROMFILEVARS        103
 #define IDD_ENCODING                    104
 #define IDC_EMAIL2                      104
+#define IDC_MOD_PAGE2                   104
 #define IDC_FINDSTART                   104
 #define IDB_PICK                        104
 #define IDC_STYLEBACK                   104

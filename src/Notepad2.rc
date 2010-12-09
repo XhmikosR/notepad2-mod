@@ -587,23 +587,27 @@ END
 // Dialog
 //
 
-IDD_ABOUT DIALOGEX 0, 0, 226, 70
+IDD_ABOUT DIALOGEX 0, 0, 255, 85
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_NOFAILCREATE | WS_POPUP | 
     WS_CAPTION | WS_SYSMENU
 CAPTION APPNAME_STRA
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,169,49,50,14
+    DEFPUSHBUTTON   "OK",IDOK,195,60,50,14
     ICON            IDR_MAINWND,IDC_STATIC,7,7,20,20
     LTEXT           "",IDC_VERSION,45,7,174,8
     LTEXT           "Copyright © 2004-2010",IDC_STATIC,45,19,174,8
     LTEXT           "flo's freeware - http://www.flos-freeware.ch",
-                    IDC_WEBPAGE2,45,31,174,8,NOT WS_VISIBLE | WS_DISABLED
+                    IDC_WEBPAGE2,45,35,174,8,NOT WS_VISIBLE | WS_DISABLED
     CONTROL         "",IDC_WEBPAGE,"SysLink",WS_TABSTOP,45,31,174,10
-    LTEXT           "Florian Balmer",IDC_STATIC,45,43,116,8
-    LTEXT           "florian.balmer@gmail.com",IDC_EMAIL2,45,55,116,8,NOT 
+//    LTEXT           "Florian Balmer",IDC_STATIC,45,43,116,8
+//    LTEXT           "florian.balmer@gmail.com",IDC_EMAIL2,45,55,116,8,NOT 
+//                    WS_VISIBLE | WS_DISABLED
+//    CONTROL         "",IDC_EMAIL,"SysLink",WS_TABSTOP,45,55,116,10
+    LTEXT           "Visit Notepad2-mod's website:",IDC_STATIC,45,52,132,8
+    LTEXT           "http://code.google.com/p/notepad2-mod/",IDC_MOD_PAGE2,45,65,140,8,NOT 
                     WS_VISIBLE | WS_DISABLED
-    CONTROL         "",IDC_EMAIL,"SysLink",WS_TABSTOP,45,55,116,10
+    CONTROL         "",IDC_MOD_PAGE,"SysLink",WS_TABSTOP,45,65,140,10
 END
 
 IDD_FIND DIALOGEX 0, 0, 272, 101
@@ -1175,10 +1179,10 @@ BEGIN
     IDD_ABOUT, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 219
+        RIGHTMARGIN, 245
         VERTGUIDE, 45
         TOPMARGIN, 7
-        BOTTOMMARGIN, 63
+        BOTTOMMARGIN, 80
     END
 
     IDD_FIND, DIALOG
