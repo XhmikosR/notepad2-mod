@@ -640,6 +640,14 @@ static void FoldBashDoc(unsigned int startPos, int length, int, WordList *[],
 				levelCurrent--;
 			}
 		}
+		// Here Document folding
+		if (style == SCE_SH_HERE_DELIM) {
+			if (ch == '<' && chNext == '<') {
+				levelCurrent++;
+			}
+		} else if (style == SCE_SH_HERE_Q && styler.StyleAt(i+1) == SCE_PL_DEFAULT) {
+			levelCurrent--;
+		}
 		if (atEOL) {
 			int lev = levelPrev;
 			if (visibleChars == 0 && foldCompact)
