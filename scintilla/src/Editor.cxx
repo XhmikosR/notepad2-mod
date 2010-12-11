@@ -3912,8 +3912,8 @@ void Editor::InsertPaste(SelectionPosition selStart, const char *text, int len) 
 	}
 }
 
-void Editor::ClearSelection() {
-	if (!sel.IsRectangular())
+void Editor::ClearSelection(bool retainMultipleSelections) {
+	if (!sel.IsRectangular() && !retainMultipleSelections)
 		FilterSelections();
 	UndoGroup ug(pdoc);
 	for (size_t r=0; r<sel.Count(); r++) {
