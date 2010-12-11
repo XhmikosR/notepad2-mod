@@ -37,12 +37,17 @@ TITLE "build.cmd %1"
 ECHO.
 ECHO:Usage:  build.cmd [Clean^|Build^|Rebuild] [x86^|x64^|all]
 ECHO.
+ECHO:You can use prefix the commands with "-", "--" or "/"
+ECHO.
+ECHO.
 ECHO:Edit "build.cmd" and set your WDK and SDK directories.
 ECHO:You shouldn't need to make any changes other than that.
 ECHO.
+ECHO.
 ECHO:Executing "build.cmd" will use the defaults: "build.cmd build all"
-ECHO:If you skip an argument the default one will be used. Example:
+ECHO:If you skip the second argument the default one will be used. Example:
 ECHO:"build.cmd rebuild" is equivalent to "build.cmd rebuild all"
+ECHO:NOTE: "build.cmd x86" won't work.
 ECHO.
 ENDLOCAL
 EXIT /B
