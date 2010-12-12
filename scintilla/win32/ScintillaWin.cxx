@@ -1602,7 +1602,7 @@ void ScintillaWin::Paste() {
 		return;
 	UndoGroup ug(pdoc);
 	bool isLine = SelectionEmpty() && (::IsClipboardFormatAvailable(cfLineSelect) != 0);
-	ClearSelection();
+	ClearSelection(multiPasteMode == SC_MULTIPASTE_EACH);
 	SelectionPosition selStart = sel.IsRectangular() ?
 		sel.Rectangular().Start() :
 		sel.Range(sel.Main()).Start();

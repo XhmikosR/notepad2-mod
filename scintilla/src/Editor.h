@@ -391,7 +391,7 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	void AddChar(char ch);
 	virtual void AddCharUTF(char *s, unsigned int len, bool treatAsDBCS=false);
 	void InsertPaste(SelectionPosition selStart, const char *text, int len);
-	void ClearSelection();
+	void ClearSelection(bool retainMultipleSelections=false);
 	void ClearAll();
 	void ClearDocumentStyle();
 	void Cut();

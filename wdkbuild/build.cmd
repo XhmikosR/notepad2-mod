@@ -30,54 +30,73 @@ IF /I "%1"=="/help" GOTO :SHOWHELP
 IF /I "%1"=="-help" GOTO :SHOWHELP
 IF /I "%1"=="--help" GOTO :SHOWHELP
 IF /I "%1"=="/?" GOTO :SHOWHELP
-GOTO :CHECK
+GOTO :CHECKFIRSTARG
 
 :SHOWHELP
 TITLE "build.cmd %1"
 ECHO.
 ECHO:Usage:  build.cmd [Clean^|Build^|Rebuild] [x86^|x64^|all]
 ECHO.
+ECHO:You can use prefix the commands with "-", "--" or "/"
+ECHO.
+ECHO.
 ECHO:Edit "build.cmd" and set your WDK and SDK directories.
 ECHO:You shouldn't need to make any changes other than that.
 ECHO.
+ECHO.
 ECHO:Executing "build.cmd" will use the defaults: "build.cmd build all"
-ECHO:If you skip an argument the default one will be used. Example:
+ECHO:If you skip the second argument the default one will be used. Example:
 ECHO:"build.cmd rebuild" is equivalent to "build.cmd rebuild all"
+ECHO:NOTE: "build.cmd x86" won't work.
 ECHO.
 ENDLOCAL
 EXIT /B
 
-:CHECK
-REM Check for the switches
+:CHECKFIRSTARG
+REM Check for the first switch
 IF "%1" == "" (
 SET BUILDTYPE=Build
+) ELSE (
+IF /I "%1" == "Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
+IF /I "%1" == "/Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
+IF /I "%1" == "-Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
+IF /I "%1" == "--Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
+IF /I "%1" == "Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
+IF /I "%1" == "/Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
+IF /I "%1" == "-Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
+IF /I "%1" == "--Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
+IF /I "%1" == "Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
+IF /I "%1" == "/Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
+IF /I "%1" == "-Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
+IF /I "%1" == "--Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
+ECHO.
+ECHO:Unsupported commandline switch!
+ECHO:Run "build.cmd help" for details about the commandline switches.
+CALL :SUBMSG "ERROR" "Compilation failed!"
+)
+
+
+:CHECKSECONDARG
+REM Check for the second switch
+IF "%2" == "" (
 SET ARCH=all
 ) ELSE (
-IF /I "%1" == "Build" SET BUILDTYPE=Build
-IF /I "%1" == "/Build" SET BUILDTYPE=Build
-IF /I "%1" == "-Build" SET BUILDTYPE=Build
-IF /I "%1" == "--Build" SET BUILDTYPE=Build
-IF /I "%1" == "Clean" SET BUILDTYPE=Clean
-IF /I "%1" == "/Clean" SET BUILDTYPE=Clean
-IF /I "%1" == "-Clean" SET BUILDTYPE=Clean
-IF /I "%1" == "--Clean" SET BUILDTYPE=Clean
-IF /I "%1" == "Rebuild" SET BUILDTYPE=Rebuild
-IF /I "%1" == "/Rebuild" SET BUILDTYPE=Rebuild
-IF /I "%1" == "-Rebuild" SET BUILDTYPE=Rebuild
-IF /I "%1" == "--Rebuild" SET BUILDTYPE=Rebuild
-IF /I "%2" == "x86" SET ARCH=x86
-IF /I "%2" == "/x86" SET ARCH=x86
-IF /I "%2" == "-x86" SET ARCH=x86
-IF /I "%2" == "--x86" SET ARCH=x86
-IF /I "%2" == "x64" SET ARCH=x64
-IF /I "%2" == "/x64" SET ARCH=x64
-IF /I "%2" == "-x64" SET ARCH=x64
-IF /I "%2" == "--x64" SET ARCH=x64
-IF /I "%2" == "all" SET ARCH=all
-IF /I "%2" == "/all" SET ARCH=all
-IF /I "%2" == "-all" SET ARCH=all
-IF /I "%2" == "--all" SET ARCH=all
-GOTO :START
+IF /I "%2" == "x86" SET ARCH=x86&&GOTO :START
+IF /I "%2" == "/x86" SET ARCH=x86&&GOTO :START
+IF /I "%2" == "-x86" SET ARCH=x86&&GOTO :START
+IF /I "%2" == "--x86" SET ARCH=x86&&GOTO :START
+IF /I "%2" == "x64" SET ARCH=x64&&GOTO :START
+IF /I "%2" == "/x64" SET ARCH=x64&&GOTO :START
+IF /I "%2" == "-x64" SET ARCH=x64&&GOTO :START
+IF /I "%2" == "--x64" SET ARCH=x64&&GOTO :START
+IF /I "%2" == "all" SET ARCH=all&&GOTO :START
+IF /I "%2" == "/all" SET ARCH=all&&GOTO :START
+IF /I "%2" == "-all" SET ARCH=all&&GOTO :START
+IF /I "%2" == "--all" SET ARCH=all&&GOTO :START
+ECHO.
+ECHO:Unsupported commandline switch!
+ECHO:Run "build.cmd help" for details about the commandline switches.
+CALL :SUBMSG "ERROR" "Compilation failed!"
 )
 
 
@@ -147,7 +166,7 @@ EXIT /B
 
 
 :SUBNMAKE
-nmake /NOLOGO /f "makefile.mak" %~1 %2
+nmake /NOLOGO /f "makefile.mak" %1 %2
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 EXIT /B
 
