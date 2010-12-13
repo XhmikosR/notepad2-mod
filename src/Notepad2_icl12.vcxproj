@@ -30,6 +30,7 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <PlatformToolset>Intel Parallel Composer 2011</PlatformToolset>
     <InterproceduralOptimization>true</InterproceduralOptimization>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -40,6 +41,7 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <PlatformToolset>Intel Parallel Composer 2011</PlatformToolset>
     <InterproceduralOptimization>true</InterproceduralOptimization>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -118,6 +120,7 @@ update_version.bat
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
+      <MinimumRequiredVersion>5.01</MinimumRequiredVersion>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -153,6 +156,7 @@ update_version.bat
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX64</TargetMachine>
+      <MinimumRequiredVersion>5.02</MinimumRequiredVersion>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -179,8 +183,8 @@ update_version.bat
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <GlobalOptimizations>true</GlobalOptimizations>
       <OptimizeForWindowsApplication>true</OptimizeForWindowsApplication>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <GenerateAlternateCodePaths>SSSE3</GenerateAlternateCodePaths>
     </ClCompile>
     <ResourceCompile>
@@ -192,11 +196,12 @@ update_version.bat
       <AdditionalOptions>/SUBSYSTEM:WINDOWS,5.0 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>comctl32.lib;shlwapi.lib;imm32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>NotSet</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <TargetMachine>MachineX86</TargetMachine>
+      <MinimumRequiredVersion>5.01</MinimumRequiredVersion>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>..\res\Notepad2.exe.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
@@ -230,8 +235,8 @@ update_version.bat
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4133;4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-      <GlobalOptimizations>true</GlobalOptimizations>
       <OptimizeForWindowsApplication>true</OptimizeForWindowsApplication>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <GenerateAlternateCodePaths>SSSE3</GenerateAlternateCodePaths>
     </ClCompile>
     <ResourceCompile>
@@ -243,11 +248,12 @@ update_version.bat
       <AdditionalOptions>/SUBSYSTEM:WINDOWS,5.02 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>comctl32.lib;shlwapi.lib;imm32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>NotSet</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <TargetMachine>MachineX64</TargetMachine>
+      <MinimumRequiredVersion>5.02</MinimumRequiredVersion>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>..\res\Notepad2.exe.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles>
