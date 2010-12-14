@@ -375,7 +375,7 @@ KEYWORDLIST KeyWords_MAK = {
 "", "", "", "", "", "", "", "", "" };
 
 
-EDITLEXER lexMAK = { SCLEX_MAKEFILE, 63007, L"Makefiles", L"mak; make; dsp; mk", L"", &KeyWords_MAK, {
+EDITLEXER lexMAK = { SCLEX_MAKEFILE, 63007, L"Makefiles", L"mak; make; dsp; mk; msc; msvc", L"", &KeyWords_MAK, {
                      { STYLE_DEFAULT, 63126, L"Default", L"fore:#0A246A", L"" },
                      //{ SCE_MAKE_DEFAULT, L"Default", L"", L"" },
                      { SCE_MAKE_COMMENT, 63127, L"Comment", L"fore:#008000", L"" },
