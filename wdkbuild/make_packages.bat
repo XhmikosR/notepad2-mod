@@ -76,7 +76,7 @@ CALL :SUBMSG "INFO" "Notepad2-mod.%NP2_VER%_r%VerRev%_%2.zip created successfull
 MOVE /Y "Notepad2-mod.%NP2_VER%_r%VerRev%_%2.zip" "..\packages" >NUL 2>&1
 POPD
 RD /S /Q "temp_zip" >NUL 2>&1
-GOTO :EOF
+EXIT /B
 
 
 :SubInstaller
@@ -151,7 +151,7 @@ RD /Q "setup.%BINDIR%" "temp" >NUL 2>&1
 RD /Q /S "tools\addon" "obj" >NUL 2>&1
 
 POPD
-GOTO :EOF
+EXIT /B
 
 
 :SubVersion
@@ -170,24 +170,24 @@ FOR /F "tokens=3,4 delims= " %%N IN (
   SET "VerRev=%%N"&Call :SubVerRev %%VerRev:*Z=%%)
 
 SET NP2_VER=%VerMajor%.%VerMinor%.%VerBuild%
-GOTO :EOF
+EXIT /B
 
 
 :SubVerMajor
 SET VerMajor=%*
-GOTO :EOF
+EXIT /B
 
 :SubVerMinor
 SET VerMinor=%*
-GOTO :EOF
+EXIT /B
 
 :SubVerBuild
 SET VerBuild=%*
-GOTO :EOF
+EXIT /B
 
 :SubVerRev
 SET VerRev=%*
-GOTO :EOF
+EXIT /B
 
 
 :SUBMSG
