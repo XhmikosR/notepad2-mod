@@ -37,7 +37,7 @@ TITLE "build.cmd %1"
 ECHO.
 ECHO:Usage:  build.cmd [Clean^|Build^|Rebuild] [x86^|x64^|all]
 ECHO.
-ECHO:You can use prefix the commands with "-", "--" or "/"
+ECHO:Note:   You can also prefix the commands with "-", "--" or "/".
 ECHO.
 ECHO.
 ECHO:Edit "build.cmd" and set your WDK and SDK directories.
@@ -53,7 +53,7 @@ ENDLOCAL
 EXIT /B
 
 :CHECKFIRSTARG
-REM Check for the first switch
+rem Check for the first switch
 IF "%1" == "" (
 SET BUILDTYPE=Build
 ) ELSE (
@@ -77,7 +77,7 @@ CALL :SUBMSG "ERROR" "Compilation failed!"
 
 
 :CHECKSECONDARG
-REM Check for the second switch
+rem Check for the second switch
 IF "%2" == "" (
 SET ARCH=all
 ) ELSE (
@@ -107,8 +107,7 @@ IF /I "%BUILDTYPE%" == "Clean" GOTO :x86
 :x86
 SET "INCLUDE=%WDKBASEDIR%\inc\crt;%WDKBASEDIR%\inc\api;%WDKBASEDIR%\inc\api\crt\stl60;%WDKBASEDIR%\inc\ddk"
 SET "LIB=%WDKBASEDIR%\lib\crt\i386;%WDKBASEDIR%\lib\win7\i386"
-SET "FPATH=%WDKBASEDIR%\bin\x86;%WDKBASEDIR%\bin\x86\x86;%SDKDIR%\Bin"
-SET "PATH=%FPATH%"
+SET "PATH=%WDKBASEDIR%\bin\x86;%WDKBASEDIR%\bin\x86\x86;%SDKDIR%\Bin"
 
 IF /I "%ARCH%" == "x64" GOTO :x64
 
@@ -137,8 +136,7 @@ IF /I "%ARCH%" == "all" GOTO :x64
 
 :x64
 SET "LIB=%WDKBASEDIR%\lib\crt\amd64;%WDKBASEDIR%\lib\win7\amd64"
-SET "FPATH=%WDKBASEDIR%\bin\x86;%WDKBASEDIR%\bin\x86\amd64;%SDKDIR%\Bin"
-SET "PATH=%FPATH%"
+SET "PATH=%WDKBASEDIR%\bin\x86;%WDKBASEDIR%\bin\x86\amd64;%SDKDIR%\Bin"
 
 IF /I "%ARCH%" == "x86" GOTO :END
 
