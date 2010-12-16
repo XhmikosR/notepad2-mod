@@ -99,6 +99,7 @@ OBJECTS= \
 	$(OBJDIR)\LexSQL.obj \
 	$(OBJDIR)\LexTCL.obj \
 	$(OBJDIR)\LexVB.obj \
+\
 	$(OBJDIR)\Accessor.obj \
 	$(OBJDIR)\CharacterSet.obj \
 	$(OBJDIR)\LexerBase.obj \
@@ -107,6 +108,7 @@ OBJECTS= \
 	$(OBJDIR)\PropSetSimple.obj \
 	$(OBJDIR)\StyleContext.obj \
 	$(OBJDIR)\WordList.obj \
+\
 	$(OBJDIR)\AutoComplete.obj \
 	$(OBJDIR)\CallTip.obj \
 	$(OBJDIR)\Catalogue.obj \
@@ -130,8 +132,10 @@ OBJECTS= \
 	$(OBJDIR)\UniConversion.obj \
 	$(OBJDIR)\ViewStyle.obj \
 	$(OBJDIR)\XPM.obj \
+\
 	$(OBJDIR)\PlatWin.obj \
 	$(OBJDIR)\ScintillaWin.obj \
+\
 	$(OBJDIR)\Dialogs.obj \
 	$(OBJDIR)\Dlapi.obj \
 	$(OBJDIR)\Edit.obj \
