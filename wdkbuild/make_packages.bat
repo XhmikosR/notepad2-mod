@@ -27,7 +27,7 @@ CALL "build.cmd"
 
 CALL :SubVersion
 
-CALL :SubZipFiles Release x86-32
+CALL :SubZipFiles Release_x86 x86-32
 CALL :SubZipFiles Release_x64 x86-64
 
 IF DEFINED VS100COMNTOOLS (
@@ -83,7 +83,7 @@ EXIT /B
 IF /I "%1"=="x86" (
   SET "ARCH=Win32"
   SET "BINDIR=x86-32"
-  SET "OUTDIR=Release"
+  SET "OUTDIR=Release_x86"
 )
 IF /I "%1"=="x64" (
   SET "ARCH=x64"

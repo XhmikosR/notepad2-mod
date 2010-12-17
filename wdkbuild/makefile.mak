@@ -23,7 +23,7 @@ MT=mt
 !IFDEF x64
 BINDIR=..\Release_x64
 !ELSE
-BINDIR=..\Release
+BINDIR=..\Release_x86
 !ENDIF
 OBJDIR=$(BINDIR)\obj
 APP=$(BINDIR)\Notepad2.exe
