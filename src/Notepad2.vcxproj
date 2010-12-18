@@ -89,7 +89,6 @@
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\scintilla\include;..\scintilla\lexers;..\scintilla\lexlib;..\scintilla\src;..\scintilla\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;STATIC_BUILD;SCI_LEXER;UNICODE;_UNICODE;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>
@@ -103,6 +102,7 @@
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
       <MinimumRequiredVersion>5.01</MinimumRequiredVersion>
+      <MergeSections>.rdata=.text</MergeSections>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>..\res\Notepad2.exe.manifest</AdditionalManifestFiles>
@@ -127,6 +127,7 @@
       <ProgramDatabaseFile>$(OutDir)Notepad2.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <MinimumRequiredVersion>5.02</MinimumRequiredVersion>
+      <MergeSections>.rdata=.text</MergeSections>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>..\res\Notepad2.exe.manifest</AdditionalManifestFiles>
@@ -161,6 +162,7 @@
       <TargetMachine>MachineX86</TargetMachine>
       <LargeAddressAware>true</LargeAddressAware>
       <MinimumRequiredVersion>5.01</MinimumRequiredVersion>
+      <MergeSections>.rdata=.text</MergeSections>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>..\res\Notepad2.exe.manifest</AdditionalManifestFiles>
@@ -196,6 +198,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <LargeAddressAware>true</LargeAddressAware>
       <MinimumRequiredVersion>5.02</MinimumRequiredVersion>
+      <MergeSections>.rdata=.text</MergeSections>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>..\res\Notepad2.exe.manifest</AdditionalManifestFiles>
