@@ -48,10 +48,12 @@ Notepad2.ini,,,0x00000010
 HKLM,"%REG_UNIS%","Contact",0,"http://code.google.com/p/notepad2-mod/"
 HKLM,"%REG_UNIS%","DisplayIcon",0,"%16422%\Notepad2\Notepad2.exe"
 HKLM,"%REG_UNIS%","DisplayName",0,"Notepad2 (Notepad Replacement)"
-HKLM,"%REG_UNIS%","DisplayVersion",0,"0.0.0.0"
+HKLM,"%REG_UNIS%","DisplayVersion",0,"4.1.24.0"
 HKLM,"%REG_UNIS%","EstimatedSize",0x10001,"1111"
 HKLM,"%REG_UNIS%","HelpLink",0,"http://code.google.com/p/notepad2-mod/"
 HKLM,"%REG_UNIS%","InstallLocation",0,"%16422%\Notepad2\"
+HKLM,"%REG_UNIS%","MajorVersion",0x10001,4
+HKLM,"%REG_UNIS%","MinorVersion",0x10001,1
 HKLM,"%REG_UNIS%","NoModify",0x10001,1
 HKLM,"%REG_UNIS%","NoRepair",0x10001,1
 HKLM,"%REG_UNIS%","Publisher",0,"XhmikosR"
