@@ -1119,11 +1119,13 @@ EDITLEXER lexRUBY = { SCLEX_RUBY, 63304, L"Ruby Script", L"rb; ruby; rbw; rake; 
 KEYWORDLIST KeyWords_LUA = {
 "and break do else elseif end false for function if in local nil not or repeat return then "
 "true until while",
+// Basic Functions
 "_VERSION assert collectgarbage dofile error gcinfo loadfile loadstring print rawget rawset "
 "require tonumber tostring type unpack _ALERT _ERRORMESSAGE _INPUT _PROMPT _OUTPUT _STDERR "
 "_STDIN _STDOUT call dostring foreach foreachi getn globals newtype sort tinsert tremove "
 "_G getfenv getmetatable ipairs loadlib next pairs pcall rawequal setfenv setmetatable xpcall "
-"string table math coroutine io os debug load module select",												// Basic Functions
+"string table math coroutine io os debug load module select",
+// String Manipulation, Table Manipulation, Mathematical Functions
 "abs acos asin atan atan2 ceil cos deg exp floor format frexp gsub ldexp log log10 max min "
 "mod rad random randomseed sin sqrt strbyte strchar strfind strlen strlower strrep strsub strupper tan "
 "string.byte string.char string.dump string.find string.len string.lower string.rep string.sub string.upper "
@@ -1131,13 +1133,15 @@ KEYWORDLIST KeyWords_LUA = {
 "table.insert table.remove table.setn math.abs math.acos math.asin math.atan math.atan2 math.ceil math.cos "
 "math.deg math.exp math.floor math.frexp math.ldexp math.log math.log10 math.max math.min math.mod "
 "math.pi math.pow math.rad math.random math.randomseed math.sin math.sqrt math.tan string.gmatch "
-"string.match string.reverse table.maxn math.cosh math.fmod math.modf math.sinh math.tanh math.huge",		// String Manipulation, Table Manipulation, Mathematical Functions
+"string.match string.reverse table.maxn math.cosh math.fmod math.modf math.sinh math.tanh math.huge",
+// Input and Output Facilities & System Facilities Coroutine Manipulation,
+//Input and Output Facilities, System Facilities (coroutine & io & os)
 "openfile closefile readfrom writeto appendto remove rename flush seek tmpfile tmpname read "
 "write clock date difftime execute exit getenv setlocale time coroutine.create coroutine.resume "
 "coroutine.status coroutine.wrap coroutine.yield io.close io.flush io.input io.lines io.open io.output "
 "io.read io.tmpfile io.type io.write io.stdin io.stdout io.stderr os.clock os.date os.difftime "
 "os.execute os.exit os.getenv os.remove os.rename os.setlocale os.time os.tmpname coroutine.running "
-"package.cpath package.loaded package.loadlib package.path package.preload package.seeall io.popen",		// Input and Output Facilities & System Facilities Coroutine Manipulation, Input and Output Facilities, System Facilities (coroutine & io & os)
+"package.cpath package.loaded package.loadlib package.path package.preload package.seeall io.popen",
 "", "", "", "", "" };
 
 
