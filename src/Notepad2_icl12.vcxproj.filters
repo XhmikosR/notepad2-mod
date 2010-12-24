@@ -260,6 +260,36 @@
     <ClInclude Include="..\scintilla\include\ScintillaWidget.h">
       <Filter>Scintilla\include</Filter>
     </ClInclude>
+    <ClInclude Include="..\scintilla\lexlib\Accessor.h">
+      <Filter>Scintilla\lexlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\lexlib\CharacterSet.h">
+      <Filter>Scintilla\lexlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\lexlib\LexAccessor.h">
+      <Filter>Scintilla\lexlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\lexlib\LexerBase.h">
+      <Filter>Scintilla\lexlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\lexlib\LexerModule.h">
+      <Filter>Scintilla\lexlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\lexlib\LexerSimple.h">
+      <Filter>Scintilla\lexlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\lexlib\OptionSet.h">
+      <Filter>Scintilla\lexlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\lexlib\PropSetSimple.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\lexlib\StyleContext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\lexlib\WordList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\scintilla\src\AutoComplete.h">
       <Filter>Scintilla\src</Filter>
     </ClInclude>
@@ -340,36 +370,6 @@
     </ClInclude>
     <ClInclude Include="..\scintilla\src\XPM.h">
       <Filter>Scintilla\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\scintilla\lexlib\Accessor.h">
-      <Filter>Scintilla\lexlib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\scintilla\lexlib\CharacterSet.h">
-      <Filter>Scintilla\lexlib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\scintilla\lexlib\LexAccessor.h">
-      <Filter>Scintilla\lexlib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\scintilla\lexlib\LexerBase.h">
-      <Filter>Scintilla\lexlib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\scintilla\lexlib\LexerModule.h">
-      <Filter>Scintilla\lexlib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\scintilla\lexlib\LexerSimple.h">
-      <Filter>Scintilla\lexlib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\scintilla\lexlib\OptionSet.h">
-      <Filter>Scintilla\lexlib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\scintilla\lexlib\PropSetSimple.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\scintilla\lexlib\StyleContext.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\scintilla\lexlib\WordList.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

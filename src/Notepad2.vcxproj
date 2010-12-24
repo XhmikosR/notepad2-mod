@@ -292,6 +292,8 @@ update_version.bat</Command>
     <ClCompile Include="..\scintilla\src\UniConversion.cxx" />
     <ClCompile Include="..\scintilla\src\ViewStyle.cxx" />
     <ClCompile Include="..\scintilla\src\XPM.cxx" />
+    <ClCompile Include="..\scintilla\win32\PlatWin.cxx" />
+    <ClCompile Include="..\scintilla\win32\ScintillaWin.cxx" />
     <ClCompile Include="Dialogs.c" />
     <ClCompile Include="Dlapi.c" />
     <ClCompile Include="Edit.c" />
@@ -299,8 +301,6 @@ update_version.bat</Command>
     <ClCompile Include="Notepad2.c" />
     <ClCompile Include="Print.cpp" />
     <ClCompile Include="Styles.c" />
-    <ClCompile Include="..\scintilla\win32\PlatWin.cxx" />
-    <ClCompile Include="..\scintilla\win32\ScintillaWin.cxx" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\scintilla\include\ILexer.h" />
@@ -345,6 +345,7 @@ update_version.bat</Command>
     <ClInclude Include="..\scintilla\src\UniConversion.h" />
     <ClInclude Include="..\scintilla\src\ViewStyle.h" />
     <ClInclude Include="..\scintilla\src\XPM.h" />
+    <ClInclude Include="..\scintilla\win32\PlatformRes.h" />
     <ClInclude Include="Dialogs.h" />
     <ClInclude Include="Dlapi.h" />
     <ClInclude Include="Edit.h" />
@@ -354,7 +355,6 @@ update_version.bat</Command>
     <ClInclude Include="Styles.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Version.h" />
-    <ClInclude Include="..\scintilla\win32\PlatformRes.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\res\Copy.cur" />
