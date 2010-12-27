@@ -596,7 +596,7 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,195,60,50,14
     ICON            IDR_MAINWND,IDC_STATIC,7,7,20,20
     LTEXT           "",IDC_VERSION,45,7,174,8
-    LTEXT           "Copyright © 2004-2010",IDC_STATIC,45,19,174,8
+    LTEXT           "Copyright © 2004-2010 Florian Balmer",IDC_STATIC,45,19,174,8
     LTEXT           "flo's freeware - http://www.flos-freeware.ch",
                     IDC_WEBPAGE2,45,35,174,8,NOT WS_VISIBLE | WS_DISABLED
     CONTROL         "",IDC_WEBPAGE,"SysLink",WS_TABSTOP,45,31,174,10
