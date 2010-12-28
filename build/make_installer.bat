@@ -14,22 +14,61 @@ rem *
 rem ******************************************************************************
 
 SETLOCAL
+CD /D %~dp0
 rem SET "PERL_PATH=H:\progs\thirdparty\Perl"
 
 rem Check the building environment
 rem IF NOT EXIST "%PERL_PATH%" CALL :SUBMSG "INFO" "The Perl direcotry wasn't found; the addon won't be built"
 IF NOT DEFINED VS100COMNTOOLS CALL :SUBMSG "ERROR" "Visual Studio 2010 wasn't found; the installer won't be built"
 
-CD /D %~dp0
+rem check for the help switches
+IF /I "%1"=="help" GOTO :SHOWHELP
+IF /I "%1"=="/help" GOTO :SHOWHELP
+IF /I "%1"=="-help" GOTO :SHOWHELP
+IF /I "%1"=="--help" GOTO :SHOWHELP
+IF /I "%1"=="/?" GOTO :SHOWHELP
+GOTO :CHECKFIRSTARG
 
-CALL :SubGetVersion
+:SHOWHELP
+TITLE "make_installer.bat %1"
+ECHO.
+ECHO:Usage:  make_installer.bat [ICL12^|VS2010^|WDK]
+ECHO.
+ECHO:Note:   You can also prefix the commands with "-", "--" or "/".
+ECHO.
+ECHO.
+ECHO:Executing "make_installer.bat" will use the defaults: "make_installer.bat WDK"
+ECHO.
+ENDLOCAL
+EXIT /B
 
+:CHECKFIRSTARG
 rem Check for the first switch
 IF "%1" == "" (
 SET NP2DIRx86=bin\WDK\Release_x86
 SET NP2DIRx64=bin\WDK\Release_x64
 SET SUFFIX=
 ) ELSE (
+IF /I "%1" == "WDK" (
+SET NP2DIRx86=bin\WDK\Release_x86
+SET NP2DIRx64=bin\WDK\Release_x64
+SET SUFFIX=
+GOTO :START)
+IF /I "%1" == "/WDK" (
+SET NP2DIRx86=bin\WDK\Release_x86
+SET NP2DIRx64=bin\WDK\Release_x64
+SET SUFFIX=
+GOTO :START)
+IF /I "%1" == "-WDK" (
+SET NP2DIRx86=bin\WDK\Release_x86
+SET NP2DIRx64=bin\WDK\Release_x64
+SET SUFFIX=
+GOTO :START)
+IF /I "%1" == "--WDK" (
+SET NP2DIRx86=bin\WDK\Release_x86
+SET NP2DIRx64=bin\WDK\Release_x64
+SET SUFFIX=
+GOTO :START)
 IF /I "%1" == "VS2010" (
 SET NP2DIRx86=bin\VS2010\Release_Win32
 SET NP2DIRx64=bin\VS2010\Release_x64
@@ -77,6 +116,7 @@ CALL :SUBMSG "ERROR" "Compilation failed!"
 )
 
 :START
+CALL :SubGetVersion
 CALL :SubInstaller %NP2DIRx86% x86
 CALL :SubInstaller %NP2DIRx64% x64
 
@@ -97,6 +137,8 @@ IF /I "%2"=="x64" (
   SET "ARCH=x64"
   SET "BINDIR=x86-64"
 )
+
+PUSHD "..\distrib"
 
 TITLE Building %BINDIR% installer...
 CALL :SUBMSG "INFO" "Building %BINDIR% installer..."
@@ -156,6 +198,7 @@ rem Cleanup
 RD /Q "setup.%BINDIR%" "temp" >NUL 2>&1
 RD /Q /S "tools\addon" "obj" >NUL 2>&1
 
+POPD
 EXIT /B
 
 

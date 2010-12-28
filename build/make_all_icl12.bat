@@ -18,7 +18,7 @@ SETLOCAL
 CD /D %~dp0
 
 CALL "build_icl12.bat"
-CALL "..\distrib\make_installer.bat" icl12
+CALL "make_installer.bat" icl12
 CALL "make_zip.bat" icl12
 
 :END

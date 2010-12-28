@@ -16,15 +16,54 @@ rem ****************************************************************************
 SETLOCAL
 CD /D %~dp0
 
-CALL :SubGetVersion
+rem check for the help switches
+IF /I "%1"=="help" GOTO :SHOWHELP
+IF /I "%1"=="/help" GOTO :SHOWHELP
+IF /I "%1"=="-help" GOTO :SHOWHELP
+IF /I "%1"=="--help" GOTO :SHOWHELP
+IF /I "%1"=="/?" GOTO :SHOWHELP
+GOTO :CHECKFIRSTARG
 
+:SHOWHELP
+TITLE "make_zip.bat %1"
+ECHO.
+ECHO:Usage:  make_zip.bat [ICL12^|VS2010^|WDK]
+ECHO.
+ECHO:Note:   You can also prefix the commands with "-", "--" or "/".
+ECHO.
+ECHO.
+ECHO:Executing "make_zip.bat" will use the defaults: "make_zip.bat WDK"
+ECHO.
+ENDLOCAL
+EXIT /B
 
+:CHECKFIRSTARG
 rem Check for the first switch
 IF "%1" == "" (
 SET INPUTDIRx86=bin\WDK\Release_x86
 SET INPUTDIRx64=bin\WDK\Release_x64
 SET SUFFIX=
 ) ELSE (
+IF /I "%1" == "WDK" (
+SET INPUTDIRx86=bin\WDK\Release_x86
+SET INPUTDIRx64=bin\WDK\Release_x64
+SET SUFFIX=
+GOTO :START)
+IF /I "%1" == "/WDK" (
+SET INPUTDIRx86=bin\WDK\Release_x86
+SET INPUTDIRx64=bin\WDK\Release_x64
+SET SUFFIX=
+GOTO :START)
+IF /I "%1" == "-WDK" (
+SET INPUTDIRx86=bin\WDK\Release_x86
+SET INPUTDIRx64=bin\WDK\Release_x64
+SET SUFFIX=
+GOTO :START)
+IF /I "%1" == "--WDK" (
+SET INPUTDIRx86=bin\WDK\Release_x86
+SET INPUTDIRx64=bin\WDK\Release_x64
+SET SUFFIX=
+GOTO :START)
 IF /I "%1" == "VS2010" (
 SET INPUTDIRx86=bin\VS2010\Release_Win32
 SET INPUTDIRx64=bin\VS2010\Release_x64
@@ -72,6 +111,7 @@ CALL :SUBMSG "ERROR" "Compilation failed!"
 )
 
 :START
+CALL :SubGetVersion
 CALL :SubZipFiles %INPUTDIRx86% x86-32
 CALL :SubZipFiles %INPUTDIRx64% x86-64
 
