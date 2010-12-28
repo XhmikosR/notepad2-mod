@@ -21,8 +21,8 @@ CALL :SubGetVersion
 
 rem Check for the first switch
 IF "%1" == "" (
-SET INPUTDIRx86=Release_x86
-SET INPUTDIRx64=Release_x64
+SET INPUTDIRx86=bin\WDK\Release_x86
+SET INPUTDIRx64=bin\WDK\Release_x64
 SET SUFFIX=
 ) ELSE (
 IF /I "%1" == "VS2010" (
