@@ -186,6 +186,7 @@ update_version.bat
       <OptimizeForWindowsApplication>true</OptimizeForWindowsApplication>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <GenerateAlternateCodePaths>SSSE3</GenerateAlternateCodePaths>
+      <DisableSpecificDiagnostics>2</DisableSpecificDiagnostics>
     </ClCompile>
     <ResourceCompile>
       <Culture>0x0409</Culture>
@@ -239,6 +240,7 @@ update_version.bat
       <OptimizeForWindowsApplication>true</OptimizeForWindowsApplication>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <GenerateAlternateCodePaths>SSSE3</GenerateAlternateCodePaths>
+      <DisableSpecificDiagnostics>2</DisableSpecificDiagnostics>
     </ClCompile>
     <ResourceCompile>
       <Culture>0x0409</Culture>

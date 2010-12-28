@@ -99,6 +99,7 @@ CALL :SUBMSG "INFO" "Creating the %2 ZIP file..."
 
 RD /S /Q "temp_zip" >NUL 2>&1
 MD "temp_zip" "packages" >NUL 2>&1
+
 COPY /Y /V "..\License.txt" "temp_zip\"
 COPY /Y /V "..\%1\Notepad2.exe" "temp_zip\"
 COPY /Y /V "..\distrib\res\cabinet\notepad2.ini" "temp_zip\Notepad2.ini"
