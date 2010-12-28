@@ -4,7 +4,7 @@ rem *
 rem * Notepad2-mod
 rem *
 rem * build_icl12.cmd
-rem *   Batch file "wrapper" for makefile.mak, used to build Notepad2 with ICL12
+rem *   Batch file used to build Notepad2 with ICL12
 rem *
 rem * See License.txt for details about distribution and modification.
 rem *

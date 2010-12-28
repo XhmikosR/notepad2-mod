@@ -4,7 +4,7 @@ rem *
 rem * Notepad2-mod
 rem *
 rem * make_installer.bat
-rem *   Batch file for building the installer for Notepad2-mod
+rem *   Batch file for building the installer for Notepad2-mod with MSVC2010
 rem *
 rem * See License.txt for details about distribution and modification.
 rem *
