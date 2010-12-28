@@ -10,7 +10,7 @@
 #*                                       (c) XhmikosR 2010
 #*                                       http://code.google.com/p/notepad2-mod/
 #*
-#* Use build.cmd and set there your WDK and SDK directories.
+#* Use build_wdk.cmd and set there your WDK and SDK directories.
 #*
 #******************************************************************************
 
