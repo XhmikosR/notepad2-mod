@@ -3,8 +3,8 @@ rem ****************************************************************************
 rem *
 rem * Notepad2-mod
 rem *
-rem * build_icl12.cmd
-rem *   Batch file used to build Notepad2 with ICL12
+rem * build_vs2010.bat
+rem *   Batch file used to build Notepad2 with MSVC2010
 rem *
 rem * See License.txt for details about distribution and modification.
 rem *
@@ -18,7 +18,6 @@ CD /D %~dp0
 
 rem Check the building environment
 IF NOT DEFINED VS100COMNTOOLS CALL :SUBMSG "ERROR" "Visual Studio 2010 NOT FOUND!!!"
-IF NOT DEFINED ICPP_COMPOSER2011 CALL :SUBMSG "ERROR" "ICL12 NOT FOUND!"
 
 rem check for the help switches
 IF /I "%1"=="help" GOTO :SHOWHELP
@@ -29,17 +28,17 @@ IF /I "%1"=="/?" GOTO :SHOWHELP
 GOTO :CHECKFIRSTARG
 
 :SHOWHELP
-TITLE "build_icl12.cmd %1"
+TITLE "build_vs2010.bat %1"
 ECHO.
-ECHO:Usage:  build_icl12.cmd [Clean^|Build^|Rebuild] [x86^|x64^|all]
+ECHO:Usage:  build_vs2010.bat [Clean^|Build^|Rebuild] [x86^|x64^|all]
 ECHO.
 ECHO:Note:   You can also prefix the commands with "-", "--" or "/".
 ECHO.
 ECHO.
-ECHO:Executing "build_icl12.cmd" will use the defaults: "build_icl12.cmd build all"
+ECHO:Executing "build_vs2010.bat" will use the defaults: "build_vs2010.bat build all"
 ECHO:If you skip the second argument the default one will be used. Example:
-ECHO:"build_icl12.cmd rebuild" is equivalent to "build_icl12.cmd rebuild all"
-ECHO:NOTE: "build_icl12.cmd x86" won't work.
+ECHO:"build_vs2010.bat rebuild" is equivalent to "build_vs2010.bat rebuild all"
+ECHO:NOTE: "build_vs2010.bat x86" won't work.
 ECHO.
 ENDLOCAL
 EXIT /B
@@ -63,7 +62,7 @@ IF /I "%1" == "-Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
 IF /I "%1" == "--Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
 ECHO.
 ECHO:Unsupported commandline switch!
-ECHO:Run "build_icl12.cmd help" for details about the commandline switches.
+ECHO:Run "build_vs2010.bat help" for details about the commandline switches.
 CALL :SUBMSG "ERROR" "Compilation failed!"
 )
 
@@ -87,7 +86,7 @@ IF /I "%2" == "-all" SET ARCH=all&&GOTO :START
 IF /I "%2" == "--all" SET ARCH=all&&GOTO :START
 ECHO.
 ECHO:Unsupported commandline switch!
-ECHO:Run "build_icl12.cmd help" for details about the commandline switches.
+ECHO:Run "build_vs2010.bat help" for details about the commandline switches.
 CALL :SUBMSG "ERROR" "Compilation failed!"
 )
 
@@ -125,7 +124,7 @@ EXIT /B
 
 
 :SUBMSVC
-devenv /nologo ..\Notepad2_icl12.sln /%~1 "Release|%~2"
+devenv /nologo ..\Notepad2.sln /%~1 "Release|%~2"
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 EXIT /B
 

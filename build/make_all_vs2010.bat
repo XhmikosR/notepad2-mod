@@ -17,7 +17,7 @@ rem ****************************************************************************
 SETLOCAL
 CD /D %~dp0
 
-CALL "build_vs2010.cmd"
+CALL "build_vs2010.bat"
 CALL "..\distrib\make_installer.bat" vs2010
 CALL "make_zip.bat" vs2010
 

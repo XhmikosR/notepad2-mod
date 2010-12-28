@@ -17,7 +17,7 @@ rem ****************************************************************************
 SETLOCAL
 CD /D %~dp0
 
-CALL "build_wdk.cmd"
+CALL "build_wdk.bat"
 CALL "..\distrib\make_installer.bat"
 CALL "make_zip.bat"
 
