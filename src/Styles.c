@@ -213,7 +213,7 @@ KEYWORDLIST KeyWords_XML = {
 "", "", "", "", "", "", "", "", "" };
 
 
-EDITLEXER lexXML = { SCLEX_XML, 63002, L"XML Document", L"xml; xsl; rss; svg; xul; xsd; xslt; axl; rdf; xaml; vcproj; vcxproj; vbproj; vsprops; props; snippet", L"", &KeyWords_XML, {
+EDITLEXER lexXML = { SCLEX_XML, 63002, L"XML Document", L"xml; xsl; rss; svg; xul; xsd; xslt; axl; rdf; xaml; vcproj; vcxproj; vbproj; vsprops; props", L"", &KeyWords_XML, {
                      { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
                      { MULTI_STYLE(SCE_H_TAG,SCE_H_TAGUNKNOWN,SCE_H_TAGEND,0), 63187, L"XML Tag", L"fore:#881280", L"" },
                      { MULTI_STYLE(SCE_H_ATTRIBUTE,SCE_H_ATTRIBUTEUNKNOWN,0,0), 63188, L"XML Attribute", L"fore:#994500", L"" },
@@ -1084,7 +1084,7 @@ EDITLEXER lexINNO = { SCLEX_INNOSETUP, 63293, L"Inno Setup Script", L"iss; isl; 
                       { SCE_INNO_COMMENT_PASCAL, 63296, L"Pascal Comment", L"fore:#008000", L"" },
                       { SCE_INNO_KEYWORD_PASCAL, 63297, L"Pascal Keyword", L"fore:#0000FF", L"" },
                     //{ SCE_INNO_KEYWORD_USER, L"User Defined", L"", L"" },
-                      { MULTI_STYLE(SCE_INNO_STRING_DOUBLE,SCE_INNO_STRING_SINGLE,0,0), 63131, L"String", L"fore:#008080", L"" },
+                      { MULTI_STYLE(SCE_INNO_STRING_DOUBLE,SCE_INNO_STRING_SINGLE,0,0), 63131, L"String", L"", L"" },
                     //{ SCE_INNO_IDENTIFIER, 63129, L"Identifier", L"", L"" },
                       { -1, 00000, L"", L"", L"" } } };
 
