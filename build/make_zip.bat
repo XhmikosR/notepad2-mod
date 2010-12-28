@@ -17,11 +17,11 @@ SETLOCAL
 CD /D %~dp0
 
 rem check for the help switches
-IF /I "%1"=="help" GOTO :SHOWHELP
-IF /I "%1"=="/help" GOTO :SHOWHELP
-IF /I "%1"=="-help" GOTO :SHOWHELP
-IF /I "%1"=="--help" GOTO :SHOWHELP
-IF /I "%1"=="/?" GOTO :SHOWHELP
+IF /I "%~1"=="help" GOTO :SHOWHELP
+IF /I "%~1"=="/help" GOTO :SHOWHELP
+IF /I "%~1"=="-help" GOTO :SHOWHELP
+IF /I "%~1"=="--help" GOTO :SHOWHELP
+IF /I "%~1"=="/?" GOTO :SHOWHELP
 GOTO :CHECKFIRSTARG
 
 :SHOWHELP
@@ -39,67 +39,67 @@ EXIT /B
 
 :CHECKFIRSTARG
 rem Check for the first switch
-IF "%1" == "" (
+IF "%~1" == "" (
 SET INPUTDIRx86=bin\WDK\Release_x86
 SET INPUTDIRx64=bin\WDK\Release_x64
 SET SUFFIX=
 ) ELSE (
-IF /I "%1" == "WDK" (
+IF /I "%~1" == "WDK" (
 SET INPUTDIRx86=bin\WDK\Release_x86
 SET INPUTDIRx64=bin\WDK\Release_x64
 SET SUFFIX=
 GOTO :START)
-IF /I "%1" == "/WDK" (
+IF /I "%~1" == "/WDK" (
 SET INPUTDIRx86=bin\WDK\Release_x86
 SET INPUTDIRx64=bin\WDK\Release_x64
 SET SUFFIX=
 GOTO :START)
-IF /I "%1" == "-WDK" (
+IF /I "%~1" == "-WDK" (
 SET INPUTDIRx86=bin\WDK\Release_x86
 SET INPUTDIRx64=bin\WDK\Release_x64
 SET SUFFIX=
 GOTO :START)
-IF /I "%1" == "--WDK" (
+IF /I "%~1" == "--WDK" (
 SET INPUTDIRx86=bin\WDK\Release_x86
 SET INPUTDIRx64=bin\WDK\Release_x64
 SET SUFFIX=
 GOTO :START)
-IF /I "%1" == "VS2010" (
+IF /I "%~1" == "VS2010" (
 SET INPUTDIRx86=bin\VS2010\Release_Win32
 SET INPUTDIRx64=bin\VS2010\Release_x64
 SET SUFFIX=_vs2010
 GOTO :START)
-IF /I "%1" == "/VS2010" (
+IF /I "%~1" == "/VS2010" (
 SET INPUTDIRx86=bin\VS2010\Release_Win32
 SET INPUTDIRx64=bin\VS2010\Release_x64
 SET SUFFIX=_vs2010
 GOTO :START)
-IF /I "%1" == "-VS2010" (
+IF /I "%~1" == "-VS2010" (
 SET INPUTDIRx86=bin\VS2010\Release_Win32
 SET INPUTDIRx64=bin\VS2010\Release_x64
 SET SUFFIX=_vs2010
 GOTO :START)
-IF /I "%1" == "--VS2010" (
+IF /I "%~1" == "--VS2010" (
 SET INPUTDIRx86=bin\VS2010\Release_Win32
 SET INPUTDIRx64=bin\VS2010\Release_x64
 SET SUFFIX=_vs2010
 GOTO :START)
-IF /I "%1" == "ICL12" (
+IF /I "%~1" == "ICL12" (
 SET INPUTDIRx86=bin\ICL12\Release_Win32
 SET INPUTDIRx64=bin\ICL12\Release_x64
 SET SUFFIX=_icl12
 GOTO :START)
-IF /I "%1" == "/ICL12" (
+IF /I "%~1" == "/ICL12" (
 SET INPUTDIRx86=bin\ICL12\Release_Win32
 SET INPUTDIRx64=bin\ICL12\Release_x64
 SET SUFFIX=_icl12
 GOTO :START)
-IF /I "%1" == "-ICL12" (
+IF /I "%~1" == "-ICL12" (
 SET INPUTDIRx86=bin\ICL12\Release_Win32
 SET INPUTDIRx64=bin\ICL12\Release_x64
 SET SUFFIX=_icl12
 GOTO :START)
-IF /I "%1" == "--ICL12" (
+IF /I "%~1" == "--ICL12" (
 SET INPUTDIRx86=bin\ICL12\Release_Win32
 SET INPUTDIRx64=bin\ICL12\Release_x64
 SET SUFFIX=_icl12

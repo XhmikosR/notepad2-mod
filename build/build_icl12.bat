@@ -21,11 +21,11 @@ IF NOT DEFINED VS100COMNTOOLS CALL :SUBMSG "ERROR" "Visual Studio 2010 NOT FOUND
 IF NOT DEFINED ICPP_COMPOSER2011 CALL :SUBMSG "ERROR" "Intel C++ Composer NOT FOUND!"
 
 rem check for the help switches
-IF /I "%1"=="help" GOTO :SHOWHELP
-IF /I "%1"=="/help" GOTO :SHOWHELP
-IF /I "%1"=="-help" GOTO :SHOWHELP
-IF /I "%1"=="--help" GOTO :SHOWHELP
-IF /I "%1"=="/?" GOTO :SHOWHELP
+IF /I "%~1"=="help" GOTO :SHOWHELP
+IF /I "%~1"=="/help" GOTO :SHOWHELP
+IF /I "%~1"=="-help" GOTO :SHOWHELP
+IF /I "%~1"=="--help" GOTO :SHOWHELP
+IF /I "%~1"=="/?" GOTO :SHOWHELP
 GOTO :CHECKFIRSTARG
 
 :SHOWHELP
@@ -46,21 +46,21 @@ EXIT /B
 
 :CHECKFIRSTARG
 rem Check for the first switch
-IF "%1" == "" (
+IF "%~1" == "" (
 SET BUILDTYPE=Build
 ) ELSE (
-IF /I "%1" == "Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
-IF /I "%1" == "/Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
-IF /I "%1" == "-Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
-IF /I "%1" == "--Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
-IF /I "%1" == "Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
-IF /I "%1" == "/Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
-IF /I "%1" == "-Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
-IF /I "%1" == "--Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
-IF /I "%1" == "Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
-IF /I "%1" == "/Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
-IF /I "%1" == "-Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
-IF /I "%1" == "--Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
+IF /I "%~1" == "Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
+IF /I "%~1" == "/Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
+IF /I "%~1" == "-Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
+IF /I "%~1" == "--Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
+IF /I "%~1" == "Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
+IF /I "%~1" == "/Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
+IF /I "%~1" == "-Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
+IF /I "%~1" == "--Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
+IF /I "%~1" == "Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
+IF /I "%~1" == "/Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
+IF /I "%~1" == "-Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
+IF /I "%~1" == "--Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
 ECHO.
 ECHO:Unsupported commandline switch!
 ECHO:Run "build_icl12.bat help" for details about the commandline switches.
@@ -70,21 +70,21 @@ CALL :SUBMSG "ERROR" "Compilation failed!"
 
 :CHECKSECONDARG
 rem Check for the second switch
-IF "%2" == "" (
+IF "%~2" == "" (
 SET ARCH=all
 ) ELSE (
-IF /I "%2" == "x86" SET ARCH=x86&&GOTO :START
-IF /I "%2" == "/x86" SET ARCH=x86&&GOTO :START
-IF /I "%2" == "-x86" SET ARCH=x86&&GOTO :START
-IF /I "%2" == "--x86" SET ARCH=x86&&GOTO :START
-IF /I "%2" == "x64" SET ARCH=x64&&GOTO :START
-IF /I "%2" == "/x64" SET ARCH=x64&&GOTO :START
-IF /I "%2" == "-x64" SET ARCH=x64&&GOTO :START
-IF /I "%2" == "--x64" SET ARCH=x64&&GOTO :START
-IF /I "%2" == "all" SET ARCH=all&&GOTO :START
-IF /I "%2" == "/all" SET ARCH=all&&GOTO :START
-IF /I "%2" == "-all" SET ARCH=all&&GOTO :START
-IF /I "%2" == "--all" SET ARCH=all&&GOTO :START
+IF /I "%~2" == "x86" SET ARCH=x86&&GOTO :START
+IF /I "%~2" == "/x86" SET ARCH=x86&&GOTO :START
+IF /I "%~2" == "-x86" SET ARCH=x86&&GOTO :START
+IF /I "%~2" == "--x86" SET ARCH=x86&&GOTO :START
+IF /I "%~2" == "x64" SET ARCH=x64&&GOTO :START
+IF /I "%~2" == "/x64" SET ARCH=x64&&GOTO :START
+IF /I "%~2" == "-x64" SET ARCH=x64&&GOTO :START
+IF /I "%~2" == "--x64" SET ARCH=x64&&GOTO :START
+IF /I "%~2" == "all" SET ARCH=all&&GOTO :START
+IF /I "%~2" == "/all" SET ARCH=all&&GOTO :START
+IF /I "%~2" == "-all" SET ARCH=all&&GOTO :START
+IF /I "%~2" == "--all" SET ARCH=all&&GOTO :START
 ECHO.
 ECHO:Unsupported commandline switch!
 ECHO:Run "build_icl12.bat help" for details about the commandline switches.
