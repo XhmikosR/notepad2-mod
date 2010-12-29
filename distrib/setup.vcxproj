@@ -20,6 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectName>SetupStub</ProjectName>
+    <ProjectGuid>{AA902504-68C0-68D1-8905-72BCDCCD10C7}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
     <SccProjectName />
     <SccLocalPath />
   </PropertyGroup>
@@ -115,16 +117,10 @@
       </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
-    <Midl>
-      <TypeLibraryName>.\bin.x86-32\setup.tlb</TypeLibraryName>
-    </Midl>
     <ResourceCompile>
       <Culture>0x0409</Culture>
       <PreprocessorDefinitions>NDEBUG;WIN32;SETUP_LITE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
-    <Bscmake>
-      <OutputFile>.\bin.x86-32\setup.bsc</OutputFile>
-    </Bscmake>
     <Link>
       <SetChecksum>true</SetChecksum>
       <MergeSections>.rdata=.text</MergeSections>
@@ -152,16 +148,10 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DisableSpecificWarnings>4267</DisableSpecificWarnings>
     </ClCompile>
-    <Midl>
-      <TypeLibraryName>.\bin.x86-32\setup.tlb</TypeLibraryName>
-    </Midl>
     <ResourceCompile>
       <Culture>0x0409</Culture>
       <PreprocessorDefinitions>NDEBUG;_WIN64;SETUP_LITE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
-    <Bscmake>
-      <OutputFile>.\bin.x86-32\setup.bsc</OutputFile>
-    </Bscmake>
     <Link>
       <SetChecksum>true</SetChecksum>
       <MergeSections>.rdata=.text</MergeSections>
@@ -188,16 +178,10 @@
       </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
-    <Midl>
-      <TypeLibraryName>.\bin.x86-32\setup.tlb</TypeLibraryName>
-    </Midl>
     <ResourceCompile>
       <Culture>0x0409</Culture>
       <PreprocessorDefinitions>NDEBUG;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
-    <Bscmake>
-      <OutputFile>.\bin.x86-32\setup.bsc</OutputFile>
-    </Bscmake>
     <Link>
       <SetChecksum>true</SetChecksum>
       <MergeSections>.rdata=.text</MergeSections>
@@ -224,16 +208,10 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DisableSpecificWarnings>4267</DisableSpecificWarnings>
     </ClCompile>
-    <Midl>
-      <TypeLibraryName>.\bin.x86-32\setup.tlb</TypeLibraryName>
-    </Midl>
     <ResourceCompile>
       <Culture>0x0409</Culture>
       <PreprocessorDefinitions>NDEBUG;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
-    <Bscmake>
-      <OutputFile>.\bin.x86-32\setup.bsc</OutputFile>
-    </Bscmake>
     <Link>
       <SetChecksum>true</SetChecksum>
       <MergeSections>.rdata=.text</MergeSections>
@@ -261,6 +239,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="libs\GetArgv.h" />
+    <ClInclude Include="libs\SimpleString.h" />
+    <ClInclude Include="libs\StringIntrinsics.h" />
+    <ClInclude Include="libs\Wow64.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Full|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Lite|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
