@@ -283,7 +283,7 @@ $(OBJDIR)\XPM.obj: $(SCISRC)\XPM.cxx $(SCIINC)\Platform.h $(SCISRC)\XPM.h
 
 # scintilla\win32
 $(OBJDIR)\PlatWin.obj: $(SCIWIN)\PlatWin.cxx $(SCIINC)\Platform.h \
-	$(SCIWIN)\PlatformRes.h $(SCISRC)\UniConversion.h $(SCISRC)\XPM.h
+	$(SCISRC)\UniConversion.h $(SCISRC)\XPM.h
 $(OBJDIR)\ScintillaWin.obj: $(SCIWIN)\ScintillaWin.cxx $(SCIINC)\Platform.h \
 	$(SCIINC)\Scintilla.h $(SCISRC)\ContractionState.h $(SCISRC)\SVector.h \
 	$(SCISRC)\SplitVector.h $(SCISRC)\Partitioning.h $(SCISRC)\RunStyles.h \

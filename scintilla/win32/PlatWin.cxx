@@ -23,7 +23,6 @@
 #include <windowsx.h>
 
 #include "Platform.h"
-#include "PlatformRes.h"
 #include "UniConversion.h"
 #include "XPM.h"
 #include "FontQuality.h"
@@ -83,7 +82,7 @@ static HINSTANCE hinstPlatformRes = 0;
 static bool onNT = false;
 static HMODULE hDLLImage = 0;
 static AlphaBlendSig AlphaBlendFn = 0;
-
+static HCURSOR reverseArrowCursor = NULL;
 
 bool IsNT() {
 	return onNT;
@@ -1106,6 +1105,47 @@ void Window::SetFont(Font &font) {
 		reinterpret_cast<WPARAM>(font.GetID()), 0);
 }
 
+static void FlipBitmap(HBITMAP bitmap, int width, int height) {
+	HDC hdc = ::CreateCompatibleDC(NULL);
+	if (hdc != NULL) {
+		HGDIOBJ prevBmp = ::SelectObject(hdc, bitmap);
+		::StretchBlt(hdc, width - 1, 0, -width, height, hdc, 0, 0, width, height, SRCCOPY);
+		::SelectObject(hdc, prevBmp);
+		::DeleteDC(hdc);
+	}
+}
+
+static HCURSOR GetReverseArrowCursor() {
+	if (reverseArrowCursor != NULL)
+		return reverseArrowCursor;
+
+	::EnterCriticalSection(&crPlatformLock);
+	HCURSOR cursor = reverseArrowCursor;
+	if (cursor == NULL) {
+		cursor = ::LoadCursor(NULL, IDC_ARROW);
+		ICONINFO info;
+		if (::GetIconInfo(cursor, &info)) {
+			BITMAP bmp;
+			if (::GetObject(info.hbmMask, sizeof(bmp), &bmp)) {
+				FlipBitmap(info.hbmMask, bmp.bmWidth, bmp.bmHeight);
+				if (info.hbmColor != NULL)
+					FlipBitmap(info.hbmColor, bmp.bmWidth, bmp.bmHeight);
+				info.xHotspot = (DWORD)bmp.bmWidth - 1 - info.xHotspot;
+
+				reverseArrowCursor = ::CreateIconIndirect(&info);
+				if (reverseArrowCursor != NULL)
+					cursor = reverseArrowCursor;
+			}
+
+			::DeleteObject(info.hbmMask);
+			if (info.hbmColor != NULL)
+				::DeleteObject(info.hbmColor);
+		}
+	}
+	::LeaveCriticalSection(&crPlatformLock);
+	return cursor;
+}
+
 void Window::SetCursor(Cursor curs) {
 	switch (curs) {
 	case cursorText:
@@ -1126,19 +1166,8 @@ void Window::SetCursor(Cursor curs) {
 	case cursorHand:
 		::SetCursor(::LoadCursor(NULL,IDC_HAND));
 		break;
-	case cursorReverseArrow: {
-			if (!hinstPlatformRes)
-				hinstPlatformRes = ::GetModuleHandle(TEXT("Scintilla"));
-			if (!hinstPlatformRes)
-				hinstPlatformRes = ::GetModuleHandle(TEXT("SciLexer"));
-			if (!hinstPlatformRes)
-				hinstPlatformRes = ::GetModuleHandle(NULL);
-			HCURSOR hcursor = ::LoadCursor(hinstPlatformRes, MAKEINTRESOURCE(IDC_MARGIN));
-			if (hcursor)
-				::SetCursor(hcursor);
-			else
-				::SetCursor(::LoadCursor(NULL,IDC_ARROW));
-		}
+	case cursorReverseArrow:
+		::SetCursor(GetReverseArrowCursor());
 		break;
 	case cursorArrow:
 	case cursorInvalid:	// Should not occur, but just in case.
@@ -2309,6 +2338,8 @@ void Platform_Initialise(void *hInstance) {
 }
 
 void Platform_Finalise() {
+	if (reverseArrowCursor != NULL)
+		::DestroyCursor(reverseArrowCursor);
 	ListBoxX_Unregister();
 	::DeleteCriticalSection(&crPlatformLock);
 }

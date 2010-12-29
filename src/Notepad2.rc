@@ -49,7 +49,6 @@ IDB_ENCODING            BITMAP                  "..\\res\\Encoding.bmp"
 // Cursor
 //
 
-400                     CURSOR                  "..\\Scintilla\\win32\\Margin.cur"
 IDC_COPY                CURSOR                  "..\\res\\Copy.cur"
 
 /////////////////////////////////////////////////////////////////////////////
