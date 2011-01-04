@@ -772,8 +772,11 @@ sptr_t ScintillaWin::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam
 			break;
 
 		case WM_RBUTTONDOWN:
-			if (!PointInSelection(Point::FromLong(lParam)))
+			::SetFocus(MainHWND());
+			if (!PointInSelection(Point::FromLong(lParam))) {
+				CancelModes();
 				SetEmptySelection(PositionFromLocation(Point::FromLong(lParam)));
+			}
 			break;
 
 		case WM_SETCURSOR:

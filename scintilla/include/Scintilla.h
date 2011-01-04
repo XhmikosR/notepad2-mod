@@ -832,6 +832,10 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
 #define SC_MOD_CONTAINER 0x40000
 #define SC_MOD_LEXERSTATE 0x80000
 #define SC_MODEVENTMASKALL 0xFFFFF
+#define SC_UPDATE_CONTENT 0x1
+#define SC_UPDATE_SELECTION 0x2
+#define SC_UPDATE_V_SCROLL 0x4
+#define SC_UPDATE_H_SCROLL 0x8
 #define SCEN_CHANGE 768
 #define SCEN_SETFOCUS 512
 #define SCEN_KILLFOCUS 256
@@ -971,6 +975,7 @@ struct SCNotification {
 	int y;		/* SCN_DWELLSTART, SCN_DWELLEND */
 	int token;		/* SCN_MODIFIED with SC_MOD_CONTAINER */
 	int annotationLinesAdded;	/* SC_MOD_CHANGEANNOTATION */
+	int updated;	/* SCN_UPDATEUI */
 };
 
 #ifdef SCI_NAMESPACE
