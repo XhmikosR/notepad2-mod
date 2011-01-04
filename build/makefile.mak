@@ -73,8 +73,8 @@ CHECKDIRS:
 ALL:	CHECKDIRS $(APP)
 
 CLEAN:
-	-@ DEL "$(APP)" "$(OBJDIR)\*.idb" "$(OBJDIR)\*.obj" "$(BINDIR)\*.pdb" \
-	"$(OBJDIR)\*.res" >NUL 2>&1
+	-@ DEL "$(APP)" "$(OBJDIR)\Notepad2.idb" "$(OBJDIR)\*.obj" "$(BINDIR)\Notepad2.pdb" \
+	"$(OBJDIR)\Notepad2.res" >NUL 2>&1
 	-@ RMDIR /Q "$(OBJDIR)" "$(BINDIR)" >NUL 2>&1
 
 
