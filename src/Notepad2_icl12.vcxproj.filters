@@ -242,9 +242,6 @@
     <ClInclude Include="Version.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\scintilla\win32\PlatformRes.h">
-      <Filter>Scintilla\win32</Filter>
-    </ClInclude>
     <ClInclude Include="..\scintilla\include\ILexer.h">
       <Filter>Scintilla\include</Filter>
     </ClInclude>

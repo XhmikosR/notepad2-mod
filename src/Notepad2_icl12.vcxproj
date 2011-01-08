@@ -169,11 +169,6 @@ update_version.bat
     <ClCompile>
       <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
       <Optimization>MaxSpeed</Optimization>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <OmitFramePointers>true</OmitFramePointers>
-      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <AdditionalIncludeDirectories>..\scintilla\include;..\scintilla\lexers;..\scintilla\lexlib;..\scintilla\src;..\scintilla\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;STATIC_BUILD;SCI_LEXER;BOOKMARK_EDITION;NDEBUG;UNICODE;_UNICODE;_CRT_SECURE_NO_WARNINGS;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -222,11 +217,7 @@ update_version.bat
     <ClCompile>
       <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
       <Optimization>MaxSpeed</Optimization>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
-      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <AdditionalIncludeDirectories>..\scintilla\include;..\scintilla\lexers;..\scintilla\lexlib;..\scintilla\src;..\scintilla\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_WIN64;STATIC_BUILD;SCI_LEXER;BOOKMARK_EDITION;NDEBUG;UNICODE;_UNICODE;_CRT_SECURE_NO_WARNINGS;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -368,7 +359,6 @@ update_version.bat
     <ClInclude Include="..\scintilla\src\UniConversion.h" />
     <ClInclude Include="..\scintilla\src\ViewStyle.h" />
     <ClInclude Include="..\scintilla\src\XPM.h" />
-    <ClInclude Include="..\scintilla\win32\PlatformRes.h" />
     <ClInclude Include="Dialogs.h" />
     <ClInclude Include="Dlapi.h" />
     <ClInclude Include="Edit.h" />

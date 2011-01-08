@@ -155,8 +155,6 @@ update_version.bat</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <Optimization>MaxSpeed</Optimization>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <AdditionalIncludeDirectories>..\scintilla\include;..\scintilla\lexers;..\scintilla\lexlib;..\scintilla\src;..\scintilla\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;STATIC_BUILD;SCI_LEXER;BOOKMARK_EDITION;NDEBUG;UNICODE;_UNICODE;_CRT_SECURE_NO_WARNINGS;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
@@ -167,11 +165,7 @@ update_version.bat</Command>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>
       </DebugInformationFormat>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <OmitFramePointers>true</OmitFramePointers>
-      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
     </ClCompile>
     <Link>
       <AdditionalDependencies>comctl32.lib;shlwapi.lib;imm32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -198,9 +192,6 @@ update_version.bat</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <Optimization>MaxSpeed</Optimization>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <OmitFramePointers>true</OmitFramePointers>
       <AdditionalIncludeDirectories>..\scintilla\include;..\scintilla\lexers;..\scintilla\lexlib;..\scintilla\src;..\scintilla\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_WIN64;STATIC_BUILD;SCI_LEXER;BOOKMARK_EDITION;NDEBUG;UNICODE;_UNICODE;_CRT_SECURE_NO_WARNINGS;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
@@ -211,11 +202,8 @@ update_version.bat</Command>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>
       </DebugInformationFormat>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DisableSpecificWarnings>4133;4244;4267</DisableSpecificWarnings>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
     </ClCompile>
     <Link>
       <AdditionalDependencies>comctl32.lib;shlwapi.lib;imm32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -345,7 +333,6 @@ update_version.bat</Command>
     <ClInclude Include="..\scintilla\src\UniConversion.h" />
     <ClInclude Include="..\scintilla\src\ViewStyle.h" />
     <ClInclude Include="..\scintilla\src\XPM.h" />
-    <ClInclude Include="..\scintilla\win32\PlatformRes.h" />
     <ClInclude Include="Dialogs.h" />
     <ClInclude Include="Dlapi.h" />
     <ClInclude Include="Edit.h" />

@@ -41,7 +41,7 @@ RES=..\res
 DEFINES=/D "STATIC_BUILD" /D "SCI_LEXER" /D "BOOKMARK_EDITION" /D "_WINDOWS" /D "NDEBUG" \
 		/D "_UNICODE" /D "UNICODE"
 INCLUDEDIRS=/I "$(SCIINC)" /I "$(SCILEX)" /I "$(SCILIB)" /I "$(SCISRC)" /I "$(SCIWIN)"
-CXXFLAGS=/nologo /c /Fo"$(OBJDIR)/" /W3 /WX /EHsc /MD /O2 /GS /GT /GL /MP $(DEFINES) $(INCLUDEDIRS)
+CXXFLAGS=/nologo /c /Fo"$(OBJDIR)/" /W3 /WX /EHsc /MD /O2 /GL /MP $(DEFINES) $(INCLUDEDIRS)
 LIBS=kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib shlwapi.lib comdlg32.lib \
 		comctl32.lib winspool.lib imm32.lib ole32.lib oleaut32.lib psapi.lib
 LDFLAGS=/NOLOGO /WX /INCREMENTAL:NO /RELEASE /OPT:REF /OPT:ICF /DYNAMICBASE /NXCOMPAT \
