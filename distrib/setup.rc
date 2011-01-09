@@ -1,0 +1,77 @@
+#include <winresrc.h>
+#include "resource.h"
+#include "..\src\Version.h"
+
+#pragma code_page(1252)
+
+#define LICENSE_STATIC_TEXT_A "This installer will replace Windows Notepad with Notepad2.\n\nPlease read the following license agreement:"
+#define LICENSE_STATIC_TEXT_B "Do you accept all of the terms of the preceding license agreement? If you choose No, setup will close. To install, you must accept this agreement."
+
+#ifdef _DEBUG
+#define MY_VS_FF_DEBUG VS_FF_DEBUG
+#else
+#define MY_VS_FF_DEBUG 0x0L
+#endif
+
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+
+VS_VERSION_INFO     VERSIONINFO
+    FILEVERSION     VERSION_MAJOR,VERSION_MINOR,VERSION_BUILD,VERSION_REV
+    PRODUCTVERSION  VERSION_MAJOR,VERSION_MINOR,VERSION_BUILD,VERSION_REV
+    FILEFLAGSMASK   VS_FFI_FILEFLAGSMASK
+    FILEFLAGS       MY_VS_FF_DEBUG
+    FILEOS          VOS_NT_WINDOWS32
+    FILETYPE        VFT_APP
+    FILESUBTYPE     VFT2_UNKNOWN
+{
+    BLOCK "StringFileInfo"
+    {
+        BLOCK "040904b0" // English (U.S.)
+        {
+            VALUE "Comments", "http://code.google.com/p/notepad2-mod/"
+            VALUE "CompanyName", SETUP_AUTHOR_STR
+            VALUE "FileDescription", SETUP_TITLE_STR
+            VALUE "FileVersion", STRINGIFY(VERSION_MAJOR) ", " STRINGIFY(VERSION_MINOR) ", " STRINGIFY(VERSION_BUILD) ", " STRINGIFY(VERSION_REV)
+            VALUE "InternalName", SETUP_TITLE_STR
+            //VALUE "OriginalFilename", "Notepad2-mod_Setup.exe"
+            //VALUE "LegalCopyright", "Copyright © 2010"
+            VALUE "ProductName", SETUP_TITLE_STR
+            VALUE "ProductVersion", STRINGIFY(VERSION_MAJOR) ", " STRINGIFY(VERSION_MINOR) ", " STRINGIFY(VERSION_BUILD) ", " STRINGIFY(VERSION_REV)
+        }
+    }
+    BLOCK "VarFileInfo"
+    {
+        VALUE "Translation", 0x0409, 0x04b0 // English (U.S.)
+    }
+}
+
+#ifndef SETUP_LITE
+
+IDD_LICENSE  DIALOGEX 0, 0, 256, 224
+    STYLE    DS_MODALFRAME | DS_SHELLFONT | DS_CENTER | WS_POPUPWINDOW | WS_CAPTION | WS_MINIMIZEBOX
+    EXSTYLE  WS_EX_APPWINDOW
+    CAPTION  SETUP_TITLE_STR
+    FONT     8, "MS Shell Dlg"
+{
+    LTEXT           LICENSE_STATIC_TEXT_A, IDC_STATIC, 7,   7, 242, 24
+    LTEXT           LICENSE_STATIC_TEXT_B, IDC_STATIC, 7, 175, 242, 24
+    LTEXT           "",     IDC_SETUP_LABEL, 7, 203, 134, 14, WS_DISABLED | SS_CENTERIMAGE
+    PUSHBUTTON      "&Yes", IDYES, 145, 203,  50,  14, WS_TABSTOP | WS_GROUP
+    PUSHBUTTON      "&No",  IDNO,  199, 203,  50,  14, WS_TABSTOP
+    EDITTEXT        IDC_LICENSE_BOX, 7,  35, 242, 136, WS_TABSTOP | WS_GROUP | WS_VSCROLL | ES_MULTILINE | ES_READONLY
+}
+
+IDI_SETUP               ICON                    "res\full\setup.ico"
+IDR_LICENSE             RCDATA                  "res\full\license.txt"
+
+#else
+
+IDI_SETUP               ICON                    "res\lite\setup.ico"
+
+#endif
+
+#if defined(WIN32)
+IDR_CABINET             RCDATA                  "res\cabinet.x86-32.cab"
+#elif defined(_WIN64)
+IDR_CABINET             RCDATA                  "res\cabinet.x86-64.cab"
+#endif

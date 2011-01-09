@@ -3,12 +3,12 @@ rem ****************************************************************************
 rem *
 rem * Notepad2-mod
 rem *
-rem * build.cmd
+rem * build_wdk.bat
 rem *   Batch file "wrapper" for makefile.mak, used to build Notepad2 with WDK
 rem *
 rem * See License.txt for details about distribution and modification.
 rem *
-rem *                                       (c) XhmikosR 2010
+rem *                                       (c) XhmikosR 2010-2011
 rem *                                       http://code.google.com/p/notepad2-mod/
 rem *
 rem ******************************************************************************
@@ -25,77 +25,77 @@ IF NOT EXIST "%WDKBASEDIR%" CALL :SUBMSG "ERROR" "Specify your WDK directory!"
 IF NOT EXIST "%SDKDIR%" CALL :SUBMSG "ERROR" "Specify your SDK directory!"
 
 rem check for the help switches
-IF /I "%1"=="help" GOTO :SHOWHELP
-IF /I "%1"=="/help" GOTO :SHOWHELP
-IF /I "%1"=="-help" GOTO :SHOWHELP
-IF /I "%1"=="--help" GOTO :SHOWHELP
-IF /I "%1"=="/?" GOTO :SHOWHELP
+IF /I "%~1"=="help" GOTO :SHOWHELP
+IF /I "%~1"=="/help" GOTO :SHOWHELP
+IF /I "%~1"=="-help" GOTO :SHOWHELP
+IF /I "%~1"=="--help" GOTO :SHOWHELP
+IF /I "%~1"=="/?" GOTO :SHOWHELP
 GOTO :CHECKFIRSTARG
 
 :SHOWHELP
-TITLE "build.cmd %1"
+TITLE "build_wdk.bat %1"
 ECHO.
-ECHO:Usage:  build.cmd [Clean^|Build^|Rebuild] [x86^|x64^|all]
+ECHO:Usage:  build_wdk.bat [Clean^|Build^|Rebuild] [x86^|x64^|all]
 ECHO.
 ECHO:Note:   You can also prefix the commands with "-", "--" or "/".
 ECHO.
 ECHO.
-ECHO:Edit "build.cmd" and set your WDK and SDK directories.
+ECHO:Edit "build_wdk.bat" and set your WDK and SDK directories.
 ECHO:You shouldn't need to make any changes other than that.
 ECHO.
 ECHO.
-ECHO:Executing "build.cmd" will use the defaults: "build.cmd build all"
+ECHO:Executing "build_wdk.bat" will use the defaults: "build_wdk.bat build all"
 ECHO:If you skip the second argument the default one will be used. Example:
-ECHO:"build.cmd rebuild" is equivalent to "build.cmd rebuild all"
-ECHO:NOTE: "build.cmd x86" won't work.
+ECHO:"build_wdk.bat rebuild" is equivalent to "build_wdk.bat rebuild all"
+ECHO:NOTE: "build_wdk.bat x86" won't work.
 ECHO.
 ENDLOCAL
 EXIT /B
 
 :CHECKFIRSTARG
 rem Check for the first switch
-IF "%1" == "" (
+IF "%~1" == "" (
 SET BUILDTYPE=Build
 ) ELSE (
-IF /I "%1" == "Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
-IF /I "%1" == "/Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
-IF /I "%1" == "-Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
-IF /I "%1" == "--Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
-IF /I "%1" == "Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
-IF /I "%1" == "/Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
-IF /I "%1" == "-Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
-IF /I "%1" == "--Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
-IF /I "%1" == "Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
-IF /I "%1" == "/Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
-IF /I "%1" == "-Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
-IF /I "%1" == "--Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
+IF /I "%~1" == "Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
+IF /I "%~1" == "/Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
+IF /I "%~1" == "-Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
+IF /I "%~1" == "--Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
+IF /I "%~1" == "Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
+IF /I "%~1" == "/Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
+IF /I "%~1" == "-Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
+IF /I "%~1" == "--Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
+IF /I "%~1" == "Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
+IF /I "%~1" == "/Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
+IF /I "%~1" == "-Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
+IF /I "%~1" == "--Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
 ECHO.
 ECHO:Unsupported commandline switch!
-ECHO:Run "build.cmd help" for details about the commandline switches.
+ECHO:Run "build_wdk.bat help" for details about the commandline switches.
 CALL :SUBMSG "ERROR" "Compilation failed!"
 )
 
 
 :CHECKSECONDARG
 rem Check for the second switch
-IF "%2" == "" (
+IF "%~2" == "" (
 SET ARCH=all
 ) ELSE (
-IF /I "%2" == "x86" SET ARCH=x86&&GOTO :START
-IF /I "%2" == "/x86" SET ARCH=x86&&GOTO :START
-IF /I "%2" == "-x86" SET ARCH=x86&&GOTO :START
-IF /I "%2" == "--x86" SET ARCH=x86&&GOTO :START
-IF /I "%2" == "x64" SET ARCH=x64&&GOTO :START
-IF /I "%2" == "/x64" SET ARCH=x64&&GOTO :START
-IF /I "%2" == "-x64" SET ARCH=x64&&GOTO :START
-IF /I "%2" == "--x64" SET ARCH=x64&&GOTO :START
-IF /I "%2" == "all" SET ARCH=all&&GOTO :START
-IF /I "%2" == "/all" SET ARCH=all&&GOTO :START
-IF /I "%2" == "-all" SET ARCH=all&&GOTO :START
-IF /I "%2" == "--all" SET ARCH=all&&GOTO :START
+IF /I "%~2" == "x86" SET ARCH=x86&&GOTO :START
+IF /I "%~2" == "/x86" SET ARCH=x86&&GOTO :START
+IF /I "%~2" == "-x86" SET ARCH=x86&&GOTO :START
+IF /I "%~2" == "--x86" SET ARCH=x86&&GOTO :START
+IF /I "%~2" == "x64" SET ARCH=x64&&GOTO :START
+IF /I "%~2" == "/x64" SET ARCH=x64&&GOTO :START
+IF /I "%~2" == "-x64" SET ARCH=x64&&GOTO :START
+IF /I "%~2" == "--x64" SET ARCH=x64&&GOTO :START
+IF /I "%~2" == "all" SET ARCH=all&&GOTO :START
+IF /I "%~2" == "/all" SET ARCH=all&&GOTO :START
+IF /I "%~2" == "-all" SET ARCH=all&&GOTO :START
+IF /I "%~2" == "--all" SET ARCH=all&&GOTO :START
 ECHO.
 ECHO:Unsupported commandline switch!
-ECHO:Run "build.cmd help" for details about the commandline switches.
+ECHO:Run "build_wdk.bat help" for details about the commandline switches.
 CALL :SUBMSG "ERROR" "Compilation failed!"
 )
 
@@ -103,6 +103,10 @@ CALL :SUBMSG "ERROR" "Compilation failed!"
 :START
 IF /I "%BUILDTYPE%" == "Clean" GOTO :x86
 
+rem update the svn revision before building
+PUSHD ..
+CALL "update_version.bat"
+POPD
 
 :x86
 SET "INCLUDE=%WDKBASEDIR%\inc\crt;%WDKBASEDIR%\inc\api;%WDKBASEDIR%\inc\api\crt\stl60;%WDKBASEDIR%\inc\ddk"

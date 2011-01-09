@@ -1,6 +1,7 @@
 // Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
+#include "Version.h"
 
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
@@ -48,7 +49,6 @@ IDB_ENCODING            BITMAP                  "..\\res\\Encoding.bmp"
 // Cursor
 //
 
-400                     CURSOR                  "..\\Scintilla\\win32\\Margin.cur"
 IDC_COPY                CURSOR                  "..\\res\\Copy.cur"
 
 /////////////////////////////////////////////////////////////////////////////
@@ -556,7 +556,7 @@ END
 IDD_ABOUT DIALOGEX 0, 0, 226, 70
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_NOFAILCREATE | WS_POPUP | 
     WS_CAPTION | WS_SYSMENU
-CAPTION "Notepad2"
+CAPTION APPNAME_STRA
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,169,49,50,14
@@ -1014,7 +1014,7 @@ END
 IDD_INFOBOX DIALOGEX 0, 0, 244, 71
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
     WS_SYSMENU
-CAPTION "Notepad2"
+CAPTION APPNAME_STRA
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     ICON            IDR_MAINWND,IDC_INFOBOXICON,7,7,21,20
@@ -1027,7 +1027,7 @@ END
 IDD_INFOBOX2 DIALOGEX 0, 0, 244, 71
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
     WS_SYSMENU
-CAPTION "Notepad2"
+CAPTION APPNAME_STRA
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     ICON            IDR_MAINWND,IDC_INFOBOXICON,7,7,21,20
@@ -1059,7 +1059,7 @@ END
 IDD_INFOBOX3 DIALOGEX 0, 0, 244, 71
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
     WS_SYSMENU
-CAPTION "Notepad2"
+CAPTION APPNAME_STRA
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     ICON            IDR_MAINWND,IDC_INFOBOXICON,7,7,21,20
@@ -1338,8 +1338,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,1,24,0
- PRODUCTVERSION 4,1,24,0
+ FILEVERSION VERSION_MAJOR,VERSION_MINOR,VERSION_BUILD,VERSION_REV
+ PRODUCTVERSION VERSION_MAJOR,VERSION_MINOR,VERSION_BUILD,VERSION_REV
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x29L
@@ -1354,13 +1354,15 @@ BEGIN
     BEGIN
         BLOCK "040904b0"
         BEGIN
-            VALUE "FileDescription", "Notepad2"
-            VALUE "FileVersion", "4,1,24"
-            VALUE "ProductVersion", "4,1,24"
-            VALUE "InternalName", "Notepad2"
+            VALUE "Comments", APPNAME_STRA
+            VALUE "FileDescription", APPNAME_STRA
+            //VALUE "CompanyName", "Florian Balmer"
+            VALUE "FileVersion", STRINGIFY(VERSION_MAJOR) ", " STRINGIFY(VERSION_MINOR) ", " STRINGIFY(VERSION_BUILD) ", " STRINGIFY(VERSION_REV)
+            VALUE "ProductVersion", STRINGIFY(VERSION_MAJOR) ", " STRINGIFY(VERSION_MINOR) ", " STRINGIFY(VERSION_BUILD) ", " STRINGIFY(VERSION_REV)
+            VALUE "InternalName", APPNAME_STRA
             VALUE "LegalCopyright", "© Florian Balmer 2004-2010"
             VALUE "OriginalFilename", "Notepad2.exe"
-            VALUE "ProductName", "Notepad2"
+            VALUE "ProductName", APPNAME_STRA
         END
     END
     BLOCK "VarFileInfo"
@@ -1377,7 +1379,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_APPTITLE            "Notepad2"
+    IDS_APPTITLE            APPNAME_STRA
     IDS_APPTITLE_ELEVATED   "%s (Administrator)"
     IDS_APPTITLE_PASTEBOARD "Notepad2 : Paste Board"
     IDS_UNTITLED            "Untitled"

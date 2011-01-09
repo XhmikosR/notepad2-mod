@@ -7,10 +7,10 @@
 #*
 #* See License.txt for details about distribution and modification.
 #*
-#*                                       (c) XhmikosR 2010
+#*                                       (c) XhmikosR 2010-2011
 #*                                       http://code.google.com/p/notepad2-mod/
 #*
-#* Use build.cmd and set there your WDK and SDK directories.
+#* Use build_wdk.bat and set there your WDK and SDK directories.
 #*
 #******************************************************************************
 
@@ -21,9 +21,9 @@ MT=mt
 
 
 !IFDEF x64
-BINDIR=..\Release_x64
+BINDIR=..\bin\WDK\Release_x64
 !ELSE
-BINDIR=..\Release_x86
+BINDIR=..\bin\WDK\Release_x86
 !ENDIF
 OBJDIR=$(BINDIR)\obj
 APP=$(BINDIR)\Notepad2.exe
@@ -40,10 +40,11 @@ RES=..\res
 
 DEFINES=/D "STATIC_BUILD" /D "SCI_LEXER" /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE"
 INCLUDEDIRS=/I "$(SCIINC)" /I "$(SCILEX)" /I "$(SCILIB)" /I "$(SCISRC)" /I "$(SCIWIN)"
-CXXFLAGS=/nologo /c /Fo"$(OBJDIR)/" /W3 /WX /EHsc /MD /O1 /MP $(DEFINES) $(INCLUDEDIRS)
+CXXFLAGS=/nologo /c /Fo"$(OBJDIR)/" /W3 /WX /EHsc /MD /O1 /GL /MP $(DEFINES) $(INCLUDEDIRS)
 LIBS=kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib shlwapi.lib comdlg32.lib \
 		comctl32.lib winspool.lib imm32.lib ole32.lib oleaut32.lib psapi.lib
-LDFLAGS=/NOLOGO /INCREMENTAL:NO /RELEASE /OPT:REF /OPT:ICF /MERGE:.rdata=.text
+LDFLAGS=/NOLOGO /WX /INCREMENTAL:NO /RELEASE /OPT:REF /OPT:ICF /DYNAMICBASE /NXCOMPAT \
+		/LTCG /MERGE:.rdata=.text
 RFLAGS=/d "_UNICODE" /d "UNICODE"
 
 
@@ -71,8 +72,8 @@ CHECKDIRS:
 ALL:	CHECKDIRS $(APP)
 
 CLEAN:
-	-@ DEL "$(APP)" "$(OBJDIR)\*.idb" "$(OBJDIR)\*.obj" "$(BINDIR)\*.pdb" \
-	"$(OBJDIR)\*.res" >NUL 2>&1
+	-@ DEL "$(APP)" "$(OBJDIR)\Notepad2.idb" "$(OBJDIR)\*.obj" "$(BINDIR)\Notepad2.pdb" \
+	"$(OBJDIR)\Notepad2.res" >NUL 2>&1
 	-@ RMDIR /Q "$(OBJDIR)" "$(BINDIR)" >NUL 2>&1
 
 
@@ -278,14 +279,15 @@ $(OBJDIR)\ScintillaWin.obj: $(SCIWIN)\ScintillaWin.cxx $(SCIINC)\Platform.h \
 
 # src
 $(OBJDIR)\Dialogs.obj: $(SRC)\Dialogs.c $(SRC)\Notepad2.h $(SRC)\Edit.h \
-	$(SRC)\Helpers.h $(SRC)\Dlapi.h $(SRC)\Dialogs.h $(SRC)\resource.h
+	$(SRC)\Helpers.h $(SRC)\Dlapi.h $(SRC)\Dialogs.h $(SRC)\resource.h \
+	$(SRC)\Version.h $(SRC)\Version_rev.h
 $(OBJDIR)\Dlapi.obj: $(SRC)\Dlapi.c $(SRC)\Dlapi.h
 $(OBJDIR)\Edit.obj: $(SRC)\Edit.c $(SRC)\Notepad2.h $(SRC)\Helpers.h \
-	$(SRC)\Dialogs.h $(SRC)\Styles.h $(SRC)\Edit.h $(SRC) $(SRC)\resource.h
+	$(SRC)\Dialogs.h $(SRC)\Styles.h $(SRC)\Edit.h $(SRC)\resource.h
 $(OBJDIR)\Helpers.obj: $(SRC)\Helpers.c $(SRC)\Helpers.h
 $(OBJDIR)\Notepad2.obj: $(SRC)\Notepad2.c $(SRC)\Edit.h $(SRC)\Styles.h \
 	$(SRC)\Helpers.h $(SRC)\Dialogs.h $(SRC)\Notepad2.h $(SRC)\resource.h
-$(OBJDIR)\Notepad2.res: $(SRC)\Notepad2.rc
+$(OBJDIR)\Notepad2.res: $(SRC)\Notepad2.rc $(SRC)\Version.h $(SRC)\Version_rev.h
 $(OBJDIR)\Print.obj: $(SRC)\Print.cpp $(SRC)\Dialogs.h $(SRC)\Helpers.h \
 	$(SRC)\resource.h
 $(OBJDIR)\Styles.obj: $(SRC)\Styles.c $(SRC)\Dialogs.h $(SRC)\Helpers.h \
