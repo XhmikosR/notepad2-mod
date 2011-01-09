@@ -188,10 +188,10 @@ rem )
 
 MD "..\build\packages" >NUL 2>&1
 rem IF EXIST "%PERL_PATH%" (
-rem   MOVE "setup.%BINDIR%\addon.7z"    "..\build\packages\Notepad2-mod.%NP2_VER%_r%VerRev%_%BINDIR%%SUFFIX%_Addon.7z" >NUL
+rem   MOVE "setup.%BINDIR%\addon.7z"    "..\build\packages\Notepad2.%NP2_VER%_r%VerRev%_%BINDIR%%SUFFIX%_Addon.7z" >NUL
 rem )
-MOVE "setup.%BINDIR%\setupfull.exe" "..\build\packages\Notepad2-mod.%NP2_VER%_r%VerRev%_%BINDIR%%SUFFIX%_Setup.exe" >NUL
-rem MOVE "setup.%BINDIR%\setuplite.exe" "..\build\packages\Notepad2-mod.%NP2_VER%_r%VerRev%_%BINDIR%%SUFFIX%_Setup_Silent.exe" >NUL
+MOVE "setup.%BINDIR%\setupfull.exe" "..\build\packages\Notepad2.%NP2_VER%_r%VerRev%_%BINDIR%%SUFFIX%_Setup.exe" >NUL
+rem MOVE "setup.%BINDIR%\setuplite.exe" "..\build\packages\Notepad2.%NP2_VER%_r%VerRev%_%BINDIR%%SUFFIX%_Setup_Silent.exe" >NUL
 
 rem Cleanup
 RD /Q "setup.%BINDIR%" "temp" >NUL 2>&1
