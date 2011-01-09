@@ -400,9 +400,6 @@
     <None Include="..\res\Toolbar.bmp">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\scintilla\win32\Margin.cur">
-      <Filter>Resource Files</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="..\res\Notepad2.exe.manifest">

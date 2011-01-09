@@ -380,7 +380,6 @@ update_version.bat
     <None Include="..\res\Run.ico" />
     <None Include="..\res\Styles.ico" />
     <None Include="..\res\Toolbar.bmp" />
-    <None Include="..\scintilla\win32\Margin.cur" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="..\res\Notepad2.exe.manifest" />
