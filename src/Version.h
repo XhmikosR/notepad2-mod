@@ -1,3 +1,18 @@
+/******************************************************************************
+*
+* Notepad2-mod
+*
+* Version.h
+*
+* See License.txt for details about distribution and modification.
+*
+*                                       (c) XhmikosR 2010-2011
+*                                       http://code.google.com/p/notepad2-mod/
+*
+*
+******************************************************************************/
+
+
 #pragma once
 
 #include "Version_rev.h"

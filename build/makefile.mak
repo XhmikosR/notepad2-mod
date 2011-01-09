@@ -7,7 +7,7 @@
 #*
 #* See License.txt for details about distribution and modification.
 #*
-#*                                       (c) XhmikosR 2010
+#*                                       (c) XhmikosR 2010-2011
 #*                                       http://code.google.com/p/notepad2-mod/
 #*
 #* Use build_wdk.bat and set there your WDK and SDK directories.
@@ -78,7 +78,7 @@ CLEAN:
 	-@ RMDIR /Q "$(OBJDIR)" "$(BINDIR)" >NUL 2>&1
 
 
-OBJECTS= \
+SCILEX_OBJ= \
 	$(OBJDIR)\LexAHK.obj \
 	$(OBJDIR)\LexAsm.obj \
 	$(OBJDIR)\LexAU3.obj \
@@ -98,8 +98,9 @@ OBJECTS= \
 	$(OBJDIR)\LexRuby.obj \
 	$(OBJDIR)\LexSQL.obj \
 	$(OBJDIR)\LexTCL.obj \
-	$(OBJDIR)\LexVB.obj \
-\
+	$(OBJDIR)\LexVB.obj
+
+SCILIB_OBJ= \
 	$(OBJDIR)\Accessor.obj \
 	$(OBJDIR)\CharacterSet.obj \
 	$(OBJDIR)\LexerBase.obj \
@@ -107,8 +108,9 @@ OBJECTS= \
 	$(OBJDIR)\LexerSimple.obj \
 	$(OBJDIR)\PropSetSimple.obj \
 	$(OBJDIR)\StyleContext.obj \
-	$(OBJDIR)\WordList.obj \
-\
+	$(OBJDIR)\WordList.obj
+
+SCISRC_OBJ= \
 	$(OBJDIR)\AutoComplete.obj \
 	$(OBJDIR)\CallTip.obj \
 	$(OBJDIR)\Catalogue.obj \
@@ -131,11 +133,14 @@ OBJECTS= \
 	$(OBJDIR)\Style.obj \
 	$(OBJDIR)\UniConversion.obj \
 	$(OBJDIR)\ViewStyle.obj \
-	$(OBJDIR)\XPM.obj \
-\
+	$(OBJDIR)\XPM.obj
+
+SCIWIN_OBJ= \
 	$(OBJDIR)\PlatWin.obj \
-	$(OBJDIR)\ScintillaWin.obj \
-\
+	$(OBJDIR)\ScintillaWin.obj
+
+
+NOTEPAD2_OBJ= \
 	$(OBJDIR)\Dialogs.obj \
 	$(OBJDIR)\Dlapi.obj \
 	$(OBJDIR)\Edit.obj \
@@ -144,6 +149,9 @@ OBJECTS= \
 	$(OBJDIR)\Notepad2.res \
 	$(OBJDIR)\Print.obj \
 	$(OBJDIR)\Styles.obj
+
+
+OBJECTS=$(SCILEX_OBJ) $(SCILIB_OBJ) $(SCISRC_OBJ) $(SCIWIN_OBJ) $(NOTEPAD2_OBJ)
 
 
 {$(SCILEX)}.cxx{$(OBJDIR)}.obj::
@@ -169,6 +177,7 @@ $(APP): $(OBJECTS)
 	@$(RC) $(RFLAGS) /fo"$(OBJDIR)\Notepad2.res" "$(SRC)\Notepad2.rc"
 	@$(LD) $(LDFLAGS) /OUT:"$(APP)" $(OBJECTS)
 	@$(MT) -nologo -manifest "$(RES)\Notepad2.exe.manifest" -outputresource:"$(APP);#1"
+
 
 
 # Dependencies
