@@ -215,9 +215,6 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\scintilla\win32\PlatformRes.h">
-      <Filter>Scintilla\win32</Filter>
-    </ClInclude>
     <ClInclude Include="Version.h">
       <Filter>Header Files</Filter>
     </ClInclude>

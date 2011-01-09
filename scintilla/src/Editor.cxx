@@ -175,7 +175,8 @@ Editor::Editor() {
 
 	lengthForEncode = -1;
 
-	needUpdateUI = true;
+	needUpdateUI = 0;
+	ContainerNeedsUpdate(SC_UPDATE_CONTENT);
 	braces[0] = invalidPosition;
 	braces[1] = invalidPosition;
 	bracesMatchStyle = STYLE_BRACEBAD;
@@ -434,7 +435,10 @@ int Editor::LineFromLocation(Point pt) {
 }
 
 void Editor::SetTopLine(int topLineNew) {
-	topLine = topLineNew;
+	if (topLine != topLineNew) {
+		topLine = topLineNew;
+		ContainerNeedsUpdate(SC_UPDATE_V_SCROLL);
+	}
 	posTopLine = pdoc->LineStart(cs.DocFromDisplay(topLine));
 }
 
@@ -741,7 +745,7 @@ void Editor::InvalidateSelection(SelectionRange newMain, bool invalidateWholeSel
 			lastAffected = Platform::Maximum(lastAffected, sel.Range(r).anchor.Position());
 		}
 	}
-	needUpdateUI = true;
+	ContainerNeedsUpdate(SC_UPDATE_SELECTION);
 	InvalidateRange(firstAffected, lastAffected);
 }
 
@@ -982,6 +986,7 @@ void Editor::HorizontalScrollTo(int xPos) {
 		xPos = 0;
 	if ((wrapState == eWrapNone) && (xOffset != xPos)) {
 		xOffset = xPos;
+		ContainerNeedsUpdate(SC_UPDATE_H_SCROLL);
 		SetHorizontalScrollPos();
 		RedrawRect(GetClientRectangle());
 	}
@@ -1291,6 +1296,7 @@ void Editor::SetXYScroll(XYScrollPosition newXY) {
 		}
 		if (newXY.xOffset != xOffset) {
 			xOffset = newXY.xOffset;
+			ContainerNeedsUpdate(SC_UPDATE_H_SCROLL);
 			if (newXY.xOffset > 0) {
 				PRectangle rcText = GetTextRectangle();
 				if (horizontalScrollBarVisible &&
@@ -3307,7 +3313,7 @@ void Editor::Paint(Surface *surfaceWindow, PRectangle rcArea) {
 		surfaceWindow->SetPalette(&palTemp, true);
 
 		NotifyUpdateUI();
-		needUpdateUI = false;
+		needUpdateUI = 0;
 
 		RefreshStyleData();
 		RefreshPixMaps(surfaceWindow);
@@ -4213,6 +4219,7 @@ void Editor::NotifyHotSpotReleaseClick(int position, bool shift, bool ctrl, bool
 void Editor::NotifyUpdateUI() {
 	SCNotification scn = {0};
 	scn.nmhdr.code = SCN_UPDATEUI;
+	scn.updated = needUpdateUI;
 	NotifyParent(scn);
 }
 
@@ -4329,7 +4336,7 @@ static inline int MovePositionForDeletion(int position, int startDeletion, int l
 }
 
 void Editor::NotifyModified(Document *, DocModification mh, void *) {
-	needUpdateUI = true;
+	ContainerNeedsUpdate(SC_UPDATE_CONTENT);
 	if (paintState == painting) {
 		CheckForChangeOutsidePaint(Range(mh.position, mh.position + mh.length));
 	}
@@ -4609,6 +4616,11 @@ void Editor::NotifyMacroRecord(unsigned int iMessage, uptr_t wParam, sptr_t lPar
 	scn.wParam = wParam;
 	scn.lParam = lParam;
 	NotifyParent(scn);
+}
+
+// Something has changed that the container should know about
+void Editor::ContainerNeedsUpdate(int flags) {
+	needUpdateUI |= flags;
 }
 
 /**
@@ -5122,6 +5134,7 @@ int Editor::KeyCommand(unsigned int iMessage) {
 		inOverstrike = !inOverstrike;
 		DropCaret();
 		ShowCaretAtCurrentPosition();
+		ContainerNeedsUpdate(SC_UPDATE_CONTENT);
 		NotifyUpdateUI();
 		break;
 	case SCI_CANCEL:            	// Cancel any modes - handled in subclass
@@ -5972,7 +5985,8 @@ void Editor::ButtonDown(Point pt, unsigned int curTime, bool shift, bool ctrl, b
 						InvalidateSelection(SelectionRange(newPos), true);
 						if (sel.Count() > 1)
 							Redraw();
-						sel.Clear();
+						if ((sel.Count() > 1) || (sel.selType != Selection::selStream))
+							sel.Clear();
 						sel.selType = alt ? Selection::selRectangle : Selection::selStream;
 						SetSelection(newPos, newPos);
 					}
@@ -6168,6 +6182,8 @@ void Editor::ButtonUp(Point pt, unsigned int curTime, bool ctrl) {
 	if (inDragDrop == ddInitial) {
 		inDragDrop = ddNone;
 		SetEmptySelection(newPos.Position());
+		selectionType = selChar;
+		originalAnchorPos = sel.MainCaret();
 	}
 	if (hotSpotClickPos != INVALID_POSITION && PointIsHotspot(pt)) {
 		hotSpotClickPos = INVALID_POSITION;
@@ -6335,7 +6351,7 @@ void Editor::IdleStyling() {
 
 	if (needUpdateUI) {
 		NotifyUpdateUI();
-		needUpdateUI = false;
+		needUpdateUI = 0;
 	}
 	styleNeeded.Reset();
 }
@@ -6992,6 +7008,7 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 
 	case SCI_SETXOFFSET:
 		xOffset = wParam;
+		ContainerNeedsUpdate(SC_UPDATE_H_SCROLL);
 		SetHorizontalScrollPos();
 		Redraw();
 		break;
@@ -7306,7 +7323,6 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 	case SCI_GOTOPOS:
 		SetEmptySelection(wParam);
 		EnsureCaretVisible();
-		Redraw();
 		break;
 
 	case SCI_GETCURLINE: {
@@ -7457,6 +7473,7 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 			break;
 		}
 		xOffset = 0;
+		ContainerNeedsUpdate(SC_UPDATE_H_SCROLL);
 		InvalidateStyleRedraw();
 		ReconfigureScrollBars();
 		break;
