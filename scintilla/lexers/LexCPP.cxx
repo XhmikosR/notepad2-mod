@@ -485,10 +485,10 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 	for (; sc.More(); sc.Forward()) {
 
 		if (sc.atLineStart) {
-			if (sc.state == SCE_C_STRING) {
+			if ((sc.state == SCE_C_STRING) || (sc.state == SCE_C_CHARACTER)) {
 				// Prevent SCE_C_STRINGEOL from leaking back to previous line which
 				// ends with a line continuation by locking in the state upto this position.
-				sc.SetState(SCE_C_STRING);
+				sc.SetState(sc.state);
 			}
 			// Reset states to begining of colourise so no surprises
 			// if different sets of lines lexed.

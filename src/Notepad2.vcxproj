@@ -333,7 +333,6 @@ update_version.bat</Command>
     <ClInclude Include="SciCall.h" />
     <ClInclude Include="Styles.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="..\scintilla\win32\PlatformRes.h" />
     <ClInclude Include="Version.h" />
   </ItemGroup>
   <ItemGroup>
@@ -347,7 +346,6 @@ update_version.bat</Command>
     <None Include="..\res\Run.ico" />
     <None Include="..\res\Styles.ico" />
     <None Include="..\res\Toolbar.bmp" />
-    <None Include="..\scintilla\win32\Margin.cur" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="..\res\Notepad2.exe.manifest" />
