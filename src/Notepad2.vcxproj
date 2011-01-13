@@ -233,6 +233,7 @@ update_version.bat</Command>
     <ClCompile Include="..\scintilla\lexers\LexAsm.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexAU3.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexBash.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexCmake.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexConf.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexCPP.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexCSS.cxx" />

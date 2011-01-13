@@ -100,7 +100,7 @@ int Scintilla_LinkLexers() {
 //	LINK_LEXER(lmCaml);
 //	LINK_LEXER(lmClw);
 //	LINK_LEXER(lmClwNoCase);
-//	LINK_LEXER(lmCmake);
+	LINK_LEXER(lmCmake);
 //	LINK_LEXER(lmCOBOL);
 	LINK_LEXER(lmConf);
 	LINK_LEXER(lmCPP);

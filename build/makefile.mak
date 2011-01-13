@@ -83,6 +83,7 @@ SCILEX_OBJ= \
 	$(OBJDIR)\LexAsm.obj \
 	$(OBJDIR)\LexAU3.obj \
 	$(OBJDIR)\LexBash.obj \
+	$(OBJDIR)\LexCmake.obj \
 	$(OBJDIR)\LexConf.obj \
 	$(OBJDIR)\LexCPP.obj \
 	$(OBJDIR)\LexCSS.obj \
@@ -191,6 +192,7 @@ $(OBJDIR)\LexAHK.obj: $(SCILEX)\LexAHK.cxx $(LEX_HEADERS)
 $(OBJDIR)\LexAsm.obj: $(SCILEX)\LexAsm.cxx $(LEX_HEADERS)
 $(OBJDIR)\LexAU3.obj: $(SCILEX)\LexAU3.cxx $(LEX_HEADERS)
 $(OBJDIR)\LexBash.obj: $(SCILEX)\LexBash.cxx $(LEX_HEADERS)
+$(OBJDIR)\LexCmake.obj: $(SCILEX)\LexCmake.cxx $(LEX_HEADERS)
 $(OBJDIR)\LexConf.obj: $(SCILEX)\LexConf.cxx $(LEX_HEADERS)
 $(OBJDIR)\LexCPP.obj: $(SCILEX)\LexCPP.cxx $(LEX_HEADERS)
 $(OBJDIR)\LexCSS.obj: $(SCILEX)\LexCSS.cxx $(LEX_HEADERS)
