@@ -8,7 +8,7 @@ rem *   Batch file for building the installer for Notepad2-mod with MSVC2010
 rem *
 rem * See License.txt for details about distribution and modification.
 rem *
-rem *                                       (c) XhmikosR 2010
+rem *                                       (c) XhmikosR 2010-2011
 rem *                                       http://code.google.com/p/notepad2-mod/
 rem *
 rem ******************************************************************************
@@ -29,6 +29,7 @@ IF /I "%~1"=="--help" GOTO :SHOWHELP
 IF /I "%~1"=="/?" GOTO :SHOWHELP
 GOTO :CHECKFIRSTARG
 
+
 :SHOWHELP
 TITLE "make_installer.bat %1"
 ECHO.
@@ -42,83 +43,99 @@ ECHO.
 ENDLOCAL
 EXIT /B
 
+
 :CHECKFIRSTARG
 rem Check for the first switch
 IF "%~1" == "" (
-SET NP2DIRx86=bin\WDK\Release_x86
-SET NP2DIRx64=bin\WDK\Release_x64
-SET SUFFIX=
+  SET INPUTDIRx86=bin\WDK\Release_x86
+  SET INPUTDIRx64=bin\WDK\Release_x64
+  SET SUFFIX=
 ) ELSE (
-IF /I "%~1" == "WDK" (
-SET NP2DIRx86=bin\WDK\Release_x86
-SET NP2DIRx64=bin\WDK\Release_x64
-SET SUFFIX=
-GOTO :START)
-IF /I "%~1" == "/WDK" (
-SET NP2DIRx86=bin\WDK\Release_x86
-SET NP2DIRx64=bin\WDK\Release_x64
-SET SUFFIX=
-GOTO :START)
-IF /I "%~1" == "-WDK" (
-SET NP2DIRx86=bin\WDK\Release_x86
-SET NP2DIRx64=bin\WDK\Release_x64
-SET SUFFIX=
-GOTO :START)
-IF /I "%~1" == "--WDK" (
-SET NP2DIRx86=bin\WDK\Release_x86
-SET NP2DIRx64=bin\WDK\Release_x64
-SET SUFFIX=
-GOTO :START)
-IF /I "%~1" == "VS2010" (
-SET NP2DIRx86=bin\VS2010\Release_x86
-SET NP2DIRx64=bin\VS2010\Release_x64
-SET SUFFIX=_vs2010
-GOTO :START)
-IF /I "%~1" == "/VS2010" (
-SET NP2DIRx86=bin\VS2010\Release_x86
-SET NP2DIRx64=bin\VS2010\Release_x64
-SET SUFFIX=_vs2010
-GOTO :START)
-IF /I "%~1" == "-VS2010" (
-SET NP2DIRx86=bin\VS2010\Release_x86
-SET NP2DIRx64=bin\VS2010\Release_x64
-SET SUFFIX=_vs2010
-GOTO :START)
-IF /I "%~1" == "--VS2010" (
-SET NP2DIRx86=bin\VS2010\Release_x86
-SET NP2DIRx64=bin\VS2010\Release_x64
-SET SUFFIX=_vs2010
-GOTO :START)
-IF /I "%~1" == "ICL12" (
-SET NP2DIRx86=bin\ICL12\Release_x86
-SET NP2DIRx64=bin\ICL12\Release_x64
-SET SUFFIX=_icl12
-GOTO :START)
-IF /I "%~1" == "/ICL12" (
-SET NP2DIRx86=bin\ICL12\Release_x86
-SET NP2DIRx64=bin\ICL12\Release_x64
-SET SUFFIX=_icl12
-GOTO :START)
-IF /I "%~1" == "-ICL12" (
-SET NP2DIRx86=bin\ICL12\Release_x86
-SET NP2DIRx64=bin\ICL12\Release_x64
-SET SUFFIX=_icl12
-GOTO :START)
-IF /I "%~1" == "--ICL12" (
-SET NP2DIRx86=bin\ICL12\Release_x86
-SET NP2DIRx64=bin\ICL12\Release_x64
-SET SUFFIX=_icl12
-GOTO :START)
-ECHO.
-ECHO:Unsupported commandline switch!
-ECHO:Run "make_installer.bat help" for details about the commandline switches.
-CALL :SUBMSG "ERROR" "Compilation failed!"
+  IF /I "%~1" == "WDK" (
+    SET INPUTDIRx86=bin\WDK\Release_x86
+    SET INPUTDIRx64=bin\WDK\Release_x64
+    SET SUFFIX=
+    GOTO :START
+  )
+  IF /I "%~1" == "/WDK" (
+    SET INPUTDIRx86=bin\WDK\Release_x86
+    SET INPUTDIRx64=bin\WDK\Release_x64
+    SET SUFFIX=
+    GOTO :START
+  )
+  IF /I "%~1" == "-WDK" (
+    SET INPUTDIRx86=bin\WDK\Release_x86
+    SET INPUTDIRx64=bin\WDK\Release_x64
+    SET SUFFIX=
+    GOTO :START
+  )
+  IF /I "%~1" == "--WDK" (
+    SET INPUTDIRx86=bin\WDK\Release_x86
+    SET INPUTDIRx64=bin\WDK\Release_x64
+    SET SUFFIX=
+    GOTO :START
+  )
+  IF /I "%~1" == "VS2010" (
+    SET INPUTDIRx86=bin\VS2010\Release_x86
+    SET INPUTDIRx64=bin\VS2010\Release_x64
+    SET SUFFIX=_vs2010
+    GOTO :START
+  )
+  IF /I "%~1" == "/VS2010" (
+    SET INPUTDIRx86=bin\VS2010\Release_x86
+    SET INPUTDIRx64=bin\VS2010\Release_x64
+    SET SUFFIX=_vs2010
+    GOTO :START
+  )
+  IF /I "%~1" == "-VS2010" (
+    SET INPUTDIRx86=bin\VS2010\Release_x86
+    SET INPUTDIRx64=bin\VS2010\Release_x64
+    SET SUFFIX=_vs2010
+    GOTO :START
+  )
+  IF /I "%~1" == "--VS2010" (
+    SET INPUTDIRx86=bin\VS2010\Release_x86
+    SET INPUTDIRx64=bin\VS2010\Release_x64
+    SET SUFFIX=_vs2010
+    GOTO :START
+  )
+  IF /I "%~1" == "ICL12" (
+    SET INPUTDIRx86=bin\ICL12\Release_x86
+    SET INPUTDIRx64=bin\ICL12\Release_x64
+    SET SUFFIX=_icl12
+    GOTO :START
+  )
+  IF /I "%~1" == "/ICL12" (
+    SET INPUTDIRx86=bin\ICL12\Release_x86
+    SET INPUTDIRx64=bin\ICL12\Release_x64
+    SET SUFFIX=_icl12
+    GOTO :START
+  )
+  IF /I "%~1" == "-ICL12" (
+    SET INPUTDIRx86=bin\ICL12\Release_x86
+    SET INPUTDIRx64=bin\ICL12\Release_x64
+    SET SUFFIX=_icl12
+    GOTO :START
+  )
+  IF /I "%~1" == "--ICL12" (
+    SET INPUTDIRx86=bin\ICL12\Release_x86
+    SET INPUTDIRx64=bin\ICL12\Release_x64
+    SET SUFFIX=_icl12
+    GOTO :START
+  )
+
+  ECHO.
+  ECHO:Unsupported commandline switch!
+  ECHO:Run "make_installer.bat help" for details about the commandline switches.
+  CALL :SUBMSG "ERROR" "Compilation failed!"
 )
+
 
 :START
 CALL :SubGetVersion
-CALL :SubInstaller %NP2DIRx86% x86
-CALL :SubInstaller %NP2DIRx64% x64
+CALL :SubInstaller %INPUTDIRx86% x86
+CALL :SubInstaller %INPUTDIRx64% x64
+
 
 :END
 TITLE Finished!
@@ -224,13 +241,16 @@ EXIT /B
 SET VerMajor=%*
 EXIT /B
 
+
 :SubVerMinor
 SET VerMinor=%*
 EXIT /B
 
+
 :SubVerBuild
 SET VerBuild=%*
 EXIT /B
+
 
 :SubVerRev
 SET VerRev=%*

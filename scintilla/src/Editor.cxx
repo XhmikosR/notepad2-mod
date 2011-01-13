@@ -133,6 +133,9 @@ Editor::Editor() {
 	lastXChosen = 0;
 	lineAnchor = 0;
 	originalAnchorPos = 0;
+	wordSelectAnchorStartPos = 0;
+	wordSelectAnchorEndPos = 0;
+	wordSelectInitialCaretPos = -1;
 
 	primarySelection = true;
 
@@ -5234,6 +5237,7 @@ int Editor::KeyCommand(unsigned int iMessage) {
 			UndoGroup ug(pdoc);
 			sel.RangeMain().caret = SelectionPosition(
 				InsertSpace(sel.RangeMain().caret.Position(), sel.RangeMain().caret.VirtualSpace()));
+			sel.RangeMain().anchor = sel.RangeMain().caret;
 			int endWord = pdoc->NextWordStart(sel.MainCaret(), 1);
 			pdoc->DeleteChars(sel.MainCaret(), endWord - sel.MainCaret());
 		}
@@ -5853,6 +5857,30 @@ void Editor::LineSelection(int lineCurrent_, int lineAnchor_) {
 	}
 }
 
+void Editor::WordSelection(int pos) {
+	if (pos < wordSelectAnchorStartPos) {
+		// Extend backward to the word containing pos.
+		// Skip ExtendWordSelect if the line is empty or if pos is after the last character.
+		// This ensures that a series of empty lines isn't counted as a single "word".
+		if (!pdoc->IsLineEndPosition(pos))
+			pos = pdoc->ExtendWordSelect(pdoc->MovePositionOutsideChar(pos + 1, 1), -1);
+		SetSelection(pos, wordSelectAnchorEndPos);
+	} else if (pos > wordSelectAnchorEndPos) {
+		// Extend forward to the word containing the character to the left of pos.
+		// Skip ExtendWordSelect if the line is empty or if pos is the first position on the line.
+		// This ensures that a series of empty lines isn't counted as a single "word".
+		if (pos > pdoc->LineStart(pdoc->LineFromPosition(pos)))
+			pos = pdoc->ExtendWordSelect(pdoc->MovePositionOutsideChar(pos - 1, -1), 1);
+		SetSelection(pos, wordSelectAnchorStartPos);
+	} else {
+		// Select only the anchored word
+		if (pos >= originalAnchorPos)
+			SetSelection(wordSelectAnchorEndPos, wordSelectAnchorStartPos);
+		else
+			SetSelection(wordSelectAnchorStartPos, wordSelectAnchorEndPos);
+	}
+}
+
 void Editor::DwellEnd(bool mouseMoved) {
 	if (mouseMoved)
 		ticksToDwell = dwellDelay;
@@ -5914,13 +5942,33 @@ void Editor::ButtonDown(Point pt, unsigned int curTime, bool shift, bool ctrl, b
 		}
 
 		if (selectionType == selWord) {
-			if (sel.MainCaret() >= originalAnchorPos) {	// Moved forward
-				SetSelection(pdoc->ExtendWordSelect(sel.MainCaret(), 1),
-				        pdoc->ExtendWordSelect(originalAnchorPos, -1));
-			} else {	// Moved backward
-				SetSelection(pdoc->ExtendWordSelect(sel.MainCaret(), -1),
-				        pdoc->ExtendWordSelect(originalAnchorPos, 1));
+			int charPos = originalAnchorPos;
+			if (sel.MainCaret() == originalAnchorPos) {
+				charPos = PositionFromLocation(pt, false, true);
+				charPos = MovePositionOutsideChar(charPos, -1);
 			}
+
+			int startWord, endWord;
+			if ((sel.MainCaret() >= originalAnchorPos) && !pdoc->IsLineEndPosition(charPos)) {
+				startWord = pdoc->ExtendWordSelect(pdoc->MovePositionOutsideChar(charPos + 1, 1), -1);
+				endWord = pdoc->ExtendWordSelect(charPos, 1);
+			} else {
+				// Selecting backwards, or anchor beyond last character on line. In these cases,
+				// we select the word containing the character to the *left* of the anchor.
+				if (charPos > pdoc->LineStart(pdoc->LineFromPosition(charPos))) {
+					startWord = pdoc->ExtendWordSelect(charPos, -1);
+					endWord = pdoc->ExtendWordSelect(startWord, 1);
+				} else {
+					// Anchor at start of line; select nothing to begin with.
+					startWord = charPos;
+					endWord = charPos;
+				}
+			}
+
+			wordSelectAnchorStartPos = startWord;
+			wordSelectAnchorEndPos = endWord;
+			wordSelectInitialCaretPos = sel.MainCaret();
+			WordSelection(wordSelectInitialCaretPos);
 		} else if (selectionType == selLine) {
 			lineAnchor = LineFromLocation(pt);
 			SetSelection(pdoc->LineStart(lineAnchor + 1), pdoc->LineStart(lineAnchor));
@@ -6103,7 +6151,7 @@ void Editor::ButtonMove(Point pt) {
 				}
 			} else if (selectionType == selWord) {
 				// Continue selecting by word
-				if (movePos.Position() == originalAnchorPos) {	// Didn't move
+				if (movePos.Position() == wordSelectInitialCaretPos) {  // Didn't move
 					// No need to do anything. Previously this case was lumped
 					// in with "Moved forward", but that can be harmful in this
 					// case: a handler for the NotifyDoubleClick re-adjusts
@@ -6113,12 +6161,9 @@ void Editor::ButtonMove(Point pt) {
 					// the ButtonMove() called via Tick() for auto-scrolling
 					// could result in the fancier word selection adjustment
 					// being unmade.
-				} else if (movePos.Position() > originalAnchorPos) {	// Moved forward
-					SetSelection(pdoc->ExtendWordSelect(movePos.Position(), 1),
-					        pdoc->ExtendWordSelect(originalAnchorPos, -1));
-				} else {	// Moved backward
-					SetSelection(pdoc->ExtendWordSelect(movePos.Position(), -1),
-					        pdoc->ExtendWordSelect(originalAnchorPos, 1));
+				} else {
+					wordSelectInitialCaretPos = -1;
+					WordSelection(movePos.Position());
 				}
 			} else {
 				// Continue selecting by line

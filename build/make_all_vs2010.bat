@@ -9,7 +9,7 @@ rem *   and creating the installer/zip packages
 rem *
 rem * See License.txt for details about distribution and modification.
 rem *
-rem *                                       (c) XhmikosR 2010
+rem *                                       (c) XhmikosR 2010-2011
 rem *                                       http://code.google.com/p/notepad2-mod/
 rem *
 rem ******************************************************************************
@@ -20,6 +20,7 @@ CD /D %~dp0
 CALL "build_vs2010.bat"
 CALL "make_installer.bat" vs2010
 CALL "make_zip.bat" vs2010
+
 
 :END
 TITLE Finished!
