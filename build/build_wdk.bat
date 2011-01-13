@@ -8,7 +8,7 @@ rem *   Batch file "wrapper" for makefile.mak, used to build Notepad2 with WDK
 rem *
 rem * See License.txt for details about distribution and modification.
 rem *
-rem *                                       (c) XhmikosR 2010
+rem *                                       (c) XhmikosR 2010-2011
 rem *                                       http://code.google.com/p/notepad2-mod/
 rem *
 rem ******************************************************************************
@@ -32,6 +32,7 @@ IF /I "%~1"=="--help" GOTO :SHOWHELP
 IF /I "%~1"=="/?" GOTO :SHOWHELP
 GOTO :CHECKFIRSTARG
 
+
 :SHOWHELP
 TITLE "build_wdk.bat %1"
 ECHO.
@@ -52,51 +53,54 @@ ECHO.
 ENDLOCAL
 EXIT /B
 
+
 :CHECKFIRSTARG
 rem Check for the first switch
 IF "%~1" == "" (
-SET BUILDTYPE=Build
+  SET BUILDTYPE=Build
 ) ELSE (
-IF /I "%~1" == "Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
-IF /I "%~1" == "/Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
-IF /I "%~1" == "-Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
-IF /I "%~1" == "--Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
-IF /I "%~1" == "Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
-IF /I "%~1" == "/Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
-IF /I "%~1" == "-Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
-IF /I "%~1" == "--Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
-IF /I "%~1" == "Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
-IF /I "%~1" == "/Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
-IF /I "%~1" == "-Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
-IF /I "%~1" == "--Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
-ECHO.
-ECHO:Unsupported commandline switch!
-ECHO:Run "build_wdk.bat help" for details about the commandline switches.
-CALL :SUBMSG "ERROR" "Compilation failed!"
+  IF /I "%~1" == "Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
+  IF /I "%~1" == "/Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
+  IF /I "%~1" == "-Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
+  IF /I "%~1" == "--Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
+  IF /I "%~1" == "Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
+  IF /I "%~1" == "/Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
+  IF /I "%~1" == "-Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
+  IF /I "%~1" == "--Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
+  IF /I "%~1" == "Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
+  IF /I "%~1" == "/Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
+  IF /I "%~1" == "-Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
+  IF /I "%~1" == "--Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
+
+  ECHO.
+  ECHO:Unsupported commandline switch!
+  ECHO:Run "build_wdk.bat help" for details about the commandline switches.
+  CALL :SUBMSG "ERROR" "Compilation failed!"
 )
 
 
 :CHECKSECONDARG
 rem Check for the second switch
 IF "%~2" == "" (
-SET ARCH=all
+  SET ARCH=all
 ) ELSE (
-IF /I "%~2" == "x86" SET ARCH=x86&&GOTO :START
-IF /I "%~2" == "/x86" SET ARCH=x86&&GOTO :START
-IF /I "%~2" == "-x86" SET ARCH=x86&&GOTO :START
-IF /I "%~2" == "--x86" SET ARCH=x86&&GOTO :START
-IF /I "%~2" == "x64" SET ARCH=x64&&GOTO :START
-IF /I "%~2" == "/x64" SET ARCH=x64&&GOTO :START
-IF /I "%~2" == "-x64" SET ARCH=x64&&GOTO :START
-IF /I "%~2" == "--x64" SET ARCH=x64&&GOTO :START
-IF /I "%~2" == "all" SET ARCH=all&&GOTO :START
-IF /I "%~2" == "/all" SET ARCH=all&&GOTO :START
-IF /I "%~2" == "-all" SET ARCH=all&&GOTO :START
-IF /I "%~2" == "--all" SET ARCH=all&&GOTO :START
-ECHO.
-ECHO:Unsupported commandline switch!
-ECHO:Run "build_wdk.bat help" for details about the commandline switches.
-CALL :SUBMSG "ERROR" "Compilation failed!"
+  IF /I "%~2" == "x86" SET ARCH=x86&&GOTO :START
+  IF /I "%~2" == "/x86" SET ARCH=x86&&GOTO :START
+  IF /I "%~2" == "-x86" SET ARCH=x86&&GOTO :START
+  IF /I "%~2" == "--x86" SET ARCH=x86&&GOTO :START
+  IF /I "%~2" == "x64" SET ARCH=x64&&GOTO :START
+  IF /I "%~2" == "/x64" SET ARCH=x64&&GOTO :START
+  IF /I "%~2" == "-x64" SET ARCH=x64&&GOTO :START
+  IF /I "%~2" == "--x64" SET ARCH=x64&&GOTO :START
+  IF /I "%~2" == "all" SET ARCH=all&&GOTO :START
+  IF /I "%~2" == "/all" SET ARCH=all&&GOTO :START
+  IF /I "%~2" == "-all" SET ARCH=all&&GOTO :START
+  IF /I "%~2" == "--all" SET ARCH=all&&GOTO :START
+
+  ECHO.
+  ECHO:Unsupported commandline switch!
+  ECHO:Run "build_wdk.bat help" for details about the commandline switches.
+  CALL :SUBMSG "ERROR" "Compilation failed!"
 )
 
 
@@ -107,6 +111,7 @@ rem update the svn revision before building
 PUSHD ..
 CALL "update_version.bat"
 POPD
+
 
 :x86
 SET "INCLUDE=%WDKBASEDIR%\inc\crt;%WDKBASEDIR%\inc\api;%WDKBASEDIR%\inc\api\crt\stl60;%WDKBASEDIR%\inc\ddk"
@@ -119,24 +124,28 @@ TITLE Building Notepad2 x86...
 ECHO. && ECHO.
 
 IF /I "%BUILDTYPE%" == "Build" (
-CALL :SUBNMAKE
-IF /I "%ARCH%" == "x86" GOTO :END
-IF /I "%ARCH%" == "x64" GOTO :x64
-IF /I "%ARCH%" == "all" GOTO :x64
+  CALL :SUBNMAKE
+
+  IF /I "%ARCH%" == "x86" GOTO :END
+  IF /I "%ARCH%" == "x64" GOTO :x64
+  IF /I "%ARCH%" == "all" GOTO :x64
 )
 
 IF /I "%BUILDTYPE%" == "Rebuild" (
-CALL :SUBNMAKE clean
-CALL :SUBNMAKE
-IF /I "%ARCH%" == "x86" GOTO :END
-IF /I "%ARCH%" == "x64" GOTO :x64
-IF /I "%ARCH%" == "all" GOTO :x64
+  CALL :SUBNMAKE clean
+  CALL :SUBNMAKE
+
+  IF /I "%ARCH%" == "x86" GOTO :END
+  IF /I "%ARCH%" == "x64" GOTO :x64
+  IF /I "%ARCH%" == "all" GOTO :x64
 )
 
 IF /I "%BUILDTYPE%" == "Clean" CALL :SUBNMAKE clean
+
 IF /I "%ARCH%" == "x86" GOTO :END
 IF /I "%ARCH%" == "x64" GOTO :x64
 IF /I "%ARCH%" == "all" GOTO :x64
+
 
 :x64
 SET "LIB=%WDKBASEDIR%\lib\crt\amd64;%WDKBASEDIR%\lib\win7\amd64"
@@ -148,14 +157,14 @@ TITLE Building Notepad2 x64...
 ECHO. && ECHO.
 
 IF /I "%BUILDTYPE%" == "Build" (
-CALL :SUBNMAKE "x64=1"
-GOTO :END
+  CALL :SUBNMAKE "x64=1"
+  GOTO :END
 )
 
 IF /I "%BUILDTYPE%" == "Rebuild" (
-CALL :SUBNMAKE "x64=1" clean
-CALL :SUBNMAKE "x64=1"
-GOTO :END
+  CALL :SUBNMAKE "x64=1" clean
+  CALL :SUBNMAKE "x64=1"
+  GOTO :END
 )
 
 IF /I "%BUILDTYPE%" == "Clean" CALL :SUBNMAKE "x64=1" clean
@@ -171,6 +180,7 @@ EXIT /B
 nmake /NOLOGO /f "makefile.mak" %1 %2
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 EXIT /B
+
 
 :SUBMSG
 ECHO.&&ECHO:______________________________

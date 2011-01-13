@@ -8,7 +8,7 @@ rem *   Batch file used to build Notepad2 with ICL12
 rem *
 rem * See License.txt for details about distribution and modification.
 rem *
-rem *                                       (c) XhmikosR 2010
+rem *                                       (c) XhmikosR 2010-2011
 rem *                                       http://code.google.com/p/notepad2-mod/
 rem *
 rem ******************************************************************************
@@ -28,6 +28,7 @@ IF /I "%~1"=="--help" GOTO :SHOWHELP
 IF /I "%~1"=="/?" GOTO :SHOWHELP
 GOTO :CHECKFIRSTARG
 
+
 :SHOWHELP
 TITLE "build_icl12.bat %1"
 ECHO.
@@ -44,51 +45,54 @@ ECHO.
 ENDLOCAL
 EXIT /B
 
+
 :CHECKFIRSTARG
 rem Check for the first switch
 IF "%~1" == "" (
-SET BUILDTYPE=Build
+  SET BUILDTYPE=Build
 ) ELSE (
-IF /I "%~1" == "Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
-IF /I "%~1" == "/Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
-IF /I "%~1" == "-Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
-IF /I "%~1" == "--Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
-IF /I "%~1" == "Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
-IF /I "%~1" == "/Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
-IF /I "%~1" == "-Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
-IF /I "%~1" == "--Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
-IF /I "%~1" == "Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
-IF /I "%~1" == "/Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
-IF /I "%~1" == "-Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
-IF /I "%~1" == "--Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
-ECHO.
-ECHO:Unsupported commandline switch!
-ECHO:Run "build_icl12.bat help" for details about the commandline switches.
-CALL :SUBMSG "ERROR" "Compilation failed!"
+  IF /I "%~1" == "Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
+  IF /I "%~1" == "/Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
+  IF /I "%~1" == "-Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
+  IF /I "%~1" == "--Build" SET BUILDTYPE=Build&&GOTO :CHECKSECONDARG
+  IF /I "%~1" == "Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
+  IF /I "%~1" == "/Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
+  IF /I "%~1" == "-Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
+  IF /I "%~1" == "--Clean" SET BUILDTYPE=Clean&&GOTO :CHECKSECONDARG
+  IF /I "%~1" == "Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
+  IF /I "%~1" == "/Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
+  IF /I "%~1" == "-Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
+  IF /I "%~1" == "--Rebuild" SET BUILDTYPE=Rebuild&&GOTO :CHECKSECONDARG
+
+  ECHO.
+  ECHO:Unsupported commandline switch!
+  ECHO:Run "build_icl12.bat help" for details about the commandline switches.
+  CALL :SUBMSG "ERROR" "Compilation failed!"
 )
 
 
 :CHECKSECONDARG
 rem Check for the second switch
 IF "%~2" == "" (
-SET ARCH=all
+  SET ARCH=all
 ) ELSE (
-IF /I "%~2" == "x86" SET ARCH=x86&&GOTO :START
-IF /I "%~2" == "/x86" SET ARCH=x86&&GOTO :START
-IF /I "%~2" == "-x86" SET ARCH=x86&&GOTO :START
-IF /I "%~2" == "--x86" SET ARCH=x86&&GOTO :START
-IF /I "%~2" == "x64" SET ARCH=x64&&GOTO :START
-IF /I "%~2" == "/x64" SET ARCH=x64&&GOTO :START
-IF /I "%~2" == "-x64" SET ARCH=x64&&GOTO :START
-IF /I "%~2" == "--x64" SET ARCH=x64&&GOTO :START
-IF /I "%~2" == "all" SET ARCH=all&&GOTO :START
-IF /I "%~2" == "/all" SET ARCH=all&&GOTO :START
-IF /I "%~2" == "-all" SET ARCH=all&&GOTO :START
-IF /I "%~2" == "--all" SET ARCH=all&&GOTO :START
-ECHO.
-ECHO:Unsupported commandline switch!
-ECHO:Run "build_icl12.bat help" for details about the commandline switches.
-CALL :SUBMSG "ERROR" "Compilation failed!"
+  IF /I "%~2" == "x86" SET ARCH=x86&&GOTO :START
+  IF /I "%~2" == "/x86" SET ARCH=x86&&GOTO :START
+  IF /I "%~2" == "-x86" SET ARCH=x86&&GOTO :START
+  IF /I "%~2" == "--x86" SET ARCH=x86&&GOTO :START
+  IF /I "%~2" == "x64" SET ARCH=x64&&GOTO :START
+  IF /I "%~2" == "/x64" SET ARCH=x64&&GOTO :START
+  IF /I "%~2" == "-x64" SET ARCH=x64&&GOTO :START
+  IF /I "%~2" == "--x64" SET ARCH=x64&&GOTO :START
+  IF /I "%~2" == "all" SET ARCH=all&&GOTO :START
+  IF /I "%~2" == "/all" SET ARCH=all&&GOTO :START
+  IF /I "%~2" == "-all" SET ARCH=all&&GOTO :START
+  IF /I "%~2" == "--all" SET ARCH=all&&GOTO :START
+
+  ECHO.
+  ECHO:Unsupported commandline switch!
+  ECHO:Run "build_icl12.bat help" for details about the commandline switches.
+  CALL :SUBMSG "ERROR" "Compilation failed!"
 )
 
 
@@ -103,6 +107,7 @@ TITLE Building Notepad2 x86...
 ECHO. && ECHO.
 
 CALL :SUBMSVC %BUILDTYPE% "Win32"
+
 IF /I "%ARCH%" == "x86" GOTO :END
 IF /I "%ARCH%" == "x64" GOTO :x64
 IF /I "%ARCH%" == "all" GOTO :x64
@@ -128,6 +133,7 @@ EXIT /B
 devenv /nologo ..\Notepad2_icl12.sln /%~1 "Release|%~2"
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 EXIT /B
+
 
 :SUBMSG
 ECHO.&&ECHO:______________________________
