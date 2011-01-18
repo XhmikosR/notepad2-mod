@@ -42,30 +42,30 @@ DEFINES=/D "STATIC_BUILD" /D "SCI_LEXER" /D "BOOKMARK_EDITION" /D "_WINDOWS" /D 
 		/D "_UNICODE" /D "UNICODE"
 INCLUDEDIRS=/I "$(SCIINC)" /I "$(SCILEX)" /I "$(SCILIB)" /I "$(SCISRC)" /I "$(SCIWIN)"
 CXXFLAGS=/nologo /c /Fo"$(OBJDIR)/" /W3 /WX /EHsc /MD /O2 /GL /MP $(DEFINES) $(INCLUDEDIRS)
-LIBS=kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib shlwapi.lib comdlg32.lib \
-		comctl32.lib winspool.lib imm32.lib ole32.lib oleaut32.lib psapi.lib
 LDFLAGS=/NOLOGO /WX /INCREMENTAL:NO /RELEASE /OPT:REF /OPT:ICF /DYNAMICBASE /NXCOMPAT \
 		/LTCG /MERGE:.rdata=.text
+LIBS=kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib shlwapi.lib comdlg32.lib \
+	comctl32.lib winspool.lib imm32.lib ole32.lib oleaut32.lib psapi.lib
 RFLAGS=/d "_UNICODE" /d "UNICODE" /d "BOOKMARK_EDITION"
 
 
 !IFDEF x64
 CXXFLAGS=$(CXXFLAGS) /D "_WIN64" /D "_WIN32_WINNT=0x0502" /wd4133 /wd4244 /wd4267
-RFLAGS=$(RFLAGS) /d "_WIN64"
+LDFLAGS=$(LDFLAGS) /SUBSYSTEM:WINDOWS,5.02 /MACHINE:X64
 LIBS=$(LIBS) msvcrt_win2003.obj
-LDFLAGS=$(LDFLAGS) /SUBSYSTEM:WINDOWS,5.02 /MACHINE:X64 $(LIBS)
+RFLAGS=$(RFLAGS) /d "_WIN64"
 !ELSE
 CXXFLAGS=$(CXXFLAGS) /D "WIN32" /D "_WIN32_WINNT=0x0501"
-RFLAGS=$(RFLAGS) /d "WIN32"
+LDFLAGS=$(LDFLAGS) /SUBSYSTEM:WINDOWS,5.01 /MACHINE:X86
 LIBS=$(LIBS) msvcrt_winxp.obj
-LDFLAGS=$(LDFLAGS) /SUBSYSTEM:WINDOWS,5.01 /MACHINE:X86 $(LIBS)
+RFLAGS=$(RFLAGS) /d "WIN32"
 !ENDIF
 
 CCOMMAND=@$(CC) $(CXXFLAGS) /Tc $<
 CPPCOMMAND=@$(CC) $(CXXFLAGS) /Tp $<
 
 
-.PHONY:	ALL CHECKDIRS
+PSEUDOTARGET:	ALL CHECKDIRS
 
 CHECKDIRS:
 		-@ MKDIR "$(OBJDIR)" >NUL 2>&1
@@ -176,7 +176,7 @@ OBJECTS=$(SCILEX_OBJ) $(SCILIB_OBJ) $(SCISRC_OBJ) $(SCIWIN_OBJ) $(NOTEPAD2_OBJ)
 
 $(APP): $(OBJECTS)
 	@$(RC) $(RFLAGS) /fo"$(OBJDIR)\Notepad2.res" "$(SRC)\Notepad2.rc"
-	@$(LD) $(LDFLAGS) /OUT:"$(APP)" $(OBJECTS)
+	@$(LD) $(LDFLAGS) $(LIBS) $(OBJECTS) /OUT:"$(APP)"
 	@$(MT) -nologo -manifest "$(RES)\Notepad2.exe.manifest" -outputresource:"$(APP);#1"
 
 

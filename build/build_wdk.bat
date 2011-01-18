@@ -120,7 +120,7 @@ SET "PATH=%WDKBASEDIR%\bin\x86;%WDKBASEDIR%\bin\x86\x86;%SDKDIR%\Bin"
 
 IF /I "%ARCH%" == "x64" GOTO :x64
 
-TITLE Building Notepad2 x86...
+TITLE Building Notepad2 x86 with WDK...
 ECHO. && ECHO.
 
 IF /I "%BUILDTYPE%" == "Build" (
@@ -153,7 +153,7 @@ SET "PATH=%WDKBASEDIR%\bin\x86;%WDKBASEDIR%\bin\x86\amd64;%SDKDIR%\Bin"
 
 IF /I "%ARCH%" == "x86" GOTO :END
 
-TITLE Building Notepad2 x64...
+TITLE Building Notepad2 x64 with WDK...
 ECHO. && ECHO.
 
 IF /I "%BUILDTYPE%" == "Build" (
@@ -171,7 +171,7 @@ IF /I "%BUILDTYPE%" == "Clean" CALL :SUBNMAKE "x64=1" clean
 
 
 :END
-TITLE Building Notepad2 - Finished!
+TITLE Building Notepad2 with WDK - Finished!
 ENDLOCAL
 EXIT /B
 
