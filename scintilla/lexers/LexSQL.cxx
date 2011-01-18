@@ -693,7 +693,11 @@ void SCI_METHOD LexerSQL::Fold(unsigned int startPos, int length, int initStyle,
 				sqlStatesCurrentLine = sqlStates.IgnoreWhen(sqlStatesCurrentLine, true);
 			} else if ((!options.foldOnlyBegin) && !sqlStates.IsIntoDeclareBlock(sqlStatesCurrentLine) && strcmp(s, "exception") == 0) {
 				sqlStatesCurrentLine = sqlStates.IntoExceptionBlock(sqlStatesCurrentLine, true);
-			} else if ((!options.foldOnlyBegin) && strcmp (s, "declare") == 0) {
+			} else if ((!options.foldOnlyBegin) &&
+			           (strcmp(s, "declare") == 0 ||
+			            strcmp(s, "function") == 0 ||
+			            strcmp(s, "procedure") == 0 ||
+			            strcmp(s, "package") == 0)) {
 				sqlStatesCurrentLine = sqlStates.IntoDeclareBlock(sqlStatesCurrentLine, true);
 			}
 		}
