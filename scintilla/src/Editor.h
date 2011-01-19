@@ -483,6 +483,7 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	bool PositionInSelection(int pos);
 	bool PointInSelection(Point pt);
 	bool PointInSelMargin(Point pt);
+	Window::Cursor GetMarginCursor(Point pt);
 	void LineSelection(int lineCurrent_, int lineAnchor_);
 	void WordSelection(int pos);
 	void DwellEnd(bool mouseMoved);

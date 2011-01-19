@@ -5844,6 +5844,16 @@ bool Editor::PointInSelMargin(Point pt) {
 	}
 }
 
+Window::Cursor Editor::GetMarginCursor(Point pt) {
+	int x = 0;
+	for (int margin = 0; margin < ViewStyle::margins; margin++) {
+		if ((pt.x >= x) && (pt.x < x + vs.ms[margin].width))
+			return static_cast<Window::Cursor>(vs.ms[margin].cursor);
+		x += vs.ms[margin].width;
+	}
+	return Window::cursorReverseArrow;
+}
+
 void Editor::LineSelection(int lineCurrent_, int lineAnchor_) {
 	if (lineAnchor_ < lineCurrent_) {
 		SetSelection(pdoc->LineStart(lineCurrent_ + 1),
@@ -6201,7 +6211,7 @@ void Editor::ButtonMove(Point pt) {
 	} else {
 		if (vs.fixedColumnWidth > 0) {	// There is a margin
 			if (PointInSelMargin(pt)) {
-				DisplayCursor(Window::cursorReverseArrow);
+				DisplayCursor(GetMarginCursor(pt));
 				SetHotSpotRange(NULL);
 				return; 	// No need to test for selection
 			}
@@ -6236,7 +6246,7 @@ void Editor::ButtonUp(Point pt, unsigned int curTime, bool ctrl) {
 	}
 	if (HaveMouseCapture()) {
 		if (PointInSelMargin(pt)) {
-			DisplayCursor(Window::cursorReverseArrow);
+			DisplayCursor(GetMarginCursor(pt));
 		} else {
 			DisplayCursor(Window::cursorText);
 			SetHotSpotRange(NULL);
@@ -7836,6 +7846,17 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 	case SCI_GETMARGINSENSITIVEN:
 		if (ValidMargin(wParam))
 			return vs.ms[wParam].sensitive ? 1 : 0;
+		else
+			return 0;
+
+	case SCI_SETMARGINCURSORN:
+		if (ValidMargin(wParam))
+			vs.ms[wParam].cursor = lParam;
+		break;
+
+	case SCI_GETMARGINCURSORN:
+		if (ValidMargin(wParam))
+			return vs.ms[wParam].cursor;
 		else
 			return 0;
 

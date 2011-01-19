@@ -789,7 +789,7 @@ sptr_t ScintillaWin::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam
 					::GetCursorPos(&pt);
 					::ScreenToClient(MainHWND(), &pt);
 					if (PointInSelMargin(Point(pt.x, pt.y))) {
-						DisplayCursor(Window::cursorReverseArrow);
+						DisplayCursor(GetMarginCursor(Point(pt.x, pt.y)));
 					} else if (PointInSelection(Point(pt.x, pt.y)) && !SelectionEmpty()) {
 						DisplayCursor(Window::cursorArrow);
 					} else if (PointIsHotspot(Point(pt.x, pt.y))) {

@@ -102,7 +102,7 @@ CALL "%VS100COMNTOOLS%vsvars32.bat" >NUL
 :x86
 IF /I "%ARCH%" == "x64" GOTO :x64
 
-TITLE Building Notepad2 x86...
+TITLE Building Notepad2 x86 with MSVC2010...
 ECHO. && ECHO.
 
 CALL :SUBMSVC %BUILDTYPE% "Win32"
@@ -115,7 +115,7 @@ IF /I "%ARCH%" == "all" GOTO :x64
 :x64
 IF /I "%ARCH%" == "x86" GOTO :END
 
-TITLE Building Notepad2 x64...
+TITLE Building Notepad2 x64 with MSVC2010...
 ECHO. && ECHO.
 
 CALL :SUBMSVC %BUILDTYPE% "x64"
@@ -123,7 +123,7 @@ GOTO :END
 
 
 :END
-TITLE Building Notepad2 - Finished!
+TITLE Building Notepad2 with MSVC2010 - Finished!
 ENDLOCAL
 EXIT /B
 
