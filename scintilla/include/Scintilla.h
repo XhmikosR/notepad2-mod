@@ -159,6 +159,8 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
 #define SCI_GETMARGINMASKN 2245
 #define SCI_SETMARGINSENSITIVEN 2246
 #define SCI_GETMARGINSENSITIVEN 2247
+#define SCI_SETMARGINCURSORN 2248
+#define SCI_GETMARGINCURSORN 2249
 #define STYLE_DEFAULT 32
 #define STYLE_LINENUMBER 33
 #define STYLE_BRACELIGHT 34
@@ -590,7 +592,9 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
 #define SCI_SETMOUSEDOWNCAPTURES 2384
 #define SCI_GETMOUSEDOWNCAPTURES 2385
 #define SC_CURSORNORMAL -1
+#define SC_CURSORARROW 2
 #define SC_CURSORWAIT 4
+#define SC_CURSORREVERSEARROW 7
 #define SCI_SETCURSOR 2386
 #define SCI_GETCURSOR 2387
 #define SCI_SETCONTROLCHARSYMBOL 2388
