@@ -1018,7 +1018,7 @@ KEYWORDLIST KeyWords_NSIS = {
 
 EDITLEXER lexNSIS = { SCLEX_NSIS, 63284, L"NSIS Script", L"nsi; nsh", L"", &KeyWords_NSIS, {
                       { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
-                    //{ SCE_NSIS_DEFAULT, L"Default", L"", L"" },
+                      //{ SCE_NSIS_DEFAULT, L"Default", L"", L"" },
                       { MULTI_STYLE(SCE_NSIS_COMMENT,SCE_NSIS_COMMENTBOX,0,0), 63127, L"Comment", L"fore:#008000", L"" },
                       { MULTI_STYLE(SCE_NSIS_STRINGDQ,SCE_NSIS_STRINGLQ,SCE_NSIS_STRINGRQ,0), 63131, L"String", L"fore:#666666; back:#EEEEEE", L"" },
                       { SCE_NSIS_FUNCTION, 63277, L"Function", L"fore:#0033CC", L"" },
@@ -1026,7 +1026,6 @@ EDITLEXER lexNSIS = { SCLEX_NSIS, 63284, L"NSIS Script", L"nsi; nsh", L"", &KeyW
                       { SCE_NSIS_STRINGVAR, 63285, L"Variable within String", L"fore:#CC3300; back:#EEEEEE", L"" },
                       { SCE_NSIS_NUMBER, 63130, L"Number", L"fore:#FF0000", L"" },
                       { SCE_NSIS_LABEL, 63286, L"Constant", L"fore:#FF9900", L"" },
-                    //{ SCE_NSIS_USERDEFINED, L"User Defined", L"", L"" },
                       { SCE_NSIS_SECTIONDEF, 63232, L"Section", L"fore:#0033CC", L"" },
                       { SCE_NSIS_SUBSECTIONDEF, 63287, L"Sub Section", L"fore:#0033CC", L"" },
                       { SCE_NSIS_SECTIONGROUP, 63288, L"Section Group", L"fore:#0033CC", L"" },
@@ -1034,6 +1033,7 @@ EDITLEXER lexNSIS = { SCLEX_NSIS, 63284, L"NSIS Script", L"nsi; nsh", L"", &KeyW
                       { SCE_NSIS_PAGEEX, 63290, L"PageEx", L"fore:#0033CC", L"" },
                       { SCE_NSIS_IFDEFINEDEF, 63291, L"If Definition", L"fore:#0033CC", L"" },
                       { SCE_NSIS_MACRODEF, 63292, L"Macro Definition", L"fore:#0033CC", L"" },
+                      //{ SCE_NSIS_USERDEFINED, L"User Defined", L"", L"" },
                       { -1, 00000, L"", L"", L"" } } };
 
 
@@ -1050,14 +1050,15 @@ KEYWORDLIST KeyWords_INNO = {
 "dialogfontname dialogfontsize direxistswarning disabledirpage disablefinishedpage disableprogramgrouppage disablereadymemo "
 "disablereadypage disablestartupprompt diskclustersize diskslicesize diskspanning enabledirdoesntexistwarning "
 "encryption extradiskspacerequired flatcomponentslist infoafterfile infobeforefile internalcompresslevel "
-"languagedetectionmethod languagecodepage languageid languagename licensefile mergeduplicatefiles minversion "
-"onlybelowversion outputbasefilename outputdir outputmanifestfile password privilegesrequired reservebytes "
+"languagedetectionmethod languagecodepage languageid languagename licensefile lzmaalgorithm lzmablocksize "
+"lzmadictionarysize lzmamatchfinder lzmanumblockthreads lzmanumfastbytes lzmauseseparateprocess mergeduplicatefiles "
+"minversion onlybelowversion outputbasefilename outputdir outputmanifestfile password privilegesrequired reservebytes "
 "restartifneededbyrun righttoleft setupiconfile setuplogging showcomponentsizes showlanguagedialog showtaskstreelines "
-"showundisplayablelanguages signeduninstaller signeduninstallerdir signtool slicesperdisk "
-"solidcompression sourcedir strongassemblyname timestamprounding timestampsinutc titlefontname titlefontsize touchdate "
-"touchtime uninstallable uninstalldisplayicon uninstalldisplayname uninstallfilesdir uninstalldisplaysize uninstalllogmode "
-"uninstallrestartcomputer updateuninstalllogappname usepreviousappdir usepreviousgroup usepreviouslanguage useprevioussetuptype "
-"useprevioustasks verb versioninfoproductname useprevioususerinfo userinfopage usesetupldr versioninfocompany versioninfocopyright "
+"showundisplayablelanguages signeduninstaller signeduninstallerdir signtool slicesperdisk solidcompression sourcedir "
+"strongassemblyname timestamprounding timestampsinutc titlefontname titlefontsize touchdate touchtime uninstallable "
+"uninstalldisplayicon uninstalldisplayname uninstallfilesdir uninstalldisplaysize uninstalllogmode uninstallrestartcomputer "
+"updateuninstalllogappname usepreviousappdir usepreviousgroup usepreviouslanguage useprevioussetuptype useprevioustasks "
+"verb versioninfoproductname useprevioususerinfo userinfopage usesetupldr versioninfocompany versioninfocopyright "
 "versioninfodescription versioninfoproductversion versioninfotextversion versioninfoversion versioninfoproducttextversion "
 "welcomefontname welcomefontsize windowshowcaption windowstartmaximized windowresizable windowvisible wizardimagebackcolor "
 "wizardimagefile wizardimagestretch wizardsmallimagefile",
@@ -1083,9 +1084,9 @@ EDITLEXER lexINNO = { SCLEX_INNOSETUP, 63293, L"Inno Setup Script", L"iss; isl; 
                       { SCE_INNO_INLINE_EXPANSION, 63295, L"Inline Expansion", L"fore:#800080", L"" },
                       { SCE_INNO_COMMENT_PASCAL, 63296, L"Pascal Comment", L"fore:#008000", L"" },
                       { SCE_INNO_KEYWORD_PASCAL, 63297, L"Pascal Keyword", L"fore:#0000FF", L"" },
-                    //{ SCE_INNO_KEYWORD_USER, L"User Defined", L"", L"" },
                       { MULTI_STYLE(SCE_INNO_STRING_DOUBLE,SCE_INNO_STRING_SINGLE,0,0), 63131, L"String", L"", L"" },
-                    //{ SCE_INNO_IDENTIFIER, 63129, L"Identifier", L"", L"" },
+                      //{ SCE_INNO_IDENTIFIER, 63129, L"Identifier", L"", L"" },
+                      //{ SCE_INNO_KEYWORD_USER, L"User Defined", L"", L"" },
                       { -1, 00000, L"", L"", L"" } } };
 
 
