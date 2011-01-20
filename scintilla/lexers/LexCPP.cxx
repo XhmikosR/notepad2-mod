@@ -1,6 +1,7 @@
 // Scintilla source code edit control
 /** @file LexCPP.cxx
  ** Lexer for C++, C, Java, and JavaScript.
+ ** Further folding features and configuration properties added by "Udo Lechner" <dlchnr(at)gmx(dot)net>
  **/
 // Copyright 1998-2005 by Neil Hodgson <neilh@scintilla.org>
 // The License.txt file describes the conditions under which this software may be distributed.
@@ -208,8 +209,13 @@ struct OptionsCPP {
 	bool trackPreprocessor;
 	bool updatePreprocessor;
 	bool fold;
+	bool foldSyntaxBased;
 	bool foldComment;
+	bool foldCommentMultiline;
 	bool foldCommentExplicit;
+	std::string foldExplicitStart;
+	std::string foldExplicitEnd;
+	bool foldExplicitAnywhere;
 	bool foldPreprocessor;
 	bool foldCompact;
 	bool foldAtElse;
@@ -219,8 +225,13 @@ struct OptionsCPP {
 		trackPreprocessor = true;
 		updatePreprocessor = true;
 		fold = false;
+		foldSyntaxBased = true;
 		foldComment = false;
+		foldCommentMultiline = true;
 		foldCommentExplicit = true;
+		foldExplicitStart = "";
+		foldExplicitEnd = "";
+		foldExplicitAnywhere = false;
 		foldPreprocessor = false;
 		foldCompact = false;
 		foldAtElse = false;
@@ -254,13 +265,28 @@ struct OptionSetCPP : public OptionSet<OptionsCPP> {
 
 		DefineProperty("fold", &OptionsCPP::fold);
 
+		DefineProperty("fold.cpp.syntax.based", &OptionsCPP::foldSyntaxBased,
+			"Set this property to 0 to disable syntax based folding.");
+
 		DefineProperty("fold.comment", &OptionsCPP::foldComment,
 			"This option enables folding multi-line comments and explicit fold points when using the C++ lexer. "
 			"Explicit fold points allows adding extra folding by placing a //{ comment at the start and a //} "
 			"at the end of a section that should fold.");
 
+		DefineProperty("fold.cpp.comment.multiline", &OptionsCPP::foldCommentMultiline,
+			"Set this property to 0 to disable folding multi-line comments when fold.comment=1.");
+
 		DefineProperty("fold.cpp.comment.explicit", &OptionsCPP::foldCommentExplicit,
 			"Set this property to 0 to disable folding explicit fold points when fold.comment=1.");
+
+		DefineProperty("fold.cpp.explicit.start", &OptionsCPP::foldExplicitStart,
+			"The string to use for explicit fold start points, replacing the standard //{.");
+
+		DefineProperty("fold.cpp.explicit.end", &OptionsCPP::foldExplicitEnd,
+			"The string to use for explicit fold end points, replacing the standard //}.");
+
+		DefineProperty("fold.cpp.explicit.anywhere", &OptionsCPP::foldExplicitAnywhere,
+			"Set this property to 1 to enable explicit fold points anywhere, not just in line comments.");
 
 		DefineProperty("fold.preprocessor", &OptionsCPP::foldPreprocessor,
 			"This option enables folding preprocessor directives when using the C++ lexer. "
@@ -852,6 +878,7 @@ void SCI_METHOD LexerCPP::Fold(unsigned int startPos, int length, int initStyle,
 	char chNext = styler[startPos];
 	int styleNext = styler.StyleAt(startPos);
 	int style = initStyle;
+	const bool userDefinedFoldMarkers = !options.foldExplicitStart.empty() && !options.foldExplicitEnd.empty();
 	for (unsigned int i = startPos; i < endPos; i++) {
 		char ch = chNext;
 		chNext = styler.SafeGetCharAt(i + 1);
@@ -859,7 +886,7 @@ void SCI_METHOD LexerCPP::Fold(unsigned int startPos, int length, int initStyle,
 		style = styleNext;
 		styleNext = styler.StyleAt(i + 1);
 		bool atEOL = (ch == '\r' && chNext != '\n') || (ch == '\n');
-		if (options.foldComment && IsStreamCommentStyle(style)) {
+		if (options.foldComment && options.foldCommentMultiline && IsStreamCommentStyle(style)) {
 			if (!IsStreamCommentStyle(stylePrev) && (stylePrev != SCE_C_COMMENTLINEDOC)) {
 				levelNext++;
 			} else if (!IsStreamCommentStyle(styleNext) && (styleNext != SCE_C_COMMENTLINEDOC) && !atEOL) {
@@ -867,19 +894,24 @@ void SCI_METHOD LexerCPP::Fold(unsigned int startPos, int length, int initStyle,
 				levelNext--;
 			}
 		}
-		/* notepad2-mod custom code start */
-		/* Disable explicit folding; it can often cause problems with non-aware code
-		if (options.foldComment && options.foldCommentExplicit && (style == SCE_C_COMMENTLINE)) {
-			if ((ch == '/') && (chNext == '/')) {
-				char chNext2 = styler.SafeGetCharAt(i + 2);
-				if (chNext2 == '{') {
+		if (options.foldComment && options.foldCommentExplicit && ((style == SCE_C_COMMENTLINE) || options.foldExplicitAnywhere)) {
+			if (userDefinedFoldMarkers) {
+				if (styler.Match(i, options.foldExplicitStart.c_str())) {
 					levelNext++;
-				} else if (chNext2 == '}') {
+				} else if (styler.Match(i, options.foldExplicitEnd.c_str())) {
 					levelNext--;
+				}
+			} else {
+				if ((ch == '/') && (chNext == '/')) {
+					char chNext2 = styler.SafeGetCharAt(i + 2);
+					if (chNext2 == '{') {
+						levelNext++;
+					} else if (chNext2 == '}') {
+						levelNext--;
+					}
 				}
 			}
 		}
-		*/ /* notepad2-mod custom code end */
 		if (options.foldPreprocessor && (style == SCE_C_PREPROCESSOR)) {
 			if (ch == '#') {
 				unsigned int j = i + 1;
@@ -893,7 +925,7 @@ void SCI_METHOD LexerCPP::Fold(unsigned int startPos, int length, int initStyle,
 				}
 			}
 		}
-		if (style == SCE_C_OPERATOR) {
+		if (options.foldSyntaxBased && (style == SCE_C_OPERATOR)) {
 			if (ch == '{') {
 				// Measure the minimum before a '{' to allow
 				// folding on "} else {"
@@ -909,7 +941,7 @@ void SCI_METHOD LexerCPP::Fold(unsigned int startPos, int length, int initStyle,
 			visibleChars++;
 		if (atEOL || (i == endPos-1)) {
 			int levelUse = levelCurrent;
-			if (options.foldAtElse) {
+			if (options.foldSyntaxBased && options.foldAtElse) {
 				levelUse = levelMinCurrent;
 			}
 			int lev = levelUse | levelNext << 16;
