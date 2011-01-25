@@ -1354,15 +1354,22 @@ BEGIN
     BEGIN
         BLOCK "040904b0"
         BEGIN
+            #if defined(_WIN64)
+            VALUE "Comments", APPNAME_STRA_X64
+            VALUE "FileDescription", APPNAME_STRA_X64
+            VALUE "InternalName", APPNAME_STRA_X64
+            VALUE "ProductName", APPNAME_STRA_X64
+            #else
             VALUE "Comments", APPNAME_STRA
             VALUE "FileDescription", APPNAME_STRA
+            VALUE "InternalName", APPNAME_STRA
+            VALUE "ProductName", APPNAME_STRA
+            #endif
             //VALUE "CompanyName", "Florian Balmer"
             VALUE "FileVersion", STRINGIFY(VERSION_MAJOR) ", " STRINGIFY(VERSION_MINOR) ", " STRINGIFY(VERSION_BUILD) ", " STRINGIFY(VERSION_REV)
             VALUE "ProductVersion", STRINGIFY(VERSION_MAJOR) ", " STRINGIFY(VERSION_MINOR) ", " STRINGIFY(VERSION_BUILD) ", " STRINGIFY(VERSION_REV)
-            VALUE "InternalName", APPNAME_STRA
             VALUE "LegalCopyright", "© Florian Balmer 2004-2010"
             VALUE "OriginalFilename", "Notepad2.exe"
-            VALUE "ProductName", APPNAME_STRA
         END
     END
     BLOCK "VarFileInfo"

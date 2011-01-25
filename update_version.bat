@@ -16,3 +16,4 @@ COPY /V /Y "res\Notepad2.exe.manifest.template" "res\Notepad2.exe.manifest"
 COPY /V /Y "distrib\res\full\setup.manifest.template" "distrib\res\full\setup.manifest"
 COPY /V /Y "distrib\res\lite\setup.manifest.template" "distrib\res\lite\setup.manifest"
 ECHO.
+EXIT /B
