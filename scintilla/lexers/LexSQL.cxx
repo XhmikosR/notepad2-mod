@@ -42,7 +42,7 @@ static inline bool IsAWordChar(int ch, bool sqlAllowDottedWord) {
 	if (!sqlAllowDottedWord)
 		return (ch < 0x80) && (isalnum(ch) || ch == '_');
 	else
-		return (ch < 0x80) && (isalnum(ch) || ch == '_' || ch=='.');
+		return (ch < 0x80) && (isalnum(ch) || ch == '_' || ch == '.');
 }
 
 static inline bool IsAWordStart(int ch) {
@@ -172,7 +172,6 @@ struct OptionsSQL {
 	bool foldComment;
 	bool foldCompact;
 	bool foldOnlyBegin;
-	bool foldSqlExists;
 	bool sqlBackticksIdentifier;
 	bool sqlNumbersignComment;
 	bool sqlBackslashEscapes;
@@ -183,7 +182,6 @@ struct OptionsSQL {
 		foldComment = false;
 		foldCompact = false;
 		foldOnlyBegin = false;
-		foldSqlExists = false;
 		sqlBackticksIdentifier = false;
 		sqlNumbersignComment = false;
 		sqlBackslashEscapes = false;
@@ -216,9 +214,6 @@ struct OptionSetSQL : public OptionSet<OptionsSQL> {
 
 		DefineProperty("fold.sql.only.begin", &OptionsSQL::foldOnlyBegin);
 
-		DefineProperty("fold.sql.exists", &OptionsSQL::foldSqlExists,
-		               "Enables \"EXISTS\" to end a fold as is started by \"IF\" in \"DROP TABLE IF EXISTS\".");
-
 		DefineProperty("lexer.sql.backticks.identifier", &OptionsSQL::sqlBackticksIdentifier);
 
 		DefineProperty("lexer.sql.numbersign.comment", &OptionsSQL::sqlNumbersignComment,
@@ -229,7 +224,7 @@ struct OptionSetSQL : public OptionSet<OptionsSQL> {
 
 		DefineProperty("lexer.sql.allow.dotted.word", &OptionsSQL::sqlAllowDottedWord,
 		               "Set to 1 to colourise recognized words with dots "
-			       "(recommended for Oracle PL/SQL objects).");
+		               "(recommended for Oracle PL/SQL objects).");
 
 		DefineWordListSets(sqlWordListDesc);
 	}
@@ -674,11 +669,9 @@ void SCI_METHOD LexerSQL::Fold(unsigned int startPos, int length, int initStyle,
 				levelNext++;
 				sqlStatesCurrentLine = sqlStates.IntoDeclareBlock(sqlStatesCurrentLine, false);
 			} else if ((strcmp(s, "end") == 0) ||
-			           // DROP TABLE IF EXISTS or CREATE TABLE IF NOT EXISTS
-			           (options.foldSqlExists && (strcmp(s, "exists") == 0)) ||
-			           //  SQL Anywhere permits IF ... ELSE ... ENDIF
-			           //      will only be active if "endif" appears in the
-			           //		keyword list.
+			           // SQL Anywhere permits IF ... ELSE ... ENDIF
+			           // will only be active if "endif" appears in the
+			           // keyword list.
 			           (strcmp(s, "endif") == 0)) {
 				endFound = true;
 				levelNext--;
