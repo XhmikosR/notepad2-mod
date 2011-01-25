@@ -110,8 +110,7 @@ update_version.bat
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
-      <Culture>0x0409</Culture>
-      <PreprocessorDefinitions>_UNICODE;UNICODE;BOOKMARK_EDITION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_UNICODE;UNICODE;BOOKMARK_EDITION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </ResourceCompile>
     <Link>
@@ -146,8 +145,7 @@ update_version.bat
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
-      <Culture>0x0409</Culture>
-      <PreprocessorDefinitions>_UNICODE;UNICODE;BOOKMARK_EDITION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WIN64;_UNICODE;UNICODE;BOOKMARK_EDITION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </ResourceCompile>
     <Link>
@@ -184,8 +182,7 @@ update_version.bat
       <DisableSpecificDiagnostics>2</DisableSpecificDiagnostics>
     </ClCompile>
     <ResourceCompile>
-      <Culture>0x0409</Culture>
-      <PreprocessorDefinitions>_UNICODE;UNICODE;BOOKMARK_EDITION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_UNICODE;UNICODE;BOOKMARK_EDITION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </ResourceCompile>
     <Link>
@@ -234,8 +231,7 @@ update_version.bat
       <DisableSpecificDiagnostics>2</DisableSpecificDiagnostics>
     </ClCompile>
     <ResourceCompile>
-      <Culture>0x0409</Culture>
-      <PreprocessorDefinitions>_UNICODE;UNICODE;BOOKMARK_EDITION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WIN64;_UNICODE;UNICODE;BOOKMARK_EDITION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </ResourceCompile>
     <Link>
