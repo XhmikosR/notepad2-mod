@@ -26,7 +26,6 @@
 #include "Scintilla.h"
 #include "SciLexer.h"
 
-#include "PropSetSimple.h"
 #include "WordList.h"
 #include "LexAccessor.h"
 #include "Accessor.h"
@@ -310,7 +309,6 @@ class LexerCPP : public ILexer {
 	CharacterSet setLogicalOp;
 	PPStates vlls;
 	std::vector<PPDefinition> ppDefineHistory;
-	PropSetSimple props;
 	WordList keywords;
 	WordList keywords2;
 	WordList keywords3;
