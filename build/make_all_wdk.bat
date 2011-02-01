@@ -28,16 +28,3 @@ ECHO.
 ENDLOCAL
 PAUSE
 EXIT /B
-
-
-:SUBMSG
-ECHO.&&ECHO:______________________________
-ECHO:[%~1] %~2
-ECHO:______________________________&&ECHO.
-IF /I "%~1"=="ERROR" (
-  PAUSE
-  EXIT
-) ELSE (
-  EXIT /B
-)
-

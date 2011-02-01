@@ -22,23 +22,23 @@ rem IF NOT EXIST "%PERL_PATH%" CALL :SUBMSG "INFO" "The Perl direcotry wasn't fo
 IF NOT DEFINED VS100COMNTOOLS CALL :SUBMSG "ERROR" "Visual Studio 2010 wasn't found; the installer won't be built"
 
 rem check for the help switches
-IF /I "%~1"=="help" GOTO :SHOWHELP
-IF /I "%~1"=="/help" GOTO :SHOWHELP
-IF /I "%~1"=="-help" GOTO :SHOWHELP
-IF /I "%~1"=="--help" GOTO :SHOWHELP
-IF /I "%~1"=="/?" GOTO :SHOWHELP
-GOTO :CHECKFIRSTARG
+IF /I "%~1"=="help" GOTO SHOWHELP
+IF /I "%~1"=="/help" GOTO SHOWHELP
+IF /I "%~1"=="-help" GOTO SHOWHELP
+IF /I "%~1"=="--help" GOTO SHOWHELP
+IF /I "%~1"=="/?" GOTO SHOWHELP
+GOTO CHECKFIRSTARG
 
 
 :SHOWHELP
 TITLE "make_installer.bat %1"
+ECHO. && ECHO.
+ECHO Usage:   make_installer.bat [ICL12^|VS2010^|WDK]
 ECHO.
-ECHO:Usage:  make_installer.bat [ICL12^|VS2010^|WDK]
-ECHO.
-ECHO:Note:   You can also prefix the commands with "-", "--" or "/".
-ECHO.
-ECHO.
-ECHO:Executing "make_installer.bat" will use the defaults: "make_installer.bat WDK"
+ECHO Notes:   You can also prefix the commands with "-", "--" or "/".
+ECHO          The arguments are case insesitive.
+ECHO. && ECHO.
+ECHO Executing "make_installer.bat" will use the defaults: "make_installer.bat WDK"
 ECHO.
 ENDLOCAL
 EXIT /B
@@ -55,78 +55,78 @@ IF "%~1" == "" (
     SET INPUTDIRx86=bin\WDK\Release_x86
     SET INPUTDIRx64=bin\WDK\Release_x64
     SET SUFFIX=
-    GOTO :START
+    GOTO START
   )
   IF /I "%~1" == "/WDK" (
     SET INPUTDIRx86=bin\WDK\Release_x86
     SET INPUTDIRx64=bin\WDK\Release_x64
     SET SUFFIX=
-    GOTO :START
+    GOTO START
   )
   IF /I "%~1" == "-WDK" (
     SET INPUTDIRx86=bin\WDK\Release_x86
     SET INPUTDIRx64=bin\WDK\Release_x64
     SET SUFFIX=
-    GOTO :START
+    GOTO START
   )
   IF /I "%~1" == "--WDK" (
     SET INPUTDIRx86=bin\WDK\Release_x86
     SET INPUTDIRx64=bin\WDK\Release_x64
     SET SUFFIX=
-    GOTO :START
+    GOTO START
   )
   IF /I "%~1" == "VS2010" (
     SET INPUTDIRx86=bin\VS2010\Release_x86
     SET INPUTDIRx64=bin\VS2010\Release_x64
     SET SUFFIX=_vs2010
-    GOTO :START
+    GOTO START
   )
   IF /I "%~1" == "/VS2010" (
     SET INPUTDIRx86=bin\VS2010\Release_x86
     SET INPUTDIRx64=bin\VS2010\Release_x64
     SET SUFFIX=_vs2010
-    GOTO :START
+    GOTO START
   )
   IF /I "%~1" == "-VS2010" (
     SET INPUTDIRx86=bin\VS2010\Release_x86
     SET INPUTDIRx64=bin\VS2010\Release_x64
     SET SUFFIX=_vs2010
-    GOTO :START
+    GOTO START
   )
   IF /I "%~1" == "--VS2010" (
     SET INPUTDIRx86=bin\VS2010\Release_x86
     SET INPUTDIRx64=bin\VS2010\Release_x64
     SET SUFFIX=_vs2010
-    GOTO :START
+    GOTO START
   )
   IF /I "%~1" == "ICL12" (
     SET INPUTDIRx86=bin\ICL12\Release_x86
     SET INPUTDIRx64=bin\ICL12\Release_x64
     SET SUFFIX=_icl12
-    GOTO :START
+    GOTO START
   )
   IF /I "%~1" == "/ICL12" (
     SET INPUTDIRx86=bin\ICL12\Release_x86
     SET INPUTDIRx64=bin\ICL12\Release_x64
     SET SUFFIX=_icl12
-    GOTO :START
+    GOTO START
   )
   IF /I "%~1" == "-ICL12" (
     SET INPUTDIRx86=bin\ICL12\Release_x86
     SET INPUTDIRx64=bin\ICL12\Release_x64
     SET SUFFIX=_icl12
-    GOTO :START
+    GOTO START
   )
   IF /I "%~1" == "--ICL12" (
     SET INPUTDIRx86=bin\ICL12\Release_x86
     SET INPUTDIRx64=bin\ICL12\Release_x64
     SET SUFFIX=_icl12
-    GOTO :START
+    GOTO START
   )
 
   ECHO.
-  ECHO:Unsupported commandline switch!
-  ECHO:Run "make_installer.bat help" for details about the commandline switches.
+  ECHO Unsupported commandline switch!
+  ECHO Run "make_installer.bat help" for details about the commandline switches.
   CALL :SUBMSG "ERROR" "Compilation failed!"
 )
 
@@ -258,9 +258,9 @@ EXIT /B
 
 
 :SUBMSG
-ECHO.&&ECHO:______________________________
-ECHO:[%~1] %~2
-ECHO:______________________________&&ECHO.
+ECHO.&&ECHO ______________________________
+ECHO [%~1] %~2
+ECHO ______________________________&&ECHO.
 IF /I "%~1"=="ERROR" (
   PAUSE
   EXIT

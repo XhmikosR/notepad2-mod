@@ -25,7 +25,6 @@
 #include "Scintilla.h"
 #include "SciLexer.h"
 
-#include "PropSetSimple.h"
 #include "WordList.h"
 #include "LexAccessor.h"
 #include "Accessor.h"
@@ -556,7 +555,9 @@ void SCI_METHOD LexerSQL::Fold(unsigned int startPos, int length, int initStyle,
 		*/ /* notepad2-mod custom code end */
 		if (style == SCE_SQL_OPERATOR) {
 			if (ch == '(') {
-				levelNext++;
+				if (levelCurrent > levelNext)
+					levelCurrent--;
+ 				levelNext++;
 			} else if (ch == ')') {
 				levelNext--;
 			} else if ((!options.foldOnlyBegin) && ch == ';') {
