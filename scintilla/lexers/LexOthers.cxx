@@ -929,8 +929,8 @@ static int RecogniseErrorListLine(const char *lineBuffer, unsigned int lengthLin
 		// Command or return status
 		return SCE_ERR_CMD;
 	} else if (lineBuffer[0] == '<') {
-		// Diff removal, but not interested. Trapped to avoid hitting CTAG cases.
-		return SCE_ERR_DEFAULT;
+		// Diff removal.
+		return SCE_ERR_DIFF_DELETION;
 	} else if (lineBuffer[0] == '!') {
 		return SCE_ERR_DIFF_CHANGED;
 	} else if (lineBuffer[0] == '+') {

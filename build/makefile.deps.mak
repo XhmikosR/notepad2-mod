@@ -1,0 +1,437 @@
+#******************************************************************************
+#*
+#* Notepad2-mod
+#*
+#* makefile.deps.mak
+#*   Contains the dependencies for makefile.mak
+#*
+#* See License.txt for details about distribution and modification.
+#*
+#*                                       (c) XhmikosR 2010-2011
+#*                                       http://code.google.com/p/notepad2-mod/
+#*
+#*
+#*
+#******************************************************************************
+
+
+########################
+##  scintilla\lexers  ##
+########################
+LEX_HEADERS = \
+    $(SCI_INC)\ILexer.h \
+    $(SCI_INC)\Scintilla.h \
+    $(SCI_INC)\SciLexer.h \
+    $(SCI_LIB)\WordList.h \
+    $(SCI_LIB)\LexAccessor.h \
+    $(SCI_LIB)\Accessor.h \
+    $(SCI_LIB)\StyleContext.h \
+    $(SCI_LIB)\CharacterSet.h \
+    $(SCI_LIB)\LexerModule.h
+
+$(OBJDIR)\LexAsm.obj: $(SCI_LEX)\LexAsm.cxx $(LEX_HEADERS) $(SCI_LIB)\OptionSet.h
+$(OBJDIR)\LexConf.obj: $(SCI_LEX)\LexConf.cxx $(LEX_HEADERS)
+$(OBJDIR)\LexCPP.obj: $(SCI_LEX)\LexCPP.cxx $(LEX_HEADERS)
+$(OBJDIR)\LexCSS.obj: $(SCI_LEX)\LexCSS.cxx $(LEX_HEADERS)
+$(OBJDIR)\LexHTML.obj: $(SCI_LEX)\LexHTML.cxx $(LEX_HEADERS)
+$(OBJDIR)\LexOthers.obj: $(SCI_LEX)\LexOthers.cxx $(LEX_HEADERS)
+$(OBJDIR)\LexPascal.obj: $(SCI_LEX)\LexPascal.cxx $(LEX_HEADERS)
+$(OBJDIR)\LexPerl.obj: $(SCI_LEX)\LexPerl.cxx $(LEX_HEADERS)
+$(OBJDIR)\LexPowerShell.obj: $(SCI_LEX)\LexPowerShell.cxx $(LEX_HEADERS)
+$(OBJDIR)\LexPython.obj: $(SCI_LEX)\LexPython.cxx $(LEX_HEADERS)
+$(OBJDIR)\LexSQL.obj: $(SCI_LEX)\LexSQL.cxx $(LEX_HEADERS) $(SCI_LIB)\OptionSet.h
+$(OBJDIR)\LexVB.obj: $(SCI_LEX)\LexVB.cxx $(LEX_HEADERS)
+
+
+########################
+##  scintilla\lexlib  ##
+########################
+$(OBJDIR)\Accessor.obj: \
+    $(SCI_LIB)\Accessor.cxx \
+    $(SCI_LIB)\Accessor.h \
+    $(SCI_INC)\SciLexer.h \
+    $(SCI_LIB)\PropSetSimple.h \
+    $(SCI_LIB)\WordList.h \
+    $(SCI_LIB)\LexAccessor.h
+
+$(OBJDIR)\CharacterSet.obj: \
+    $(SCI_LIB)\CharacterSet.cxx \
+    $(SCI_LIB)\CharacterSet.h
+
+$(OBJDIR)\LexerBase.obj: \
+    $(SCI_LIB)\LexerBase.cxx \
+    $(SCI_LIB)\LexerBase.h \
+    $(SCI_INC)\ILexer.h \
+    $(SCI_INC)\Scintilla.h \
+    $(SCI_INC)\SciLexer.h \
+    $(SCI_LIB)\PropSetSimple.h \
+    $(SCI_LIB)\WordList.h \
+    $(SCI_LIB)\LexAccessor.h \
+    $(SCI_LIB)\Accessor.h \
+    $(SCI_LIB)\LexerModule.h
+
+$(OBJDIR)\LexerModule.obj: \
+    $(SCI_LIB)\LexerModule.cxx \
+    $(SCI_INC)\ILexer.h \
+    $(SCI_INC)\Scintilla.h \
+    $(SCI_INC)\SciLexer.h \
+    $(SCI_LIB)\PropSetSimple.h \
+    $(SCI_LIB)\WordList.h \
+    $(SCI_LIB)\LexAccessor.h \
+    $(SCI_LIB)\Accessor.h \
+    $(SCI_LIB)\LexerModule.h \
+    $(SCI_LIB)\LexerBase.h \
+    $(SCI_LIB)\LexerSimple.h
+
+$(OBJDIR)\LexerSimple.obj: \
+    $(SCI_LIB)\LexerSimple.cxx \
+    $(SCI_LIB)\LexerSimple.h \
+    $(SCI_INC)\ILexer.h \
+    $(SCI_INC)\Scintilla.h \
+    $(SCI_INC)\SciLexer.h \
+    $(SCI_LIB)\PropSetSimple.h \
+    $(SCI_LIB)\WordList.h \
+    $(SCI_LIB)\LexAccessor.h \
+    $(SCI_LIB)\Accessor.h \
+    $(SCI_LIB)\LexerModule.h \
+    $(SCI_LIB)\LexerBase.h
+
+$(OBJDIR)\PropSetSimple.obj: \
+    $(SCI_LIB)\PropSetSimple.cxx \
+    $(SCI_INC)\Platform.h
+
+$(OBJDIR)\StyleContext.obj: \
+    $(SCI_LIB)\StyleContext.cxx \
+    $(SCI_LIB)\Accessor.h \
+    $(SCI_LIB)\StyleContext.h \
+    $(SCI_INC)\ILexer.h \
+    $(SCI_LIB)\LexAccessor.h
+
+$(OBJDIR)\WordList.obj: \
+    $(SCI_LIB)\WordList.cxx \
+    $(SCI_LIB)\WordList.h
+
+
+#####################
+##  scintilla\src  ##
+#####################
+$(OBJDIR)\AutoComplete.obj: \
+    $(SCI_SRC)\AutoComplete.cxx \
+    $(SCI_INC)\Platform.h \
+    $(SCI_LIB)\CharacterSet.h \
+    $(SCI_SRC)\AutoComplete.h
+
+$(OBJDIR)\CallTip.obj: \
+    $(SCI_SRC)\CallTip.cxx \
+    $(SCI_INC)\Platform.h \
+    $(SCI_INC)\Scintilla.h \
+    $(SCI_SRC)\CallTip.h
+
+$(OBJDIR)\Catalogue.obj: \
+    $(SCI_SRC)\Catalogue.cxx \
+    $(SCI_INC)\ILexer.h \
+    $(SCI_INC)\Scintilla.h \
+    $(SCI_INC)\SciLexer.h \
+    $(SCI_LIB)\LexerModule.h \
+    $(SCI_SRC)\Catalogue.h
+
+$(OBJDIR)\CellBuffer.obj: \
+    $(SCI_SRC)\CellBuffer.cxx \
+    $(SCI_INC)\Platform.h \
+    $(SCI_INC)\Scintilla.h \
+    $(SCI_SRC)\SplitVector.h \
+    $(SCI_SRC)\Partitioning.h \
+    $(SCI_SRC)\CellBuffer.h
+
+$(OBJDIR)\CharClassify.obj: \
+    $(SCI_SRC)\CharClassify.cxx \
+    $(SCI_SRC)\CharClassify.h
+
+$(OBJDIR)\ContractionState.obj: \
+    $(SCI_SRC)\ContractionState.cxx \
+    $(SCI_INC)\Platform.h \
+    $(SCI_SRC)\SplitVector.h \
+    $(SCI_SRC)\Partitioning.h \
+    $(SCI_SRC)\RunStyles.h \
+    $(SCI_SRC)\ContractionState.h
+
+$(OBJDIR)\Decoration.obj: \
+    $(SCI_SRC)\Decoration.cxx \
+    $(SCI_INC)\Platform.h \
+    $(SCI_INC)\Scintilla.h \
+    $(SCI_SRC)\SplitVector.h \
+    $(SCI_SRC)\Partitioning.h \
+    $(SCI_SRC)\RunStyles.h \
+    $(SCI_SRC)\Decoration.h
+
+$(OBJDIR)\Document.obj: \
+    $(SCI_SRC)\Document.cxx \
+    $(SCI_INC)\Platform.h \
+    $(SCI_INC)\ILexer.h \
+    $(SCI_INC)\Scintilla.h \
+    $(SCI_SRC)\SplitVector.h \
+    $(SCI_SRC)\Partitioning.h \
+    $(SCI_SRC)\RunStyles.h \
+    $(SCI_SRC)\CellBuffer.h \
+    $(SCI_SRC)\PerLine.h \
+    $(SCI_SRC)\CharClassify.h \
+    $(SCI_LIB)\CharacterSet.h \
+    $(SCI_SRC)\Decoration.h \
+    $(SCI_SRC)\Document.h \
+    $(SCI_SRC)\RESearch.h \
+    $(SCI_SRC)\UniConversion.h
+
+$(OBJDIR)\Editor.obj: \
+    $(SCI_SRC)\Editor.cxx \
+    $(SCI_INC)\Platform.h \
+    $(SCI_INC)\Scintilla.h \
+    $(SCI_SRC)\ContractionState.h \
+    $(SCI_SRC)\SplitVector.h \
+    $(SCI_SRC)\Partitioning.h \
+    $(SCI_SRC)\CellBuffer.h \
+    $(SCI_SRC)\KeyMap.h \
+    $(SCI_SRC)\RunStyles.h \
+    $(SCI_SRC)\Indicator.h \
+    $(SCI_SRC)\XPM.h \
+    $(SCI_SRC)\LineMarker.h \
+    $(SCI_SRC)\Style.h \
+    $(SCI_SRC)\ViewStyle.h \
+    $(SCI_SRC)\CharClassify.h \
+    $(SCI_SRC)\Decoration.h \
+    $(SCI_SRC)\Document.h \
+    $(SCI_SRC)\Editor.h \
+    $(SCI_SRC)\Selection.h \
+    $(SCI_SRC)\PositionCache.h
+
+$(OBJDIR)\ExternalLexer.obj: \
+    $(SCI_SRC)\ExternalLexer.cxx \
+    $(SCI_INC)\Platform.h \
+    $(SCI_INC)\ILexer.h \
+    $(SCI_INC)\Scintilla.h \
+    $(SCI_INC)\SciLexer.h \
+    $(SCI_LIB)\LexerModule.h \
+    $(SCI_SRC)\Catalogue.h \
+    $(SCI_SRC)\ExternalLexer.h
+
+$(OBJDIR)\Indicator.obj: \
+    $(SCI_SRC)\Indicator.cxx \
+    $(SCI_INC)\Platform.h \
+    $(SCI_INC)\Scintilla.h \
+    $(SCI_SRC)\Indicator.h
+
+$(OBJDIR)\KeyMap.obj: \
+    $(SCI_SRC)\KeyMap.cxx \
+    $(SCI_INC)\Platform.h \
+    $(SCI_INC)\Scintilla.h \
+    $(SCI_SRC)\KeyMap.h
+
+$(OBJDIR)\LineMarker.obj: \
+    $(SCI_SRC)\LineMarker.cxx \
+    $(SCI_INC)\Platform.h \
+    $(SCI_INC)\Scintilla.h \
+    $(SCI_SRC)\XPM.h \
+    $(SCI_SRC)\LineMarker.h
+
+$(OBJDIR)\PerLine.obj: \
+    $(SCI_SRC)\PerLine.cxx \
+    $(SCI_INC)\Platform.h \
+    $(SCI_INC)\Scintilla.h \
+    $(SCI_SRC)\SplitVector.h \
+    $(SCI_SRC)\Partitioning.h \
+    $(SCI_SRC)\CellBuffer.h \
+    $(SCI_SRC)\PerLine.h
+
+$(OBJDIR)\PositionCache.obj: \
+    $(SCI_SRC)\PositionCache.cxx \
+    $(SCI_INC)\Platform.h  \
+    $(SCI_INC)\Scintilla.h \
+    $(SCI_SRC)\SplitVector.h  \
+    $(SCI_SRC)\Partitioning.h  \
+    $(SCI_SRC)\RunStyles.h  \
+    $(SCI_SRC)\ContractionState.h  \
+    $(SCI_SRC)\CellBuffer.h \
+    $(SCI_SRC)\KeyMap.h  \
+    $(SCI_SRC)\Indicator.h  \
+    $(SCI_SRC)\XPM.h  \
+    $(SCI_SRC)\LineMarker.h  \
+    $(SCI_SRC)\Style.h \
+    $(SCI_SRC)\ViewStyle.h \
+    $(SCI_SRC)\CharClassify.h  \
+    $(SCI_SRC)\Decoration.h  \
+    $(SCI_INC)\ILexer.h  \
+    $(SCI_SRC)\Document.h  \
+    $(SCI_SRC)\Selection.h \
+    $(SCI_SRC)\PositionCache.h
+
+$(OBJDIR)\RESearch.obj: \
+    $(SCI_SRC)\RESearch.cxx \
+    $(SCI_SRC)\CharClassify.h \
+    $(SCI_SRC)\RESearch.h
+
+$(OBJDIR)\RunStyles.obj: \
+    $(SCI_SRC)\RunStyles.cxx \
+    $(SCI_INC)\Platform.h \
+    $(SCI_INC)\Scintilla.h \
+    $(SCI_SRC)\SplitVector.h \
+    $(SCI_SRC)\Partitioning.h \
+    $(SCI_SRC)\RunStyles.h
+
+$(OBJDIR)\ScintillaBase.obj: \
+    $(SCI_SRC)\ScintillaBase.cxx \
+    $(SCI_INC)\Platform.h \
+    $(SCI_INC)\ILexer.h \
+    $(SCI_INC)\Scintilla.h \
+    $(SCI_LIB)\PropSetSimple.h \
+    $(SCI_SRC)\ContractionState.h \
+    $(SCI_SRC)\SVector.h \
+    $(SCI_SRC)\SplitVector.h \
+    $(SCI_SRC)\Partitioning.h \
+    $(SCI_SRC)\RunStyles.h \
+    $(SCI_SRC)\CellBuffer.h \
+    $(SCI_SRC)\CallTip.h \
+    $(SCI_SRC)\KeyMap.h \
+    $(SCI_SRC)\Indicator.h \
+    $(SCI_SRC)\XPM.h \
+    $(SCI_SRC)\LineMarker.h \
+    $(SCI_SRC)\Style.h \
+    $(SCI_SRC)\ViewStyle.h \
+    $(SCI_SRC)\AutoComplete.h \
+    $(SCI_SRC)\CharClassify.h \
+    $(SCI_SRC)\Decoration.h \
+    $(SCI_SRC)\Document.h \
+    $(SCI_SRC)\Editor.h \
+    $(SCI_SRC)\Selection.h \
+    $(SCI_SRC)\ScintillaBase.h
+
+$(OBJDIR)\Selection.obj: \
+    $(SCI_SRC)\Selection.cxx \
+    $(SCI_INC)\Platform.h \
+    $(SCI_INC)\Scintilla.h \
+    $(SCI_SRC)\Selection.h
+
+$(OBJDIR)\Style.obj: \
+    $(SCI_SRC)\Style.cxx \
+    $(SCI_INC)\Platform.h \
+    $(SCI_INC)\Scintilla.h \
+    $(SCI_SRC)\Style.h
+
+$(OBJDIR)\UniConversion.obj: \
+    $(SCI_SRC)\UniConversion.cxx \
+    $(SCI_SRC)\UniConversion.h
+
+$(OBJDIR)\ViewStyle.obj: \
+    $(SCI_SRC)\ViewStyle.cxx \
+    $(SCI_INC)\Platform.h \
+    $(SCI_INC)\Scintilla.h \
+    $(SCI_SRC)\SplitVector.h \
+    $(SCI_SRC)\Partitioning.h \
+    $(SCI_SRC)\RunStyles.h \
+    $(SCI_SRC)\Indicator.h \
+    $(SCI_SRC)\XPM.h \
+    $(SCI_SRC)\LineMarker.h \
+    $(SCI_SRC)\Style.h \
+    $(SCI_SRC)\ViewStyle.h
+
+$(OBJDIR)\XPM.obj: \
+    $(SCI_SRC)\XPM.cxx \
+    $(SCI_INC)\Platform.h \
+    $(SCI_SRC)\XPM.h
+
+
+#######################
+##  scintilla\win32  ##
+#######################
+$(OBJDIR)\PlatWin.obj: \
+    $(SCI_WIN)\PlatWin.cxx \
+    $(SCI_INC)\Platform.h \
+    $(SCI_SRC)\UniConversion.h \
+    $(SCI_SRC)\XPM.h \
+    $(SCI_SRC)\FontQuality.h
+
+$(OBJDIR)\ScintillaWin.obj: \
+    $(SCI_WIN)\ScintillaWin.cxx \
+    $(SCI_INC)\Platform.h \
+    $(SCI_INC)\ILexer.h \
+    $(SCI_INC)\Scintilla.h \
+    $(SCI_SRC)\ContractionState.h \
+    $(SCI_SRC)\SVector.h \
+    $(SCI_SRC)\SplitVector.h \
+    $(SCI_SRC)\Partitioning.h \
+    $(SCI_SRC)\RunStyles.h \
+    $(SCI_SRC)\CellBuffer.h \
+    $(SCI_SRC)\CallTip.h \
+    $(SCI_SRC)\KeyMap.h \
+    $(SCI_SRC)\Indicator.h \
+    $(SCI_SRC)\XPM.h \
+    $(SCI_SRC)\LineMarker.h \
+    $(SCI_SRC)\Style.h \
+    $(SCI_SRC)\AutoComplete.h \
+    $(SCI_SRC)\ViewStyle.h \
+    $(SCI_SRC)\CharClassify.h \
+    $(SCI_SRC)\Decoration.h \
+    $(SCI_SRC)\Document.h \
+    $(SCI_SRC)\Editor.h \
+    $(SCI_SRC)\ScintillaBase.h \
+    $(SCI_SRC)\Selection.h \
+    $(SCI_SRC)\UniConversion.h
+
+
+###########
+##  src  ##
+###########
+$(OBJDIR)\Dialogs.obj: \
+    $(SRC)\Dialogs.c \
+    $(SRC)\Notepad2.h \
+    $(SRC)\Edit.h \
+    $(SRC)\Helpers.h \
+    $(SRC)\Dlapi.h \
+    $(SRC)\Dialogs.h \
+    $(SRC)\resource.h \
+    $(SRC)\Version.h \
+    $(SRC)\Version_rev.h
+
+$(OBJDIR)\Dlapi.obj: \
+    $(SRC)\Dlapi.c \
+    $(SRC)\Dlapi.h
+
+$(OBJDIR)\Edit.obj: \
+    $(SRC)\Edit.c \
+    $(SRC)\Notepad2.h \
+    $(SRC)\Helpers.h \
+    $(SRC)\Dialogs.h \
+    $(SRC)\Styles.h \
+    $(SRC)\Edit.h \
+    $(SRC)\resource.h
+
+$(OBJDIR)\Helpers.obj: \
+    $(SRC)\Helpers.c \
+    $(SRC)\Helpers.h
+
+$(OBJDIR)\Notepad2.obj: \
+    $(SRC)\Notepad2.c \
+    $(SRC)\Edit.h \
+    $(SRC)\Styles.h \
+    $(SRC)\Helpers.h \
+    $(SRC)\Dialogs.h \
+    $(SRC)\Notepad2.h \
+    $(SRC)\resource.h
+
+$(OBJDIR)\Notepad2.res: \
+    $(SRC)\Notepad2.rc \
+    $(SRC)\Version.h \
+    $(SRC)\Version_rev.h
+
+$(OBJDIR)\Print.obj: \
+    $(SRC)\Print.cpp \
+    $(SRC)\Dialogs.h \
+    $(SRC)\Helpers.h \
+    $(SRC)\resource.h
+
+$(OBJDIR)\Styles.obj: \
+    $(SRC)\Styles.c \
+    $(SRC)\Dialogs.h \
+    $(SRC)\Helpers.h \
+    $(SRC)\Notepad2.h \
+    $(SRC)\Edit.h \
+    $(SRC)\Styles.h \
+    $(SRC)\resource.h

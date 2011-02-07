@@ -31,14 +31,14 @@ GOTO CHECKFIRSTARG
 
 
 :SHOWHELP
-TITLE "make_installer.bat %1"
-ECHO. && ECHO.
-ECHO Usage:   make_installer.bat [ICL12^|VS2010^|WDK]
+TITLE "%~nx0 %1"
+ECHO. & ECHO.
+ECHO Usage:   %~nx0 [ICL12^|VS2010^|WDK]
 ECHO.
 ECHO Notes:   You can also prefix the commands with "-", "--" or "/".
 ECHO          The arguments are case insesitive.
-ECHO. && ECHO.
-ECHO Executing "make_installer.bat" will use the defaults: "make_installer.bat WDK"
+ECHO. & ECHO.
+ECHO Executing "%~nx0" will use the defaults: "%~nx0 WDK"
 ECHO.
 ENDLOCAL
 EXIT /B
@@ -126,7 +126,7 @@ IF "%~1" == "" (
 
   ECHO.
   ECHO Unsupported commandline switch!
-  ECHO Run "make_installer.bat help" for details about the commandline switches.
+  ECHO Run "%~nx0 help" for details about the commandline switches.
   CALL :SUBMSG "ERROR" "Compilation failed!"
 )
 
@@ -258,9 +258,9 @@ EXIT /B
 
 
 :SUBMSG
-ECHO.&&ECHO ______________________________
+ECHO. & ECHO ______________________________
 ECHO [%~1] %~2
-ECHO ______________________________&&ECHO.
+ECHO ______________________________ & ECHO.
 IF /I "%~1"=="ERROR" (
   PAUSE
   EXIT

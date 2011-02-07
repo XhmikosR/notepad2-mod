@@ -17,7 +17,7 @@ SETLOCAL
 CD /D %~dp0
 
 rem Check the building environment
-IF NOT DEFINED VS100COMNTOOLS CALL :SUBMSG "ERROR" "Visual Studio 2010 NOT FOUND!!!"
+IF NOT DEFINED VS100COMNTOOLS CALL :SUBMSG "ERROR" "Visual Studio 2010 NOT FOUND!"
 
 rem check for the help switches
 IF /I "%~1"=="help" GOTO SHOWHELP
@@ -29,19 +29,19 @@ GOTO CHECKFIRSTARG
 
 
 :SHOWHELP
-TITLE "build_vs2010.bat %1"
-ECHO. && ECHO.
-ECHO Usage:   build_vs2010.bat [Clean^|Build^|Rebuild] [x86^|x64^|all]
+TITLE "%~nx0 %1"
+ECHO. & ECHO.
+ECHO Usage:   %~nx0 [Clean^|Build^|Rebuild] [x86^|x64^|all]
 ECHO.
 ECHO Notes:   You can also prefix the commands with "-", "--" or "/".
 ECHO          The arguments are case insesitive.
-ECHO. && ECHO.
-ECHO Executing "build_vs2010.bat" will use the defaults: "build_vs2010.bat build all"
+ECHO. & ECHO.
+ECHO Executing "%~nx0" will use the defaults: "%~nx0 build all"
 ECHO.
 ECHO If you skip the second argument the default one will be used. Example:
-ECHO "build_vs2010.bat rebuild" is equivalent to "build_vs2010.bat rebuild all"
+ECHO "%~nx0 rebuild" is equivalent to "%~nx0 rebuild all"
 ECHO.
-ECHO NOTE: "build_vs2010.bat x86" won't work.
+ECHO NOTE: "%~nx0 x86" won't work.
 ECHO.
 ENDLOCAL
 EXIT /B
@@ -50,24 +50,24 @@ EXIT /B
 :CHECKFIRSTARG
 rem Check for the first switch
 IF "%~1" == "" (
-  SET BUILDTYPE=Build
+  SET "BUILDTYPE=Build"
 ) ELSE (
-  IF /I "%~1" == "Build" SET BUILDTYPE=Build&&GOTO CHECKSECONDARG
-  IF /I "%~1" == "/Build" SET BUILDTYPE=Build&&GOTO CHECKSECONDARG
-  IF /I "%~1" == "-Build" SET BUILDTYPE=Build&&GOTO CHECKSECONDARG
-  IF /I "%~1" == "--Build" SET BUILDTYPE=Build&&GOTO CHECKSECONDARG
-  IF /I "%~1" == "Clean" SET BUILDTYPE=Clean&&GOTO CHECKSECONDARG
-  IF /I "%~1" == "/Clean" SET BUILDTYPE=Clean&&GOTO CHECKSECONDARG
-  IF /I "%~1" == "-Clean" SET BUILDTYPE=Clean&&GOTO CHECKSECONDARG
-  IF /I "%~1" == "--Clean" SET BUILDTYPE=Clean&&GOTO CHECKSECONDARG
-  IF /I "%~1" == "Rebuild" SET BUILDTYPE=Rebuild&&GOTO CHECKSECONDARG
-  IF /I "%~1" == "/Rebuild" SET BUILDTYPE=Rebuild&&GOTO CHECKSECONDARG
-  IF /I "%~1" == "-Rebuild" SET BUILDTYPE=Rebuild&&GOTO CHECKSECONDARG
-  IF /I "%~1" == "--Rebuild" SET BUILDTYPE=Rebuild&&GOTO CHECKSECONDARG
+  IF /I "%~1" == "Build" SET "BUILDTYPE=Build" & GOTO CHECKSECONDARG
+  IF /I "%~1" == "/Build" SET "BUILDTYPE=Build" & GOTO CHECKSECONDARG
+  IF /I "%~1" == "-Build" SET "BUILDTYPE=Build" & GOTO CHECKSECONDARG
+  IF /I "%~1" == "--Build" SET "BUILDTYPE=Build" & GOTO CHECKSECONDARG
+  IF /I "%~1" == "Clean" SET "BUILDTYPE=Clean" & GOTO CHECKSECONDARG
+  IF /I "%~1" == "/Clean" SET "BUILDTYPE=Clean" & GOTO CHECKSECONDARG
+  IF /I "%~1" == "-Clean" SET "BUILDTYPE=Clean" & GOTO CHECKSECONDARG
+  IF /I "%~1" == "--Clean" SET "BUILDTYPE=Clean" & GOTO CHECKSECONDARG
+  IF /I "%~1" == "Rebuild" SET "BUILDTYPE=Rebuild" & GOTO CHECKSECONDARG
+  IF /I "%~1" == "/Rebuild" SET "BUILDTYPE=Rebuild" & GOTO CHECKSECONDARG
+  IF /I "%~1" == "-Rebuild" SET "BUILDTYPE=Rebuild" & GOTO CHECKSECONDARG
+  IF /I "%~1" == "--Rebuild" SET "BUILDTYPE=Rebuild" & GOTO CHECKSECONDARG
 
   ECHO.
   ECHO Unsupported commandline switch!
-  ECHO Run "build_vs2010.bat help" for details about the commandline switches.
+  ECHO Run "%~nx0 help" for details about the commandline switches.
   CALL :SUBMSG "ERROR" "Compilation failed!"
 )
 
@@ -75,24 +75,24 @@ IF "%~1" == "" (
 :CHECKSECONDARG
 rem Check for the second switch
 IF "%~2" == "" (
-  SET ARCH=all
+  SET "ARCH=all"
 ) ELSE (
-  IF /I "%~2" == "x86" SET ARCH=x86&&GOTO START
-  IF /I "%~2" == "/x86" SET ARCH=x86&&GOTO START
-  IF /I "%~2" == "-x86" SET ARCH=x86&&GOTO START
-  IF /I "%~2" == "--x86" SET ARCH=x86&&GOTO START
-  IF /I "%~2" == "x64" SET ARCH=x64&&GOTO START
-  IF /I "%~2" == "/x64" SET ARCH=x64&&GOTO START
-  IF /I "%~2" == "-x64" SET ARCH=x64&&GOTO START
-  IF /I "%~2" == "--x64" SET ARCH=x64&&GOTO START
-  IF /I "%~2" == "all" SET ARCH=all&&GOTO START
-  IF /I "%~2" == "/all" SET ARCH=all&&GOTO START
-  IF /I "%~2" == "-all" SET ARCH=all&&GOTO START
-  IF /I "%~2" == "--all" SET ARCH=all&&GOTO START
+  IF /I "%~2" == "x86" SET "ARCH=x86" & GOTO START
+  IF /I "%~2" == "/x86" SET "ARCH=x86" & GOTO START
+  IF /I "%~2" == "-x86" SET "ARCH=x86" & GOTO START
+  IF /I "%~2" == "--x86" SET "ARCH=x86" & GOTO START
+  IF /I "%~2" == "x64" SET "ARCH=x64" & GOTO START
+  IF /I "%~2" == "/x64" SET "ARCH=x64" & GOTO START
+  IF /I "%~2" == "-x64" SET "ARCH=x64" & GOTO START
+  IF /I "%~2" == "--x64" SET "ARCH=x64" & GOTO START
+  IF /I "%~2" == "all" SET "ARCH=all" & GOTO START
+  IF /I "%~2" == "/all" SET "ARCH=all" & GOTO START
+  IF /I "%~2" == "-all" SET "ARCH=all" & GOTO START
+  IF /I "%~2" == "--all" SET "ARCH=all" & GOTO START
 
   ECHO.
   ECHO Unsupported commandline switch!
-  ECHO Run "build_vs2010.bat help" for details about the commandline switches.
+  ECHO Run "%~nx0 help" for details about the commandline switches.
   CALL :SUBMSG "ERROR" "Compilation failed!"
 )
 
@@ -105,7 +105,7 @@ CALL "%VS100COMNTOOLS%vsvars32.bat" >NUL
 IF /I "%ARCH%" == "x64" GOTO x64
 
 TITLE Building Notepad2 x86 with MSVC2010...
-ECHO. && ECHO.
+ECHO. & ECHO.
 
 CALL :SUBMSVC %BUILDTYPE% "Win32"
 
@@ -118,7 +118,7 @@ IF /I "%ARCH%" == "all" GOTO x64
 IF /I "%ARCH%" == "x86" GOTO END
 
 TITLE Building Notepad2 x64 with MSVC2010...
-ECHO. && ECHO.
+ECHO. & ECHO.
 
 CALL :SUBMSVC %BUILDTYPE% "x64"
 GOTO END
@@ -137,9 +137,9 @@ EXIT /B
 
 
 :SUBMSG
-ECHO.&&ECHO ______________________________
+ECHO. & ECHO ______________________________
 ECHO [%~1] %~2
-ECHO ______________________________&&ECHO.
+ECHO ______________________________ & ECHO.
 IF /I "%~1"=="ERROR" (
   PAUSE
   EXIT
