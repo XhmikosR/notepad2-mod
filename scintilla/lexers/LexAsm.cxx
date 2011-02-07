@@ -4,16 +4,24 @@
  ** Written by The Black Horus
  ** Enhancements and NASM stuff by Kein-Hong Man, 2003-10
  ** SCE_ASM_COMMENTBLOCK and SCE_ASM_CHARACTER are for future GNU as colouring
+ ** Converted to lexer object by "Udo Lechner" <dlchnr(at)gmx(dot)net>
  **/
 // Copyright 1998-2003 by Neil Hodgson <neilh@scintilla.org>
 // The License.txt file describes the conditions under which this software may be distributed.
 
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <assert.h>
-#include <ctype.h>
+
+#ifdef _MSC_VER
+#pragma warning(disable: 4786)
+#endif
+
+#include <string>
+#include <map>
 
 #include "ILexer.h"
 #include "Scintilla.h"
@@ -25,6 +33,7 @@
 #include "StyleContext.h"
 #include "CharacterSet.h"
 #include "LexerModule.h"
+#include "OptionSet.h"
 
 #ifdef SCI_NAMESPACE
 using namespace Scintilla;
@@ -53,15 +62,119 @@ static inline bool IsAsmOperator(const int ch) {
 	return false;
 }
 
-static void ColouriseAsmDoc(unsigned int startPos, int length, int initStyle, WordList *keywordlists[],
-                            Accessor &styler) {
+// An individual named option for use in an OptionSet
 
-	WordList &cpuInstruction = *keywordlists[0];
-	WordList &mathInstruction = *keywordlists[1];
-	WordList &registers = *keywordlists[2];
-	WordList &directive = *keywordlists[3];
-	WordList &directiveOperand = *keywordlists[4];
-	WordList &extInstruction = *keywordlists[5];
+// Options used for LexerAsm
+struct OptionsAsm {
+	OptionsAsm() {
+	}
+};
+
+static const char * const asmWordListDesc[] = {
+	"CPU instructions",
+	"FPU instructions",
+	"Registers",
+	"Directives",
+	"Directive operands",
+	"Extended instructions",
+	0
+};
+
+struct OptionSetAsm : public OptionSet<OptionsAsm> {
+	OptionSetAsm() {
+		DefineWordListSets(asmWordListDesc);
+	}
+};
+
+class LexerAsm : public ILexer {
+	WordList cpuInstruction;
+	WordList mathInstruction;
+	WordList registers;
+	WordList directive;
+	WordList directiveOperand;
+	WordList extInstruction;
+	OptionsAsm options;
+	OptionSetAsm osAsm;
+public:
+	LexerAsm() {
+	}
+	~LexerAsm() {
+	}
+	void SCI_METHOD Release() {
+		delete this;
+	}
+	int SCI_METHOD Version() const {
+		return lvOriginal;
+	}
+	const char * SCI_METHOD PropertyNames() {
+		return osAsm.PropertyNames();
+	}
+	int SCI_METHOD PropertyType(const char *name) {
+		return osAsm.PropertyType(name);
+	}
+	const char * SCI_METHOD DescribeProperty(const char *name) {
+		return osAsm.DescribeProperty(name);
+	}
+	int SCI_METHOD PropertySet(const char *key, const char *val);
+	const char * SCI_METHOD DescribeWordListSets() {
+		return osAsm.DescribeWordListSets();
+	}
+	int SCI_METHOD WordListSet(int n, const char *wl);
+	void SCI_METHOD Lex(unsigned int startPos, int length, int initStyle, IDocument *pAccess);
+	void SCI_METHOD Fold(unsigned int startPos, int length, int initStyle, IDocument *pAccess);
+
+	void * SCI_METHOD PrivateCall(int, void *) {
+		return 0;
+	}
+
+	static ILexer *LexerFactoryAsm() {
+		return new LexerAsm();
+	}
+};
+
+int SCI_METHOD LexerAsm::PropertySet(const char *key, const char *val) {
+	if (osAsm.PropertySet(&options, key, val)) {
+		return 0;
+	}
+	return -1;
+}
+
+int SCI_METHOD LexerAsm::WordListSet(int n, const char *wl) {
+	WordList *wordListN = 0;
+	switch (n) {
+	case 0:
+		wordListN = &cpuInstruction;
+		break;
+	case 1:
+		wordListN = &mathInstruction;
+		break;
+	case 2:
+		wordListN = &registers;
+		break;
+	case 3:
+		wordListN = &directive;
+		break;
+	case 4:
+		wordListN = &directiveOperand;
+		break;
+	case 5:
+		wordListN = &extInstruction;
+		break;
+	}
+	int firstModification = -1;
+	if (wordListN) {
+		WordList wlNew;
+		wlNew.Set(wl);
+		if (*wordListN != wlNew) {
+			wordListN->Set(wl);
+			firstModification = 0;
+		}
+	}
+	return firstModification;
+}
+
+void SCI_METHOD LexerAsm::Lex(unsigned int startPos, int length, int initStyle, IDocument *pAccess) {
+	LexAccessor styler(pAccess);
 
 	// Do not leak onto next line
 	if (initStyle == SCE_ASM_STRINGEOL)
@@ -169,15 +282,10 @@ static void ColouriseAsmDoc(unsigned int startPos, int length, int initStyle, Wo
 	sc.Complete();
 }
 
-static const char * const asmWordListDesc[] = {
-	"CPU instructions",
-	"FPU instructions",
-	"Registers",
-	"Directives",
-	"Directive operands",
-	"Extended instructions",
-	0
-};
+void SCI_METHOD LexerAsm::Fold(unsigned int /* startPos */, int /* length */, int /* initStyle */, IDocument* /* pAccess */) {
 
-LexerModule lmAsm(SCLEX_ASM, ColouriseAsmDoc, "asm", 0, asmWordListDesc);
+	return;
+}
+
+LexerModule lmAsm(SCLEX_ASM, LexerAsm::LexerFactoryAsm, "asm", asmWordListDesc);
 
