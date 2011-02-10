@@ -26,6 +26,10 @@
 #include "LexerModule.h"
 
 
+#ifdef _MSC_VER
+#pragma warning(disable: 4100)
+#endif
+
 static inline bool IsAWordChar(const int ch) {
 	return ch >= 0x80 || isalnum(ch) ||
 			ch == '_' || ch == '$' || ch == '[' || ch == ']' ||
