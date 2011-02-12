@@ -305,6 +305,7 @@ update_version.bat</Command>
     <ClInclude Include="..\scintilla\lexlib\LexerSimple.h" />
     <ClInclude Include="..\scintilla\lexlib\OptionSet.h" />
     <ClInclude Include="..\scintilla\lexlib\PropSetSimple.h" />
+    <ClInclude Include="..\scintilla\lexlib\SparseState.h" />
     <ClInclude Include="..\scintilla\lexlib\StyleContext.h" />
     <ClInclude Include="..\scintilla\lexlib\WordList.h" />
     <ClInclude Include="..\scintilla\src\AutoComplete.h" />

@@ -132,6 +132,9 @@
     <ClCompile Include="..\scintilla\lexlib\PropSetSimple.cxx">
       <Filter>Scintilla\lexlib</Filter>
     </ClCompile>
+    <ClInclude Include="..\scintilla\lexlib\SparseState.h">
+      <Filter>Scintilla\lexlib</Filter>
+    </ClInclude>
     <ClCompile Include="..\scintilla\lexlib\StyleContext.cxx">
       <Filter>Scintilla\lexlib</Filter>
     </ClCompile>
