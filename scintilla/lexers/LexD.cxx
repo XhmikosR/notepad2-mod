@@ -2,17 +2,17 @@
  ** Lexer for D.
  **
  ** Copyright (c) 2006 by Waldemar Augustyn <waldemar@wdmsys.com>
- ** Converted to lexer object by "Udo Lechner" <dlchnr(at)gmx(dot)net>
+ ** Converted to lexer object and added further folding features/properties by "Udo Lechner" <dlchnr(at)gmx(dot)net>
  **/
 // Copyright 1998-2005 by Neil Hodgson <neilh@scintilla.org>
 // The License.txt file describes the conditions under which this software may be distributed.
 
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <assert.h>
+#include <ctype.h>
 
 #ifdef _MSC_VER
 #pragma warning(disable: 4786)
@@ -27,7 +27,6 @@
 
 #include "WordList.h"
 #include "LexAccessor.h"
-#include "Accessor.h"
 #include "StyleContext.h"
 #include "CharacterSet.h"
 #include "LexerModule.h"
@@ -79,13 +78,25 @@ static bool IsStreamCommentStyle(int style) {
 // Options used for LexerD
 struct OptionsD {
 	bool fold;
+	bool foldSyntaxBased;
 	bool foldComment;
+	bool foldCommentMultiline;
+	bool foldCommentExplicit;
+	std::string foldExplicitStart;
+	std::string foldExplicitEnd;
+	bool foldExplicitAnywhere;
 	bool foldCompact;
 	int  foldAtElseInt;
 	bool foldAtElse;
 	OptionsD() {
 		fold = false;
+		foldSyntaxBased = true;
 		foldComment = false;
+		foldCommentMultiline = true;
+		foldCommentExplicit = true;
+		foldExplicitStart = "";
+		foldExplicitEnd   = "";
+		foldExplicitAnywhere = false;
 		foldCompact = true;
 		foldAtElseInt = -1;
 		foldAtElse = false;
@@ -107,7 +118,25 @@ struct OptionSetD : public OptionSet<OptionsD> {
 	OptionSetD() {
 		DefineProperty("fold", &OptionsD::fold);
 
+		DefineProperty("fold.d.syntax.based", &OptionsD::foldSyntaxBased,
+			"Set this property to 0 to disable syntax based folding.");
+
 		DefineProperty("fold.comment", &OptionsD::foldComment);
+
+		DefineProperty("fold.d.comment.multiline", &OptionsD::foldCommentMultiline,
+			"Set this property to 0 to disable folding multi-line comments when fold.comment=1.");
+
+		DefineProperty("fold.d.comment.explicit", &OptionsD::foldCommentExplicit,
+			"Set this property to 0 to disable folding explicit fold points when fold.comment=1.");
+
+		DefineProperty("fold.d.explicit.start", &OptionsD::foldExplicitStart,
+			"The string to use for explicit fold start points, replacing the standard //{.");
+
+		DefineProperty("fold.d.explicit.end", &OptionsD::foldExplicitEnd,
+			"The string to use for explicit fold end points, replacing the standard //}.");
+
+		DefineProperty("fold.d.explicit.anywhere", &OptionsD::foldExplicitAnywhere,
+			"Set this property to 1 to enable explicit fold points anywhere, not just in line comments.");
 
 		DefineProperty("fold.compact", &OptionsD::foldCompact);
 
@@ -448,7 +477,6 @@ void SCI_METHOD LexerD::Lex(unsigned int startPos, int length, int initStyle, ID
 
 void SCI_METHOD LexerD::Fold(unsigned int startPos, int length, int initStyle, IDocument *pAccess) {
 
-
 	if (!options.fold)
 		return;
 
@@ -466,6 +494,7 @@ void SCI_METHOD LexerD::Fold(unsigned int startPos, int length, int initStyle, I
 	int styleNext = styler.StyleAt(startPos);
 	int style = initStyle;
 	bool foldAtElse = options.foldAtElseInt >= 0 ? options.foldAtElseInt != 0 : options.foldAtElse;
+	const bool userDefinedFoldMarkers = !options.foldExplicitStart.empty() && !options.foldExplicitEnd.empty();
 	for (unsigned int i = startPos; i < endPos; i++) {
 		char ch = chNext;
 		chNext = styler.SafeGetCharAt(i + 1);
@@ -473,7 +502,7 @@ void SCI_METHOD LexerD::Fold(unsigned int startPos, int length, int initStyle, I
 		style = styleNext;
 		styleNext = styler.StyleAt(i + 1);
 		bool atEOL = (ch == '\r' && chNext != '\n') || (ch == '\n');
-		if (options.foldComment && IsStreamCommentStyle(style)) {
+		if (options.foldComment && options.foldCommentMultiline && IsStreamCommentStyle(style)) {
 			if (!IsStreamCommentStyle(stylePrev)) {
 				levelNext++;
 			} else if (!IsStreamCommentStyle(styleNext) && !atEOL) {
@@ -481,7 +510,25 @@ void SCI_METHOD LexerD::Fold(unsigned int startPos, int length, int initStyle, I
 				levelNext--;
 			}
 		}
-		if (style == SCE_D_OPERATOR) {
+		if (options.foldComment && options.foldCommentExplicit && ((style == SCE_D_COMMENTLINE) || options.foldExplicitAnywhere)) {
+			if (userDefinedFoldMarkers) {
+				if (styler.Match(i, options.foldExplicitStart.c_str())) {
+ 					levelNext++;
+				} else if (styler.Match(i, options.foldExplicitEnd.c_str())) {
+ 					levelNext--;
+ 				}
+			} else {
+				if ((ch == '/') && (chNext == '/')) {
+					char chNext2 = styler.SafeGetCharAt(i + 2);
+					if (chNext2 == '{') {
+						levelNext++;
+					} else if (chNext2 == '}') {
+						levelNext--;
+					}
+				}
+ 			}
+ 		}
+		if (options.foldSyntaxBased && (style == SCE_D_OPERATOR)) {
 			if (ch == '{') {
 				// Measure the minimum before a '{' to allow
 				// folding on "} else {"
@@ -494,14 +541,14 @@ void SCI_METHOD LexerD::Fold(unsigned int startPos, int length, int initStyle, I
 			}
 		}
 		if (atEOL || (i == endPos-1)) {
-			if (options.foldComment) {  // Handle nested comments
+			if (options.foldComment && options.foldCommentMultiline) {  // Handle nested comments
 				int nc;
 				nc =  styler.GetLineState(lineCurrent);
 				nc -= lineCurrent>0? styler.GetLineState(lineCurrent-1): 0;
 				levelNext += nc;
 			}
 			int levelUse = levelCurrent;
-			if (foldAtElse) {
+			if (options.foldSyntaxBased && foldAtElse) {
 				levelUse = levelMinCurrent;
 			}
 			int lev = levelUse | levelNext << 16;
