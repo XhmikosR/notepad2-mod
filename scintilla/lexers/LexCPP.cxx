@@ -33,6 +33,7 @@
 #include "CharacterSet.h"
 #include "LexerModule.h"
 #include "OptionSet.h"
+#include "SparseState.h"
 
 #ifdef SCI_NAMESPACE
 using namespace Scintilla;
@@ -317,6 +318,7 @@ class LexerCPP : public ILexer {
 	std::map<std::string, std::string> preprocessorDefinitionsStart;
 	OptionsCPP options;
 	OptionSetCPP osCPP;
+	SparseState<std::string> rawStringTerminators;
 public:
 	LexerCPP(bool caseSensitive_) :
 		caseSensitive(caseSensitive_),
@@ -503,6 +505,8 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 	}
 
 	const int maskActivity = 0x3F;
+	std::string rawStringTerminator = rawStringTerminators.ValueAt(lineCurrent-1);
+	SparseState<std::string> rawSTNew(lineCurrent);
 
 	int activitySet = preproc.IsInactive() ? 0x40 : 0;
 
@@ -535,6 +539,9 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 		if (sc.atLineEnd) {
 			lineCurrent++;
 			vlls.Add(lineCurrent, preproc);
+			if (rawStringTerminator != "") {
+				rawSTNew.Set(lineCurrent-1, rawStringTerminator);
+			}
 		}
 
 		// Handle line continuation generically.
@@ -577,6 +584,23 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 						sc.ChangeState(SCE_C_WORD2|activitySet);
 					} else if (keywords4.InList(s)) {
 						sc.ChangeState(SCE_C_GLOBALCLASS|activitySet);
+					}
+					const bool literalString = sc.ch == '\"';
+					if (literalString || sc.ch == '\'') {
+						size_t lenS = strlen(s);
+						const bool raw = literalString && sc.chPrev == 'R';
+						if (raw)
+							s[lenS--] = '\0';
+						bool valid =
+							(lenS == 0) ||
+							((lenS == 1) && ((s[0] == 'L') || (s[0] == 'u') || (s[0] == 'U'))) ||
+							((lenS == 2) && literalString && (s[0] == 'u') && (s[1] == '8'));
+						if (valid) {
+							if (literalString)
+								sc.ChangeState((raw ? SCE_C_STRINGRAW : SCE_C_STRING)|activitySet);
+							else
+								sc.ChangeState(SCE_C_CHARACTER|activitySet);
+						}
 					}
 					sc.SetState(SCE_C_DEFAULT|activitySet);
 				}
@@ -662,6 +686,14 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 					sc.ForwardSetState(SCE_C_DEFAULT|activitySet);
 				}
 				break;
+			case SCE_C_STRINGRAW:
+				if (sc.Match(rawStringTerminator.c_str())) {
+					for (size_t termPos=rawStringTerminator.size(); termPos; termPos--)
+						sc.Forward();
+					sc.SetState(SCE_C_DEFAULT|activitySet);
+					rawStringTerminator = "";
+				}
+				break;
 			case SCE_C_CHARACTER:
 				if (sc.atLineEnd) {
 					sc.ChangeState(SCE_C_STRINGEOL|activitySet);
@@ -702,6 +734,14 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 					}
 				}
 				break;
+			case SCE_C_TRIPLEVERBATIM:
+				if (sc.Match ("\"\"\"")) {
+					while (sc.Match('"')) {
+						sc.Forward();
+					}
+					sc.SetState(SCE_C_DEFAULT|activitySet);
+				}
+				break;
 			case SCE_C_UUID:
 				if (sc.ch == '\r' || sc.ch == '\n' || sc.ch == ')') {
 					sc.SetState(SCE_C_DEFAULT|activitySet);
@@ -719,6 +759,9 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 			if (sc.Match('@', '\"')) {
 				sc.SetState(SCE_C_VERBATIM|activitySet);
 				sc.Forward();
+			} else if (sc.Match("\"\"\"")) {
+				sc.SetState(SCE_C_TRIPLEVERBATIM|activitySet);
+				sc.Forward(2);
 			} else if (IsADigit(sc.ch) || (sc.ch == '.' && IsADigit(sc.chNext))) {
 				if (lastWordWasUUID) {
 					sc.SetState(SCE_C_UUID|activitySet);
@@ -753,7 +796,19 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 				       || !FollowsPostfixOperator(sc, styler))) {
 				sc.SetState(SCE_C_REGEX|activitySet);	// JavaScript's RegEx
 			} else if (sc.ch == '\"') {
-				sc.SetState(SCE_C_STRING|activitySet);
+				if (sc.chPrev == 'R') {
+					sc.SetState(SCE_C_STRINGRAW|activitySet);
+					rawStringTerminator = ")";
+					for (int termPos = sc.currentPos + 1;;termPos++) {
+						char chTerminator = styler.SafeGetCharAt(termPos, '(');
+						if (chTerminator == '(')
+							break;
+						rawStringTerminator += chTerminator;
+					}
+					rawStringTerminator += '\"';
+				} else {
+					sc.SetState(SCE_C_STRING|activitySet);
+				}
 				isIncludePreprocessor = false;	// ensure that '>' won't end the string
 			} else if (isIncludePreprocessor && sc.ch == '<') {
 				sc.SetState(SCE_C_STRING|activitySet);
@@ -848,10 +903,10 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 		}
 		continuationLine = false;
 	}
-	if (definitionsChanged)
+	const bool rawStringsChanged = rawStringTerminators.Merge(rawSTNew, lineCurrent);
+	if (definitionsChanged || rawStringsChanged)
 		styler.ChangeLexerState(startPos, startPos + length);
 	sc.Complete();
-	styler.Flush();
 }
 
 // Store both the current line's fold level and the next lines in the

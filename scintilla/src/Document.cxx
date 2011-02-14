@@ -1309,7 +1309,11 @@ long Document::FindText(int minPos, int maxPos, const char *search,
 
 		//Platform::DebugPrintf("Find %d %d %s %d\n", startPos, endPos, ft->lpstrText, lengthFind);
 		const int limitPos = Platform::Maximum(startPos, endPos);
-		int pos = forward ? startPos : (startPos - 1);
+		int pos = startPos;
+		if (!forward) {
+			// Back all of a character
+			pos = NextPosition(pos, increment);
+		}
 		if (caseSensitive) {
 			while (forward ? (pos < endSearch) : (pos >= endSearch)) {
 				bool found = (pos + lengthFind) <= limitPos;

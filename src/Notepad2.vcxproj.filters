@@ -257,6 +257,9 @@
     <ClInclude Include="..\scintilla\lexlib\PropSetSimple.h">
       <Filter>Scintilla\lexlib</Filter>
     </ClInclude>
+    <ClInclude Include="..\scintilla\lexlib\SparseState.h">
+      <Filter>Scintilla\lexlib</Filter>
+    </ClInclude>
     <ClInclude Include="..\scintilla\lexlib\StyleContext.h">
       <Filter>Scintilla\lexlib</Filter>
     </ClInclude>

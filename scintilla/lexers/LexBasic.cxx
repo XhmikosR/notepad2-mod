@@ -1,7 +1,7 @@
 // Scintilla source code edit control
 /** @file LexBasic.cxx
  ** Lexer for BlitzBasic and PureBasic.
- ** Converted to lexer object by "Udo Lechner" <dlchnr(at)gmx(dot)net>
+ ** Converted to lexer object and added further folding features/properties by "Udo Lechner" <dlchnr(at)gmx(dot)net>
  **/
 // Copyright 1998-2003 by Neil Hodgson <neilh@scintilla.org>
 // The License.txt file describes the conditions under which this software may be distributed.
@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <assert.h>
+#include <ctype.h>
 
 #ifdef _MSC_VER
 #pragma warning(disable: 4786)
@@ -36,7 +37,6 @@
 
 #include "WordList.h"
 #include "LexAccessor.h"
-#include "Accessor.h"
 #include "StyleContext.h"
 #include "CharacterSet.h"
 #include "LexerModule.h"
@@ -147,9 +147,19 @@ static int CheckFreeFoldPoint(char const *token, int &level) {
 // Options used for LexerBasic
 struct OptionsBasic {
 	bool fold;
+	bool foldSyntaxBased;
+	bool foldCommentExplicit;
+	std::string foldExplicitStart;
+	std::string foldExplicitEnd;
+	bool foldExplicitAnywhere;
 	bool foldCompact;
 	OptionsBasic() {
 		fold = false;
+		foldSyntaxBased = true;
+		foldCommentExplicit = false;
+		foldExplicitStart = "";
+		foldExplicitEnd   = "";
+		foldExplicitAnywhere = false;
 		foldCompact = true;
 	}
 };
@@ -181,6 +191,23 @@ static const char * const freebasicWordListDesc[] = {
 struct OptionSetBasic : public OptionSet<OptionsBasic> {
 	OptionSetBasic(const char * const wordListDescriptions[]) {
 		DefineProperty("fold", &OptionsBasic::fold);
+
+		DefineProperty("fold.basic.syntax.based", &OptionsBasic::foldSyntaxBased,
+			"Set this property to 0 to disable syntax based folding.");
+
+		DefineProperty("fold.basic.comment.explicit", &OptionsBasic::foldCommentExplicit,
+			"This option enables folding explicit fold points when using the Basic lexer. "
+			"Explicit fold points allows adding extra folding by placing a ;{ (BB/PB) or '{ (FB) comment at the start "
+			"and a ;} (BB/PB) or '} (FB) at the end of a section that should be folded.");
+
+		DefineProperty("fold.basic.explicit.start", &OptionsBasic::foldExplicitStart,
+			"The string to use for explicit fold start points, replacing the standard ;{ (BB/PB) or '{ (FB).");
+
+		DefineProperty("fold.basic.explicit.end", &OptionsBasic::foldExplicitEnd,
+			"The string to use for explicit fold end points, replacing the standard ;} (BB/PB) or '} (FB).");
+
+		DefineProperty("fold.basic.explicit.anywhere", &OptionsBasic::foldExplicitAnywhere,
+			"Set this property to 1 to enable explicit fold points anywhere, not just in line comments.");
 
 		DefineProperty("fold.compact", &OptionsBasic::foldCompact);
 
@@ -235,7 +262,7 @@ public:
 		return new LexerBasic(';', CheckPureFoldPoint, purebasicWordListDesc);
 	}
 	static ILexer *LexerFactoryFreeBasic() {
-		return new LexerBasic('\'', CheckFreeFoldPoint, freebasicWordListDesc);
+		return new LexerBasic('\'', CheckFreeFoldPoint, freebasicWordListDesc );
 	}
 };
 
@@ -397,7 +424,6 @@ void SCI_METHOD LexerBasic::Fold(unsigned int startPos, int length, int /* initS
 	if (!options.fold)
 		return;
 
-
 	LexAccessor styler(pAccess);
 
 	int line = styler.GetLine(startPos);
@@ -406,12 +432,16 @@ void SCI_METHOD LexerBasic::Fold(unsigned int startPos, int length, int /* initS
 	int endPos = startPos + length;
 	char word[256];
 	int wordlen = 0;
+	const bool userDefinedFoldMarkers = !options.foldExplicitStart.empty() && !options.foldExplicitEnd.empty();
+	int cNext = styler[startPos];
 
 	// Scan for tokens at the start of the line (they may include
 	// whitespace, for tokens like "End Function"
 	for (int i = startPos; i < endPos; i++) {
-		int c = styler.SafeGetCharAt(i);
-		if (!done && !go) {
+		int c = cNext;
+		cNext = styler.SafeGetCharAt(i + 1);
+		bool atEOL = (c == '\r' && cNext != '\n') || (c == '\n');
+		if (options.foldSyntaxBased && !done && !go) {
 			if (wordlen) { // are we scanning a token already?
 				word[wordlen] = static_cast<char>(LowerCase(c));
 				if (!IsIdentifier(c)) { // done with token
@@ -441,7 +471,26 @@ void SCI_METHOD LexerBasic::Fold(unsigned int startPos, int length, int /* initS
 				}
 			}
 		}
-		if (c == '\n') { // line end
+		if (options.foldCommentExplicit && ((styler.StyleAt(i) == SCE_B_COMMENT) || options.foldExplicitAnywhere)) {
+			if (userDefinedFoldMarkers) {
+				if (styler.Match(i, options.foldExplicitStart.c_str())) {
+ 					level |= SC_FOLDLEVELHEADERFLAG;
+					go = 1;
+				} else if (styler.Match(i, options.foldExplicitEnd.c_str())) {
+ 					go = -1;
+ 				}
+			} else {
+				if (c == comment_char) {
+					if (cNext == '{') {
+						level |= SC_FOLDLEVELHEADERFLAG;
+						go = 1;
+					} else if (cNext == '}') {
+						go = -1;
+					}
+				}
+ 			}
+ 		}
+		if (atEOL) { // line end
 			if (!done && wordlen == 0 && options.foldCompact) // line was only space
 				level |= SC_FOLDLEVELWHITEFLAG;
 			if (level != styler.LevelAt(line))
