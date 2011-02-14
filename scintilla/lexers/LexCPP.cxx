@@ -591,7 +591,7 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 						const bool raw = literalString && sc.chPrev == 'R';
 						if (raw)
 							s[lenS--] = '\0';
-						bool valid = 
+						bool valid =
 							(lenS == 0) ||
 							((lenS == 1) && ((s[0] == 'L') || (s[0] == 'u') || (s[0] == 'U'))) ||
 							((lenS == 2) && literalString && (s[0] == 'u') && (s[1] == '8'));
@@ -734,6 +734,14 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 					}
 				}
 				break;
+			case SCE_C_TRIPLEVERBATIM:
+				if (sc.Match ("\"\"\"")) {
+					while (sc.Match('"')) {
+						sc.Forward();
+					}
+					sc.SetState(SCE_C_DEFAULT|activitySet);
+				}
+				break;
 			case SCE_C_UUID:
 				if (sc.ch == '\r' || sc.ch == '\n' || sc.ch == ')') {
 					sc.SetState(SCE_C_DEFAULT|activitySet);
@@ -751,6 +759,9 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 			if (sc.Match('@', '\"')) {
 				sc.SetState(SCE_C_VERBATIM|activitySet);
 				sc.Forward();
+			} else if (sc.Match("\"\"\"")) {
+				sc.SetState(SCE_C_TRIPLEVERBATIM|activitySet);
+				sc.Forward(2);
 			} else if (IsADigit(sc.ch) || (sc.ch == '.' && IsADigit(sc.chNext))) {
 				if (lastWordWasUUID) {
 					sc.SetState(SCE_C_UUID|activitySet);
