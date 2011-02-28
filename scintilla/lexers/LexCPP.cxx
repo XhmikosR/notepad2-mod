@@ -441,7 +441,6 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 	CharacterSet setDoxygen(CharacterSet::setAlpha, "$@\\&<>#{}[]");
 
 	CharacterSet setWordStart(CharacterSet::setAlpha, "_", 0x80, true);
-	CharacterSet setWord(CharacterSet::setAlphaNum, "._", 0x80, true);
 
 	if (options.identifiersAllowDollars) {
 		setWordStart.Add('$');
