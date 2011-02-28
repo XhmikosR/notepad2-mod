@@ -1522,8 +1522,8 @@ void Document::EnsureStyledTo(int pos) {
 		IncrementStyleClock();
 		if (pli && !pli->UseContainerLexing()) {
 			int lineEndStyled = LineFromPosition(GetEndStyled());
-			int endStyled = LineStart(lineEndStyled);
-			pli->Colourise(endStyled, pos);
+			int endStyledTo = LineStart(lineEndStyled);
+			pli->Colourise(endStyledTo, pos);
 		} else {
 			// Ask the watchers to style, and stop as soon as one responds.
 			for (int i = 0; pos > GetEndStyled() && i < lenWatchers; i++) {

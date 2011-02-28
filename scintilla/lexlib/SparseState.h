@@ -57,7 +57,7 @@ public:
 			return states[states.size()-1].value;
 		} else {
 			if (low->position > position) {
-				low--;
+				--low;
 			}
 			return low->value;
 		}
@@ -93,7 +93,7 @@ public:
 			}
 			typename stateVector::const_iterator startOther = other.states.begin();
 			if (!states.empty() && states.back().value == startOther->value)
-				startOther++;
+				++startOther;
 			if (startOther != other.states.end()) {
 				states.insert(states.end(), startOther, other.states.end());
 				changed = true;
