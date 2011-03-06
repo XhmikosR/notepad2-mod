@@ -20,4 +20,4 @@ More information:
 
 Notepad2-mod 4.1.24 has been created with Scintilla 2.24. The unused lexers
 are commented out in "scintilla/src/Catalogue.cxx". You can use WDK 7.1, or MSVC 2010,
-or ICL 12 to build Notepad2-mod.
+or Intel Parallel Composer 2011 to build Notepad2-mod.
