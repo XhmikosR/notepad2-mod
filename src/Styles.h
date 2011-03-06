@@ -11,7 +11,7 @@
 *
 * See License.txt for details about distribution and modification.
 *
-*                                              (c) Florian Balmer 1996-2010
+*                                              (c) Florian Balmer 1996-2011
 *                                                  florian.balmer@gmail.com
 *                                               http://www.flos-freeware.ch
 *
@@ -91,9 +91,9 @@ void   Style_SetFontQuality(HWND,LPCWSTR);
 void   Style_GetCurrentLexerName(LPWSTR,int);
 int    Style_GetLexerIconId(PEDITLEXER);
 HTREEITEM  Style_AddLexerToTreeView(HWND,PEDITLEXER);
-BOOL CALLBACK Styles_ConfigDlgProc(HWND,UINT,WPARAM,LPARAM);
+INT_PTR CALLBACK Styles_ConfigDlgProc(HWND,UINT,WPARAM,LPARAM);
 void   Style_ConfigDlg(HWND);
-BOOL CALLBACK Style_SelectLexerDlgProc(HWND,UINT,WPARAM,LPARAM);
+INT_PTR CALLBACK Style_SelectLexerDlgProc(HWND,UINT,WPARAM,LPARAM);
 void   Style_SelectLexerDlg(HWND);
 
 

@@ -6,8 +6,6 @@ Notable changes:
 * Support for bookmarks
 * Syntax highlighting support for AutoHotKey, AutoIt3, Bash, CMake, Inno Setup,
   LaTeX, Lua, NSIS, Ruby, and Tcl scripts
-* Native x86-64 support
-* Support for registry-based Notepad replacement
 
 Supported Operating Systems: Windows XP, Vista, 7 both 32-bit and 64-bit 
 
@@ -18,6 +16,6 @@ More information:
 * Kai Liu's website:          http://code.kliu.org/misc/notepad2/
 * Bookmark Edition website:   http://www.rlvision.com/notepad2/about.asp
 
-Notepad2-mod 4.1.24 has been created with Scintilla 2.24. The unused lexers
+Notepad2-mod 4.2.25 has been created with Scintilla 2.24. The unused lexers
 are commented out in "scintilla/src/Catalogue.cxx". You can use WDK 7.1, or MSVC 2010,
 or Intel Parallel Composer 2011 to build Notepad2-mod.

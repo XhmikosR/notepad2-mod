@@ -11,7 +11,7 @@
 *
 * See License.txt for details about distribution and modification.
 *
-*                                              (c) Florian Balmer 1996-2010
+*                                              (c) Florian Balmer 1996-2011
 *                                                  florian.balmer@gmail.com
 *                                               http://www.flos-freeware.ch
 *
@@ -47,63 +47,66 @@ KEYWORDLIST KeyWords_NULL = {
 
 
 EDITLEXER lexDefault = { SCLEX_NULL, 63000, L"Default Text", L"txt; text; wtx; log; asc; doc", L"", &KeyWords_NULL, {
-                /*  0 */ { STYLE_DEFAULT, 63100, L"Default Style", L"font:Default; size:10", L"" },
+                /*  0 */ { STYLE_DEFAULT, 63100, L"Default Style", L"font:Consolas; size:10", L"" },
                 /*  1 */ { STYLE_LINENUMBER, 63101, L"Margins and Line Numbers", L"size:-2; fore:#FF0000", L"" },
                 /*  2 */ { STYLE_BRACELIGHT, 63102, L"Matching Braces", L"size:+1; bold; fore:#FF0000", L"" },
                 /*  3 */ { STYLE_BRACEBAD, 63103, L"Matching Braces Error", L"size:+1; bold; fore:#000080", L"" },
                 /*  4 */ { STYLE_CONTROLCHAR, 63104, L"Control Characters (Font)", L"size:-1", L"" },
-                /*  5 */ { STYLE_INDENTGUIDE, 63105, L"Indentation Guide (Color)", L"fore:#FFC000", L"" },
+                /*  5 */ { STYLE_INDENTGUIDE, 63105, L"Indentation Guide (Color)", L"fore:#A0A0A0", L"" },
                 /*  6 */ { SCI_SETSELFORE+SCI_SETSELBACK, 63106, L"Selected Text (Colors)", L"back:#0A246A; eolfilled; alpha:95", L"" },
                 /*  7 */ { SCI_SETWHITESPACEFORE+SCI_SETWHITESPACEBACK+SCI_SETWHITESPACESIZE, 63107, L"Whitespace (Colors, Size 0-5)", L"fore:#FF4000", L"" },
                 /*  8 */ { SCI_SETCARETLINEBACK, 63108, L"Current Line Background (Color)", L"back:#FFFF00; alpha:50", L"" },
-                /*  9 */ { SCI_SETCARETFORE, 63109, L"Caret Foreground (Color)", L"", L"" },
-                /* 10 */ { SCI_SETCARETWIDTH, 63110, L"Caret Width (Size 1-3)", L"", L"" },
-                /* 11 */ { SCI_SETEDGECOLOUR, 63111, L"Long Line Marker (Colors)", L"fore:#FFC000", L"" },
-                /* 12 */ { SCI_SETEXTRAASCENT+SCI_SETEXTRADESCENT, 63112, L"Extra Line Spacing (Size)", L"size:2", L"" },
+                /*  9 */ { SCI_SETCARETFORE+SCI_SETCARETWIDTH, 63109, L"Caret (Color, Size 1-3)", L"", L"" },
+                /* 10 */ { SCI_SETEDGECOLOUR, 63110, L"Long Line Marker (Colors)", L"fore:#FFC000", L"" },
+                /* 11 */ { SCI_SETEXTRAASCENT+SCI_SETEXTRADESCENT, 63111, L"Extra Line Spacing (Size)", L"size:2", L"" },
 
-                /* 13 */ { STYLE_DEFAULT, 63113, L"2nd Default Style", L"font:Courier New; size:10", L"" },
-                /* 14 */ { STYLE_LINENUMBER, 63114, L"2nd Margins and Line Numbers", L"font:Tahoma; size:-2; fore:#FF0000", L"" },
-                /* 15 */ { STYLE_BRACELIGHT, 63115, L"2nd Matching Braces", L"bold; fore:#FF0000", L"" },
-                /* 16 */ { STYLE_BRACEBAD, 63116, L"2nd Matching Braces Error", L"bold; fore:#000080", L"" },
-                /* 17 */ { STYLE_CONTROLCHAR, 63117, L"2nd Control Characters (Font)", L"size:-1", L"" },
-                /* 18 */ { STYLE_INDENTGUIDE, 63118, L"2nd Indentation Guide (Color)", L"fore:#FFC000", L"" },
-                /* 19 */ { SCI_SETSELFORE+SCI_SETSELBACK, 63119, L"2nd Selected Text (Colors)", L"eolfilled", L"" },
-                /* 20 */ { SCI_SETWHITESPACEFORE+SCI_SETWHITESPACEBACK+SCI_SETWHITESPACESIZE, 63120, L"2nd Whitespace (Colors, Size 0-5)", L"fore:#FF4000", L"" },
-                /* 21 */ { SCI_SETCARETLINEBACK, 63121, L"2nd Current Line Background (Color)", L"", L"" },
-                /* 22 */ { SCI_SETCARETFORE, 63122, L"2nd Caret Foreground (Color)", L"", L"" },
-                /* 23 */ { SCI_SETCARETWIDTH, 63123, L"2nd Caret Width (Size 1-3)", L"", L"" },
-                /* 24 */ { SCI_SETEDGECOLOUR, 63124, L"2nd Long Line Marker (Colors)", L"fore:#FFC000", L"" },
-                /* 25 */ { SCI_SETEXTRAASCENT+SCI_SETEXTRADESCENT, 63125, L"2nd Extra Line Spacing (Size)", L"", L"" },
+                /* 12 */ { STYLE_DEFAULT, 63112, L"2nd Default Style", L"font:Courier New; size:10", L"" },
+                /* 13 */ { STYLE_LINENUMBER, 63113, L"2nd Margins and Line Numbers", L"font:Tahoma; size:-2; fore:#FF0000", L"" },
+                /* 14 */ { STYLE_BRACELIGHT, 63114, L"2nd Matching Braces", L"bold; fore:#FF0000", L"" },
+                /* 15 */ { STYLE_BRACEBAD, 63115, L"2nd Matching Braces Error", L"bold; fore:#000080", L"" },
+                /* 16 */ { STYLE_CONTROLCHAR, 63116, L"2nd Control Characters (Font)", L"size:-1", L"" },
+                /* 17 */ { STYLE_INDENTGUIDE, 63117, L"2nd Indentation Guide (Color)", L"fore:#A0A0A0", L"" },
+                /* 18 */ { SCI_SETSELFORE+SCI_SETSELBACK, 63118, L"2nd Selected Text (Colors)", L"eolfilled", L"" },
+                /* 19 */ { SCI_SETWHITESPACEFORE+SCI_SETWHITESPACEBACK+SCI_SETWHITESPACESIZE, 63119, L"2nd Whitespace (Colors, Size 0-5)", L"fore:#FF4000", L"" },
+                /* 20 */ { SCI_SETCARETLINEBACK, 63120, L"2nd Current Line Background (Color)", L"back:#FFFF00; alpha:50", L"" },
+                /* 21 */ { SCI_SETCARETFORE+SCI_SETCARETWIDTH, 63121, L"2nd Caret (Color, Size 1-3)", L"", L"" },
+                /* 22 */ { SCI_SETEDGECOLOUR, 63122, L"2nd Long Line Marker (Colors)", L"fore:#FFC000", L"" },
+                /* 23 */ { SCI_SETEXTRAASCENT+SCI_SETEXTRADESCENT, 63123, L"2nd Extra Line Spacing (Size)", L"", L"" },
                          { -1, 00000, L"", L"", L"" } } };
 
 
 KEYWORDLIST KeyWords_HTML = {
-"a abbr accept accept-charset accesskey acronym action address align alink alt and applet archive "
-"area article aside async audio autocomplete autofocus axis b background base basefont bb bdo "
-"bgcolor big blockquote body border bordercolor br button canvas caption cellpadding cellspacing "
-"center char charoff charset checkbox checked cite class classid clear code codebase codetype col "
-"colgroup color cols colspan command compact content contenteditable contextmenu coords data "
-"datafld dataformatas datagrid datalist datapagesize datasrc datetime dd declare defer del "
-"details dfn dialog dir disabled div dl draggable dt em embed enctype event eventsource face "
-"fieldset figure file font footer for form formaction formenctype formmethod formnovalidate "
-"formtarget frame frameborder frameset h1 h2 h3 h4 h5 h6 head header headers height hidden hr "
-"href hreflang hspace html http-equiv i id iframe image img input ins isindex ismap kbd keygen "
-"label lang language leftmargin legend li link list longdesc manifest map marginheight "
-"marginwidth mark max maxlength media menu meta meter method min multiple name nav noframes "
-"nohref noresize noscript noshade novalidate nowrap object ol onblur onchange onclick ondblclick "
-"onfocus onkeydown onkeypress onkeyup onload onmessage onmousedown onmousemove onmouseout "
-"onmouseover onmouseup onreset onselect onsubmit onunload optgroup option output p param password "
-"pattern ping placeholder pre profile progress prompt public q radio readonly rel required reset "
-"rev reversed rows rowspan rp rt ruby rules s samp sandbox scheme scope scoped script scrolling "
-"seamless section select selected shape size sizes small source span spellcheck src standby start "
-"step strike strong style sub submit summary sup tabindex table target tbody td text textarea "
-"tfoot th thead time title topmargin tr tt type u ul usemap valign value valuetype var version "
-"video vlink vspace width xml xmlns !doctype",
-"abstract boolean break byte case catch char class const continue debugger default delete do "
-"double else enum export extends false final finally float for function goto if implements "
-"import in instanceof int interface long native new null package private protected public "
-"return short static super switch synchronized this throw throws transient true try typeof var "
-"void volatile while with",
+"!doctype ^aria- ^data- a abbr abstract accept accept-charset accesskey acronym action address "
+"align alink alt and applet archive area aria article aside async audio autocomplete autofocus "
+"axis b background base basefont bb bdo bgcolor big blockquote body boolean border bordercolor br "
+"break button byte canvas caption case catch cellpadding cellspacing center char charoff charset "
+"checkbox checked cite class classid clear code codebase codetype col colgroup color cols colspan "
+"command compact const content contenteditable contextmenu continue coords data datafld "
+"dataformatas datagrid datalist datapagesize datasrc datetime dd debugger declare default defer "
+"del delete details dfn dialog dir disabled div dl do double draggable dropzone dt else em embed "
+"encoding enctype enum event eventsource export extends face false fieldset figcaption figure "
+"file final finally float font footer for form formaction formenctype formmethod formnovalidate "
+"formtarget frame frameborder frameset function goto h1 h2 h3 h4 h5 h6 head header headers height "
+"hgroup hidden hr href hreflang hspace html http-equiv i id if iframe image img implements import "
+"in input ins instanceof int interface isindex ismap kbd keygen label lang language leftmargin "
+"legend li link list long longdesc manifest map marginheight marginwidth mark max maxlength media "
+"menu meta meter method min multiple name native nav new noframes nohref noresize noscript "
+"noshade novalidate nowrap null object ol onabort onafterprint onbeforeonload onbeforeprint "
+"onblur oncanplay oncanplaythrough onchange onclick oncontextmenu ondblclick ondrag ondragend "
+"ondragenter ondragleave ondragover ondragstart ondrop ondurationchange onemptied onended onerror "
+"onfocus onformchange onforminput onhaschange oninput oninvalid onkeydown onkeypress onkeyup "
+"onload onloadeddata onloadedmetadata onloadstart onmessage onmousedown onmousemove onmouseout "
+"onmouseover onmouseup onmousewheel onoffline ononline onpagehide onpageshow onpause onplay "
+"onplaying onpopstate onprogress onratechange onreadystatechange onredo onreset onresize onscroll "
+"onseeked onseeking onselect onstalled onstorage onsubmit onsuspend ontimeupdate onundo onunload "
+"onvolumechange onwaiting optgroup option output p package param password pattern ping "
+"placeholder pre private profile progress prompt protected public q radio readonly rel required "
+"reset return rev reversed role rows rowspan rp rt ruby rules s samp sandbox scheme scope scoped "
+"script scrolling seamless section select selected shape short size sizes small source span "
+"spellcheck src srcdoc standby start static step strike strong style sub submit summary sup super "
+"switch synchronized tabindex table target tbody td text textarea tfoot th thead this throw "
+"throws time title topmargin tr transient true try tt type typeof u ul usemap valign value "
+"valuetype var version video vlink void volatile vspace wbr while width with xml xmlns xmp",
 "and begin case call continue do each else elseif end erase error event exit false for function get "
 "gosub goto if implement in load loop lset me mid new next not nothing on or property raiseevent "
 "rem resume return rset select set stop sub then to true unload until wend while with withevents "
@@ -121,7 +124,7 @@ KEYWORDLIST KeyWords_HTML = {
 "implements include include_once instanceof interface isset list namespace new not null "
 "old_function or parent php_self print private protected public require require_once return "
 "static stdclass switch this throw true try unset use var virtual while xor",
-"", "", "", "" };
+"", "", "", "", "" };
 
 
 EDITLEXER lexHTML = { SCLEX_HTML, 63001, L"Web Source Code", L"html; htm; asp; aspx; shtml; htd; xhtml; php; php3; phtml; htt; cfm; tpl; dtd; hta; htc", L"", &KeyWords_HTML, {
@@ -149,9 +152,9 @@ EDITLEXER lexHTML = { SCLEX_HTML, 63001, L"Web Source Code", L"html; htm; asp; a
                       { SCE_HPHP_SIMPLESTRING, 63151, L"PHP Simple String", L"fore:#008000", L"" },
                       { SCE_HPHP_NUMBER, 63153, L"PHP Number", L"fore:#FF0000", L"" },
                       { SCE_HPHP_OPERATOR, 63158, L"PHP Operator", L"fore:#B000B0", L"" },
-                      { SCE_HPHP_VARIABLE, 63154, L"PHP Variable", L"fore:#000080", L"" },
-                      { SCE_HPHP_HSTRING_VARIABLE, 63155, L"PHP String Variable", L"fore:#000080", L"" },
-                      { SCE_HPHP_COMPLEX_VARIABLE, 63156, L"PHP Complex Variable", L"fore:#000080", L"" },
+                      { SCE_HPHP_VARIABLE, 63154, L"PHP Variable", L"italic; fore:#000080", L"" },
+                      { SCE_HPHP_HSTRING_VARIABLE, 63155, L"PHP String Variable", L"italic; fore:#000080", L"" },
+                      { SCE_HPHP_COMPLEX_VARIABLE, 63156, L"PHP Complex Variable", L"italic; fore:#000080", L"" },
                       { MULTI_STYLE(SCE_HJ_DEFAULT,SCE_HJ_START,0,0), 63159, L"JS Default", L"", L"" },
                       { MULTI_STYLE(SCE_HJ_COMMENT,SCE_HJ_COMMENTLINE,SCE_HJ_COMMENTDOC,0), 63160, L"JS Comment", L"fore:#646464", L"" },
                       { SCE_HJ_KEYWORD, 63163, L"JS Keyword", L"bold; fore:#A46000", L"" },
@@ -213,7 +216,7 @@ KEYWORDLIST KeyWords_XML = {
 "", "", "", "", "", "", "", "", "" };
 
 
-EDITLEXER lexXML = { SCLEX_XML, 63002, L"XML Document", L"xml; xsl; rss; svg; xul; xsd; xslt; axl; rdf; xaml; vcproj; vcxproj; vbproj; vsprops; props", L"", &KeyWords_XML, {
+EDITLEXER lexXML = { SCLEX_XML, 63002, L"XML Document", L"xml; xsl; rss; svg; xul; xsd; xslt; axl; rdf; xaml; vcproj", L"", &KeyWords_XML, {
                      { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
                      { MULTI_STYLE(SCE_H_TAG,SCE_H_TAGUNKNOWN,SCE_H_TAGEND,0), 63187, L"XML Tag", L"fore:#881280", L"" },
                      { MULTI_STYLE(SCE_H_ATTRIBUTE,SCE_H_ATTRIBUTEUNKNOWN,0,0), 63188, L"XML Attribute", L"fore:#994500", L"" },
@@ -222,7 +225,7 @@ EDITLEXER lexXML = { SCLEX_XML, 63002, L"XML Document", L"xml; xsl; rss; svg; xu
                      { SCE_H_OTHER, 63191, L"XML Other Inside Tag", L"fore:#1A1AA6", L"" },
                      { MULTI_STYLE(SCE_H_COMMENT,SCE_H_XCCOMMENT,0,0), 63192, L"XML Comment", L"fore:#646464", L"" },
                      { SCE_H_ENTITY, 63193, L"XML Entity", L"fore:#B000B0", L"" },
-                      { SCE_H_DEFAULT, 63257, L"XML Element Text", L"", L"" },
+                     { SCE_H_DEFAULT, 63257, L"XML Element Text", L"", L"" },
                      { MULTI_STYLE(SCE_H_XMLSTART,SCE_H_XMLEND,0,0), 63145, L"XML Identifier", L"bold; fore:#881280", L"" },
                      { SCE_H_SGML_DEFAULT, 63237, L"SGML", L"fore:#881280", L"" },
                      { SCE_H_CDATA, 63147, L"CDATA", L"fore:#646464", L"" },
@@ -375,7 +378,7 @@ KEYWORDLIST KeyWords_MAK = {
 "", "", "", "", "", "", "", "", "" };
 
 
-EDITLEXER lexMAK = { SCLEX_MAKEFILE, 63007, L"Makefiles", L"mak; make; dsp; mk; msc; msvc", L"", &KeyWords_MAK, {
+EDITLEXER lexMAK = { SCLEX_MAKEFILE, 63007, L"Makefiles", L"mak; make; mk; dsp; msc; msvc", L"", &KeyWords_MAK, {
                      { STYLE_DEFAULT, 63126, L"Default", L"fore:#0A246A", L"" },
                      //{ SCE_MAKE_DEFAULT, L"Default", L"", L"" },
                      { SCE_MAKE_COMMENT, 63127, L"Comment", L"fore:#008000", L"" },
@@ -437,11 +440,10 @@ EDITLEXER lexVB = { SCLEX_VB, 63009, L"Visual Basic", L"vb; bas; frm; cls; ctl; 
                     { SCE_B_KEYWORD, 63128, L"Keyword", L"bold; fore:#B000B0", L"" },
                     { SCE_B_IDENTIFIER, 63129, L"Identifier", L"", L"" },
                     { MULTI_STYLE(SCE_B_STRING,SCE_B_STRINGEOL,0,0), 63131, L"String", L"fore:#008000", L"" },
-                    { SCE_B_NUMBER, 63130, L"Number", L"fore:#FF0000", L"" },
+                    { MULTI_STYLE(SCE_B_NUMBER,SCE_B_DATE,0,0), 63130, L"Number", L"fore:#FF0000", L"" },
                     { SCE_B_OPERATOR, 63132, L"Operator", L"", L"" },
                     { SCE_B_PREPROCESSOR, 63133, L"Preprocessor", L"fore:#FF9C00", L"" },
                     //{ SCE_B_CONSTANT, L"Constant", L"", L"" },
-                    //{ SCE_B_DATE, L"Date", L"", L"" },
                     //{ SCE_B_KEYWORD2, L"Keyword 2", L"", L"" },
                     //{ SCE_B_KEYWORD3, L"Keyword 3", L"", L"" },
                     //{ SCE_B_KEYWORD4, L"Keyword 4", L"", L"" },
@@ -527,111 +529,92 @@ EDITLEXER lexPAS = { SCLEX_PASCAL, 63012, L"Pascal Source Code", L"pas; dpr; dpk
 
 
 KEYWORDLIST KeyWords_ASM = {
-"aaa aad aam aas adc add and call cbw clc cld cli cmc cmp cmps cmpsb "
-"cmpsw cwd daa das dec div esc hlt idiv imul in inc int into iret ja jae jb jbe "
-"jc jcxz je jg jge jl jle jmp jna jnae jnb jnbe jnc jne jng jnge jnl jnle jno jnp "
-"jns jnz jo jp jpe jpo js jz lahf lds lea les lods lodsb lodsw loop loope loopew "
-"loopne loopnew loopnz loopnzw loopw loopz loopzw mov movs movsb "
-"movsw mul neg nop not or out pop popf push pushf rcl rcr ret retf retn rol "
-"ror sahf sal sar sbb scas scasb scasw shl shr stc std sti stos stosb stosw "
-"sub test wait xchg xlat xlatb xor bound enter ins insb insw leave outs "
-"outsb outsw popa pusha pushw arpl lar lsl sgdt sidt sldt smsw str verr "
-"verw clts lgdt lidt lldt lmsw ltr bsf bsr bt btc btr bts cdq cmpsd cwde insd "
-"iretd iretdf iretf jecxz lfs lgs lodsd loopd looped loopned loopnzd loopzd "
-"lss movsd movsx movzx outsd popad popfd pushad pushd pushfd scasd "
-"seta setae setb setbe setc sete setg setge setl setle setna setnae "
-"setnb setnbe setnc setne setng setnge setnl setnle setno setnp setns "
-"setnz seto setp setpe setpo sets setz shld shrd stosd bswap cmpxchg "
-"invd invlpg wbinvd xadd lock rep repe repne repnz repz cflush cpuid emms "
-"femms cmovo cmovno cmovb cmovc cmovnae cmovae cmovnb cmovnc "
-"cmove cmovz cmovne cmovnz cmovbe cmovna cmova cmovnbe cmovs "
-"cmovns cmovp cmovpe cmovnp cmovpo cmovl cmovnge cmovge cmovnl "
-"cmovle cmovng cmovg cmovnle cmpxchg486 cmpxchg8b loadall loadall286 "
-"ibts icebp int1 int3 int01 int03 iretw popaw popfw pushaw pushfw rdmsr "
-"rdpmc rdshr rdtsc rsdc rsldt rsm rsts salc smi smint smintold svdc svldt "
-"svts syscall sysenter sysexit sysret ud0 ud1 ud2 umov xbts wrmsr wrshr",
-"f2xm1 fabs fadd faddp fbld fbstp fchs fclex fcom fcomp fcompp fdecstp "
-"fdisi fdiv fdivp fdivr fdivrp feni ffree fiadd ficom ficomp fidiv fidivr fild fimul "
-"fincstp finit fist fistp fisub fisubr fld fld1 fldcw fldenv fldenvw fldl2e fldl2t "
-"fldlg2 fldln2 fldpi fldz fmul fmulp fnclex fndisi fneni fninit fnop fnsave "
-"fnsavew fnstcw fnstenv fnstenvw fnstsw fpatan fprem fptan frndint frstor "
-"frstorw fsave fsavew fscale fsqrt fst fstcw fstenv fstenvw fstp fstsw fsub "
-"fsubp fsubr fsubrp ftst fwait fxam fxch fxtract fyl2x fyl2xp1 fsetpm fcos "
-"fldenvd fnsaved fnstenvd fprem1 frstord fsaved fsin fsincos fstenvd fucom "
-"fucomp fucompp fcomi fcomip ffreep fcmovb fcmove fcmovbe fcmovu "
-"fcmovnb fcmovne fcmovnbe fcmovnu",
-"ah al ax bh bl bp bx ch cl cr0 cr2 cr3 cr4 cs cx dh di dl dr0 dr1 dr2 dr3 dr6 "
-"dr7 ds dx eax ebp ebx ecx edi edx es esi esp fs gs si sp ss st tr3 tr4 tr5 "
-"tr6 tr7 st0 st1 st2 st3 st4 st5 st6 st7 mm0 mm1 mm2 mm3 mm4 mm5 "
-"mm6 mm7 xmm0 xmm1 xmm2 xmm3 xmm4 xmm5 xmm6 xmm7",
-".186 .286 .286c .286p .287 .386 .386c .386p .387 .486 .486p .8086 .8087 "
-".alpha .break .code .const .continue .cref .data .data? .dosseg .else "
-".elseif .endif .endw .err .err1 .err2 .errb .errdef .errdif .errdifi .erre .erridn "
-".erridni .errnb .errndef .errnz .exit .fardata .fardata? .if .lall .lfcond .list "
-".listall .listif .listmacro .listmacroall .model .no87 .nocref .nolist .nolistif "
-".nolistmacro .radix .repeat .sall .seq .sfcond .stack .startup .tfcond .type "
-".until .untilcxz .while .xall .xcref .xlist alias align assume catstr comm "
-"comment db dd df dosseg dq dt dup dw echo else elseif elseif1 elseif2 "
-"elseifb elseifdef elseifdif elseifdifi elseife elseifidn elseifidni elseifnb "
-"elseifndef end endif endm endp ends eq equ even exitm extern externdef "
-"extrn for forc ge goto group gt high highword if if1 if2 ifb ifdef ifdif ifdifi ife "
-"ifidn ifidni ifnb ifndef include includelib instr invoke irp irpc label le length "
-"lengthof local low lowword lroffset lt macro mask mod .msfloat name ne "
-"offset opattr option org %out page popcontext proc proto ptr public "
-"purge pushcontext record repeat rept seg segment short size sizeof "
-"sizestr struc struct substr subtitle subttl textequ this title type typedef "
-"union while width db dw dd dq dt resb resw resd resq rest incbin equ "
-"times %define %idefine %xdefine %xidefine %undef %assign %iassign "
-"%strlen %substr %macro %imacro %endmacro %rotate .nolist %if %elif "
-"%else %endif %ifdef %ifndef %elifdef %elifndef %ifmacro %ifnmacro "
-"%elifmacro %elifnmacro %ifctk %ifnctk %elifctk %elifnctk %ifidn %ifnidn "
-"%elifidn %elifnidn %ifidni %ifnidni %elifidni %elifnidni %ifid %ifnid %elifid "
-"%elifnid %ifstr %ifnstr %elifstr %elifnstr %ifnum %ifnnum %elifnum "
-"%elifnnum %error %rep %endrep %exitrep %include %push %pop %repl "
-"struct endstruc istruc at iend align alignb %arg %stacksize %local %line "
-"bits use16 use32 section absolute extern global common cpu org section "
-"group import export",
-"$ ? @b @f addr basic byte c carry? dword far far16 fortran fword near "
-"near16 overflow? parity? pascal qword real4 real8 real10 sbyte sdword "
-"sign? stdcall sword syscall tbyte vararg word zero? flat near32 far32 abs "
-"all assumes at casemap common compact cpu dotname emulator epilogue "
-"error export expr16 expr32 farstack flat forceframe huge language large "
-"listing ljmp loadds m510 medium memory nearstack nodotname noemulator "
-"nokeyword noljmp nom510 none nonunique nooldmacros nooldstructs "
-"noreadonly noscoped nosignextend nothing notpublic oldmacros oldstructs "
-"os_dos para private prologue radix readonly req scoped setif2 smallstack "
-"tiny use16 use32 uses # nasm directives, mostly complete, does not parse "
-"properly a16 a32 o16 o32 byte word dword nosplit $ $$ seq wrt flat large "
-"small .text .data .bss near far %0 %1 %2 %3 %4 %5 %6 %7 %8 %9",
-"addpd addps addsd addss andpd andps andnpd andnps cmpeqpd cmpltpd "
-"cmplepd cmpunordpd cmpnepd cmpnltpd cmpnlepd cmpordpd cmpeqps "
-"cmpltps cmpleps cmpunordps cmpneps cmpnltps cmpnleps cmpordps "
-"cmpeqsd cmpltsd cmplesd cmpunordsd cmpnesd cmpnltsd cmpnlesd "
-"cmpordsd cmpeqss cmpltss cmpless cmpunordss cmpness cmpnltss "
-"cmpnless cmpordss comisd comiss cvtdq2pd cvtdq2ps cvtpd2dq cvtpd2pi "
-"cvtpd2ps cvtpi2pd cvtpi2ps cvtps2dq cvtps2pd cvtps2pi cvtss2sd "
-"cvtss2si cvtsd2si cvtsd2ss cvtsi2sd cvtsi2ss cvttpd2dq cvttpd2pi "
-"cvttps2dq cvttps2pi cvttsd2si cvttss2si divpd divps divsd divss fxrstor "
-"fxsave ldmxscr lfence mfence maskmovdqu maskmovdq maxpd maxps "
-"paxsd maxss minpd minps minsd minss movapd movaps movdq2q movdqa "
-"movdqu movhlps movhpd movhps movd movq movlhps movlpd movlps "
-"movmskpd movmskps movntdq movnti movntpd movntps movntq "
-"movq2dq movsd movss movupd movups mulpd mulps mulsd mulss orpd "
-"orps packssdw packsswb packuswb paddb paddsb paddw paddsw paddd "
-"paddsiw paddq paddusb paddusw pand pandn pause paveb pavgb pavgw "
-"pavgusb pdistib pextrw pcmpeqb pcmpeqw pcmpeqd pcmpgtb pcmpgtw "
-"pcmpgtd pf2id pf2iw pfacc pfadd pfcmpeq pfcmpge pfcmpgt pfmax pfmin "
-"pfmul pmachriw pmaddwd pmagw pmaxsw pmaxub pminsw pminub "
-"pmovmskb pmulhrwc pmulhriw pmulhrwa pmulhuw pmulhw pmullw pmuludq "
-"pmvzb pmvnzb pmvlzb pmvgezb pfnacc pfpnacc por prefetch prefetchw "
-"prefetchnta prefetcht0 prefetcht1 prefetcht2 pfrcp pfrcpit1 pfrcpit2 "
-"pfrsqit1 pfrsqrt pfsub pfsubr pi2fd pf2iw pinsrw psadbw pshufd pshufhw "
-"pshuflw pshufw psllw pslld psllq pslldq psraw psrad psrlw psrld psrlq psrldq "
-"psubb psubw psubd psubq psubsb psubsw psubusb psubusw psubsiw "
-"pswapd punpckhbw punpckhwd punpckhdq punpckhqdq punpcklbw "
-"punpcklwd punpckldq punpcklqdq pxor rcpps rcpss rsqrtps rsqrtss sfence "
-"shufpd shufps sqrtpd sqrtps sqrtsd sqrtss stmxcsr subpd subps subsd "
-"subss ucomisd ucomiss unpckhpd unpckhps unpcklpd unpcklps xorpd xorps",
+"aaa aad aam aas adc add and arpl bound bsf bsr bswap bt btc btr bts call cbw cdq cflush clc cld "
+"cli clts cmc cmova cmovae cmovb cmovbe cmovc cmove cmovg cmovge cmovl cmovle cmovna cmovnae "
+"cmovnb cmovnbe cmovnc cmovne cmovng cmovnge cmovnl cmovnle cmovno cmovnp cmovns cmovnz cmovo "
+"cmovp cmovpe cmovpo cmovs cmovz cmp cmps cmpsb cmpsd cmpsq cmpsw cmpxchg cmpxchg486 cmpxchg8b "
+"cpuid cwd cwde daa das dec div emms enter esc femms hlt ibts icebp idiv imul in inc ins insb "
+"insd insw int int01 int03 int1 int3 into invd invlpg iret iretd iretdf iretf iretw ja jae jb jbe "
+"jc jcxz je jecxz jg jge jl jle jmp jna jnae jnb jnbe jnc jne jng jnge jnl jnle jno jnp jns jnz "
+"jo jp jpe jpo js jz lahf lar lds lea leave les lfs lgdt lgs lidt lldt lmsw loadall loadall286 "
+"lock lods lodsb lodsd lodsq lodsw loop loopd loope looped loopew loopne loopned loopnew loopnz "
+"loopnzd loopnzw loopw loopz loopzd loopzw lsl lss ltr mov movs movsb movsd movsq movsw movsx "
+"movsxd movzx mul neg nop not or out outs outsb outsd outsw pop popa popad popaw popf popfd popfw "
+"push pusha pushad pushaw pushd pushf pushfd pushfw pushw rcl rcr rdmsr rdpmc rdshr rdtsc rep "
+"repe repne repnz repz ret retf retn rol ror rsdc rsldt rsm rsts sahf sal salc sar sbb scas scasb "
+"scasd scasq scasw seta setae setb setbe setc sete setg setge setl setle setna setnae setnb "
+"setnbe setnc setne setng setnge setnl setnle setno setnp setns setnz seto setp setpe setpo sets "
+"setz sgdt shl shld shr shrd sidt sldt smi smint smintold smsw stc std sti stos stosb stosd stosq "
+"stosw str sub svdc svldt svts syscall sysenter sysexit sysret test ud0 ud1 ud2 umov verr verw "
+"wait wbinvd wrmsr wrshr xadd xbts xchg xlat xlatb xor",
+"f2xm1 fabs fadd faddp fbld fbstp fchs fclex fcmovb fcmovbe fcmove fcmovnb fcmovnbe fcmovne "
+"fcmovnu fcmovu fcom fcomi fcomip fcomp fcompp fcos fdecstp fdisi fdiv fdivp fdivr fdivrp feni "
+"ffree ffreep fiadd ficom ficomp fidiv fidivr fild fimul fincstp finit fist fistp fisub fisubr "
+"fld fld1 fldcw fldenv fldenvd fldenvw fldl2e fldl2t fldlg2 fldln2 fldpi fldz fmul fmulp fnclex "
+"fndisi fneni fninit fnop fnsave fnsaved fnsavew fnstcw fnstenv fnstenvd fnstenvw fnstsw fpatan "
+"fprem fprem1 fptan frndint frstor frstord frstorw fsave fsaved fsavew fscale fsetpm fsin fsincos "
+"fsqrt fst fstcw fstenv fstenvd fstenvw fstp fstsw fsub fsubp fsubr fsubrp ftst fucom fucomp "
+"fucompp fwait fxam fxch fxtract fyl2x fyl2xp1",
+"ah al ax bh bl bp bx ch cl cr0 cr2 cr3 cr4 cs cx dh di dl dr0 dr1 dr2 dr3 dr6 dr7 ds dx eax ebp "
+"ebx ecx edi edx eip es esi esp fs gs mm0 mm1 mm2 mm3 mm4 mm5 mm6 mm7 r10 r10b r10d r10w r11 r11b "
+"r11d r11w r12 r12b r12d r12w r13 r13b r13d r13w r14 r14b r14d r14w r15 r15b r15d r15w r8 r8b r8d "
+"r8w r9 r9b r9d r9w rax rbp rbx rcx rdi rdx rip rsi rsp si sp ss st st0 st1 st2 st3 st4 st5 st6 "
+"st7 tr3 tr4 tr5 tr6 tr7 xmm0 xmm1 xmm10 xmm11 xmm12 xmm13 xmm14 xmm15 xmm2 xmm3 xmm4 xmm5 xmm6 "
+"xmm7 xmm8 xmm9 ymm0 ymm1 ymm10 ymm11 ymm12 ymm13 ymm14 ymm15 ymm2 ymm3 ymm4 ymm5 ymm6 ymm7 ymm8 "
+"ymm9",
+"%arg %assign %define %elif %elifctk %elifdef %elifid %elifidn %elifidni %elifmacro %elifnctk "
+"%elifndef %elifnid %elifnidn %elifnidni %elifnmacro %elifnnum %elifnstr %elifnum %elifstr %else "
+"%endif %endmacro %endrep %error %exitrep %iassign %idefine %if %ifctk %ifdef %ifid %ifidn "
+"%ifidni %ifmacro %ifnctk %ifndef %ifnid %ifnidn %ifnidni %ifnmacro %ifnnum %ifnstr %ifnum %ifstr "
+"%imacro %include %line %local %macro %out %pop %push %rep %repl %rotate %stacksize %strlen "
+"%substr %undef %xdefine %xidefine .186 .286 .286c .286p .287 .386 .386c .386p .387 .486 .486p "
+".8086 .8087 .alpha .break .code .const .continue .cref .data .data? .dosseg .else .elseif .endif "
+".endw .err .err1 .err2 .errb .errdef .errdif .errdifi .erre .erridn .erridni .errnb .errndef "
+".errnz .exit .fardata .fardata? .if .lall .lfcond .list .listall .listif .listmacro "
+".listmacroall .model .msfloat .no87 .nocref .nolist .nolistif .nolistmacro .radix .repeat .sall "
+".seq .sfcond .stack .startup .tfcond .type .until .untilcxz .while .xall .xcref .xlist absolute "
+"alias align alignb assume at bits catstr comm comment common cpu db dd df dosseg dq dt dup dw "
+"echo else elseif elseif1 elseif2 elseifb elseifdef elseifdif elseifdifi elseife elseifidn "
+"elseifidni elseifnb elseifndef end endif endm endp ends endstruc eq equ even exitm export extern "
+"externdef extrn for forc ge global goto group gt high highword iend if if1 if2 ifb ifdef ifdif "
+"ifdifi ife ifidn ifidni ifnb ifndef import incbin include includelib instr invoke irp irpc "
+"istruc label le length lengthof local low lowword lroffset lt macro mask mod name ne offset "
+"opattr option org page popcontext proc proto ptr public purge pushcontext record repeat rept "
+"resb resd resq rest resw section seg segment short size sizeof sizestr struc struct substr "
+"subtitle subttl textequ this times title type typedef union use16 use32 while width",
+"$ $$ %0 %1 %2 %3 %4 %5 %6 %7 %8 %9 .bss .data .text ? @b @f a16 a32 abs addr all assumes at "
+"basic byte c carry? casemap common compact cpu dotname dword emulator epilogue error export "
+"expr16 expr32 far far16 far32 farstack flat forceframe fortran fword huge language large listing "
+"ljmp loadds m510 medium memory near near16 near32 nearstack nodotname noemulator nokeyword "
+"noljmp nom510 none nonunique nooldmacros nooldstructs noreadonly noscoped nosignextend nosplit "
+"nothing notpublic o16 o32 oldmacros oldstructs os_dos overflow? para parity? pascal private "
+"prologue qword radix readonly real10 real4 real8 req sbyte scoped sdword seq setif2 sign? small "
+"smallstack stdcall sword syscall tbyte tiny use16 use32 uses vararg word wrt zero?",
+"addpd addps addsd addss andnpd andnps andpd andps blendpd blendps blendvpd blendvps cmpeqpd "
+"cmpeqps cmpeqsd cmpeqss cmplepd cmpleps cmplesd cmpless cmpltpd cmpltps cmpltsd cmpltss cmpnepd "
+"cmpneps cmpnesd cmpness cmpnlepd cmpnleps cmpnlesd cmpnless cmpnltpd cmpnltps cmpnltsd cmpnltss "
+"cmpordpd cmpordps cmpordsd cmpordss cmpunordpd cmpunordps cmpunordsd cmpunordss comisd comiss "
+"crc32 cvtdq2pd cvtdq2ps cvtpd2dq cvtpd2pi cvtpd2ps cvtpi2pd cvtpi2ps cvtps2dq cvtps2pd cvtps2pi "
+"cvtsd2si cvtsd2ss cvtsi2sd cvtsi2ss cvtss2sd cvtss2si cvttpd2dq cvttpd2pi cvttps2dq cvttps2pi "
+"cvttsd2si cvttss2si divpd divps divsd divss dppd dpps extractps fxrstor fxsave insertps ldmxscr "
+"lfence maskmovdq maskmovdqu maxpd maxps maxss mfence minpd minps minsd minss movapd movaps movd "
+"movdq2q movdqa movdqu movhlps movhpd movhps movlhps movlpd movlps movmskpd movmskps movntdq "
+"movntdqa movnti movntpd movntps movntq movq movq2dq movsd movss movupd movups mpsadbw mulpd "
+"mulps mulsd mulss orpd orps packssdw packsswb packusdw packuswb paddb paddd paddq paddsb paddsiw "
+"paddsw paddusb paddusw paddw pand pandn pause paveb pavgb pavgusb pavgw paxsd pblendvb pblendw "
+"pcmpeqb pcmpeqd pcmpeqq pcmpeqw pcmpestri pcmpestrm pcmpgtb pcmpgtd pcmpgtq pcmpgtw pcmpistri "
+"pcmpistrm pdistib pextrb pextrd pextrq pextrw pf2id pf2iw pfacc pfadd pfcmpeq pfcmpge pfcmpgt "
+"pfmax pfmin pfmul pfnacc pfpnacc pfrcp pfrcpit1 pfrcpit2 pfrsqit1 pfrsqrt pfsub pfsubr "
+"phminposuw pi2fd pinsrb pinsrd pinsrq pinsrw pmachriw pmaddwd pmagw pmaxsb pmaxsd pmaxsw pmaxub "
+"pmaxud pmaxuw pminsb pminsd pminsw pminub pminud pminuw pmovmskb pmovsxbd pmovsxbq pmovsxbw "
+"pmovsxdq pmovsxwd pmovsxwq pmovzxbd pmovzxbq pmovzxbw pmovzxdq pmovzxwd pmovzxwq pmuldq pmulhriw "
+"pmulhrwa pmulhrwc pmulhuw pmulhw pmulld pmullw pmuludq pmvgezb pmvlzb pmvnzb pmvzb popcnt por "
+"prefetch prefetchnta prefetcht0 prefetcht1 prefetcht2 prefetchw psadbw pshufd pshufhw pshuflw "
+"pshufw pslld pslldq psllq psllw psrad psraw psrld psrldq psrlq psrlw psubb psubd psubq psubsb "
+"psubsiw psubsw psubusb psubusw psubw pswapd ptest punpckhbw punpckhdq punpckhqdq punpckhwd "
+"punpcklbw punpckldq punpcklqdq punpcklwd pxor rcpps rcpss roundpd roundps roundsd roundss "
+"rsqrtps rsqrtss sfence shufpd shufps sqrtpd sqrtps sqrtsd sqrtss stmxcsr subpd subps subsd subss "
+"ucomisd ucomiss unpckhpd unpckhps unpcklpd unpcklps xorpd xorps",
 "", "", "" };
 
 
@@ -900,7 +883,8 @@ EDITLEXER lexCONF = { SCLEX_CONF, 63020, L"Apache Config Files", L"conf; htacces
 
 
 KEYWORDLIST KeyWords_PS = {
-"break continue do else elseif filter for foreach function if in return switch until where while",
+"begin break catch continue data do dynamicparam else elseif end exit filter finally for foreach "
+"from function if in local param private process return switch throw trap try until where while",
 "add-computer add-content add-history add-member add-pssnapin add-type checkpoint-computer "
 "clear-content clear-eventlog clear-history clear-host clear-item clear-itemproperty "
 "clear-variable compare-object complete-transaction connect-wsman convertfrom-csv "
@@ -918,18 +902,18 @@ KEYWORDLIST KeyWords_PS = {
 "get-pfxcertificate get-process get-psbreakpoint get-pscallstack get-psdrive get-psprovider "
 "get-pssession get-pssessionconfiguration get-pssnapin get-random get-service get-tracesource "
 "get-transaction get-uiculture get-unique get-variable get-verb get-winevent get-wmiobject "
-"get-wsmancredssp get-wsmaninstance group-object help import-alias import-clixml import-counter "
-"import-csv import-localizeddata import-module import-pssession importsystemmodules "
-"invoke-command invoke-expression invoke-history invoke-item invoke-wmimethod invoke-wsmanaction "
-"join-path limit-eventlog measure-command measure-object mkdir more move-item move-itemproperty "
-"new-alias new-event new-eventlog new-item new-itemproperty new-module new-modulemanifest "
-"new-object new-psdrive new-pssession new-pssessionoption new-service new-timespan new-variable "
-"new-webserviceproxy new-wsmaninstance new-wsmansessionoption out-default out-file out-gridview "
-"out-host out-null out-printer out-string pop-location prompt push-location read-host receive-job "
-"register-engineevent register-objectevent register-pssessionconfiguration register-wmievent "
-"remove-computer remove-event remove-eventlog remove-item remove-itemproperty remove-job "
-"remove-module remove-psbreakpoint remove-psdrive remove-pssession remove-pssnapin "
-"remove-variable remove-wmiobject remove-wsmaninstance rename-item rename-itemproperty "
+"get-wsmancredssp get-wsmaninstance group-object import-alias import-clixml import-counter "
+"import-csv import-localizeddata import-module import-pssession invoke-command invoke-expression "
+"invoke-history invoke-item invoke-wmimethod invoke-wsmanaction join-path limit-eventlog "
+"measure-command measure-object move-item move-itemproperty new-alias new-event new-eventlog "
+"new-item new-itemproperty new-module new-modulemanifest new-object new-psdrive new-pssession "
+"new-pssessionoption new-service new-timespan new-variable new-webserviceproxy new-wsmaninstance "
+"new-wsmansessionoption out-default out-file out-gridview out-host out-null out-printer "
+"out-string pop-location push-location read-host receive-job register-engineevent "
+"register-objectevent register-pssessionconfiguration register-wmievent remove-computer "
+"remove-event remove-eventlog remove-item remove-itemproperty remove-job remove-module "
+"remove-psbreakpoint remove-psdrive remove-pssession remove-pssnapin remove-variable "
+"remove-wmiobject remove-wsmaninstance rename-item rename-itemproperty "
 "reset-computermachinepassword resolve-path restart-computer restart-service restore-computer "
 "resume-service select-object select-string select-xml send-mailmessage set-acl set-alias "
 "set-authenticodesignature set-content set-date set-executionpolicy set-item set-itemproperty "
@@ -944,24 +928,26 @@ KEYWORDLIST KeyWords_PS = {
 "write-output write-progress write-verbose write-warning",
 "ac asnp cat cd chdir clc clear clhy cli clp cls clv compare copy cp cpi cpp cvpa dbp del diff "
 "dir ebp echo epal epcsv epsn erase etsn exsn fc fl foreach ft fw gal gbp gc gci gcm gcs gdr ghy "
-"gi gjb gl gm gmo gp gps group gsn gsnp gsv gu gv gwmi h history icm iex ihy ii ipal ipcsv ipmo "
-"ipsn ise iwmi kill lp ls man md measure mi mount move mp mv nal ndr ni nmo nsn nv ogv oh popd ps "
-"pushd pwd r rbp rcjb rd rdr ren ri rjb rm rmdir rmo rni rnp rp rsn rsnp rv rvpa rwmi sajb sal "
-"saps sasv sbp sc select set si sl sleep sort sp spjb spps spsv start sv swmi tee type where wjb "
-"write", "", "", "", "", "", "" };
+"gi gjb gl gm gmo gp gps group gsn gsnp gsv gu gv gwmi h help history icm iex ihy ii ipal ipcsv "
+"ipmo ipsn ise iwmi kill lp ls man md measure mi mkdir more mount move mp mv nal ndr ni nmo nsn "
+"nv ogv oh popd ps pushd pwd r rbp rcjb rd rdr ren ri rjb rm rmdir rmo rni rnp rp rsn rsnp rv "
+"rvpa rwmi sajb sal saps sasv sbp sc select set si sl sleep sort sp spjb spps spsv start sv swmi "
+"tee type where wjb write",
+"importsystemmodules prompt psedit tabexpansion",
+"", "", "", "", "" };
 
 
 EDITLEXER lexPS = { SCLEX_POWERSHELL, 63021, L"PowerShell Script", L"ps1; psc1", L"", &KeyWords_PS, {
                     { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
                     //{ SCE_POWERSHELL_DEFAULT, L"Default", L"", L"" },
-                    { SCE_POWERSHELL_COMMENT, 63127, L"Comment", L"fore:#646464", L"" },
+                    { MULTI_STYLE(SCE_POWERSHELL_COMMENT,SCE_POWERSHELL_COMMENTSTREAM,0,0), 63127, L"Comment", L"fore:#646464", L"" },
                     { SCE_POWERSHELL_KEYWORD, 63128, L"Keyword", L"bold; fore:#804000", L"" },
                     { SCE_POWERSHELL_IDENTIFIER, 63129, L"Identifier", L"", L"" },
                     { MULTI_STYLE(SCE_POWERSHELL_STRING,SCE_POWERSHELL_CHARACTER,0,0), 63131, L"String", L"fore:#008000", L"" },
                     { SCE_POWERSHELL_NUMBER, 63130, L"Number", L"fore:#FF0000", L"" },
                     { SCE_POWERSHELL_OPERATOR, 63132, L"Operator", L"bold", L"" },
                     { SCE_POWERSHELL_VARIABLE, 63249, L"Variable", L"fore:#0A246A", L"" },
-                    { SCE_POWERSHELL_CMDLET, 63250, L"Cmdlet", L"fore:#804000; back:#FFF1A8", L"" },
+                    { MULTI_STYLE(SCE_POWERSHELL_CMDLET,SCE_POWERSHELL_FUNCTION,0,0), 63250, L"Cmdlet", L"fore:#804000; back:#FFF1A8", L"" },
                     { SCE_POWERSHELL_ALIAS, 63251, L"Alias", L"bold; fore:#0A246A", L"" },
                     { -1, 00000, L"", L"", L"" } } };
 
@@ -1521,8 +1507,6 @@ EDITLEXER lexCmake = { SCLEX_CMAKE, 63324, L"Cmake Script", L"cmake; ctest", L""
 
 
 // This array holds all the lexers...
-// Don't forget to change the number in Style_SetHTMLLexer and Style_SetXMLLexer
-// if you change this array
 PEDITLEXER pLexArray[NUMLEXERS] =
 {
   &lexDefault,
@@ -1567,6 +1551,7 @@ COLORREF crCustom[16];
 BOOL bUse2ndDefaultStyle;
 BOOL fStylesModified = FALSE;
 BOOL fWarnedNoIniFile = FALSE;
+BOOL fIsConsolasAvailable = FALSE;
 int iBaseFontSize = 10;
 int iDefaultLexer;
 BOOL bAutoSelect;
@@ -1586,7 +1571,7 @@ void Style_Load()
   int i,iLexer;
   WCHAR tch[32];
   WCHAR *pIniSection = LocalAlloc(LPTR,sizeof(WCHAR)*32*1024);
-  int   cchIniSection = LocalSize(pIniSection)/sizeof(WCHAR);
+  int   cchIniSection = (int)LocalSize(pIniSection)/sizeof(WCHAR);
 
   // Custom colors
   crCustom [0] = RGB(0x00,0x00,0x00);
@@ -1608,8 +1593,17 @@ void Style_Load()
 
   LoadIniSection(L"Custom Colors",pIniSection,cchIniSection);
   for (i = 0; i < 16; i++) {
+    int itok;
+    int irgb;
+    WCHAR wch[32];
     wsprintf(tch,L"%02i",i+1);
-    crCustom[i] = IniSectionGetInt(pIniSection,tch,crCustom[i]);
+    if (IniSectionGetString(pIniSection,tch,L"",wch,COUNTOF(wch))) {
+      if (wch[0] == L'#') {
+        itok = swscanf(CharNext(wch),L"%x",&irgb);
+        if (itok == 1)
+          crCustom[i] = RGB((irgb&0xFF0000) >> 16,(irgb&0xFF00) >> 8,irgb&0xFF);
+      }
+    }
   }
 
   LoadIniSection(L"Styles",pIniSection,cchIniSection);
@@ -1658,12 +1652,15 @@ void Style_Save()
   int i,iLexer;
   WCHAR tch[32];
   WCHAR *pIniSection = LocalAlloc(LPTR,sizeof(WCHAR)*32*1024);
-  int   cchIniSection = LocalSize(pIniSection)/sizeof(WCHAR);
+  int   cchIniSection = (int)LocalSize(pIniSection)/sizeof(WCHAR);
 
   // Custom colors
   for (i = 0; i < 16; i++) {
+    WCHAR wch[32];
     wsprintf(tch,L"%02i",i+1);
-    IniSectionSetInt(pIniSection,tch,crCustom[i]);
+    wsprintf(wch,L"#%02X%02X%02X",
+      (int)GetRValue(crCustom[i]),(int)GetGValue(crCustom[i]),(int)GetBValue(crCustom[i]));
+    IniSectionSetString(pIniSection,tch,wch);
   }
   SaveIniSection(L"Custom Colors",pIniSection);
   ZeroMemory(pIniSection,cchIniSection);
@@ -1730,7 +1727,7 @@ BOOL Style_Import(HWND hwnd)
 
     int i,iLexer;
     WCHAR *pIniSection = LocalAlloc(LPTR,sizeof(WCHAR)*32*1024);
-    int   cchIniSection = LocalSize(pIniSection)/sizeof(WCHAR);
+    int   cchIniSection = (int)LocalSize(pIniSection)/sizeof(WCHAR);
 
     for (iLexer = 0; iLexer < NUMLEXERS; iLexer++) {
       if (GetPrivateProfileSection(pLexArray[iLexer]->pszName,pIniSection,cchIniSection,szFile)) {
@@ -1751,8 +1748,7 @@ BOOL Style_Import(HWND hwnd)
     LocalFree(pIniSection);
     return(TRUE);
   }
-  else
-    return(FALSE);
+  return(FALSE);
 }
 
 //=============================================================================
@@ -1764,6 +1760,7 @@ BOOL Style_Export(HWND hwnd)
   WCHAR szFile[MAX_PATH * 2] = L"";
   WCHAR szFilter[256];
   OPENFILENAME ofn;
+  DWORD dwError = ERROR_SUCCESS;
 
   ZeroMemory(&ofn,sizeof(OPENFILENAME));
   GetString(IDS_FILTER_INI,szFilter,COUNTOF(szFilter));
@@ -1782,7 +1779,7 @@ BOOL Style_Export(HWND hwnd)
 
     int i,iLexer;
     WCHAR *pIniSection = LocalAlloc(LPTR,sizeof(WCHAR)*32*1024);
-    int   cchIniSection = LocalSize(pIniSection)/sizeof(WCHAR);
+    int   cchIniSection = (int)LocalSize(pIniSection)/sizeof(WCHAR);
 
     for (iLexer = 0; iLexer < NUMLEXERS; iLexer++) {
       IniSectionSetString(pIniSection,L"FileNameExtensions",pLexArray[iLexer]->szExtensions);
@@ -1791,14 +1788,18 @@ BOOL Style_Export(HWND hwnd)
         IniSectionSetString(pIniSection,pLexArray[iLexer]->Styles[i].pszName,pLexArray[iLexer]->Styles[i].szValue);
         i++;
       }
-      WritePrivateProfileSection(pLexArray[iLexer]->pszName,pIniSection,szFile);
+      if (!WritePrivateProfileSection(pLexArray[iLexer]->pszName,pIniSection,szFile))
+        dwError = GetLastError();
       ZeroMemory(pIniSection,cchIniSection);
     }
     LocalFree(pIniSection);
+
+    if (dwError != ERROR_SUCCESS) {
+      MsgBox(MBINFO,IDS_EXPORT_FAIL,szFile);
+    }
     return(TRUE);
   }
-  else
-    return(FALSE);
+  return(FALSE);
 }
 
 
@@ -1813,6 +1814,8 @@ void Style_SetLexer(HWND hwnd,PEDITLEXER pLexNew)
   int rgb;
   int iValue;
   int iIdx;
+  int iStyleBits;
+  WCHAR wchCaretStyle[64] = L"";
 
   // Select default if NULL is specified
   if (!pLexNew)
@@ -1821,20 +1824,22 @@ void Style_SetLexer(HWND hwnd,PEDITLEXER pLexNew)
   // Lexer
   SendMessage(hwnd,SCI_SETLEXER,pLexNew->iLexer,0);
 
-  if (pLexNew->iLexer == SCLEX_HTML || pLexNew->iLexer == SCLEX_XML || pLexNew->iLexer == SCLEX_PERL)
-    SendMessage(hwnd,SCI_SETSTYLEBITS,7,0);
-  else
-    SendMessage(hwnd,SCI_SETSTYLEBITS,5,0);
+  iStyleBits = (int)SendMessage(hwnd,SCI_GETSTYLEBITSNEEDED,0,0);
+  SendMessage(hwnd,SCI_SETSTYLEBITS,(WPARAM)iStyleBits,0);
 
+  if (pLexNew->iLexer == SCLEX_XML)
+    SendMessage(hwnd,SCI_SETPROPERTY,(WPARAM)"lexer.xml.allow.scripts",(LPARAM)"1");
   if (pLexNew->iLexer == SCLEX_CPP) {
     SendMessage(hwnd,SCI_SETPROPERTY,(WPARAM)"styling.within.preprocessor",(LPARAM)"1");
-    SciCall_SetProperty("lexer.cpp.track.preprocessor", "0");
+    SendMessage(hwnd,SCI_SETPROPERTY,(WPARAM)"lexer.cpp.track.preprocessor",(LPARAM)"0");
+    SendMessage(hwnd,SCI_SETPROPERTY,(WPARAM)"lexer.cpp.update.preprocessor",(LPARAM)"0");
   }
   else if (pLexNew->iLexer == SCLEX_PASCAL)
     SendMessage(hwnd,SCI_SETPROPERTY,(WPARAM)"lexer.pascal.smart.highlighting",(LPARAM)"1");
   else if (pLexNew->iLexer == SCLEX_SQL) {
     SendMessage(hwnd,SCI_SETPROPERTY,(WPARAM)"sql.backslash.escapes",(LPARAM)"1");
     SendMessage(hwnd,SCI_SETPROPERTY,(WPARAM)"lexer.sql.backticks.identifier",(LPARAM)"1");
+    SendMessage(hwnd,SCI_SETPROPERTY,(WPARAM)"lexer.sql.numbersign.comment",(LPARAM)"1");
   }
   else if (pLexNew->iLexer == SCLEX_NSIS)
     SciCall_SetProperty("nsis.ignorecase", "1");
@@ -1851,10 +1856,11 @@ void Style_SetLexer(HWND hwnd,PEDITLEXER pLexNew)
     SendMessage(hwnd,SCI_SETKEYWORDS,i,(LPARAM)pLexNew->pKeyWords->pszKeyWords[i]);
 
   // Use 2nd default style
-  iIdx = (bUse2ndDefaultStyle) ? 13 : 0;
+  iIdx = (bUse2ndDefaultStyle) ? 12 : 0;
 
-  // Font Quality
+  // Font quality setup, check availability of Consolas
   Style_SetFontQuality(hwnd,lexDefault.Styles[0+iIdx].szValue);
+  fIsConsolasAvailable = IsFontAvailable(L"Consolas");
 
   // Clear
   SendMessage(hwnd,SCI_CLEARDOCUMENTSTYLE,0,0);
@@ -1975,45 +1981,69 @@ void Style_SetLexer(HWND hwnd,PEDITLEXER pLexNew)
   else
     SendMessage(hwnd,SCI_SETCARETLINEVISIBLE,FALSE,0);
 
-  // caret fore
-  if (!Style_StrGetColor(TRUE,lexDefault.Styles[9+iIdx].szValue,&rgb))
-    rgb = GetSysColor(COLOR_WINDOWTEXT);
-  if (!VerifyContrast(rgb,SendMessage(hwnd,SCI_STYLEGETBACK,0,0)))
-    rgb = SendMessage(hwnd,SCI_STYLEGETFORE,0,0);
-  SendMessage(hwnd,SCI_SETCARETFORE,rgb,0);
-  SendMessage(hwnd,SCI_SETADDITIONALCARETFORE,rgb,0);
-
   // caret style and width
-  if (StrStr(lexDefault.Styles[10+iIdx].szValue,L"block"))
+  if (StrStr(lexDefault.Styles[9+iIdx].szValue,L"block")) {
     SendMessage(hwnd,SCI_SETCARETSTYLE,CARETSTYLE_BLOCK,0);
+    lstrcpy(wchCaretStyle,L"block");
+  }
   else {
+    WCHAR wch[32];
     iValue = 1;
-    if (Style_StrGetSize(lexDefault.Styles[10+iIdx].szValue,&iValue)) {
+    if (Style_StrGetSize(lexDefault.Styles[9+iIdx].szValue,&iValue)) {
       iValue = max(min(iValue,3),1);
-      wsprintf(lexDefault.Styles[10+iIdx].szValue,L"size:%i",iValue);
+      wsprintf(wch,L"size:%i",iValue);
+      lstrcat(wchCaretStyle,wch);
     }
     SendMessage(hwnd,SCI_SETCARETSTYLE,CARETSTYLE_LINE,0);
     SendMessage(hwnd,SCI_SETCARETWIDTH,iValue,0);
   }
+  if (StrStr(lexDefault.Styles[9+iIdx].szValue,L"noblink")) {
+    SendMessage(hwnd,SCI_SETCARETPERIOD,(WPARAM)0,0);
+    if (lstrlen(wchCaretStyle))
+      lstrcat(wchCaretStyle,L"; ");
+    lstrcat(wchCaretStyle,L"noblink");
+  }
+  else
+    SendMessage(hwnd,SCI_SETCARETPERIOD,(WPARAM)GetCaretBlinkTime(),0);
+
+  // caret fore
+  if (!Style_StrGetColor(TRUE,lexDefault.Styles[9+iIdx].szValue,&rgb))
+    rgb = GetSysColor(COLOR_WINDOWTEXT);
+  else {
+    WCHAR wch[32];
+    wsprintf(wch,L"fore:#%02X%02X%02X",
+      (int)GetRValue(rgb),
+      (int)GetGValue(rgb),
+      (int)GetBValue(rgb));
+    if (lstrlen(wchCaretStyle))
+      lstrcat(wchCaretStyle,L"; ");
+    lstrcat(wchCaretStyle,wch);
+  }
+  if (!VerifyContrast(rgb,(COLORREF)SendMessage(hwnd,SCI_STYLEGETBACK,0,0)))
+    rgb = (int)SendMessage(hwnd,SCI_STYLEGETFORE,0,0);
+  SendMessage(hwnd,SCI_SETCARETFORE,rgb,0);
+  SendMessage(hwnd,SCI_SETADDITIONALCARETFORE,rgb,0);
+  lstrcpy(lexDefault.Styles[9+iIdx].szValue,wchCaretStyle);
 
   if (SendMessage(hwnd,SCI_GETEDGEMODE,0,0) == EDGE_LINE) {
-    if (Style_StrGetColor(TRUE,lexDefault.Styles[11+iIdx].szValue,&rgb)) // edge fore
+    if (Style_StrGetColor(TRUE,lexDefault.Styles[10+iIdx].szValue,&rgb)) // edge fore
       SendMessage(hwnd,SCI_SETEDGECOLOUR,rgb,0);
     else
       SendMessage(hwnd,SCI_SETEDGECOLOUR,GetSysColor(COLOR_3DLIGHT),0);
   }
   else {
-    if (Style_StrGetColor(FALSE,lexDefault.Styles[11+iIdx].szValue,&rgb)) // edge back
+    if (Style_StrGetColor(FALSE,lexDefault.Styles[10+iIdx].szValue,&rgb)) // edge back
       SendMessage(hwnd,SCI_SETEDGECOLOUR,rgb,0);
     else
       SendMessage(hwnd,SCI_SETEDGECOLOUR,GetSysColor(COLOR_3DLIGHT),0);
   }
 
   // Extra Line Spacing
-  if (Style_StrGetSize(lexDefault.Styles[12+iIdx].szValue,&iValue) && pLexNew != &lexANSI) {
+  if (Style_StrGetSize(lexDefault.Styles[11+iIdx].szValue,&iValue) && pLexNew != &lexANSI) {
     int iAscent = 0;
     int iDescent = 0;
     iValue = min(max(iValue,0),64);
+    wsprintf(lexDefault.Styles[11+iIdx].szValue,L"size:%i",iValue);
     if (iValue % 2) {
       iAscent++;
       iValue--;
@@ -2022,12 +2052,11 @@ void Style_SetLexer(HWND hwnd,PEDITLEXER pLexNew)
     iDescent += iValue / 2;
     SendMessage(hwnd,SCI_SETEXTRAASCENT,(WPARAM)iAscent,0);
     SendMessage(hwnd,SCI_SETEXTRADESCENT,(WPARAM)iDescent,0);
-    wsprintf(lexDefault.Styles[12+iIdx].szValue,L"size:%i",iValue);
   }
   else {
     SendMessage(hwnd,SCI_SETEXTRAASCENT,0,0);
     SendMessage(hwnd,SCI_SETEXTRADESCENT,0,0);
-    //wsprintf(lexDefault.Styles[12+iIdx].szValue,L"size:0");
+    //wsprintf(lexDefault.Styles[11+iIdx].szValue,L"size:0");
   }
 
   { // set folding style; braces are for scoping only
@@ -2181,16 +2210,16 @@ void Style_SetLongLineColors(HWND hwnd)
   int rgb;
 
   // Use 2nd default style
-  int iIdx = (bUse2ndDefaultStyle) ? 13 : 0;
+  int iIdx = (bUse2ndDefaultStyle) ? 12 : 0;
 
   if (SendMessage(hwnd,SCI_GETEDGEMODE,0,0) == EDGE_LINE) {
-    if (Style_StrGetColor(TRUE,lexDefault.Styles[11+iIdx].szValue,&rgb)) // edge fore
+    if (Style_StrGetColor(TRUE,lexDefault.Styles[10+iIdx].szValue,&rgb)) // edge fore
       SendMessage(hwnd,SCI_SETEDGECOLOUR,rgb,0);
     else
       SendMessage(hwnd,SCI_SETEDGECOLOUR,GetSysColor(COLOR_3DLIGHT),0);
   }
   else {
-    if (Style_StrGetColor(FALSE,lexDefault.Styles[11+iIdx].szValue,&rgb)) // edge back
+    if (Style_StrGetColor(FALSE,lexDefault.Styles[10+iIdx].szValue,&rgb)) // edge back
       SendMessage(hwnd,SCI_SETEDGECOLOUR,rgb,0);
     else
       SendMessage(hwnd,SCI_SETEDGECOLOUR,GetSysColor(COLOR_3DLIGHT),0);
@@ -2207,7 +2236,7 @@ void Style_SetCurrentLineBackground(HWND hwnd)
   int rgb, iValue;
 
   // Use 2nd default style
-  int iIdx = (bUse2ndDefaultStyle) ? 13 : 0;
+  int iIdx = (bUse2ndDefaultStyle) ? 12 : 0;
 
   if (bHiliteCurrentLine) {
 
@@ -2331,7 +2360,7 @@ void Style_SetLexerFromFile(HWND hwnd,LPCWSTR lpszFile)
 
     WCHAR wchMode[32];
     PEDITLEXER pLexMode;
-    UINT cp = SendMessage(hwnd,SCI_GETCODEPAGE,0,0);
+    UINT cp = (UINT)SendMessage(hwnd,SCI_GETCODEPAGE,0,0);
     MultiByteToWideChar(cp,0,fvCurFile.tchMode,-1,wchMode,COUNTOF(wchMode));
 
     if (!fNoCGIGuess && (lstrcmpi(wchMode,L"cgi") == 0 || lstrcmpi(wchMode,L"fcgi") == 0)) {
@@ -2454,7 +2483,7 @@ void Style_SetDefaultLexer(HWND hwnd)
 //
 void Style_SetHTMLLexer(HWND hwnd)
 {
-  Style_SetLexer(hwnd,pLexArray[31]);
+  Style_SetLexer(hwnd,Style_MatchLexer(L"Web Source Code",TRUE));
 }
 
 
@@ -2464,7 +2493,7 @@ void Style_SetHTMLLexer(HWND hwnd)
 //
 void Style_SetXMLLexer(HWND hwnd)
 {
-  Style_SetLexer(hwnd,pLexArray[32]);
+  Style_SetLexer(hwnd,Style_MatchLexer(L"XML Document",TRUE));
 }
 
 
@@ -2497,10 +2526,10 @@ void Style_ToggleUse2ndDefault(HWND hwnd)
 //
 void Style_SetDefaultFont(HWND hwnd)
 {
-  int iIdx = (bUse2ndDefaultStyle) ? 13 : 0;
+  int iIdx = (bUse2ndDefaultStyle) ? 12 : 0;
   if (Style_SelectFont(hwnd,
         lexDefault.Styles[0+iIdx].szValue,
-        COUNTOF(lexDefault.Styles[0+iIdx].szValue),
+        COUNTOF(lexDefault.Styles[0].szValue),
         TRUE)) {
     fStylesModified = TRUE;
     Style_SetLexer(hwnd,pLexCurrent);
@@ -2562,34 +2591,6 @@ BOOL Style_GetOpenDlgFilterStr(LPWSTR lpszFilter,int cchFilter)
 
 //=============================================================================
 //
-//  IsConsolasAvailable()
-//
-int CALLBACK EnumFontsProc( CONST LOGFONT *plf, CONST TEXTMETRIC *ptm,
-                            DWORD FontType, LPARAM lParam )
-{
-  *((PBOOL)lParam) = TRUE;
-  return(FALSE);
-
-}
-
-BOOL IsConsolasAvailable( )
-{
-  // Yes, EnumFonts is old, but we neither need nor care about the additional
-  // info returned by the newer font enumeration APIs; all that we care about
-  // is whether the callback is ever called.
-
-  BOOL fFound = FALSE;
-
-  HDC hDC = GetDC(NULL);
-  EnumFonts(hDC, TEXT("Consolas"), EnumFontsProc, (LPARAM)&fFound);
-  ReleaseDC(NULL, hDC);
-
-  return(fFound);
-}
-
-
-//=============================================================================
-//
 //  Style_StrGetFont()
 //
 BOOL Style_StrGetFont(LPCWSTR lpszStyle,LPWSTR lpszFont,int cchFont)
@@ -2599,23 +2600,11 @@ BOOL Style_StrGetFont(LPCWSTR lpszStyle,LPWSTR lpszFont,int cchFont)
 
   if (p = StrStrI(lpszStyle,L"font:"))
   {
-    lstrcpy(tch,p + lstrlen(L"font:"));
+    lstrcpy(tch,p + CSTRLEN(L"font:"));
     if (p = StrChr(tch,L';'))
       *p = L'\0';
     TrimString(tch);
-
-    if (lstrcmpi(tch,L"Default") == 0)
-    {
-      if (IsConsolasAvailable())
-        lstrcpyn(lpszFont,L"Consolas",cchFont);
-      else
-        lstrcpyn(lpszFont,L"Lucida Console",cchFont);
-    }
-    else
-    {
-      lstrcpyn(lpszFont,tch,cchFont);
-    }
-
+    lstrcpyn(lpszFont,tch,cchFont);
     return TRUE;
   }
   return FALSE;
@@ -2633,7 +2622,7 @@ BOOL Style_StrGetFontQuality(LPCWSTR lpszStyle,LPWSTR lpszQuality,int cchQuality
 
   if (p = StrStrI(lpszStyle,L"smoothing:"))
   {
-    lstrcpy(tch,p + lstrlen(L"smoothing:"));
+    lstrcpy(tch,p + CSTRLEN(L"smoothing:"));
     if (p = StrChr(tch,L';'))
       *p = L'\0';
     TrimString(tch);
@@ -2662,7 +2651,7 @@ BOOL Style_StrGetCharSet(LPCWSTR lpszStyle,int *i)
 
   if (p = StrStrI(lpszStyle,L"charset:"))
   {
-    lstrcpy(tch,p + lstrlen(L"charset:"));
+    lstrcpy(tch,p + CSTRLEN(L"charset:"));
     if (p = StrChr(tch,L';'))
       *p = L'\0';
     TrimString(tch);
@@ -2691,7 +2680,7 @@ BOOL Style_StrGetSize(LPCWSTR lpszStyle,int *i)
 
   if (p = StrStrI(lpszStyle,L"size:"))
   {
-    lstrcpy(tch,p + lstrlen(L"size:"));
+    lstrcpy(tch,p + CSTRLEN(L"size:"));
     if (tch[0] == L'+')
     {
       iSign = 1;
@@ -2730,7 +2719,7 @@ BOOL Style_StrGetSizeStr(LPCWSTR lpszStyle,LPWSTR lpszSize,int cchSize)
 
   if (p = StrStrI(lpszStyle,L"size:"))
   {
-    lstrcpy(tch,p + lstrlen(L"size:"));
+    lstrcpy(tch,p + CSTRLEN(L"size:"));
     if (p = StrChr(tch,L';'))
       *p = L'\0';
     TrimString(tch);
@@ -2783,7 +2772,7 @@ BOOL Style_StrGetCase(LPCWSTR lpszStyle,int *i)
 
   if (p = StrStrI(lpszStyle,L"case:"))
   {
-    lstrcpy(tch,p + lstrlen(L"case:"));
+    lstrcpy(tch,p + CSTRLEN(L"case:"));
     if (p = StrChr(tch,L';'))
       *p = L'\0';
     TrimString(tch);
@@ -2813,7 +2802,7 @@ BOOL Style_StrGetAlpha(LPCWSTR lpszStyle,int *i)
 
   if (p = StrStrI(lpszStyle,L"alpha:"))
   {
-    lstrcpy(tch,p + lstrlen(L"alpha:"));
+    lstrcpy(tch,p + CSTRLEN(L"alpha:"));
     if (p = StrChr(tch,L';'))
       *p = L'\0';
     TrimString(tch);
@@ -3060,6 +3049,12 @@ BOOL Style_SelectColor(HWND hwnd,BOOL bFore,LPWSTR lpszStyle,int cchStyle)
     lstrcat(szNewStyle,tch);
   }
 
+  if (StrStrI(lpszStyle,L"block"))
+    lstrcat(szNewStyle,L"; block");
+
+  if (StrStrI(lpszStyle,L"noblink"))
+    lstrcat(szNewStyle,L"; noblink");
+
   lstrcpyn(lpszStyle,szNewStyle,cchStyle);
   return TRUE;
 }
@@ -3078,8 +3073,9 @@ void Style_SetStyles(HWND hwnd,int iStyle,LPCWSTR lpszStyle)
 
   // Font
   if (Style_StrGetFont(lpszStyle,tch,COUNTOF(tch))) {
-    char mch[256];
-    WideCharToMultiByte(CP_ACP,0,tch,-1,mch,COUNTOF(mch),NULL,NULL);
+    char mch[256] = "Lucida Console";
+    if (fIsConsolasAvailable || lstrcmpi(tch,L"Consolas"))
+      WideCharToMultiByte(CP_ACP,0,tch,-1,mch,COUNTOF(mch),NULL,NULL);
     SendMessage(hwnd,SCI_STYLESETFONT,iStyle,(LPARAM)mch);
   }
 
@@ -3196,7 +3192,7 @@ int Style_GetLexerIconId(PEDITLEXER plex)
   else
     pszExtensions = plex->pszDefExt;
 
-  pszFile = GlobalAlloc(GPTR,sizeof(WCHAR)*(lstrlen(pszExtensions) + lstrlen(L"*.txt") + 16));
+  pszFile = GlobalAlloc(GPTR,sizeof(WCHAR)*(lstrlen(pszExtensions) + CSTRLEN(L"*.txt") + 16));
   lstrcpy(pszFile,L"*.");
   lstrcat(pszFile,pszExtensions);
   if (p = StrChr(pszFile,L';'))
@@ -3290,7 +3286,7 @@ void Style_AddLexerToListView(HWND hwnd,PEDITLEXER plex)
 //
 //  Style_ConfigDlgProc()
 //
-BOOL CALLBACK Style_ConfigDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lParam)
+INT_PTR CALLBACK Style_ConfigDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lParam)
 {
 
   static HWND hwndTV;
@@ -3756,8 +3752,6 @@ BOOL CALLBACK Style_ConfigDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lPara
                 SetDlgItemText(hwnd,IDC_STYLEEDIT,pCurrentLexer->szExtensions);
 
               TreeView_Select(hwndTV,TreeView_GetRoot(hwndTV),TVGN_CARET);
-
-              MsgBox(0,IDS_IMPORT_OK);
             }
           }
           break;
@@ -3771,8 +3765,7 @@ BOOL CALLBACK Style_ConfigDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lPara
                 lstrcpy(pCurrentLexer->szExtensions,pCurrentLexer->pszDefExt);
             }
 
-            if (Style_Export(hwnd))
-              MsgBox(0,IDS_EXPORT_OK);
+            Style_Export(hwnd);
           }
           break;
 
@@ -3881,7 +3874,7 @@ void Style_ConfigDlg(HWND hwnd)
 //
 //  Style_SelectLexerDlgProc()
 //
-BOOL CALLBACK Style_SelectLexerDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lParam)
+INT_PTR CALLBACK Style_SelectLexerDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lParam)
 {
 
   static int cxClient;
@@ -3911,7 +3904,7 @@ BOOL CALLBACK Style_SelectLexerDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM 
         cxClient = rc.right - rc.left;
         cyClient = rc.bottom - rc.top;
 
-        AdjustWindowRectEx(&rc,GetWindowLongPtr(hwnd,GWL_STYLE)|WS_THICKFRAME,FALSE,0);
+        AdjustWindowRectEx(&rc,GetWindowLong(hwnd,GWL_STYLE)|WS_THICKFRAME,FALSE,0);
         mmiPtMinX = rc.right-rc.left;
         mmiPtMaxY = rc.bottom-rc.top;
 

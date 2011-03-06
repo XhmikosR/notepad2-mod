@@ -224,7 +224,7 @@ update_version.bat
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <DisableSpecificWarnings>4133;4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <OptimizeForWindowsApplication>true</OptimizeForWindowsApplication>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <GenerateAlternateCodePaths>SSSE3</GenerateAlternateCodePaths>
@@ -378,6 +378,7 @@ update_version.bat
     <None Include="..\res\Run.ico" />
     <None Include="..\res\Styles.ico" />
     <None Include="..\res\Toolbar.bmp" />
+    <None Include="Notepad2.ver" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="..\res\Notepad2.exe.manifest" />

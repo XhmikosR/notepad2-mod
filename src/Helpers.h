@@ -11,7 +11,7 @@
 *
 * See License.txt for details about distribution and modification.
 *
-*                                              (c) Florian Balmer 1996-2010
+*                                              (c) Florian Balmer 1996-2011
 *                                                  florian.balmer@gmail.com
 *                                               http://www.flos-freeware.ch
 *
@@ -25,6 +25,7 @@ extern UINT16 g_uWinVer;
 
 
 #define COUNTOF(ar) (sizeof(ar)/sizeof(ar[0]))
+#define CSTRLEN(s)  (COUNTOF(s)-1)
 
 
 extern WCHAR szIniFile[MAX_PATH];
@@ -67,7 +68,11 @@ BOOL IsElevated();
 //BOOL SetExplorerTheme(HWND);
 
 
-BOOL VerifyContrast();
+BOOL BitmapMergeAlpha(HBITMAP,COLORREF);
+BOOL BitmapAlphaBlend(HBITMAP,COLORREF,BYTE);
+BOOL BitmapGrayScale(HBITMAP);
+BOOL VerifyContrast(COLORREF,COLORREF);
+BOOL IsFontAvailable(LPCWSTR);
 
 
 BOOL SetWindowTitle(HWND,UINT,BOOL,UINT,LPCWSTR,int,BOOL,UINT,BOOL,LPCWSTR);
@@ -124,17 +129,19 @@ BOOL PathCreateDeskLnk(LPCWSTR);
 BOOL PathCreateFavLnk(LPCWSTR,LPCWSTR,LPCWSTR);
 
 
+BOOL StrLTrim(LPWSTR,LPCWSTR);
 BOOL TrimString(LPWSTR);
 BOOL ExtractFirstArgument(LPCWSTR, LPWSTR, LPWSTR);
 
 void PrepareFilterStr(LPWSTR);
 
 void StrTab2Space(LPWSTR);
+void PathFixBackslashes(LPWSTR);
 
 
 void  ExpandEnvironmentStringsEx(LPWSTR,DWORD);
 void  PathCanonicalizeEx(LPWSTR);
-DWORD GetLongPathNameEx(LPCWSTR,LPWSTR,DWORD);
+DWORD GetLongPathNameEx(LPWSTR,DWORD);
 DWORD_PTR SHGetFileInfo2(LPCWSTR,DWORD,SHFILEINFO*,UINT,UINT);
 
 
@@ -211,6 +218,7 @@ void TransformBackslashes(char*,BOOL);
 
 
 //==== MinimizeToTray Functions - see comments in Helpers.c ===================
+BOOL GetDoAnimateMinimize(VOID);
 VOID MinimizeWndToTray(HWND hWnd);
 VOID RestoreWndFromTray(HWND hWnd);
 

@@ -11,7 +11,7 @@ EXIT /B
 
 :NoSubWCRev
 ECHO NoSubWCRev, will use VERSION_REV=0
-ECHO #define VERSION_REV 0 >"src\Version_rev.h"
+COPY /V /Y "src\Version_rev.h.template" "src\Version_rev.h"
 COPY /V /Y "res\Notepad2.exe.manifest.template" "res\Notepad2.exe.manifest"
 COPY /V /Y "distrib\res\full\setup.manifest.template" "distrib\res\full\setup.manifest"
 COPY /V /Y "distrib\res\lite\setup.manifest.template" "distrib\res\lite\setup.manifest"

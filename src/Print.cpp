@@ -12,7 +12,7 @@
 *
 * See License.txt for details about distribution and modification.
 *
-*                                              (c) Florian Balmer 1996-2010
+*                                              (c) Florian Balmer 1996-2011
 *                                                  florian.balmer@gmail.com
 *                                               http://www.flos-freeware.ch
 *
@@ -343,7 +343,7 @@ extern "C" BOOL EditPrint(HWND hwnd,LPCWSTR pszDocTitle,LPCWSTR pszPageFormat)
     if (printPage) {
 
       // Show wait cursor...
-      SendMessage(hwnd,SCI_SETCURSOR,SC_CURSORWAIT,0);
+      SendMessage(hwnd,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
 
       // Display current page number in Statusbar
       StatusUpdatePrintPage(pageNum);
@@ -440,7 +440,7 @@ extern "C" BOOL EditPrint(HWND hwnd,LPCWSTR pszDocTitle,LPCWSTR pszPageFormat)
   StatusSetSimple(hwndStatus,FALSE);
 
   // Remove wait cursor...
-  SendMessage(hwnd,SCI_SETCURSOR,SC_CURSORNORMAL,0);
+  SendMessage(hwnd,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
 
   return TRUE;
 }

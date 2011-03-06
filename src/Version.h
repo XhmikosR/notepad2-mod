@@ -13,7 +13,8 @@
 ******************************************************************************/
 
 
-#pragma once
+#ifndef NOTEPAD2_VERSION_H
+#define NOTEPAD2_VERSION_H
 
 #include "Version_rev.h"
 
@@ -21,14 +22,21 @@
 #define STRINGIFY(x) DO_STRINGIFY(x)
 
 #define VERSION_MAJOR 4
-#define VERSION_MINOR 1
-#define VERSION_BUILD 24
+#define VERSION_MINOR 2
+#define VERSION_BUILD 25
 
 #define APPNAME_STRW     L"Notepad2-mod"
 #define APPNAME_STRW_X64 L"Notepad2-mod x64"
 #define APPNAME_STRA     "Notepad2-mod"
 #define APPNAME_STRA_X64 "Notepad2-mod x64"
 
+
+#define VERSION_LEGALCOPYRIGHT_SHORT L"Copyright © 2004-2011"
+#define VERSION_LEGALCOPYRIGHT_LONG  L"© Florian Balmer 2004-2011"
+#define VERSION_AUTHORNAME           L"Florian Balmer"
+#define VERSION_WEBPAGEDISPLAY       L"flo's freeware - http://www.flos-freeware.ch"
+#define VERSION_EMAILDISPLAY         L"florian.balmer@gmail.com"
+#define VERSION_MODPAGEDISPLAY       L"http://code.google.com/p/notepad2-mod/"
 
 // Setup specific
 #if defined(_WIN64)
@@ -41,3 +49,7 @@
 #define SETUP_AUTHOR_STR       "XhmikosR"
 
 #undef REBOOT_MESSAGE
+
+
+#endif
+

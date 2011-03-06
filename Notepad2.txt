@@ -5,8 +5,8 @@
 =   Notepad2 - light-weight Scintilla-based text editor for Windows   =
 =                                                                     =
 =                                                                     =
-=                                                   Notepad2 4.1.24   =
-=                                      (c) Florian Balmer 2004-2010   =
+=                                                   Notepad2 4.2.25   =
+=                                      (c) Florian Balmer 2004-2011   =
 =                                       http://www.flos-freeware.ch   =
 =                                                                     =
 =                                                                     =
@@ -35,6 +35,49 @@ Features
   - Support for Unicode, UTF-8, Unix and Mac text files
   - Open shell links
   - Mostly adjustable
+
+
+New in Version 4.2.25-rc5 (released February 27, 2011)
+
+  - "Align Lines" with several options (Alt+J)
+  - "Modify Lines" supports several variables to insert numbers (Alt+M)
+  - "Shuffle Lines" is available through "Sort Lines" (Alt+O)
+  - Use built-in Windows functionality for "Title Case" on Windows 7
+  - "Recode file as default encoding" (Ctrl+Shift+F)
+  - UTF-16 and UTF-16 BE formats are valid recoding options
+  - Enable case-insensitive searching for non-ASCII text
+  - Regex quantifier ? to match 0 or 1 times
+  - Regex quantifiers * and + available as non-greedy forms *? and +?
+  - Regex syntax for tagged regions simplified from \(...\) to (...)
+  - Updated Assembly scheme with x64 and SSE4 instructions
+  - Several minor updates to syntax schemes and keywords
+  - Merged caret styles into a single item and added "noblink" option
+  - /l and /l- cmd switches to control auto-reloading of modified files
+  - Ini-option to specify auto-reload timeout (see FAQ on my website)
+  - Support combination of /g and /m command line switches
+  - /o and /o- cmd switches to control "Always on top" option
+  - Copy window position to clipboard as cmd line switch (Ctrl+Shift+K)
+  - Move window to default position on current screen (Ctrl+Shift+P)
+  - Fixed Notepad .LOG feature (broken since 4.1.24)
+  - Launch command uses current file directory as working directory
+  - Don't lock any directories except the one containing Notepad2.exe
+  - Forward system MRU, taskbar and jump list behaviour to new windows
+  - Always show file name extensions (ignore Windows Explorer setting)
+  - Check availability of "Consolas" when set as default font
+  - Support a few more file variables (see FAQ on my website)
+  - Configure whether backspace should reformat indenting whitespace
+  - Hotkeys (Shift+)F3, Alt+F3 and F4 work in find and replace dialogs
+  - Ini-options to block suppression of notification messages
+  - Simplified appearance of word wrap settings dialog
+  - Remapped "Unescape C Special Chars" to Ctrl+Alt+R (fix duplicate)
+  - Dropped "Select To Next" (F2) and "Select To Previous" (Shift+F2)
+  - Various internal optimizations and fixes
+  - Improved look of disabled toolbar buttons on Windows XP and above
+  - Improved overall look of toolbar buttons on Windows 2k
+  - Lower frequency of NFS access delays by caching file display names
+  - Improved compatibility with Windows 7
+  - Released x64 build of Notepad2.exe
+  - Updated Scintilla library to 2.24
 
 
 New in Version 4.1.24 (released March 02, 2010)
@@ -481,6 +524,7 @@ Keyboard Shortcuts for Notepad2
     Ctrl+O                Open file.
     F5                    Reload file.
     F8                    Recode file.
+    Ctrl+Shift+F          Recode file as default encoding.
     Ctrl+Shift+A          Recode file as system default ANSI.
     Ctrl+Shift+O          Recode file as system default OEM.
     Shift+F8              Recode 7-bit ASCII file as UTF-8.
@@ -564,6 +608,7 @@ Keyboard Shortcuts for Notepad2
     Alt+P                 Compress whitespace.
     Alt+R                 Remove blank lines.
     Alt+M                 Modify lines.
+    Alt+J                 Align lines.
     Alt+O                 Sort lines.
 
   Convert
@@ -594,7 +639,7 @@ Keyboard Shortcuts for Notepad2
     Ctrl+Shift+E          URL Encode.
     Ctrl+Shift+R          URL Decode.
     Ctrl+Alt+E            Escape C Special Chars.
-    Ctrl+Alt+U            Unescape C Special Chars.
+    Ctrl+Alt+R            Unescape C Special Chars.
     Ctrl+B                Find matching brace.
     Ctrl+Shift+B          Select to matching brace.
     Ctrl+1                Enclose within ''.
@@ -617,8 +662,6 @@ Keyboard Shortcuts for Notepad2
     Shift+F3              Find previous.
     Ctrl+F3               Find next word or selection.
     Ctrl+Shift+F3         Find previous word or selection.
-    F2                    Expand selection to next match.
-    Shift+F2              Expand selection to previous match.
     Ctrl+H                Replace.
     F4                    Replace next.
     Ctrl+G                Jump to line.
@@ -668,6 +711,8 @@ Keyboard Shortcuts for Notepad2
   Misc.
 
     Shift+F9              Copy pathname to clipboard.
+    Ctrl+Shift+K          Copy window position to clipboard.
+    Ctrl+Shift+P          Move window to default position.
     Esc                   Optionally minimize or exit Notepad2.
     Shift+Esc             Save file and exit Notepad2.
     F1                    Display version info.
@@ -679,17 +724,14 @@ Regular Expression Syntax
   basic subset of regular expression syntax, and searches are limited
   to single lines.
 
-  .      Matches any character
+  .      Matches any character.
 
-  \(     This marks the start of a region for tagging a match.
-
-  \)     This marks the end of a tagged region.
+  (...)  This marks a region for tagging a match.
 
   \n     Where n is 1 through 9 refers to the first through ninth
          tagged region when replacing. For example, if the search
-         string was Fred\([1-9]\)XXX and the replace string was
-         Sam\1YYY, when applied to Fred2XXX this would generate
-         Sam2YYY.
+         string was Fred([1-9])XXX and the replace string was Sam\1YYY,
+         when applied to Fred2XXX this would generate Sam2YYY.
 
   \<     This matches the start of a word.
 
@@ -711,11 +753,16 @@ Regular Expression Syntax
 
   $      This matches the end of a line.
 
+  ?      This matches 0 or 1 times. For example, a?b matches ab and b.
+
   *      This matches 0 or more times. For example, Sa*m matches Sm,
          Sam, Saam, Saaam and so on.
 
   +      This matches 1 or more times. For example, Sa+m matches Sam,
          Saam, Saaam and so on.
+
+  *?     Causes * and + to behave non-greedy. For example, <.+> matches
+  +?     all HTML tags on a line, whereas <.+?> matches only one tag.
 
   \d     Any decimal digit.
   \D     Any character that is not a decimal digit.
@@ -738,11 +785,11 @@ Regular Expression Syntax
 
 Command Line Switches
 
-  Notepad2.exe [(encoding)] [(line ending mode)] [/e id] [/g ln[,col]]
-               [/m[-][r|b] text] [/q] [/s ext] [/d] [/h] [/x] [/c]
-               [/b] [/n|/ns] [/r|/rs]
-               [/p x,y,cx,cy[,max]|/p0|/ps|/pf,l,t,r,b,m]
-               [/t title] [/i] [/f ini|/f0] [/u] [/z ...] [/?]
+  Notepad2.exe [encoding] [line-ending-mode] [/e id] [/g ln[,col]]
+               [/m[-][r|b] text] [/l|/l0] [/q] [/s ext] [/d] [/h] [/x]
+               [/c] [/b] [/n|/ns] [/r|/rs]
+               [/p x,y,cx,cy[,max]|/p0|/ps|/p[f|l|t|r|b|m]]
+               [/t title] [/i] [/o|/o0] [/f ini|/f0] [/u] [/z ...] [/?]
                [+|-] [file] ...
 
     file  File to open, can be a relative pathname, or a shell link.
@@ -755,6 +802,7 @@ Command Line Switches
     /e    Specify file source encoding.
     /g    Jump to specified position, /g -1 means end of file.
     /m    Match specified text (/m- last, /mr regex, /mb backslash).
+    /l    Auto-reload modified files; /l0 disable change notification.
     /q    Force creation of new files without prompt.
     /s    Select syntax scheme associated with specified extension.
     /d    Select default text scheme.
@@ -769,6 +817,7 @@ Command Line Switches
           /p(f)ull,(l)eft,(t)op,(r)ight,(b)ottom,(m)argin.
     /t    Set window title.
     /i    Start as tray icon.
+    /o    Keep window on top; /o0 do not keep window on top.
     /f    Specify ini-file; /f0 use no ini-file (don't save settings).
     /u    Launch with elevated privileges.
     /z    Skip next (usable for registry-based Notepad replacement).
@@ -812,12 +861,13 @@ Credits and Special Thanks
   A special thank goes to Roland Weigelt [2] for his helpful thoughts
   and comments about Notepad2 features and usability in early develop-
   ment stages. I'd also like to express my thanks to Timo Kunze [3],
-  to Kai Liu [4] and to Moritz Kroll for sending detailed bug reports
-  and ready-to-use patches.
+  Kai Liu [4], Moritz Kroll, Seunghun Thomas Lee [5] and Shawn
+  Brenneman for sending detailed bug reports and ready-to-use patches.
 
   [2] http://www.roland-weigelt.de
   [3] http://www.TimoSoft-Software.de
   [4] http://code.kliu.org/misc/notepad2/
+  [5] stlee42@gmail.com
 
 
 Copyright
@@ -830,6 +880,6 @@ Copyright
   If you have comments or questions, please drop me a note:
   florian.balmer@gmail.com
 
-  (c) Florian Balmer 2004-2010
+  (c) Florian Balmer 2004-2011
 
 ###

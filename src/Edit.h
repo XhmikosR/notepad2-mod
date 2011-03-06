@@ -11,7 +11,7 @@
 *
 * See License.txt for details about distribution and modification.
 *
-*                                              (c) Florian Balmer 1996-2010
+*                                              (c) Florian Balmer 1996-2011
 *                                                  florian.balmer@gmail.com
 *                                               http://www.flos-freeware.ch
 *
@@ -21,7 +21,7 @@
 
 
 // extern "C" declarations of Scintilla functions
-BOOL Scintilla_RegisterClasses(void *hInstance);
+BOOL Scintilla_RegisterClasses(void*);
 BOOL Scintilla_ReleaseResources();
 
 
@@ -47,14 +47,22 @@ typedef struct _editfindreplace
 } EDITFINDREPLACE, *LPEDITFINDREPLACE, *LPCEDITFINDREPLACE;
 
 
-#define IDMSG_SWITCHTOFIND    204
-#define IDMSG_SWITCHTOREPLACE 205
+#define IDMSG_SWITCHTOFIND    300
+#define IDMSG_SWITCHTOREPLACE 301
+
+
+#define ALIGN_LEFT       0
+#define ALIGN_RIGHT      1
+#define ALIGN_CENTER     2
+#define ALIGN_JUSTIFY    3
+#define ALIGN_JUSTIFY_EX 4
 
 
 #define SORT_ASCENDING  0
 #define SORT_DESCENDING 1
 #define SORT_UNIQ       2
 #define SORT_LOGICAL    4
+#define SORT_SHUFFLE    8
 
 
 HWND  EditCreate(HWND);
@@ -67,8 +75,6 @@ int   EditDetectEOLMode(HWND,char*,DWORD);
 BOOL  EditLoadFile(HWND,LPCWSTR,BOOL,int*,int*,BOOL*,BOOL*);
 BOOL  EditSaveFile(HWND,LPCWSTR,int,BOOL*,BOOL);
 
-void  EditMakeUppercase(HWND);
-void  EditMakeLowercase(HWND);
 void  EditInvertCase(HWND);
 void  EditTitleCase(HWND);
 void  EditSentenceCase(HWND);
@@ -85,6 +91,7 @@ void  EditSpacesToTabs(HWND,int,BOOL);
 void  EditMoveUp(HWND);
 void  EditMoveDown(HWND);
 void  EditModifyLines(HWND,LPCWSTR,LPCWSTR);
+void  EditAlignText(HWND,int);
 void  EditEncloseSelection(HWND,LPCWSTR,LPCWSTR);
 void  EditToggleLineComments(HWND,LPCWSTR,BOOL);
 void  EditPadWithSpaces(HWND);
@@ -99,6 +106,7 @@ void  EditSortLines(HWND,int);
 
 void  EditJumpTo(HWND,int,int);
 void  EditSelectEx(HWND,int,int);
+void  EditFixPositions(HWND);
 void  EditGetExcerpt(HWND,LPWSTR,DWORD);
 
 HWND  EditFindReplaceDlg(HWND,LPCEDITFINDREPLACE,BOOL);
@@ -112,6 +120,7 @@ BOOL  EditModifyLinesDlg(HWND,LPWSTR,LPWSTR);
 BOOL  EditEncloseSelectionDlg(HWND,LPWSTR,LPWSTR);
 BOOL  EditInsertTagDlg(HWND,LPWSTR,LPWSTR);
 BOOL  EditSortDlg(HWND,int*);
+BOOL  EditAlignDlg(HWND,int*);
 BOOL  EditPrint(HWND,LPCWSTR,LPCWSTR);
 void  EditPrintSetup(HWND);
 void  EditPrintInit();
@@ -172,9 +181,11 @@ BOOL IsUTF7(const char*,int);
 #define FV_TABWIDTH        1
 #define FV_INDENTWIDTH     2
 #define FV_TABSASSPACES    4
-#define FV_LONGLINESLIMIT  8
-#define FV_ENCODING       16
-#define FV_MODE           32
+#define FV_TABINDENTS      8
+#define FV_WORDWRAP       16
+#define FV_LONGLINESLIMIT 32
+#define FV_ENCODING       64
+#define FV_MODE          128
 
 typedef struct _filevars {
 
@@ -182,6 +193,8 @@ typedef struct _filevars {
   int iTabWidth;
   int iIndentWidth;
   BOOL bTabsAsSpaces;
+  BOOL bTabIndents;
+  BOOL fWordWrap;
   int iLongLinesLimit;
   char tchEncoding[32];
   int  iEncoding;

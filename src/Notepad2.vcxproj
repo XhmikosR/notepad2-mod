@@ -199,7 +199,7 @@ update_version.bat</Command>
       <DebugInformationFormat>
       </DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <DisableSpecificWarnings>4133;4244;4267</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4244;4267</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalDependencies>comctl32.lib;shlwapi.lib;imm32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -352,6 +352,7 @@ update_version.bat</Command>
     <None Include="..\res\Run.ico" />
     <None Include="..\res\Styles.ico" />
     <None Include="..\res\Toolbar.bmp" />
+    <None Include="Notepad2.ver" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="..\res\Notepad2.exe.manifest" />

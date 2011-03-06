@@ -11,7 +11,7 @@
 *
 * See License.txt for details about distribution and modification.
 *
-*                                              (c) Florian Balmer 1996-2010
+*                                              (c) Florian Balmer 1996-2011
 *                                                  florian.balmer@gmail.com
 *                                               http://www.flos-freeware.ch
 *
@@ -25,10 +25,11 @@
 
 
 //==== Data Type for WM_COPYDATA ==============================================
-#define DATA_NOTEPAD2_PARAMS 0xFB09
+#define DATA_NOTEPAD2_PARAMS 0xFB10
 typedef struct np2params {
 
   int   flagFileSpecified;
+  int   flagChangeNotify;
   int   flagLexerSpecified;
   int   iInitialLexer;
   int   flagQuietCreate;
@@ -100,6 +101,7 @@ HWND InitInstance(HINSTANCE,LPSTR,int);
 BOOL ActivatePrevInst();
 BOOL RelaunchMultiInst();
 BOOL RelaunchElevated();
+void SnapToDefaultPos(HWND);
 void ShowNotifyIcon(HWND,BOOL);
 void SetNotifyIconTitle(HWND);
 void InstallFileWatching(LPCWSTR);

@@ -429,6 +429,7 @@ $(OBJDIR)\Notepad2.obj: \
 
 $(OBJDIR)\Notepad2.res: \
     $(SRC)\Notepad2.rc \
+    $(SRC)\Notepad2.ver \
     $(SRC)\Version.h \
     $(SRC)\Version_rev.h
 

@@ -171,7 +171,7 @@ COPY /B /V /Y "..\Readme.txt" "temp\%BINDIR%\readme.txt"
 COPY /B /V /Y "..\Readme-mod.txt" "temp\%BINDIR%\readme-mod.txt"
 
 rem Set the version for the DisplayVersion registry value
-CALL tools\BatchSubstitute.bat "4.1.24.0" "%NP2_VER%.%VerRev%" "temp\%BINDIR%\notepad2.inf" >notepad2.inf.tmp
+CALL tools\BatchSubstitute.bat "4.2.25.0" "%NP2_VER%.%VerRev%" "temp\%BINDIR%\notepad2.inf" >notepad2.inf.tmp
 COPY /Y "temp\%BINDIR%\notepad2.inf" "notepad2.inf.orig" >NUL
 MOVE /Y "notepad2.inf.tmp" "temp\%BINDIR%\notepad2.inf" >NUL
 
