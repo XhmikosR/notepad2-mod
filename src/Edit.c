@@ -631,6 +631,20 @@ void Encoding_InitDefaults() {
   wsprintf(wchANSI,L" (%i)",GetACP());
   mEncoding[CPI_OEM].uCodePage = GetOEMCP();
   wsprintf(wchOEM,L" (%i)",mEncoding[CPI_OEM].uCodePage);
+
+  g_DOSEncoding = CPI_OEM;
+
+  // Try to set the DOS encoding to DOS-437 if the default OEMCP is not DOS-437
+  if (mEncoding[g_DOSEncoding].uCodePage != 437)
+  {
+    int i;
+    for (i = CPI_UTF7 + 1; i < COUNTOF(mEncoding); ++i) {
+      if (mEncoding[i].uCodePage == 437 && Encoding_IsValid(i)) {
+        g_DOSEncoding = i;
+        break;
+      }
+    }
+  }
 }
 
 
@@ -1191,6 +1205,8 @@ BOOL EditLoadFile(
   BOOL bBOM;
   BOOL bReverse = FALSE;
 
+  BOOL bPreferOEM = FALSE;
+
   *pbUnicodeErr = FALSE;
   *pbFileTooBig = FALSE;
 
@@ -1237,10 +1253,17 @@ BOOL EditLoadFile(
     return FALSE;
   }
 
+  if (bLoadNFOasOEM)
+  {
+    PCWSTR pszExt = pszFile + lstrlen(pszFile) - 4;
+    if (pszExt >= pszFile && !(lstrcmpi(pszExt, L".nfo") && lstrcmpi(pszExt, L".diz")))
+      bPreferOEM = TRUE;
+  }
+
   if (!Encoding_IsValid(iDefaultEncoding))
     iDefaultEncoding = CPI_DEFAULT;
 
-  _iDefaultEncoding = iDefaultEncoding;
+  _iDefaultEncoding = (bPreferOEM) ? g_DOSEncoding : iDefaultEncoding;
   if (iWeakSrcEncoding != -1 && Encoding_IsValid(iWeakSrcEncoding))
     _iDefaultEncoding = iWeakSrcEncoding;
 
@@ -1250,7 +1273,7 @@ BOOL EditLoadFile(
     FileVars_Init(NULL,0,&fvCurFile);
     *iEOLMode = iLineEndings[iDefaultEOLMode];
     if (iSrcEncoding == -1) {
-      if (bLoadASCIIasUTF8)
+      if (bLoadASCIIasUTF8 && !bPreferOEM)
         *iEncoding = CPI_UTF8;
       else
         *iEncoding = _iDefaultEncoding;
@@ -1318,8 +1341,9 @@ BOOL EditLoadFile(
               (IsUTF8(lpData,cbData) &&
               (((UTF8_mbslen_bytes(UTF8StringStart(lpData)) - 1 !=
                 UTF8_mbslen(UTF8StringStart(lpData),IsUTF8Signature(lpData) ? cbData-3 : cbData)) ||
+                (!bPreferOEM && (
                 mEncoding[_iDefaultEncoding].uFlags & NCP_UTF8 ||
-                bLoadASCIIasUTF8))))) && !(FileVars_IsNonUTF8(&fvCurFile) &&
+                bLoadASCIIasUTF8 )) ))))) && !(FileVars_IsNonUTF8(&fvCurFile) &&
                   (iSrcEncoding != CPI_UTF8 && iSrcEncoding != CPI_UTF8SIGN)))
     {
       SendMessage(hwnd,SCI_SETCODEPAGE,SC_CP_UTF8,0);
