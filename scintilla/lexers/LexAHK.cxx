@@ -5,7 +5,7 @@
  **/
 // Copyright 1998-2006 by Neil Hodgson <neilh@scintilla.org>
 // The License.txt file describes the conditions under which this software may be distributed.
-/* notepad2-mod custom code for the AutoHotKey lexer */
+/* notepad2-mod custom code for the AutoHotkey lexer */
 
 #include <stdlib.h>
 #include <string.h>

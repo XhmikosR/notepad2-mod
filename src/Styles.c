@@ -1434,7 +1434,7 @@ KEYWORDLIST KeyWords_AHK = {
 "", "", "", "", "", "", "", "" };
 
 
-EDITLEXER lexAHK = { SCLEX_AHK, 63305, L"AutoHotKey Script", L"ahk; ia; scriptlet", L"", &KeyWords_AHK, {
+EDITLEXER lexAHK = { SCLEX_AHK, 63305, L"AutoHotkey Script", L"ahk; ia; scriptlet", L"", &KeyWords_AHK, {
                     { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
                     //{ SCE_AHK_DEFAULT, L"Default", L"", L"" },
                     { MULTI_STYLE(SCE_AHK_COMMENTLINE,SCE_AHK_COMMENTBLOCK,0,0), 63127, L"Comment", L"fore:#008000", L"" },
