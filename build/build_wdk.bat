@@ -22,14 +22,14 @@ SET "SDKDIR=%PROGRAMFILES%\Microsoft SDKs\Windows\v7.1"
 
 rem Check the building environment
 IF NOT EXIST "%WDKBASEDIR%" CALL :SUBMSG "ERROR" "Specify your WDK directory!"
-IF NOT EXIST "%SDKDIR%" CALL :SUBMSG "ERROR" "Specify your SDK directory!"
+IF NOT EXIST "%SDKDIR%"     CALL :SUBMSG "ERROR" "Specify your SDK directory!"
 
 rem Check for the help switches
-IF /I "%~1"=="help" GOTO SHOWHELP
-IF /I "%~1"=="/help" GOTO SHOWHELP
-IF /I "%~1"=="-help" GOTO SHOWHELP
+IF /I "%~1"=="help"   GOTO SHOWHELP
+IF /I "%~1"=="/help"  GOTO SHOWHELP
+IF /I "%~1"=="-help"  GOTO SHOWHELP
 IF /I "%~1"=="--help" GOTO SHOWHELP
-IF /I "%~1"=="/?" GOTO SHOWHELP
+IF /I "%~1"=="/?"     GOTO SHOWHELP
 GOTO CHECKFIRSTARG
 
 

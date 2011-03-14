@@ -17,15 +17,15 @@ SETLOCAL
 CD /D %~dp0
 
 rem Check the building environment
-IF NOT DEFINED VS100COMNTOOLS CALL :SUBMSG "ERROR" "Visual Studio 2010 NOT FOUND!"
+IF NOT DEFINED VS100COMNTOOLS    CALL :SUBMSG "ERROR" "Visual Studio 2010 NOT FOUND!"
 IF NOT DEFINED ICPP_COMPOSER2011 CALL :SUBMSG "ERROR" "Intel C++ Composer NOT FOUND!"
 
 rem Check for the help switches
-IF /I "%~1"=="help" GOTO SHOWHELP
-IF /I "%~1"=="/help" GOTO SHOWHELP
-IF /I "%~1"=="-help" GOTO SHOWHELP
+IF /I "%~1"=="help"   GOTO SHOWHELP
+IF /I "%~1"=="/help"  GOTO SHOWHELP
+IF /I "%~1"=="-help"  GOTO SHOWHELP
 IF /I "%~1"=="--help" GOTO SHOWHELP
-IF /I "%~1"=="/?" GOTO SHOWHELP
+IF /I "%~1"=="/?"     GOTO SHOWHELP
 GOTO CHECKFIRSTARG
 
 
