@@ -382,7 +382,6 @@ void SCI_METHOD LexerAsm::Fold(unsigned int startPos, int length, int initStyle,
 	int levelCurrent = SC_FOLDLEVELBASE;
 	if (lineCurrent > 0)
 		levelCurrent = styler.LevelAt(lineCurrent-1) >> 16;
-	int levelMinCurrent = levelCurrent;
 	int levelNext = levelCurrent;
 	char chNext = styler[startPos];
 	int styleNext = styler.StyleAt(startPos);
@@ -424,7 +423,7 @@ void SCI_METHOD LexerAsm::Fold(unsigned int startPos, int length, int initStyle,
  		}
 		if (options.foldSyntaxBased && (style == SCE_ASM_DIRECTIVE)) {
 			word[wordlen++] = static_cast<char>(LowerCase(ch));
-			if (wordlen == 100) {                   // prevent overflow  
+			if (wordlen == 100) {                   // prevent overflow
 				word[0] = '\0';
 				wordlen = 1;
 			}
@@ -435,7 +434,7 @@ void SCI_METHOD LexerAsm::Fold(unsigned int startPos, int length, int initStyle,
 					levelNext++;
 				} else if (directives4foldend.InList(word)){
 					levelNext--;
-				}    
+				}
 			}
 		}
 		if (!IsASpace(ch))
@@ -452,7 +451,6 @@ void SCI_METHOD LexerAsm::Fold(unsigned int startPos, int length, int initStyle,
 			}
 			lineCurrent++;
 			levelCurrent = levelNext;
-			levelMinCurrent = levelCurrent;
 			if (atEOL && (i == static_cast<unsigned int>(styler.Length()-1))) {
 				// There is an empty line at end of file so give it same level and empty
 				styler.SetLevel(lineCurrent, (levelCurrent | levelCurrent << 16) | SC_FOLDLEVELWHITEFLAG);
