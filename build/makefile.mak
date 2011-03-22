@@ -44,7 +44,7 @@ INCLUDEDIRS = /I "$(SCI_INC)" /I "$(SCI_LEX)" /I "$(SCI_LIB)" /I "$(SCI_SRC)" \
 CXXFLAGS    = /nologo /c /Fo"$(OBJDIR)/" /W3 /WX /EHsc /MD /O2 /GL /MP \
               $(DEFINES) $(INCLUDEDIRS)
 LDFLAGS     = /NOLOGO /WX /INCREMENTAL:NO /RELEASE /OPT:REF /OPT:ICF /MERGE:.rdata=.text \
-              /DYNAMICBASE /NXCOMPAT /LTCG
+              /DYNAMICBASE /NXCOMPAT /LTCG /DEBUG
 LIBS        = kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib shlwapi.lib \
               comdlg32.lib comctl32.lib winspool.lib imm32.lib ole32.lib oleaut32.lib \
               psapi.lib
@@ -75,8 +75,8 @@ CHECKDIRS:
 
 CLEAN:
 	ECHO Cleaning... & ECHO.
-	-DEL "$(EXE)" "$(OBJDIR)\Notepad2.idb" "$(OBJDIR)\*.obj" \
-	"$(BINDIR)\Notepad2.pdb" "$(OBJDIR)\Notepad2.res" >NUL 2>&1
+	-DEL "$(EXE)" "$(OBJDIR)\*.obj" "$(OBJDIR)\Notepad2.res" \
+	"$(BINDIR)\Notepad2.pdb" >NUL 2>&1
 	-RMDIR /Q "$(OBJDIR)" "$(BINDIR)" >NUL 2>&1
 
 REBUILD:	CLEAN BUILD
