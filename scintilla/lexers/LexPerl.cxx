@@ -1,6 +1,7 @@
 // Scintilla source code edit control
 /** @file LexPerl.cxx
  ** Lexer for Perl.
+ ** Converted to lexer object by "Udo Lechner" <dlchnr(at)gmx(dot)net>
  **/
 // Copyright 1998-2008 by Neil Hodgson <neilh@scintilla.org>
 // Lexical analysis fixes by Kein-Hong Man <mkh@pl.jaring.my>
@@ -13,16 +14,23 @@
 #include <assert.h>
 #include <ctype.h>
 
+#ifdef _MSC_VER
+#pragma warning(disable: 4786)
+#endif
+
+#include <string>
+#include <map>
+
 #include "ILexer.h"
 #include "Scintilla.h"
 #include "SciLexer.h"
 
 #include "WordList.h"
 #include "LexAccessor.h"
-#include "Accessor.h"
 #include "StyleContext.h"
 #include "CharacterSet.h"
 #include "LexerModule.h"
+#include "OptionSet.h"
 
 #ifdef SCI_NAMESPACE
 using namespace Scintilla;
@@ -61,7 +69,7 @@ using namespace Scintilla;
 #define BACK_OPERATOR	1	// whitespace/comments are insignificant
 #define BACK_KEYWORD	2	// operators/keywords are needed for disambiguation
 
-static bool isPerlKeyword(unsigned int start, unsigned int end, WordList &keywords, Accessor &styler)
+static bool isPerlKeyword(unsigned int start, unsigned int end, WordList &keywords, LexAccessor &styler)
 {
 	// old-style keyword matcher; needed because GetCurrent() needs
 	// current segment to be committed, but we may abandon early...
@@ -73,7 +81,7 @@ static bool isPerlKeyword(unsigned int start, unsigned int end, WordList &keywor
 	return keywords.InList(s);
 }
 
-static int disambiguateBareword(Accessor &styler, unsigned int bk, unsigned int fw,
+static int disambiguateBareword(LexAccessor &styler, unsigned int bk, unsigned int fw,
                                 int backFlag, unsigned int backPos, unsigned int endPos)
 {
 	// identifiers are recognized by Perl as barewords under some
@@ -122,7 +130,7 @@ static int disambiguateBareword(Accessor &styler, unsigned int bk, unsigned int 
 	return result;
 }
 
-static void skipWhitespaceComment(Accessor &styler, unsigned int &p)
+static void skipWhitespaceComment(LexAccessor &styler, unsigned int &p)
 {
 	// when backtracking, we need to skip whitespace and comments
 	int style;
@@ -131,7 +139,7 @@ static void skipWhitespaceComment(Accessor &styler, unsigned int &p)
 		p--;
 }
 
-static int styleBeforeBracePair(Accessor &styler, unsigned int bk)
+static int styleBeforeBracePair(LexAccessor &styler, unsigned int bk)
 {
 	// backtrack to find open '{' corresponding to a '}', balanced
 	// return significant style to be tested for '/' disambiguation
@@ -159,7 +167,7 @@ static int styleBeforeBracePair(Accessor &styler, unsigned int bk)
 	return SCE_PL_DEFAULT;
 }
 
-static int styleCheckIdentifier(Accessor &styler, unsigned int bk)
+static int styleCheckIdentifier(LexAccessor &styler, unsigned int bk)
 {
 	// backtrack to classify sub-styles of identifier under test
 	// return sub-style to be tested for '/' disambiguation
@@ -185,7 +193,7 @@ static int styleCheckIdentifier(Accessor &styler, unsigned int bk)
 	return 0;
 }
 
-static int inputsymbolScan(Accessor &styler, unsigned int pos, unsigned int endPos)
+static int inputsymbolScan(LexAccessor &styler, unsigned int pos, unsigned int endPos)
 {
 	// looks forward for matching > on same line; a bit ugly
 	unsigned int fw = pos;
@@ -202,7 +210,7 @@ static int inputsymbolScan(Accessor &styler, unsigned int pos, unsigned int endP
 	return 0;
 }
 
-static int podLineScan(Accessor &styler, unsigned int &pos, unsigned int endPos)
+static int podLineScan(LexAccessor &styler, unsigned int &pos, unsigned int endPos)
 {
 	// forward scan the current line to classify line for POD style
 	int state = -1;
@@ -227,7 +235,7 @@ static int podLineScan(Accessor &styler, unsigned int &pos, unsigned int endPos)
 	return state;
 }
 
-static bool styleCheckSubPrototype(Accessor &styler, unsigned int bk)
+static bool styleCheckSubPrototype(LexAccessor &styler, unsigned int bk)
 {
 	// backtrack to identify if we're starting a subroutine prototype
 	// we also need to ignore whitespace/comments:
@@ -272,10 +280,157 @@ static int opposite(int ch) {
 	return ch;
 }
 
-static void ColourisePerlDoc(unsigned int startPos, int length, int initStyle,
-                             WordList *keywordlists[], Accessor &styler) {
+static bool IsCommentLine(int line, LexAccessor &styler) {
+	int pos = styler.LineStart(line);
+	int eol_pos = styler.LineStart(line + 1) - 1;
+	for (int i = pos; i < eol_pos; i++) {
+		char ch = styler[i];
+		int style = styler.StyleAt(i);
+		if (ch == '#' && style == SCE_PL_COMMENTLINE)
+			return true;
+		else if (!IsASpaceOrTab(ch))
+			return false;
+	}
+	return false;
+}
 
-	WordList &keywords = *keywordlists[0];
+static bool IsPackageLine(int line, LexAccessor &styler) {
+	int pos = styler.LineStart(line);
+	int style = styler.StyleAt(pos);
+	if (style == SCE_PL_WORD && styler.Match(pos, "package")) {
+		return true;
+	}
+	return false;
+}
+
+static int PodHeadingLevel(int pos, LexAccessor &styler) {
+	int lvl = static_cast<unsigned char>(styler.SafeGetCharAt(pos + 5));
+	if (lvl >= '1' && lvl <= '4') {
+		return lvl - '0';
+	}
+	return 0;
+}
+
+// An individual named option for use in an OptionSet
+
+// Options used for LexerPerl
+struct OptionsPerl {
+	bool fold;
+	bool foldComment;
+	bool foldCompact;
+	                         // Custom folding of POD and packages
+	bool foldPOD;            // property fold.perl.pod
+	                         // Enable folding Pod blocks when using the Perl lexer.
+	bool foldPackage;        // property fold.perl.package
+	                         // Enable folding packages when using the Perl lexer.
+
+	bool foldCommentExplicit;
+
+	OptionsPerl() {
+		fold = false;
+		foldComment = false;
+		foldCompact = true;
+		foldPOD = true;
+		foldPackage = true;
+		foldCommentExplicit = true;
+	}
+};
+
+static const char * const perlWordListDesc[] = {
+	"Keywords",
+	0
+};
+
+struct OptionSetPerl : public OptionSet<OptionsPerl> {
+	OptionSetPerl() {
+		DefineProperty("fold", &OptionsPerl::fold);
+
+		DefineProperty("fold.comment", &OptionsPerl::foldComment);
+
+		DefineProperty("fold.compact", &OptionsPerl::foldCompact);
+
+		DefineProperty("fold.perl.pod", &OptionsPerl::foldPOD,
+			"Set to 0 to disable folding Pod blocks when using the Perl lexer.");
+
+		DefineProperty("fold.perl.package", &OptionsPerl::foldPackage,
+			"Set to 0 to disable folding packages when using the Perl lexer.");
+
+		DefineProperty("fold.perl.comment.explicit", &OptionsPerl::foldCommentExplicit,
+			"Set to 0 to disable explicit folding.");
+
+		DefineWordListSets(perlWordListDesc);
+	}
+};
+
+class LexerPerl : public ILexer {
+	WordList keywords;
+	OptionsPerl options;
+	OptionSetPerl osPerl;
+public:
+	LexerPerl() {
+	}
+	~LexerPerl() {
+	}
+	void SCI_METHOD Release() {
+		delete this;
+	}
+	int SCI_METHOD Version() const {
+		return lvOriginal;
+	}
+	const char * SCI_METHOD PropertyNames() {
+		return osPerl.PropertyNames();
+	}
+	int SCI_METHOD PropertyType(const char *name) {
+		return osPerl.PropertyType(name);
+	}
+	const char * SCI_METHOD DescribeProperty(const char *name) {
+		return osPerl.DescribeProperty(name);
+	}
+	int SCI_METHOD PropertySet(const char *key, const char *val);
+	const char * SCI_METHOD DescribeWordListSets() {
+		return osPerl.DescribeWordListSets();
+	}
+	int SCI_METHOD WordListSet(int n, const char *wl);
+	void SCI_METHOD Lex(unsigned int startPos, int length, int initStyle, IDocument *pAccess);
+	void SCI_METHOD Fold(unsigned int startPos, int length, int initStyle, IDocument *pAccess);
+
+	void * SCI_METHOD PrivateCall(int, void *) {
+		return 0;
+	}
+
+	static ILexer *LexerFactoryPerl() {
+		return new LexerPerl();
+	}
+};
+
+int SCI_METHOD LexerPerl::PropertySet(const char *key, const char *val) {
+	if (osPerl.PropertySet(&options, key, val)) {
+		return 0;
+	}
+	return -1;
+}
+
+int SCI_METHOD LexerPerl::WordListSet(int n, const char *wl) {
+	WordList *wordListN = 0;
+	switch (n) {
+	case 0:
+		wordListN = &keywords;
+		break;
+	}
+	int firstModification = -1;
+	if (wordListN) {
+		WordList wlNew;
+		wlNew.Set(wl);
+		if (*wordListN != wlNew) {
+			wordListN->Set(wl);
+			firstModification = 0;
+		}
+	}
+	return firstModification;
+}
+
+void SCI_METHOD LexerPerl::Lex(unsigned int startPos, int length, int initStyle, IDocument *pAccess) {
+	LexAccessor styler(pAccess);
 
 	// keywords that forces /PATTERN/ at all times; should track vim's behaviour
 	WordList reWords;
@@ -1173,59 +1328,33 @@ static void ColourisePerlDoc(unsigned int startPos, int length, int initStyle,
 		|| sc.state == SCE_PL_FORMAT) {
 		styler.ChangeLexerState(sc.currentPos, styler.Length());
 	}
-}
-
-static bool IsCommentLine(int line, Accessor &styler) {
-	int pos = styler.LineStart(line);
-	int eol_pos = styler.LineStart(line + 1) - 1;
-	for (int i = pos; i < eol_pos; i++) {
-		char ch = styler[i];
-		int style = styler.StyleAt(i);
-		if (ch == '#' && style == SCE_PL_COMMENTLINE)
-			return true;
-		else if (!IsASpaceOrTab(ch))
-			return false;
-	}
-	return false;
-}
-
-static bool IsPackageLine(int line, Accessor &styler) {
-	int pos = styler.LineStart(line);
-	int style = styler.StyleAt(pos);
-	if (style == SCE_PL_WORD && styler.Match(pos, "package")) {
-		return true;
-	}
-	return false;
-}
-
-static int PodHeadingLevel(int pos, Accessor &styler) {
-	int lvl = static_cast<unsigned char>(styler.SafeGetCharAt(pos + 5));
-	if (lvl >= '1' && lvl <= '4') {
-		return lvl - '0';
-	}
-	return 0;
+	sc.Complete();
 }
 
 #define PERL_HEADFOLD_SHIFT		4
 #define PERL_HEADFOLD_MASK		0xF0
 
-static void FoldPerlDoc(unsigned int startPos, int length, int, WordList *[],
-                        Accessor &styler) {
-	bool foldComment = styler.GetPropertyInt("fold.comment") != 0;
-	bool foldCompact = styler.GetPropertyInt("fold.compact", 1) != 0;
-	// Custom folding of POD and packages
+void SCI_METHOD LexerPerl::Fold(unsigned int startPos, int length, int /* initStyle */, IDocument *pAccess) {
 
-	// property fold.perl.pod
-	//	Enable folding Pod blocks when using the Perl lexer.
-	bool foldPOD = styler.GetPropertyInt("fold.perl.pod", 1) != 0;
+	if (!options.fold)
+		return;
 
-	// property fold.perl.package
-	//	Enable folding packages when using the Perl lexer.
-	bool foldPackage = styler.GetPropertyInt("fold.perl.package", 1) != 0;
+	LexAccessor styler(pAccess);
 
 	unsigned int endPos = startPos + length;
 	int visibleChars = 0;
 	int lineCurrent = styler.GetLine(startPos);
+
+	// Backtrack to previous line in case need to fix its fold status
+	if (startPos > 0) {
+		if (lineCurrent > 0) {
+			if (IsCommentLine(lineCurrent - 1, styler)) {
+				lineCurrent--;
+				startPos = styler.LineStart(lineCurrent);
+			}
+		}
+	}
+
 	int levelPrev = SC_FOLDLEVELBASE;
 	if (lineCurrent > 0)
 		levelPrev = styler.LevelAt(lineCurrent - 1) >> 16;
@@ -1241,10 +1370,11 @@ static void FoldPerlDoc(unsigned int startPos, int length, int, WordList *[],
 		chNext = styler.SafeGetCharAt(i + 1);
 		int style = styleNext;
 		styleNext = styler.StyleAt(i + 1);
+		int stylePrevCh = (i) ? styler.StyleAt(i - 1):SCE_PL_DEFAULT;
 		bool atEOL = (ch == '\r' && chNext != '\n') || (ch == '\n');
 		bool atLineStart = ((chPrev == '\r') || (chPrev == '\n')) || i == 0;
 		// Comment folding
-		if (foldComment && atEOL && IsCommentLine(lineCurrent, styler))
+		if (options.foldComment && atEOL && IsCommentLine(lineCurrent, styler))
 		{
 			if (!IsCommentLine(lineCurrent - 1, styler)
 				&& IsCommentLine(lineCurrent + 1, styler))
@@ -1256,19 +1386,22 @@ static void FoldPerlDoc(unsigned int startPos, int length, int, WordList *[],
 		// {} [] block folding
 		if (style == SCE_PL_OPERATOR) {
 			if (ch == '{') {
+				if (levelCurrent < levelPrev)
+					--levelPrev;
 				levelCurrent++;
 			} else if (ch == '}') {
 				levelCurrent--;
 			}
 			if (ch == '[') {
+				if (levelCurrent < levelPrev)
+					--levelPrev;
 				levelCurrent++;
 			} else if (ch == ']') {
 				levelCurrent--;
 			}
 		}
 		// POD folding
-		if (foldPOD && atLineStart) {
-			int stylePrevCh = (i) ? styler.StyleAt(i - 1):SCE_PL_DEFAULT;
+		if (options.foldPOD && atLineStart) {
 			if (style == SCE_PL_POD) {
 				if (stylePrevCh != SCE_PL_POD && stylePrevCh != SCE_PL_POD_VERB)
 					levelCurrent++;
@@ -1290,10 +1423,49 @@ static void FoldPerlDoc(unsigned int startPos, int length, int, WordList *[],
 			}
 		}
 		// package folding
-		if (foldPackage && atLineStart) {
+		if (options.foldPackage && atLineStart) {
 			if (IsPackageLine(lineCurrent, styler)
 				&& !IsPackageLine(lineCurrent + 1, styler))
 				isPackageLine = true;
+		}
+
+		//heredoc folding
+		switch (style) {
+		case SCE_PL_HERE_QQ :
+		case SCE_PL_HERE_Q :
+		case SCE_PL_HERE_QX :
+			switch (stylePrevCh) {
+			case SCE_PL_HERE_QQ :
+			case SCE_PL_HERE_Q :
+			case SCE_PL_HERE_QX :
+				//do nothing;
+				break;
+			default :
+				levelCurrent++;
+				break;
+			}
+			break;
+		default:
+			switch (stylePrevCh) {
+			case SCE_PL_HERE_QQ :
+			case SCE_PL_HERE_Q :
+			case SCE_PL_HERE_QX :
+				levelCurrent--;
+				break;
+			default :
+				//do nothing;
+				break;
+			}
+			break;
+		}
+
+		//explicit folding
+		if (options.foldCommentExplicit && style == SCE_PL_COMMENTLINE && ch == '#') {
+			if (chNext == '{') {
+				levelCurrent++;
+			} else if (levelCurrent > SC_FOLDLEVELBASE  && chNext == '}') {
+				levelCurrent--;
+			}
 		}
 
 		if (atEOL) {
@@ -1314,7 +1486,7 @@ static void FoldPerlDoc(unsigned int startPos, int length, int, WordList *[],
 				isPackageLine = false;
 			}
 			lev |= levelCurrent << 16;
-			if (visibleChars == 0 && foldCompact)
+			if (visibleChars == 0 && options.foldCompact)
 				lev |= SC_FOLDLEVELWHITEFLAG;
 			if ((levelCurrent > levelPrev) && (visibleChars > 0))
 				lev |= SC_FOLDLEVELHEADERFLAG;
@@ -1334,9 +1506,4 @@ static void FoldPerlDoc(unsigned int startPos, int length, int, WordList *[],
 	styler.SetLevel(lineCurrent, levelPrev | flagsNext);
 }
 
-static const char * const perlWordListDesc[] = {
-	"Keywords",
-	0
-};
-
-LexerModule lmPerl(SCLEX_PERL, ColourisePerlDoc, "perl", FoldPerlDoc, perlWordListDesc, 8);
+LexerModule lmPerl(SCLEX_PERL, LexerPerl::LexerFactoryPerl, "perl", perlWordListDesc, 8);
