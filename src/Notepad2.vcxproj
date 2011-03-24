@@ -83,6 +83,10 @@
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</GenerateManifest>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</GenerateManifest>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</GenerateManifest>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</GenerateManifest>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -104,9 +108,6 @@
       <MinimumRequiredVersion>5.01</MinimumRequiredVersion>
       <MergeSections>.rdata=.text</MergeSections>
     </Link>
-    <Manifest>
-      <AdditionalManifestFiles>..\res\Notepad2.exe.manifest</AdditionalManifestFiles>
-    </Manifest>
     <PreBuildEvent>
       <Command>cd ..
 update_version.bat</Command>
@@ -137,9 +138,6 @@ update_version.bat</Command>
       <MinimumRequiredVersion>5.02</MinimumRequiredVersion>
       <MergeSections>.rdata=.text</MergeSections>
     </Link>
-    <Manifest>
-      <AdditionalManifestFiles>..\res\Notepad2.exe.manifest</AdditionalManifestFiles>
-    </Manifest>
     <PreBuildEvent>
       <Command>cd ..
 update_version.bat</Command>
@@ -172,9 +170,6 @@ update_version.bat</Command>
       <MinimumRequiredVersion>5.01</MinimumRequiredVersion>
       <MergeSections>.rdata=.text</MergeSections>
     </Link>
-    <Manifest>
-      <AdditionalManifestFiles>..\res\Notepad2.exe.manifest</AdditionalManifestFiles>
-    </Manifest>
     <PreBuildEvent>
       <Command>cd ..
 update_version.bat</Command>
@@ -208,9 +203,6 @@ update_version.bat</Command>
       <MinimumRequiredVersion>5.02</MinimumRequiredVersion>
       <MergeSections>.rdata=.text</MergeSections>
     </Link>
-    <Manifest>
-      <AdditionalManifestFiles>..\res\Notepad2.exe.manifest</AdditionalManifestFiles>
-    </Manifest>
     <PreBuildEvent>
       <Command>cd ..
 update_version.bat</Command>

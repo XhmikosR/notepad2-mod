@@ -10,7 +10,7 @@
 #*                                       (c) XhmikosR 2010-2011
 #*                                       http://code.google.com/p/notepad2-mod/
 #*
-#* Use build_wdk.bat and set there your WDK and SDK directories.
+#* Use build_wdk.bat and set there your WDK directory.
 #*
 #******************************************************************************
 
@@ -188,7 +188,6 @@ OBJECTS = $(SCI_LEX_OBJ) $(SCI_LIB_OBJ) $(SCI_SRC_OBJ) $(SCI_WIN_OBJ) $(NOTEPAD2
 $(EXE): $(OBJECTS)
 	rc $(RFLAGS) /fo"$(OBJDIR)\Notepad2.res" "$(SRC)\Notepad2.rc" >NUL
 	link $(LDFLAGS) $(LIBS) $(OBJECTS) /OUT:"$(EXE)"
-	mt $(MTFLAGS) -manifest "$(RES)\Notepad2.exe.manifest" -outputresource:"$(EXE);#1"
 
 
 ####################

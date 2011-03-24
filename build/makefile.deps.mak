@@ -431,7 +431,18 @@ $(OBJDIR)\Notepad2.res: \
     $(SRC)\Notepad2.rc \
     $(SRC)\Notepad2.ver \
     $(SRC)\Version.h \
-    $(SRC)\Version_rev.h
+    $(SRC)\Version_rev.h \
+    $(RES)\Copy.cur \
+    $(RES)\Encoding.bmp \
+    $(RES)\Next.bmp \
+    $(RES)\Notepad2.exe.manifest \
+    $(RES)\Notepad2.ico \
+    $(RES)\Open.bmp \
+    $(RES)\Pick.bmp \
+    $(RES)\Prev.bmp \
+    $(RES)\Run.ico \
+    $(RES)\Styles.ico \
+    $(RES)\Toolbar.bmp
 
 $(OBJDIR)\Print.obj: \
     $(SRC)\Print.cpp \
