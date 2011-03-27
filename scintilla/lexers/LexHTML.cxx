@@ -318,19 +318,19 @@ static int classifyTagHTML(unsigned int start, unsigned int end,
 
 static void classifyWordHTJS(unsigned int start, unsigned int end,
                              WordList &keywords, Accessor &styler, script_mode inScriptType) {
+	char s[30 + 1];
+	unsigned int i = 0;
+	for (; i < end - start + 1 && i < 30; i++) {
+		s[i] = styler[start + i];
+	}
+	s[i] = '\0';
+
 	char chAttr = SCE_HJ_WORD;
-	bool wordIsNumber = IsADigit(styler[start]) || (styler[start] == '.');
-	if (wordIsNumber)
+	bool wordIsNumber = IsADigit(s[0]) || ((s[0] == '.') && IsADigit(s[1]));
+	if (wordIsNumber) {
 		chAttr = SCE_HJ_NUMBER;
-	else {
-		char s[30 + 1];
-		unsigned int i = 0;
-		for (; i < end - start + 1 && i < 30; i++) {
-			s[i] = styler[start + i];
-		}
-		s[i] = '\0';
-		if (keywords.InList(s))
-			chAttr = SCE_HJ_KEYWORD;
+	} else if (keywords.InList(s)) {
+		chAttr = SCE_HJ_KEYWORD;
 	}
 	styler.ColourTo(end, statePrintForState(chAttr, inScriptType));
 }
@@ -883,6 +883,7 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 		         (ch == '<') &&
 		         (chNext == '?') &&
 				 !IsScriptCommentState(state) ) {
+ 			beforeLanguage = scriptLanguage;
 			scriptLanguage = segIsScriptingIndicator(styler, i + 2, i + 6, eScriptPHP);
 			if (scriptLanguage != eScriptPHP && isStringState(state)) continue;
 			styler.ColourTo(i - 1, StateToPrint);
@@ -1154,7 +1155,7 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 			if (foldHTMLPreprocessor && (scriptLanguage != eScriptXML)) {
 				levelCurrent--;
 			}
-			scriptLanguage = eScriptNone;
+			scriptLanguage = beforeLanguage;
 			continue;
 		}
 		/////////////////////////////////////
