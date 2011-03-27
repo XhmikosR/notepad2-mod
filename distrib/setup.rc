@@ -16,8 +16,8 @@
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
 VS_VERSION_INFO     VERSIONINFO
-    FILEVERSION     VERSION_MAJOR,VERSION_MINOR,VERSION_BUILD,VERSION_REV
-    PRODUCTVERSION  VERSION_MAJOR,VERSION_MINOR,VERSION_BUILD,VERSION_REV
+    FILEVERSION     VERSION_FILEVERSION_NUM
+    PRODUCTVERSION  VERSION_FILEVERSION_NUM
     FILEFLAGSMASK   VS_FFI_FILEFLAGSMASK
     FILEFLAGS       MY_VS_FF_DEBUG
     FILEOS          VOS_NT_WINDOWS32
@@ -28,15 +28,15 @@ VS_VERSION_INFO     VERSIONINFO
     {
         BLOCK "040904b0" // English (U.S.)
         {
-            VALUE "Comments", "http://code.google.com/p/notepad2-mod/"
-            VALUE "CompanyName", SETUP_AUTHOR_STR
+            VALUE "Comments",        "http://code.google.com/p/notepad2-mod/"
+            VALUE "CompanyName",     SETUP_AUTHOR_STR
             VALUE "FileDescription", SETUP_TITLE_STR
-            VALUE "FileVersion", STRINGIFY(VERSION_MAJOR) ", " STRINGIFY(VERSION_MINOR) ", " STRINGIFY(VERSION_BUILD) ", " STRINGIFY(VERSION_REV)
-            VALUE "InternalName", SETUP_TITLE_STR
+            VALUE "FileVersion",     VERSION_FILEVERSION
+            VALUE "InternalName",    SETUP_TITLE_STR
             //VALUE "OriginalFilename", "Notepad2-mod_Setup.exe"
-            //VALUE "LegalCopyright", "Copyright © 2010"
-            VALUE "ProductName", SETUP_TITLE_STR
-            VALUE "ProductVersion", STRINGIFY(VERSION_MAJOR) ", " STRINGIFY(VERSION_MINOR) ", " STRINGIFY(VERSION_BUILD) ", " STRINGIFY(VERSION_REV)
+            VALUE "LegalCopyright",  VERSION_LEGALCOPYRIGHT_LONG
+            VALUE "ProductName",     SETUP_TITLE_STR
+            VALUE "ProductVersion",  VERSION_FILEVERSION
         }
     }
     BLOCK "VarFileInfo"
