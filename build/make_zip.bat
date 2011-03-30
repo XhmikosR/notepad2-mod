@@ -134,11 +134,24 @@ CALL :SubZipFiles %INPUTDIRx64% x86-64
 rem Compress everything into a single ZIP file
 PUSHD "packages"
 DEL "Notepad2-mod.zip" >NUL 2>&1
+RD /S /Q "temp_zip" >NUL 2>&1
+MD "temp_zip" >NUL 2>&1
 
-START "" /B /WAIT "..\..\distrib\tools\7za.exe" a -tzip -mx=9 Notepad2-mod.zip * >NUL
+COPY /Y /V "Notepad2-mod.%NP2_VER%_r%VerRev%*.zip" "temp_zip\" >NUL 2>&1
+COPY /Y /V "Notepad2-mod.%NP2_VER%_r%VerRev%*.exe" "temp_zip\" >NUL 2>&1
+
+PUSHD "temp_zip"
+
+START "" /B /WAIT "..\..\..\distrib\tools\7za.exe" a -tzip -mx=9 Notepad2-mod.zip * >NUL
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
 CALL :SUBMSG "INFO" "Notepad2-mod.zip created successfully!"
+
+MOVE /Y "Notepad2-mod.zip" ".." >NUL 2>&1
+
+POPD
+RD /S /Q "temp_zip" >NUL 2>&1
+
 POPD
 
 
@@ -169,7 +182,7 @@ START "" /B /WAIT "..\..\distrib\tools\7za.exe" a -tzip -mx=9^
  "Notepad2.ini" "Notepad2.txt" "Readme.txt" "Readme-mod.txt" >NUL
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
-CALL :SUBMSG "INFO" Notepad2-mod.%NP2_VER%_r%VerRev%_%2%SUFFIX%.zip created successfully!"
+CALL :SUBMSG "INFO" "Notepad2-mod.%NP2_VER%_r%VerRev%_%2%SUFFIX%.zip created successfully!"
 
 MOVE /Y "Notepad2-mod.%NP2_VER%_r%VerRev%_%2%SUFFIX%.zip" "..\packages" >NUL 2>&1
 POPD
