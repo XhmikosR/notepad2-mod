@@ -117,10 +117,10 @@ FontRealised *FontRealised::Find(const FontSpecification &fs) {
 void FontRealised::FindMaxAscentDescent(unsigned int &maxAscent, unsigned int &maxDescent) {
 	FontRealised *fr = this;
 	while (fr) {
-		if (maxAscent < ascent)
-			maxAscent = ascent;
-		if (maxDescent < descent)
-			maxDescent = descent;
+		if (maxAscent < fr->ascent)
+			maxAscent = fr->ascent;
+		if (maxDescent < fr->descent)
+			maxDescent = fr->descent;
 		fr = fr->frNext;
 	}
 }
