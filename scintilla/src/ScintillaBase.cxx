@@ -349,6 +349,7 @@ void ScintillaBase::AutoCompleteCompleted() {
 	scn.wParam = listType;
 	scn.listType = listType;
 	Position firstPos = ac.posStart - ac.startLen;
+	scn.position = firstPos;
 	scn.lParam = firstPos;
 	scn.text = selected;
 	NotifyParent(scn);
