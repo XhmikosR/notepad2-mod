@@ -662,8 +662,8 @@ BEGIN
     CONTROL         "<a>Goto Replace (Ctrl+H)</a>",IDC_TOGGLEFINDREPLACE,
                     "SysLink",0x0,125,85,74,10
 #ifdef BOOKMARK_EDITION
-    CONTROL         "<a>(?)</a>",IDC_BACKSLASHHELP,"SysLink",0x0,96,85,14,10
     CONTROL         "<a>(?)</a>",IDC_REGEXPHELP,"SysLink",0x0,106,73,14,10
+    CONTROL         "<a>(?)</a>",IDC_BACKSLASHHELP,"SysLink",0x0,106,85,14,10
     CONTROL         "W&ildcard Search",IDC_WILDCARDSEARCH,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,61,63,10
     CONTROL         "<a>(?)</a>",IDC_WILDCARDHELP,"SysLink",0x0,191,61,14,10
 #endif
@@ -711,8 +711,8 @@ BEGIN
     CONTROL         "<a>Goto Find (Ctrl+F)</a>",IDC_TOGGLEFINDREPLACE,
                     "SysLink",0x0,125,114,74,10
 #ifdef BOOKMARK_EDITION
-    CONTROL         "<a>(?)</a>",IDC_BACKSLASHHELP,"SysLink",0x0,94,114,14,10
     CONTROL         "<a>(?)</a>",IDC_REGEXPHELP,"SysLink",0x0,107,102,14,10
+    CONTROL         "<a>(?)</a>",IDC_BACKSLASHHELP,"SysLink",0x0,107,114,14,10
     CONTROL         "W&ildcard Search",IDC_WILDCARDSEARCH,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,90,63,10
     CONTROL         "<a>(?)</a>",IDC_WILDCARDHELP,"SysLink",0x0,191,90,14,10
 #endif
