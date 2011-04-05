@@ -310,12 +310,14 @@ struct OptionsPerl {
 	bool foldComment;
 	bool foldCompact;
 	// Custom folding of POD and packages
-	bool foldPOD;            // property fold.perl.pod
+	bool foldPOD;            // fold.perl.pod
 	// Enable folding Pod blocks when using the Perl lexer.
-	bool foldPackage;        // property fold.perl.package
+	bool foldPackage;        // fold.perl.package
 	// Enable folding packages when using the Perl lexer.
 
 	bool foldCommentExplicit;
+
+	bool foldAtElse;
 
 	OptionsPerl() {
 		fold = false;
@@ -324,6 +326,7 @@ struct OptionsPerl {
 		foldPOD = true;
 		foldPackage = true;
 		foldCommentExplicit = true;
+		foldAtElse = false;
 	}
 };
 
@@ -348,6 +351,9 @@ struct OptionSetPerl : public OptionSet<OptionsPerl> {
 
 		DefineProperty("fold.perl.comment.explicit", &OptionsPerl::foldCommentExplicit,
 		        "Set to 0 to disable explicit folding.");
+
+		DefineProperty("fold.perl.at.else", &OptionsPerl::foldAtElse,
+		               "This option enables Perl folding on a \"} else {\" line of an if statement.");
 
 		DefineWordListSets(perlWordListDesc);
 	}
@@ -1388,14 +1394,14 @@ void SCI_METHOD LexerPerl::Fold(unsigned int startPos, int length, int /* initSt
 		// {} [] block folding
 		if (style == SCE_PL_OPERATOR) {
 			if (ch == '{') {
-				if (levelCurrent < levelPrev)
+				if (options.foldAtElse && levelCurrent < levelPrev)
 					--levelPrev;
 				levelCurrent++;
 			} else if (ch == '}') {
 				levelCurrent--;
 			}
 			if (ch == '[') {
-				if (levelCurrent < levelPrev)
+				if (options.foldAtElse && levelCurrent < levelPrev)
 					--levelPrev;
 				levelCurrent++;
 			} else if (ch == ']') {

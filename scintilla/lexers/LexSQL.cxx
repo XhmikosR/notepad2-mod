@@ -204,8 +204,8 @@ struct OptionSetSQL : public OptionSet<OptionsSQL> {
 	OptionSetSQL() {
 		DefineProperty("fold", &OptionsSQL::fold);
 
-		DefineProperty("lexer.sql.fold.at.else", &OptionsSQL::foldAtElse,
-		               "This option enables SQL folding on a \"ELSE\" and \"ELSIF\"line of an IF statement.");
+		DefineProperty("fold.sql.at.else", &OptionsSQL::foldAtElse,
+		               "This option enables SQL folding on a \"ELSE\" and \"ELSIF\" line of an IF statement.");
 
 		DefineProperty("fold.comment", &OptionsSQL::foldComment);
 
