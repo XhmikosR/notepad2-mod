@@ -37,18 +37,21 @@ Features
   - Mostly adjustable
 
 
-New in Version 4.2.25-rc5 (released February 27, 2011)
+New in Version 4.2.25-rc7 (released April 02, 2011)
 
   - "Align Lines" with several options (Alt+J)
   - "Modify Lines" supports several variables to insert numbers (Alt+M)
-  - "Shuffle Lines" is available through "Sort Lines" (Alt+O)
+  - "Sort Lines" (Alt+O) handles column sort (rectangular selection)
+  - "Sort Lines" als handles shuffle, remove duplicate and unique lines
   - Use built-in Windows functionality for "Title Case" on Windows 7
+  - Convert between characters and hex codes (Ctrl+Alt+X, Ctrl+Alt+C)
   - "Recode file as default encoding" (Ctrl+Shift+F)
   - UTF-16 and UTF-16 BE formats are valid recoding options
   - Enable case-insensitive searching for non-ASCII text
   - Regex quantifier ? to match 0 or 1 times
   - Regex quantifiers * and + available as non-greedy forms *? and +?
   - Regex syntax for tagged regions simplified from \(...\) to (...)
+  - Updated HTML5 and CSS3 schemes according to current working drafts
   - Updated Assembly scheme with x64 and SSE4 instructions
   - Several minor updates to syntax schemes and keywords
   - Merged caret styles into a single item and added "noblink" option
@@ -66,11 +69,12 @@ New in Version 4.2.25-rc5 (released February 27, 2011)
   - Check availability of "Consolas" when set as default font
   - Support a few more file variables (see FAQ on my website)
   - Configure whether backspace should reformat indenting whitespace
-  - Hotkeys (Shift+)F3, Alt+F3 and F4 work in find and replace dialogs
+  - Transform backslashes function understands \u#### hex codes
+  - Several F2, F3 and F4 hotkeys work in find and replace dialogs
+  - Removed "Select Up" and "Select Down" buttons from find dialog
   - Ini-options to block suppression of notification messages
   - Simplified appearance of word wrap settings dialog
   - Remapped "Unescape C Special Chars" to Ctrl+Alt+R (fix duplicate)
-  - Dropped "Select To Next" (F2) and "Select To Previous" (Shift+F2)
   - Various internal optimizations and fixes
   - Improved look of disabled toolbar buttons on Windows XP and above
   - Improved overall look of toolbar buttons on Windows 2k
@@ -640,8 +644,12 @@ Keyboard Shortcuts for Notepad2
     Ctrl+Shift+R          URL Decode.
     Ctrl+Alt+E            Escape C Special Chars.
     Ctrl+Alt+R            Unescape C Special Chars.
+    Ctrl+Alt+X            Convert character to hex code.
+    Ctrl+Alt+C            Convert hex code to character.
     Ctrl+B                Find matching brace.
     Ctrl+Shift+B          Select to matching brace.
+    F2                    Expand selection to next match.
+    Shift+F2              Expand selection to previous match.
     Ctrl+1                Enclose within ''.
     Ctrl+2                Enclose within "".
     Ctrl+3                Enclose within ().

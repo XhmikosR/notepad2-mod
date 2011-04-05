@@ -60,9 +60,13 @@ typedef struct _editfindreplace
 
 #define SORT_ASCENDING  0
 #define SORT_DESCENDING 1
-#define SORT_UNIQ       2
-#define SORT_LOGICAL    4
-#define SORT_SHUFFLE    8
+#define SORT_SHUFFLE    2
+#define SORT_MERGEDUP   4
+#define SORT_UNIQDUP    8
+#define SORT_UNIQUNIQ  16
+#define SORT_NOCASE    32
+#define SORT_LOGICAL   64
+#define SORT_COLUMN   128
 
 
 HWND  EditCreate(HWND);
@@ -83,6 +87,8 @@ void  EditURLEncode(HWND);
 void  EditURLDecode(HWND);
 void  EditEscapeCChars(HWND);
 void  EditUnescapeCChars(HWND);
+void  EditChar2Hex(HWND);
+void  EditHex2Char(HWND);
 void  EditModifyNumber(HWND,BOOL);
 
 void  EditTabsToSpaces(HWND,int,BOOL);
@@ -94,7 +100,7 @@ void  EditModifyLines(HWND,LPCWSTR,LPCWSTR);
 void  EditAlignText(HWND,int);
 void  EditEncloseSelection(HWND,LPCWSTR,LPCWSTR);
 void  EditToggleLineComments(HWND,LPCWSTR,BOOL);
-void  EditPadWithSpaces(HWND);
+void  EditPadWithSpaces(HWND,BOOL,BOOL);
 void  EditStripFirstCharacter(HWND);
 void  EditStripLastCharacter(HWND);
 void  EditStripTrailingBlanks(HWND,BOOL);

@@ -349,7 +349,7 @@ int flagAlwaysOnTop        = 0;
 int flagRelativeFileMRU    = 0;
 int flagPortableMyDocs     = 0;
 int flagNoFadeHidden       = 0;
-int flagDefaultToolbarLook = 0;
+int flagToolbarLook        = 0;
 int flagSimpleIndentGuides = 0;
 int fNoHTMLGuess           = 0;
 int fNoCGIGuess            = 0;
@@ -1808,15 +1808,14 @@ void CreateBars(HWND hwnd,HINSTANCE hInstance)
     }
   }
 
-  if (!bExternalBitmap && IsXP() && !flagDefaultToolbarLook)
-  {
+  if (!bExternalBitmap && IsXP() && flagToolbarLook == 1) {
     if (BitmapAlphaBlend(hbmpCopy,GetSysColor(COLOR_3DFACE),0x60)) {
       himl = ImageList_Create(bmp.bmWidth/NUMTOOLBITMAPS,bmp.bmHeight,ILC_COLOR32|ILC_MASK,0,0);
       ImageList_AddMasked(himl,hbmpCopy,CLR_DEFAULT);
       SendMessage(hwndToolbar,TB_SETDISABLEDIMAGELIST,0,(LPARAM)himl);
     }
   }
-  else if (!bExternalBitmap && !IsXP()) {
+  else if (!bExternalBitmap && (!IsXP() || flagToolbarLook == 2)) {
     if (BitmapGrayScale(hbmpCopy) &&  BitmapMergeAlpha(hbmpCopy,GetSysColor(COLOR_3DFACE))) {
       himl = ImageList_Create(bmp.bmWidth/NUMTOOLBITMAPS,bmp.bmHeight,ILC_COLOR32|ILC_MASK,0,0);
       ImageList_AddMasked(himl,hbmpCopy,CLR_DEFAULT);
@@ -2143,6 +2142,9 @@ void MsgInitMenu(HWND hwnd,WPARAM wParam,LPARAM lParam)
   EnableCmd(hmenu,IDM_EDIT_ESCAPECCHARS,i /*&& !bReadOnly*/);
   EnableCmd(hmenu,IDM_EDIT_UNESCAPECCHARS,i /*&& !bReadOnly*/);
 
+  EnableCmd(hmenu,IDM_EDIT_CHAR2HEX,i /*&& !bReadOnly*/);
+  EnableCmd(hmenu,IDM_EDIT_HEX2CHAR,i /*&& !bReadOnly*/);
+
   //EnableCmd(hmenu,IDM_EDIT_INCREASENUM,i /*&& !bReadOnly*/);
   //EnableCmd(hmenu,IDM_EDIT_DECREASENUM,i /*&& !bReadOnly*/);
 
@@ -2171,6 +2173,10 @@ void MsgInitMenu(HWND hwnd,WPARAM wParam,LPARAM lParam)
   EnableCmd(hmenu,IDM_EDIT_FINDPREV,i && lstrlenA(efrData.szFind));
   EnableCmd(hmenu,IDM_EDIT_REPLACE,i /*&& !bReadOnly*/);
   EnableCmd(hmenu,IDM_EDIT_REPLACENEXT,i);
+  EnableCmd(hmenu,IDM_EDIT_SELTONEXT,i && lstrlenA(efrData.szFind));
+  EnableCmd(hmenu,IDM_EDIT_SELTOPREV,i && lstrlenA(efrData.szFind));
+  EnableCmd(hmenu,IDM_EDIT_FINDMATCHINGBRACE,i);
+  EnableCmd(hmenu,IDM_EDIT_SELTOMATCHINGBRACE,i);
 
   CheckCmd(hmenu,IDM_VIEW_USE2NDDEFAULT,Style_GetUse2ndDefault(hwndEdit));
 
@@ -3040,7 +3046,7 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
 
     case IDM_EDIT_PADWITHSPACES:
       SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
-      EditPadWithSpaces(hwndEdit);
+      EditPadWithSpaces(hwndEdit,FALSE,FALSE);
       SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
       break;
 
@@ -3453,6 +3459,20 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
       break;
 
 
+    case IDM_EDIT_CHAR2HEX:
+      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+      EditChar2Hex(hwndEdit);
+      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+      break;
+
+
+    case IDM_EDIT_HEX2CHAR:
+      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+      EditHex2Char(hwndEdit);
+      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+      break;
+
+
     case IDM_EDIT_FINDMATCHINGBRACE:
       {
         int iBrace2 = -1;
@@ -3619,6 +3639,8 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
     case IDM_EDIT_FINDNEXT:
     case IDM_EDIT_FINDPREV:
     case IDM_EDIT_REPLACENEXT:
+    case IDM_EDIT_SELTONEXT:
+    case IDM_EDIT_SELTOPREV:
 
       if (SendMessage(hwndEdit,SCI_GETLENGTH,0,0) == 0)
         break;
@@ -3666,6 +3688,14 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
               EditReplace(hwndEdit,&efrData);
             else
               SendMessage(hwnd,WM_COMMAND,MAKELONG(IDM_EDIT_REPLACE,1),0);
+            break;
+
+          case IDM_EDIT_SELTONEXT:
+            EditFindNext(hwndEdit,&efrData,TRUE);
+            break;
+
+          case IDM_EDIT_SELTOPREV:
+            EditFindPrev(hwndEdit,&efrData,TRUE);
             break;
         }
       }
@@ -5357,7 +5387,7 @@ void LoadSettings()
 
   if (!IniSectionGetString(pIniSection,L"OpenWithDir",L"",
         tchOpenWithDir,COUNTOF(tchOpenWithDir)))
-    SHGetSpecialFolderPath(NULL,tchOpenWithDir,CSIDL_DESKTOP,TRUE);
+    SHGetSpecialFolderPath(NULL,tchOpenWithDir,CSIDL_DESKTOPDIRECTORY,TRUE);
   else
     PathAbsoluteFromApp(tchOpenWithDir,NULL,COUNTOF(tchOpenWithDir),TRUE);
 
@@ -6201,8 +6231,8 @@ void LoadFlags()
   if (IniSectionGetInt(pIniSection,L"NoFadeHidden",0))
     flagNoFadeHidden = 1;
 
-  if (IniSectionGetInt(pIniSection,L"DefaultToolbarLook",0))
-    flagDefaultToolbarLook = 1;
+  flagToolbarLook = IniSectionGetInt(pIniSection,L"ToolbarLook",1);
+  flagToolbarLook = max(min(flagToolbarLook,2),0);
 
   if (IniSectionGetInt(pIniSection,L"SimpleIndentGuides",0))
     flagSimpleIndentGuides = 1;

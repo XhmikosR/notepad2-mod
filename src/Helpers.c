@@ -319,7 +319,7 @@ BOOL BitmapGrayScale(HBITMAP hbmp)
       for (y = 0; y < bmp.bmHeight; y++) {
         for (x = 0; x < bmp.bmWidth; x++) {
           prgba[x].rgbRed = prgba[x].rgbGreen = prgba[x].rgbBlue =
-          (((BYTE)((prgba[x].rgbRed * 38 + prgba[x].rgbGreen * 75 + prgba[x].rgbBlue * 15) >> 7) * 0xC0) + (0xD0 * (255-0xC0))) >> 8;
+          (((BYTE)((prgba[x].rgbRed * 38 + prgba[x].rgbGreen * 75 + prgba[x].rgbBlue * 15) >> 7) * 0x80) + (0xD0 * (255-0x80))) >> 8;
         }
         prgba = (RGBQUAD*)((LPBYTE)prgba + bmp.bmWidthBytes);
       }
@@ -1227,7 +1227,7 @@ BOOL PathCreateDeskLnk(LPCWSTR pszDocument)
   lstrcpy(tchArguments,L"-n ");
   lstrcat(tchArguments,tchDocTemp);
 
-  SHGetSpecialFolderPath(NULL,tchLinkDir,CSIDL_DESKTOP,TRUE);
+  SHGetSpecialFolderPath(NULL,tchLinkDir,CSIDL_DESKTOPDIRECTORY,TRUE);
 
   GetString(IDS_LINKDESCRIPTION,tchDescription,COUNTOF(tchDescription));
 
@@ -2092,7 +2092,7 @@ static BOOL IsOctalDigit(char ch) {
 /**
  * If the character is an hexa digit, get its value.
  */
-static int GetHexaDigit(char ch) {
+static int GetHexDigit(char ch) {
   if (ch >= '0' && ch <= '9') {
     return ch - '0';
   }
@@ -2106,64 +2106,79 @@ static int GetHexaDigit(char ch) {
 }
 
 /**
- * Convert C style \a, \b, \f, \n, \r, \t, \v, \ooo and \xhh into their indicated characters.
+ * Convert C style \a, \b, \f, \n, \r, \t, \v, \xhh and \uhhhh into their indicated characters.
  */
-unsigned int UnSlash(char *s) {
+extern HWND hwndEdit;
+unsigned int UnSlash(char *s,UINT cpEdit) {
   char *sStart = s;
   char *o = s;
 
   while (*s) {
     if (*s == '\\') {
       s++;
-      if (*s == 'a') {
+      if (*s == 'a')
         *o = '\a';
-      } else if (*s == 'b') {
+      else if (*s == 'b')
         *o = '\b';
-      } else if (*s == 'f') {
+      else if (*s == 'f')
         *o = '\f';
-      } else if (*s == 'n') {
+      else if (*s == 'n')
         *o = '\n';
-      } else if (*s == 'r') {
+      else if (*s == 'r')
         *o = '\r';
-      } else if (*s == 't') {
+      else if (*s == 't')
         *o = '\t';
-      } else if (*s == 'v') {
+      else if (*s == 'v')
         *o = '\v';
-      } else if (IsOctalDigit(*s)) {
-        int val = *s - '0';
-        if (IsOctalDigit(*(s + 1))) {
+      else if (*s == 'x' || *s == 'u') {
+        BOOL bShort = (*s == 'x');
+        char ch[8];
+        char *pch = ch;
+        WCHAR val[2] = L"";
+        int hex;
+        val[0] = 0;
+        hex = GetHexDigit(*(s+1));
+        if (hex >= 0) {
           s++;
-          val *= 8;
-          val += *s - '0';
-          if (IsOctalDigit(*(s + 1))) {
+          val[0] = hex;
+          hex = GetHexDigit(*(s+1));
+          if (hex >= 0) {
             s++;
-            val *= 8;
-            val += *s - '0';
+            val[0] *= 16;
+            val[0] += hex;
+            if (!bShort) {
+              hex = GetHexDigit(*(s+1));
+              if (hex >= 0) {
+                s++;
+                val[0] *= 16;
+                val[0] += hex;
+                hex = GetHexDigit(*(s+1));
+                if (hex >= 0) {
+                  s++;
+                  val[0] *= 16;
+                  val[0] += hex;
+                }
+              }
+            }
           }
-        }
-        *o = (char)(val);
-      } else if (*s == 'x') {
-        int val, ghd;
-        s++;
-        val = 0;
-        ghd = GetHexaDigit(*s);
-        if (ghd >= 0) {
-          s++;
-          val = ghd;
-          ghd = GetHexaDigit(*s);
-          if (ghd >= 0) {
-            s++;
-            val *= 16;
-            val += ghd;
+          if (val[0]) {
+            val[1] = 0;
+            WideCharToMultiByte(cpEdit,0,val,-1,ch,COUNTOF(ch),NULL,NULL);
+            *o = *pch++;
+            while (*pch)
+              *++o = *pch++;
           }
+          else
+            o--;
         }
-        *o = (char)(val);
-      } else {
-        *o = *s;
+        else
+          o--;
       }
-    } else {
-      *o = *s;
+      else
+        *o = *s;
     }
+    else
+      *o = *s;
     o++;
     if (*s) {
       s++;
@@ -2195,12 +2210,12 @@ unsigned int UnSlashLowOctal(char *s) {
   return (unsigned int)(o - sStart);
 }
 
-void TransformBackslashes(char* pszInput,BOOL bRegEx)
+void TransformBackslashes(char* pszInput,BOOL bRegEx,UINT cpEdit)
 {
   if (bRegEx)
     UnSlashLowOctal(pszInput);
   else
-    UnSlash(pszInput);
+    UnSlash(pszInput,cpEdit);
 }
 
 

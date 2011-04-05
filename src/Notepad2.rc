@@ -225,12 +225,18 @@ BEGIN
             MENUITEM "&Unescape C Chars\tCtrl+Alt+R",
                                                     IDM_EDIT_UNESCAPECCHARS
             MENUITEM SEPARATOR
+            MENUITEM "C&har To Hex\tCtrl+Alt+X",    IDM_EDIT_CHAR2HEX
+            MENUITEM "Hex To Cha&r\tCtrl+Alt+C",    IDM_EDIT_HEX2CHAR
+            MENUITEM SEPARATOR
             MENUITEM "&Find Matching Brace\tCtrl+B",
                                                     IDM_EDIT_FINDMATCHINGBRACE
 
             MENUITEM "&Select To Matching Brace\tCtrl+Shift+B",
                                                     IDM_EDIT_SELTOMATCHINGBRACE
 
+            MENUITEM SEPARATOR
+            MENUITEM "Select To Ne&xt\tCtrl+Alt+F2",         IDM_EDIT_SELTONEXT
+            MENUITEM "Select To Pre&vious\tCtrl+Alt+Shift+F2", IDM_EDIT_SELTOPREV
         END
 #ifdef BOOKMARK_EDITION
         POPUP "Bookmarks"
@@ -399,6 +405,7 @@ BEGIN
                                                     NOINVERT
     "C",            IDM_EDIT_COPY,          VIRTKEY, CONTROL, NOINVERT
     "C",            IDM_EDIT_COPYALL,       VIRTKEY, ALT, NOINVERT
+    "C",            IDM_EDIT_HEX2CHAR,      VIRTKEY, CONTROL, ALT, NOINVERT
     "C",            IDM_EDIT_COPYLINE,      VIRTKEY, SHIFT, CONTROL,
                                                     NOINVERT
     "D",            IDM_EDIT_DUPLICATELINE, VIRTKEY, CONTROL, NOINVERT
@@ -507,6 +514,8 @@ BEGIN
     VK_F12,         IDM_VIEW_SCHEMECONFIG,  VIRTKEY, CONTROL, NOINVERT
     VK_F12,         IDM_VIEW_FONT,          VIRTKEY, ALT, NOINVERT
     VK_F12,         IDM_VIEW_USE2NDDEFAULT, VIRTKEY, SHIFT, NOINVERT
+    VK_F2,          IDM_EDIT_SELTONEXT,     VIRTKEY, CONTROL ,ALT, NOINVERT
+    VK_F2,          IDM_EDIT_SELTOPREV,     VIRTKEY, CONTROL ,ALT, SHIFT, NOINVERT
 #ifdef BOOKMARK_EDITION
     VK_F2,          BME_EDIT_BOOKMARKNEXT,  VIRTKEY, NOINVERT
     VK_F2,          BME_EDIT_BOOKMARKTOGGLE, VIRTKEY, CONTROL, NOINVERT
@@ -565,6 +574,7 @@ BEGIN
                                                     NOINVERT
     "X",            IDM_EDIT_CUT,           VIRTKEY, CONTROL, NOINVERT
     "X",            IDM_EDIT_INSERT_TAG,    VIRTKEY, ALT, NOINVERT
+    "X",            IDM_EDIT_CHAR2HEX,      VIRTKEY, CONTROL, ALT, NOINVERT
     "X",            IDM_EDIT_CUTLINE,       VIRTKEY, SHIFT, CONTROL,
                                                     NOINVERT
     "Y",            IDM_EDIT_REDO,          VIRTKEY, CONTROL, NOINVERT
@@ -582,6 +592,8 @@ BEGIN
     "H",            IDACC_REPLACE,          VIRTKEY, CONTROL, NOINVERT
     "O",            IDACC_SAVEPOS,          VIRTKEY, CONTROL, NOINVERT
     "P",            IDACC_RESETPOS,         VIRTKEY, CONTROL, NOINVERT
+    VK_F2,          IDACC_SELTONEXT,        VIRTKEY, CONTROL ,ALT, NOINVERT
+    VK_F2,          IDACC_SELTOPREV,        VIRTKEY, CONTROL ,ALT, SHIFT, NOINVERT
     VK_F3,          IDACC_FINDNEXT,         VIRTKEY, NOINVERT
     VK_F3,          IDACC_SAVEFIND,         VIRTKEY, ALT, NOINVERT
     VK_F3,          IDACC_FINDPREV,         VIRTKEY, SHIFT, NOINVERT
@@ -1048,14 +1060,14 @@ BEGIN
     EDITTEXT        101,7,48,98,14,ES_AUTOHSCROLL
     DEFPUSHBUTTON   "OK",IDOK,125,7,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,125,24,50,14
-    LTEXT           "$(L)",IDC_STATIC,7,72,14,8
-    LTEXT           "$(0L)",IDC_STATIC,30,72,18,8
+    LTEXT           "$(L)",200,7,72,14,8
+    LTEXT           "$(0L)",201,30,72,18,8
     LTEXT           "Document line number.",IDC_STATIC,57,72,74,8
-    LTEXT           "$(N)",IDC_STATIC,7,82,15,8
-    LTEXT           "$(0N)",IDC_STATIC,30,82,19,8
+    LTEXT           "$(N)",202,7,82,15,8
+    LTEXT           "$(0N)",203,30,82,19,8
     LTEXT           "Continuous number.",IDC_STATIC,57,82,66,8
-    LTEXT           "$(I)",IDC_STATIC,7,92,13,8
-    LTEXT           "$(0I)",IDC_STATIC,30,92,17,8
+    LTEXT           "$(I)",204,7,92,13,8
+    LTEXT           "$(0I)",205,30,92,17,8
     LTEXT           "Continuous number (zero-based).",IDC_STATIC,57,92,109,8
 END
 
@@ -1114,7 +1126,7 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,54,122,10
 END
 
-IDD_SORT DIALOGEX 0, 0, 184, 77
+IDD_SORT DIALOGEX 0, 0, 184, 140
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION |
     WS_SYSMENU
 CAPTION "Sort Lines"
@@ -1126,10 +1138,18 @@ BEGIN
                     WS_TABSTOP,7,19,70,10
     CONTROL         "Shu&ffle lines.",102,"Button",BS_AUTORADIOBUTTON |
                     WS_TABSTOP,7,31,57,10
-    CONTROL         "Remove d&uplicate lines.",103,"Button",BS_AUTOCHECKBOX |
-                    WS_TABSTOP,7,48,91,10
-    CONTROL         "Logical &number comparison.",104,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,7,60,104,10
+    CONTROL         "&Merge duplicate lines.",103,"Button",BS_AUTOCHECKBOX |
+                    WS_TABSTOP,7,50,85,10
+    CONTROL         "&Remove duplicate lines.",104,"Button",BS_AUTOCHECKBOX |
+                    WS_TABSTOP,7,62,91,10
+    CONTROL         "Remove &unique lines.",105,"Button",BS_AUTOCHECKBOX |
+                    WS_TABSTOP,7,74,84,10
+    CONTROL         "&Case insensitive.",106,"Button",BS_AUTOCHECKBOX |
+                    WS_TABSTOP,7,92,70,10
+    CONTROL         "Logical &number comparison.",107,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,104,104,10
+    CONTROL         "Column &sort (rectangular selection).",108,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,122,131,10
     DEFPUSHBUTTON   "OK",IDOK,127,7,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,127,24,50,14
 END
@@ -1398,7 +1418,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 177
         TOPMARGIN, 7
-        BOTTOMMARGIN, 70
+        BOTTOMMARGIN, 133
     END
 
     IDD_INFOBOX3, DIALOG
@@ -1590,13 +1610,13 @@ BEGIN
     61003                   "A3;Unicode (UTF-16 BE BOM);Unicode BE BOM"
     61004                   "A4;Unicode (UTF-16 LE);Unicode"
     61005                   "A5;Unicode (UTF-16 BE);Unicode BE"
-    61006                   "A6;Unicode (UTF-8);UTF-8"
-    61007                   "A7;Unicode (UTF-8 Signature);UTF-8 Signature"
+    61006                   "A6;UTF-8;UTF-8"
+    61007                   "A7;UTF-8 Signature;UTF-8 Signature"
 END
 
 STRINGTABLE
 BEGIN
-    61008                   "A8;Unicode (UTF-7);UTF-7"
+    61008                   "A8;UTF-7;UTF-7"
     61009                   "C;Arabic (DOS-720);DOS-720"
     61010                   "C;Arabic (ISO-8859-6);ISO-8859-6"
     61011                   "C;Arabic (Mac);Mac (Arabic)"

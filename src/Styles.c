@@ -76,45 +76,47 @@ EDITLEXER lexDefault = { SCLEX_NULL, 63000, L"Default Text", L"txt; text; wtx; l
 
 
 KEYWORDLIST KeyWords_HTML = {
-"!doctype ^aria- ^data- a abbr abstract accept accept-charset accesskey acronym action address "
-"align alink alt and applet archive area aria article aside async audio autocomplete autofocus "
-"axis b background base basefont bb bdo bgcolor big blockquote body boolean border bordercolor br "
-"break button byte canvas caption case catch cellpadding cellspacing center char charoff charset "
-"checkbox checked cite class classid clear code codebase codetype col colgroup color cols colspan "
-"command compact const content contenteditable contextmenu continue coords data datafld "
-"dataformatas datagrid datalist datapagesize datasrc datetime dd debugger declare default defer "
-"del delete details dfn dialog dir disabled div dl do double draggable dropzone dt else em embed "
-"encoding enctype enum event eventsource export extends face false fieldset figcaption figure "
-"file final finally float font footer for form formaction formenctype formmethod formnovalidate "
-"formtarget frame frameborder frameset function goto h1 h2 h3 h4 h5 h6 head header headers height "
-"hgroup hidden hr href hreflang hspace html http-equiv i id if iframe image img implements import "
-"in input ins instanceof int interface isindex ismap kbd keygen label lang language leftmargin "
-"legend li link list long longdesc manifest map marginheight marginwidth mark max maxlength media "
-"menu meta meter method min multiple name native nav new noframes nohref noresize noscript "
-"noshade novalidate nowrap null object ol onabort onafterprint onbeforeonload onbeforeprint "
-"onblur oncanplay oncanplaythrough onchange onclick oncontextmenu ondblclick ondrag ondragend "
-"ondragenter ondragleave ondragover ondragstart ondrop ondurationchange onemptied onended onerror "
-"onfocus onformchange onforminput onhaschange oninput oninvalid onkeydown onkeypress onkeyup "
-"onload onloadeddata onloadedmetadata onloadstart onmessage onmousedown onmousemove onmouseout "
-"onmouseover onmouseup onmousewheel onoffline ononline onpagehide onpageshow onpause onplay "
-"onplaying onpopstate onprogress onratechange onreadystatechange onredo onreset onresize onscroll "
-"onseeked onseeking onselect onstalled onstorage onsubmit onsuspend ontimeupdate onundo onunload "
-"onvolumechange onwaiting optgroup option output p package param password pattern ping "
-"placeholder pre private profile progress prompt protected public q radio readonly rel required "
-"reset return rev reversed role rows rowspan rp rt ruby rules s samp sandbox scheme scope scoped "
-"script scrolling seamless section select selected shape short size sizes small source span "
-"spellcheck src srcdoc standby start static step strike strong style sub submit summary sup super "
-"switch synchronized tabindex table target tbody td text textarea tfoot th thead this throw "
-"throws time title topmargin tr transient true try tt type typeof u ul usemap valign value "
-"valuetype var version video vlink void volatile vspace wbr while width with xml xmlns xmp",
-"and begin case call continue do each else elseif end erase error event exit false for function get "
-"gosub goto if implement in load loop lset me mid new next not nothing on or property raiseevent "
-"rem resume return rset select set stop sub then to true unload until wend while with withevents "
-"attribute alias as boolean byref byte byval const compare currency date declare dim double enum "
-"explicit friend global integer let lib long module object option optional preserve private property "
-"public redim single static string type variant",
-"and assert break class continue def del elif else except exec finally for from global if import in is "
-"lambda None not or pass print raise return try while yield",
+"!doctype ^aria- ^data- a abbr accept accept-charset accesskey acronym action address align alink "
+"alt and applet archive area article aside async audio autocomplete autofocus autoplay axis b "
+"background base basefont bb bdi bdo bgcolor big blockquote body border bordercolor br button "
+"canvas caption cellpadding cellspacing center challenge char charoff charset checkbox checked "
+"cite class classid clear code codebase codetype col colgroup color cols colspan command compact "
+"content contenteditable contextmenu controls coords data datafld dataformatas datagrid datalist "
+"datapagesize datasrc datetime dd declare default defer del details dfn dialog dir dirname "
+"disabled div dl draggable dropzone dt em embed enctype event eventsource face fieldset "
+"figcaption figure file font footer for form formaction formenctype formmethod formnovalidate "
+"formtarget frame frameborder frameset h1 h2 h3 h4 h5 h6 head header headers height hgroup hidden "
+"high hr href hreflang hspace html http-equiv i icon id iframe image img input ins isindex ismap "
+"kbd keygen keytype kind label lang language leftmargin legend li link list longdesc loop low "
+"manifest map marginheight marginwidth mark max maxlength media menu meta meter method min "
+"multiple name nav noframes nohref noresize noscript noshade novalidate nowrap object ol onabort "
+"onafterprint onbeforeprint onbeforeunload onblur oncanplay oncanplaythrough onchange onclick "
+"oncontextmenu oncuechange ondblclick ondrag ondragend ondragenter ondragleave ondragover "
+"ondragstart ondrop ondurationchange onemptied onended onerror onfocus onformchange onforminput "
+"onhashchange oninput oninvalid onkeydown onkeypress onkeyup onload onloadeddata onloadedmetadata "
+"onloadstart onmessage onmousedown onmousemove onmouseout onmouseover onmouseup onmousewheel "
+"onoffline ononline onpagehide onpageshow onpause onplay onplaying onpopstate onprogress "
+"onratechange onreadystatechange onredo onreset onresize onscroll onseeked onseeking onselect "
+"onshow onstalled onstorage onsubmit onsuspend ontimeupdate onundo onunload onvolumechange "
+"onwaiting open optgroup optimum option output p param password pattern ping placeholder poster "
+"pre preload profile progress prompt pubdate public q radio radiogroup readonly rel required "
+"reset rev reversed rows rowspan rp rt ruby rules s samp sandbox scheme scope scoped script "
+"scrolling seamless section select selected shape size sizes small source span spellcheck src "
+"srcdoc srclang standby start step strike strong style sub submit summary sup tabindex table "
+"target tbody td text textarea tfoot th thead time title topmargin tr track tt type u ul usemap "
+"valign value valuetype var version video vlink vspace wbr width wrap xml xmlns",
+"abstract boolean break byte case catch char class const continue debugger default delete do "
+"double else enum export extends false final finally float for function goto if implements "
+"import in instanceof int interface long native new null package private protected public "
+"return short static super switch synchronized this throw throws transient true try typeof var "
+"void volatile while with",
+"alias and as attribute begin boolean byref byte byval call case class compare const continue "
+"currency date declare dim do double each else elseif empty end enum eqv erase error event exit "
+"explicit false for friend function get global gosub goto if imp implement in integer is let lib "
+"load long loop lset me mid mod module new next not nothing null object on option optional or "
+"preserve private property public raiseevent redim rem resume return rset select set single "
+"static stop string sub then to true type unload until variant wend while with withevents xor",
+"",
 "__callstatic __class__ __dir__ __file__ __function__ __get __isset __line__ __method__ "
 "__namespace__ __set __sleep __unset __wakeup abstract and argc argv array as break case catch "
 "cfunction class clone const continue declare default define die do e_all e_error e_fatal "
@@ -124,7 +126,7 @@ KEYWORDLIST KeyWords_HTML = {
 "implements include include_once instanceof interface isset list namespace new not null "
 "old_function or parent php_self print private protected public require require_once return "
 "static stdclass switch this throw true try unset use var virtual while xor",
-"", "", "", "", "" };
+"", "", "", "" };
 
 
 EDITLEXER lexHTML = { SCLEX_HTML, 63001, L"Web Source Code", L"html; htm; asp; aspx; shtml; htd; xhtml; php; php3; phtml; htt; cfm; tpl; dtd; hta; htc", L"", &KeyWords_HTML, {
@@ -233,33 +235,57 @@ EDITLEXER lexXML = { SCLEX_XML, 63002, L"XML Document", L"xml; xsl; rss; svg; xu
 
 
 KEYWORDLIST KeyWords_CSS = {
-"background background-attachment background-color background-image "
-"background-position background-repeat border border-bottom "
-"border-bottom-width border-color border-left border-left-width border-right "
-"border-right-width border-style border-top border-top-width border-width "
-"clear color display float font font-family font-size font-style font-variant "
-"font-weight height letter-spacing line-height list-style list-style-image "
-"list-style-position list-style-type margin margin-bottom margin-left "
-"margin-right margin-top padding padding-bottom padding-left padding-right "
-"padding-top text-align text-decoration text-indent text-transform "
-"vertical-align white-space width word-spacing",
-"first-letter first-line link active visited first-child "
-"focus hover lang before after left right first",
-"ascent azimuth baseline bbox border-bottom-color border-bottom-style "
-"border-collapse border-color border-left-color border-left-style "
-"border-right-color border-right-style border-spacing border-style "
-"border-top-color border-top-style bottom cap-height caption-side centerline "
-"clip content counter-increment counter-reset cue cue-after cue-before cursor "
-"definition-src descent direction elevation empty-cells font-size-adjust "
-"font-stretch left marker-offset marks mathline max-height max-width "
-"min-height min-width orphans outline outline-color outline-style "
-"outline-width overflow page page-break-after page-break-before "
-"page-break-inside panose-1 pause pause-after pause-before pitch pitch-range "
-"play-during position quotes richness right size slope speak speak-header "
-"speak-numeral speak-punctuation speech-rate src stemh stemv stress "
-"table-layout text-shadow top topline unicode-bidi unicode-range units-per-em "
-"visibility voice-family volume widows widths x-height z-index",
-"", "", "", "", "", "" };
+"^-moz- ^-ms- ^-o- ^-webkit- alignment-adjust alignment-baseline animation animation-delay "
+"animation-direction animation-duration animation-iteration-count animation-name "
+"animation-play-state animation-timing-function appearance ascent azimuth backface-visibility "
+"background background-attachment background-break background-clip background-color "
+"background-image background-origin background-position background-repeat background-size "
+"baseline baseline-shift bbox binding bleed bookmark-label bookmark-level bookmark-state "
+"bookmark-target border border-bottom border-bottom-color border-bottom-left-radius "
+"border-bottom-right-radius border-bottom-style border-bottom-width border-collapse border-color "
+"border-image border-image-outset border-image-repeat border-image-slice border-image-source "
+"border-image-width border-left border-left-color border-left-style border-left-width "
+"border-length border-radius border-right border-right-color border-right-style "
+"border-right-width border-spacing border-style border-top border-top-color "
+"border-top-left-radius border-top-right-radius border-top-style border-top-width border-width "
+"bottom box-align box-decoration-break box-direction box-flex box-flex-group box-lines "
+"box-ordinal-group box-orient box-pack box-shadow box-sizing break-after break-before "
+"break-inside cap-height caption-side centerline change-bar change-bar-class change-bar-offset "
+"change-bar-side clear clip color color-profile column-count column-fill column-gap column-rule "
+"column-rule-color column-rule-style column-rule-width columns column-span column-width content "
+"counter-increment counter-reset crop cue cue-after cue-before cursor definition-src descent "
+"direction display dominant-baseline drop-initial-after-adjust drop-initial-after-align "
+"drop-initial-before-adjust drop-initial-before-align drop-initial-size drop-initial-value "
+"elevation empty-cells fit fit-position float float-offset font font-family font-size "
+"font-size-adjust font-stretch font-style font-variant font-weight grid-columns grid-rows "
+"hanging-punctuation height hyphenate-after hyphenate-before hyphenate-character hyphenate-lines "
+"hyphenate-resource hyphens icon image-orientation image-resolution inline-box-align "
+"insert-position left letter-spacing line-height line-stacking line-stacking-ruby "
+"line-stacking-shift line-stacking-strategy list-style list-style-image list-style-position "
+"list-style-type make-element margin margin-bottom margin-left margin-right margin-top mark "
+"mark-after mark-before marker-offset marks marquee-direction marquee-play-count marquee-speed "
+"marquee-style mathline max-height max-width min-height min-width move-to nav-down nav-index "
+"nav-left nav-right nav-up opacity orphans outline outline-color outline-offset outline-style "
+"outline-width overflow overflow-style overflow-x overflow-y padding padding-bottom padding-left "
+"padding-right padding-top page page-break-after page-break-before page-break-inside page-policy "
+"panose-1 pause pause-after pause-before perspective perspective-origin phonemes pitch "
+"pitch-range play-during position presentation-level prototype prototype-insert-policy "
+"prototype-insert-position punctuation-trim quotes rendering-intent resize rest rest-after "
+"rest-before richness right rotation rotation-point ruby-align ruby-overhang ruby-position "
+"ruby-span size slope speak speak-header speak-numeral speak-punctuation speech-rate src stemh "
+"stemv stress string-set table-layout target target-name target-new target-position text-align "
+"text-align-last text-decoration text-emphasis text-height text-indent text-justify text-outline "
+"text-replace text-shadow text-transform text-wrap top topline transform transform-origin "
+"transform-style transition transition-delay transition-duration transition-property "
+"transition-timing-function unicode-bidi unicode-range units-per-em vertical-align visibility "
+"voice-balance voice-duration voice-family voice-pitch voice-pitch-range voice-rate voice-stress "
+"voice-volume volume white-space white-space-collapse widows width widths word-break word-spacing "
+"word-wrap x-height z-index",
+"active after before checked default disabled empty enabled first first-child first-letter "
+"first-line first-of-type focus hover indeterminate invalid lang last-child last-of-type left "
+"link not nth-child nth-last-child nth-last-of-type nth-of-type only-child only-of-type optional "
+"required right root target valid visited",
+"", "", "", "", "", "", "" };
 
 
 EDITLEXER lexCSS = { SCLEX_CSS, 63003, L"CSS Style Sheets", L"css", L"", &KeyWords_CSS, {
@@ -937,7 +963,7 @@ KEYWORDLIST KeyWords_PS = {
 "", "", "", "", "" };
 
 
-EDITLEXER lexPS = { SCLEX_POWERSHELL, 63021, L"PowerShell Script", L"ps1; psc1", L"", &KeyWords_PS, {
+EDITLEXER lexPS = { SCLEX_POWERSHELL, 63021, L"PowerShell Script", L"ps1; psd1; psm1", L"", &KeyWords_PS, {
                     { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
                     //{ SCE_POWERSHELL_DEFAULT, L"Default", L"", L"" },
                     { MULTI_STYLE(SCE_POWERSHELL_COMMENT,SCE_POWERSHELL_COMMENTSTREAM,0,0), 63127, L"Comment", L"fore:#646464", L"" },
