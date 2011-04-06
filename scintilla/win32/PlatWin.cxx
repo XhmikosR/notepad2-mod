@@ -27,12 +27,15 @@
 #include "XPM.h"
 #include "FontQuality.h"
 
+/* notepad2-mod custom code start */
+/* MultiMon.h is not included in WDK 7.1
 // We want to use multi monitor functions, but via LoadLibrary etc
 // Luckily microsoft has done the heavy lifting for us, so we'll just use their stub functions!
-#if defined(_MSC_VER) && (MSC_VER > 1200)
+#if defined(_MSC_VER) && (_MSC_VER > 1200)
 #define COMPILE_MULTIMON_STUBS
 #include "MultiMon.h"
-#endif
+#endif */
+/* notepad2-mod custom code end */
 
 #ifndef IDC_HAND
 #define IDC_HAND MAKEINTRESOURCE(32649)

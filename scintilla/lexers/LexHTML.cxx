@@ -955,6 +955,37 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 			continue;
 		}
 
+		// handle the start/end of Django comment
+		else if (isDjango && state != SCE_H_COMMENT && (ch == '{' && chNext == '#')) {
+			styler.ColourTo(i - 1, StateToPrint);
+			beforePreProc = state;
+			beforeLanguage = scriptLanguage;
+			if (inScriptType == eNonHtmlScript)
+				inScriptType = eNonHtmlScriptPreProc;
+			else
+				inScriptType = eNonHtmlPreProc;
+			i += 1;
+			visibleChars += 1;
+			scriptLanguage = eScriptComment;
+			state = SCE_H_COMMENT;
+			styler.ColourTo(i, SCE_H_ASP);
+			ch = static_cast<unsigned char>(styler.SafeGetCharAt(i));
+			continue;
+		}
+		else if (isDjango && state == SCE_H_COMMENT && (ch == '#' && chNext == '}')) {
+			styler.ColourTo(i - 1, StateToPrint);
+			i += 1;
+			visibleChars += 1;
+			styler.ColourTo(i, SCE_H_ASP);
+			state = beforePreProc;
+			if (inScriptType == eNonHtmlScriptPreProc)
+				inScriptType = eNonHtmlScript;
+			else
+				inScriptType = eHtml;
+			scriptLanguage = beforeLanguage;
+			continue;
+		}
+
 		// handle the start Django template code
 		else if (isDjango && scriptLanguage != eScriptPython && (ch == '{' && (chNext == '%' ||  chNext == '{'))) {
 			if (chNext == '%')

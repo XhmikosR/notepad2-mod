@@ -957,7 +957,9 @@ void Editor::ScrollTo(int line, bool moveThumb) {
 	int topLineNew = Platform::Clamp(line, 0, MaxScrollPos());
 	if (topLineNew != topLine) {
 		// Try to optimise small scrolls
+#ifndef UNDER_CE
 		int linesToMove = topLine - topLineNew;
+#endif
 		SetTopLine(topLineNew);
 		// Optimize by styling the view as this will invalidate any needed area
 		// which could abort the initial paint if discovered later.

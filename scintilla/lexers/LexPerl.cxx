@@ -1357,10 +1357,8 @@ void SCI_METHOD LexerPerl::Fold(unsigned int startPos, int length, int /* initSt
 	// Backtrack to previous line in case need to fix its fold status
 	if (startPos > 0) {
 		if (lineCurrent > 0) {
-			if (IsCommentLine(lineCurrent - 1, styler)) {
-				lineCurrent--;
-				startPos = styler.LineStart(lineCurrent);
-			}
+			lineCurrent--;
+			startPos = styler.LineStart(lineCurrent);
 		}
 	}
 
