@@ -2,7 +2,7 @@
 /** @file Document.cxx
  ** Text document that handles notifications, DBCS, styling, words and end of line.
  **/
-// Copyright 1998-2003 by Neil Hodgson <neilh@scintilla.org>
+// Copyright 1998-2011 by Neil Hodgson <neilh@scintilla.org>
 // The License.txt file describes the conditions under which this software may be distributed.
 
 #include <stdlib.h>
@@ -353,6 +353,104 @@ int Document::GetFoldParent(int line) {
 	} else {
 		return -1;
 	}
+}
+
+void Document::GetHighlightDelimiters(int line, HighlightDelimiter &highlightDelimiter) {
+	int endLine = LineFromPosition(Length());
+	int beginFoldBlock = -1;
+	int endFoldBlock = -1;
+	int beginMarginCorrectlyDrawnZone = -1;
+	int endMarginCorrectlyDrawnZone = endLine + 1;
+	int endOfTailOfWhiteFlag = -1; //endOfTailOfWhiteFlag points the last SC_FOLDLEVELWHITEFLAG if follow a fold block. Otherwise endOfTailOfWhiteFlag points end of fold block.
+	int level = GetLevel(line);
+	int levelNumber = -1;
+	int lineLookLevel = -1;
+	int lineLookLevelNumber = -1;
+	int lineLook = line;
+	bool beginFoldBlockFound = false;
+	bool endFoldBlockFound = false;
+	bool beginMarginCorrectlyDrawnZoneFound = false;
+	bool endMarginCorrectlyDrawnZoneFound = false;
+
+	/*******************************************************************************/
+	/*      search backward (beginFoldBlock & beginMarginCorrectlyDrawnZone)       */
+	/*******************************************************************************/
+	for (endOfTailOfWhiteFlag = line; lineLook >= 0 && (!beginFoldBlockFound || !beginMarginCorrectlyDrawnZoneFound); --lineLook) {
+		lineLookLevel = GetLevel(lineLook);
+		if (levelNumber != -1) {
+			lineLookLevelNumber = lineLookLevel & SC_FOLDLEVELNUMBERMASK;
+			if (!beginMarginCorrectlyDrawnZoneFound && (lineLookLevelNumber > levelNumber)) {
+				beginMarginCorrectlyDrawnZoneFound = true;
+				beginMarginCorrectlyDrawnZone = endOfTailOfWhiteFlag;
+			}
+			//find the last space line (SC_FOLDLEVELWHITEFLAG).
+			if (!beginMarginCorrectlyDrawnZoneFound && !(lineLookLevel & SC_FOLDLEVELWHITEFLAG)) {
+				endOfTailOfWhiteFlag = lineLook - 1;
+			}
+			if (!beginFoldBlockFound && (lineLookLevelNumber < levelNumber)) {
+				beginFoldBlockFound = true;
+				beginFoldBlock = lineLook;
+				if (!beginMarginCorrectlyDrawnZoneFound) {
+					beginMarginCorrectlyDrawnZoneFound = true;
+					beginMarginCorrectlyDrawnZone = lineLook - 1;
+				}
+			} else 	if (!beginFoldBlockFound && lineLookLevelNumber == SC_FOLDLEVELBASE) {
+				beginFoldBlockFound = true; //beginFoldBlock already set to -1.
+			}
+		} else if (!(lineLookLevel & SC_FOLDLEVELWHITEFLAG)) {
+			endOfTailOfWhiteFlag = lineLook - 1;
+			if (lineLookLevel & SC_FOLDLEVELHEADERFLAG) {
+				beginFoldBlockFound = true;
+				beginFoldBlock = lineLook;
+				beginMarginCorrectlyDrawnZoneFound = true;
+				beginMarginCorrectlyDrawnZone = endOfTailOfWhiteFlag;
+				levelNumber = GetLevel(lineLook + 1) & SC_FOLDLEVELNUMBERMASK;;
+			} else {
+				levelNumber = lineLookLevel & SC_FOLDLEVELNUMBERMASK;
+			}
+		}
+	}
+
+	/****************************************************************************/
+	/*       search forward (endStartBlock & endMarginCorrectlyDrawnZone)       */
+	/****************************************************************************/
+	if (level & SC_FOLDLEVELHEADERFLAG) {
+		//ignore this line because this line is on first one of block.
+		lineLook = line + 1;
+	} else {
+		lineLook = line;
+	}
+	for (; lineLook <= endLine && (!endFoldBlockFound || !endMarginCorrectlyDrawnZoneFound); ++lineLook) {
+		lineLookLevel = GetLevel(lineLook);
+		lineLookLevelNumber = lineLookLevel & SC_FOLDLEVELNUMBERMASK;
+		if (!endFoldBlockFound && !(lineLookLevel & SC_FOLDLEVELWHITEFLAG) && lineLookLevelNumber < levelNumber) {
+			endFoldBlockFound = true;
+			endFoldBlock = lineLook - 1;
+			if (!endMarginCorrectlyDrawnZoneFound) {
+				endMarginCorrectlyDrawnZoneFound = true;
+				endMarginCorrectlyDrawnZone = lineLook;
+			}
+		} else if (!endFoldBlockFound && lineLookLevel == SC_FOLDLEVELBASE) {
+			endFoldBlockFound = true;
+			endFoldBlock = -1;
+		}
+		if (!endMarginCorrectlyDrawnZoneFound && (lineLookLevel & SC_FOLDLEVELHEADERFLAG)) {
+			endMarginCorrectlyDrawnZoneFound = true;
+			endMarginCorrectlyDrawnZone = lineLook;
+		}
+	}
+	if (!endFoldBlockFound && ((lineLook > endLine && lineLookLevelNumber < levelNumber) ||
+	        (levelNumber > SC_FOLDLEVELBASE))) {
+		//manage when endfold is incorrect or on last line.
+		endFoldBlock = lineLook - 1;
+		//useless to set endMarginCorrectlyDrawnZone.
+		//if endMarginCorrectlyDrawnZoneFound equals false then endMarginCorrectlyDrawnZone already equals to endLine + 1.
+	}
+
+	highlightDelimiter.beginFoldBlock = beginFoldBlock;
+	highlightDelimiter.endFoldBlock = endFoldBlock;
+	highlightDelimiter.beginMarginCorrectlyDrawnZone = beginMarginCorrectlyDrawnZone;
+	highlightDelimiter.endMarginCorrectlyDrawnZone = endMarginCorrectlyDrawnZone;
 }
 
 int Document::ClampPositionIntoDocument(int pos) {

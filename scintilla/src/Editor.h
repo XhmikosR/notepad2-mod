@@ -2,7 +2,7 @@
 /** @file Editor.h
  ** Defines the main editor class.
  **/
-// Copyright 1998-2003 by Neil Hodgson <neilh@scintilla.org>
+// Copyright 1998-2011 by Neil Hodgson <neilh@scintilla.org>
 // The License.txt file describes the conditions under which this software may be distributed.
 
 #ifndef EDITOR_H
@@ -138,6 +138,9 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	int printWrapState;
 	int cursorMode;
 	int controlCharSymbol;
+
+	// Highlight current folding block
+	HighlightDelimiter highlightDelimiter;
 
 	bool hasFocus;
 	bool hideSelection;
