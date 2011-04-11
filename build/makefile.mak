@@ -16,7 +16,7 @@
 
 
 # Remove the .SILENT directive in order to display all the commands
-#.SILENT:
+.SILENT:
 
 
 !IFDEF x64
