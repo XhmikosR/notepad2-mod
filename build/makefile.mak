@@ -16,7 +16,7 @@
 
 
 # Remove the .SILENT directive in order to display all the commands
-.SILENT:
+#.SILENT:
 
 
 !IFDEF x64
@@ -37,30 +37,31 @@ SRC     = ..\src
 RES     = ..\res
 
 
-DEFINES     = /D "STATIC_BUILD" /D "SCI_LEXER" /D "BOOKMARK_EDITION" /D "_WINDOWS" \
-              /D "NDEBUG" /D "_UNICODE" /D "UNICODE"
-INCLUDEDIRS = /I "$(SCI_INC)" /I "$(SCI_LEX)" /I "$(SCI_LIB)" /I "$(SCI_SRC)" \
-              /I "$(SCI_WIN)"
-CXXFLAGS    = /nologo /c /Fo"$(OBJDIR)/" /W3 /WX /EHsc /MD /O2 /GL /MP \
-              $(DEFINES) $(INCLUDEDIRS)
-LDFLAGS     = /NOLOGO /WX /INCREMENTAL:NO /RELEASE /OPT:REF /OPT:ICF /MERGE:.rdata=.text \
-              /DYNAMICBASE /NXCOMPAT /LTCG /DEBUG
-LIBS        = kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib shlwapi.lib \
-              comdlg32.lib comctl32.lib winspool.lib imm32.lib ole32.lib oleaut32.lib \
-              psapi.lib
-RFLAGS      = /l 0x0409 /d "_UNICODE" /d "UNICODE" /d "BOOKMARK_EDITION"
+DEFINES       = /D "BOOKMARK_EDITION" /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE"
+INCLUDEDIRS   = /I "$(SCI_INC)" /I "$(SCI_LEX)" /I "$(SCI_LIB)" /I "$(SCI_SRC)" \
+                /I "$(SCI_WIN)"
+CXXFLAGS      = /nologo /c /Fo"$(OBJDIR)/" /W3 /WX /EHsc /MD /O2 /GL /MP \
+                $(DEFINES) $(INCLUDEDIRS)
+LDFLAGS       = /NOLOGO /WX /INCREMENTAL:NO /RELEASE /OPT:REF /OPT:ICF /MERGE:.rdata=.text \
+                /DYNAMICBASE /NXCOMPAT /LTCG /DEBUG
+LIBS          = kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib shlwapi.lib \
+                comdlg32.lib comctl32.lib winspool.lib imm32.lib ole32.lib oleaut32.lib \
+                psapi.lib
+RFLAGS        = /l 0x0409 /d "_UNICODE" /d "UNICODE" /d "BOOKMARK_EDITION"
+SCI_CXXFLAGS  = $(CXXFLAGS) /D "STATIC_BUILD" /D "SCI_LEXER"
 
 
 !IFDEF x64
-CXXFLAGS    = $(CXXFLAGS) /D "_WIN64" /D "_WIN32_WINNT=0x0502" /wd4244 /wd4267
-LDFLAGS     = $(LDFLAGS) /SUBSYSTEM:WINDOWS,5.02 /MACHINE:X64
-LIBS        = $(LIBS) msvcrt_win2003.obj
-RFLAGS      = $(RFLAGS) /d "_WIN64"
+CXXFLAGS      = $(CXXFLAGS) /D "_WIN64" /D "_WIN32_WINNT=0x0502"
+LDFLAGS       = $(LDFLAGS) /SUBSYSTEM:WINDOWS,5.02 /MACHINE:X64
+LIBS          = $(LIBS) msvcrt_win2003.obj
+RFLAGS        = $(RFLAGS) /d "_WIN64"
+SCI_CXXFLAGS  = $(SCI_CXXFLAGS) /wd4244 /wd4267
 !ELSE
-CXXFLAGS    = $(CXXFLAGS) /D "WIN32" /D "_WIN32_WINNT=0x0501"
-LDFLAGS     = $(LDFLAGS) /SUBSYSTEM:WINDOWS,5.01 /MACHINE:X86
-LIBS        = $(LIBS) msvcrt_winxp.obj
-RFLAGS      = $(RFLAGS) /d "WIN32"
+CXXFLAGS      = $(CXXFLAGS) /D "WIN32" /D "_WIN32_WINNT=0x0501"
+LDFLAGS       = $(LDFLAGS) /SUBSYSTEM:WINDOWS,5.01 /MACHINE:X86
+LIBS          = $(LIBS) msvcrt_winxp.obj
+RFLAGS        = $(RFLAGS) /d "WIN32"
 !ENDIF
 
 
@@ -163,16 +164,16 @@ OBJECTS = $(SCI_LEX_OBJ) $(SCI_LIB_OBJ) $(SCI_SRC_OBJ) $(SCI_WIN_OBJ) $(NOTEPAD2
 ##  Batch rules  ##
 ###################
 {$(SCI_LEX)}.cxx{$(OBJDIR)}.obj::
-    cl $(CXXFLAGS) /Tp $<
+    cl $(SCI_CXXFLAGS) /Tp $<
 
 {$(SCI_LIB)}.cxx{$(OBJDIR)}.obj::
-    cl $(CXXFLAGS) /Tp $<
+    cl $(SCI_CXXFLAGS) /Tp $<
 
 {$(SCI_SRC)}.cxx{$(OBJDIR)}.obj::
-    cl $(CXXFLAGS) /Tp $<
+    cl $(SCI_CXXFLAGS) /Tp $<
 
 {$(SCI_WIN)}.cxx{$(OBJDIR)}.obj::
-    cl $(CXXFLAGS) /Tp $<
+    cl $(SCI_CXXFLAGS) /Tp $<
 
 {$(SRC)}.cpp{$(OBJDIR)}.obj::
     cl $(CXXFLAGS) /Tp $<
