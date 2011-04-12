@@ -26,29 +26,8 @@ IF /I "%~1"=="/help"  GOTO SHOWHELP
 IF /I "%~1"=="-help"  GOTO SHOWHELP
 IF /I "%~1"=="--help" GOTO SHOWHELP
 IF /I "%~1"=="/?"     GOTO SHOWHELP
-GOTO CHECKFIRSTARG
 
 
-:SHOWHELP
-TITLE "%~nx0 %1"
-ECHO. & ECHO.
-ECHO Usage:   %~nx0 [Clean^|Build^|Rebuild] [x86^|x64^|all]
-ECHO.
-ECHO Notes:   You can also prefix the commands with "-", "--" or "/".
-ECHO          The arguments are case insesitive.
-ECHO. & ECHO.
-ECHO Executing "%~nx0" will use the defaults: "%~nx0 build all"
-ECHO.
-ECHO If you skip the second argument the default one will be used. Example:
-ECHO "%~nx0 rebuild" is equivalent to "%~nx0 rebuild all"
-ECHO.
-ECHO NOTE: "%~nx0 x86" won't work.
-ECHO.
-ENDLOCAL
-EXIT /B
-
-
-:CHECKFIRSTARG
 rem Check for the first switch
 IF "%~1" == "" (
   SET "BUILDTYPE=Build"
@@ -134,6 +113,25 @@ EXIT /B
 :SUBMSVC
 devenv /nologo ..\Notepad2_icl12.sln /%~1 "Release|%~2"
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
+EXIT /B
+
+
+:SHOWHELP
+TITLE "%~nx0 %1"
+ECHO. & ECHO.
+ECHO Usage:   %~nx0 [Clean^|Build^|Rebuild] [x86^|x64^|all]
+ECHO.
+ECHO Notes:   You can also prefix the commands with "-", "--" or "/".
+ECHO          The arguments are case insesitive.
+ECHO. & ECHO.
+ECHO Executing "%~nx0" will use the defaults: "%~nx0 build all"
+ECHO.
+ECHO If you skip the second argument the default one will be used. Example:
+ECHO "%~nx0 rebuild" is equivalent to "%~nx0 rebuild all"
+ECHO.
+ECHO NOTE: "%~nx0 x86" won't work.
+ECHO.
+ENDLOCAL
 EXIT /B
 
 

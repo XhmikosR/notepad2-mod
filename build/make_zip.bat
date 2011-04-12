@@ -16,30 +16,14 @@ rem ****************************************************************************
 SETLOCAL
 CD /D %~dp0
 
-rem check for the help switches
+rem Check for the help switches
 IF /I "%~1"=="help"   GOTO SHOWHELP
 IF /I "%~1"=="/help"  GOTO SHOWHELP
 IF /I "%~1"=="-help"  GOTO SHOWHELP
 IF /I "%~1"=="--help" GOTO SHOWHELP
 IF /I "%~1"=="/?"     GOTO SHOWHELP
-GOTO CHECKFIRSTARG
 
 
-:SHOWHELP
-TITLE "make_zip.bat %1"
-ECHO. & ECHO.
-ECHO Usage:   make_zip.bat [ICL12^|VS2010^|WDK]
-ECHO.
-ECHO Notes:   You can also prefix the commands with "-", "--" or "/".
-ECHO          The arguments are case insesitive.
-ECHO. & ECHO.
-ECHO Executing "make_zip.bat" will use the defaults: "make_zip.bat WDK"
-ECHO.
-ENDLOCAL
-EXIT /B
-
-
-:CHECKFIRSTARG
 rem Check for the first switch
 IF "%~1" == "" (
   SET INPUTDIRx86=bin\WDK\Release_x86
@@ -226,6 +210,20 @@ EXIT /B
 
 :SubVerRev
 SET VerRev=%*
+EXIT /B
+
+
+:SHOWHELP
+TITLE "make_zip.bat %1"
+ECHO. & ECHO.
+ECHO Usage:   make_zip.bat [ICL12^|VS2010^|WDK]
+ECHO.
+ECHO Notes:   You can also prefix the commands with "-", "--" or "/".
+ECHO          The arguments are case insesitive.
+ECHO. & ECHO.
+ECHO Executing "make_zip.bat" will use the defaults: "make_zip.bat WDK"
+ECHO.
+ENDLOCAL
 EXIT /B
 
 

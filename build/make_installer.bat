@@ -21,30 +21,14 @@ rem Check the building environment
 rem IF NOT EXIST "%PERL_PATH%"    CALL :SUBMSG "INFO" "The Perl direcotry wasn't found; the addon won't be built"
 IF NOT DEFINED VS100COMNTOOLS CALL :SUBMSG "ERROR" "Visual Studio 2010 wasn't found; the installer won't be built"
 
-rem check for the help switches
+rem Check for the help switches
 IF /I "%~1"=="help"   GOTO SHOWHELP
 IF /I "%~1"=="/help"  GOTO SHOWHELP
 IF /I "%~1"=="-help"  GOTO SHOWHELP
 IF /I "%~1"=="--help" GOTO SHOWHELP
 IF /I "%~1"=="/?"     GOTO SHOWHELP
-GOTO CHECKFIRSTARG
 
 
-:SHOWHELP
-TITLE "%~nx0 %1"
-ECHO. & ECHO.
-ECHO Usage:   %~nx0 [ICL12^|VS2010^|WDK]
-ECHO.
-ECHO Notes:   You can also prefix the commands with "-", "--" or "/".
-ECHO          The arguments are case insesitive.
-ECHO. & ECHO.
-ECHO Executing "%~nx0" will use the defaults: "%~nx0 WDK"
-ECHO.
-ENDLOCAL
-EXIT /B
-
-
-:CHECKFIRSTARG
 rem Check for the first switch
 IF "%~1" == "" (
   SET INPUTDIRx86=bin\WDK\Release_x86
@@ -254,6 +238,20 @@ EXIT /B
 
 :SubVerRev
 SET VerRev=%*
+EXIT /B
+
+
+:SHOWHELP
+TITLE "%~nx0 %1"
+ECHO. & ECHO.
+ECHO Usage:   %~nx0 [ICL12^|VS2010^|WDK]
+ECHO.
+ECHO Notes:   You can also prefix the commands with "-", "--" or "/".
+ECHO          The arguments are case insesitive.
+ECHO. & ECHO.
+ECHO Executing "%~nx0" will use the defaults: "%~nx0 WDK"
+ECHO.
+ENDLOCAL
 EXIT /B
 
 
