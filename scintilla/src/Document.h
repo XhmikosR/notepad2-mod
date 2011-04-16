@@ -130,7 +130,7 @@ public:
 	}
 
 	bool isCurrentBlockHighlight(int line) {
-		return isEnabled && beginFoldBlock <= line && line <= endFoldBlock;
+		return isEnabled && beginFoldBlock != -1 && beginFoldBlock <= line && line <= endFoldBlock;
 	}
 
 	bool isHeadBlockFold(int line) {
@@ -138,17 +138,17 @@ public:
 	}
 
 	bool isBodyBlockFold(int line) {
-		return beginFoldBlock < line && line < endFoldBlock;
+		return beginFoldBlock != -1 && beginFoldBlock < line && line < endFoldBlock;
 	}
 
 	bool isTailBlockFold(int line) {
-		return beginFoldBlock < line && line == endFoldBlock;
+		return beginFoldBlock != -1 && beginFoldBlock < line && line == endFoldBlock;
 	}
 
 	// beginFoldBlock : Begin of current fold block.
-	// endStartBlock : End of zone where margin is already drawn.
-	// beginMarginCorrectlyDrawnZone : Begin of zone where margin is already drawn.
-	// endMarginCorrectlyDrawnZone : End of current fold block.
+	// endStartBlock : End of current fold block.
+	// beginMarginCorrectlyDrawnZone : Begin of zone where margin is correctly drawn.
+	// endMarginCorrectlyDrawnZone : End of zone where margin is correctly drawn.
 	int beginFoldBlock;
 	int endFoldBlock;
 	int beginMarginCorrectlyDrawnZone;

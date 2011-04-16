@@ -11,6 +11,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <time.h>
+#include <limits.h>
 
 /* notepad2-mod custom code start */
 #if !defined(_WIN32_WINNT)
@@ -447,7 +448,7 @@ SurfaceImpl::SurfaceImpl() :
 	bitmap(0), bitmapOld(0),
 	paletteOld(0) {
 	// Windows 9x has only a 16 bit coordinate system so break after 30000 pixels
-	maxWidthMeasure = IsNT() ? 1000000 : 30000;
+	maxWidthMeasure = IsNT() ? INT_MAX : 30000;
 	// There appears to be a 16 bit string length limit in GDI on NT and a limit of
 	// 8192 characters on Windows 95.
 	maxLenText = IsNT() ? 65535 : 8192;

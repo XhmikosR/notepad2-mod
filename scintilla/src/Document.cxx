@@ -399,14 +399,15 @@ void Document::GetHighlightDelimiters(int line, HighlightDelimiter &highlightDel
 			}
 		} else if (!(lineLookLevel & SC_FOLDLEVELWHITEFLAG)) {
 			endOfTailOfWhiteFlag = lineLook - 1;
-			if (lineLookLevel & SC_FOLDLEVELHEADERFLAG) {
+			levelNumber = lineLookLevel & SC_FOLDLEVELNUMBERMASK;
+			if (lineLookLevel & SC_FOLDLEVELHEADERFLAG &&
+			        //Managed the folding block when a fold header does not have any subordinate lines to fold away.
+			        (levelNumber < (GetLevel(lineLook + 1) & SC_FOLDLEVELNUMBERMASK))) {
 				beginFoldBlockFound = true;
 				beginFoldBlock = lineLook;
 				beginMarginCorrectlyDrawnZoneFound = true;
 				beginMarginCorrectlyDrawnZone = endOfTailOfWhiteFlag;
 				levelNumber = GetLevel(lineLook + 1) & SC_FOLDLEVELNUMBERMASK;;
-			} else {
-				levelNumber = lineLookLevel & SC_FOLDLEVELNUMBERMASK;
 			}
 		}
 	}
@@ -434,7 +435,9 @@ void Document::GetHighlightDelimiters(int line, HighlightDelimiter &highlightDel
 			endFoldBlockFound = true;
 			endFoldBlock = -1;
 		}
-		if (!endMarginCorrectlyDrawnZoneFound && (lineLookLevel & SC_FOLDLEVELHEADERFLAG)) {
+		if (!endMarginCorrectlyDrawnZoneFound && (lineLookLevel & SC_FOLDLEVELHEADERFLAG) &&
+		        //Managed the folding block when a fold header does not have any subordinate lines to fold away.
+		        (levelNumber < (GetLevel(lineLook + 1) & SC_FOLDLEVELNUMBERMASK))) {
 			endMarginCorrectlyDrawnZoneFound = true;
 			endMarginCorrectlyDrawnZone = lineLook;
 		}
