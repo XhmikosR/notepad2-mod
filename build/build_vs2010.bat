@@ -110,7 +110,7 @@ EXIT /B
 
 
 :SUBMSVC
-devenv /nologo ..\Notepad2.sln /%~1 "Release|%~2"
+devenv /nologo Notepad2.sln /%~1 "Release|%~2"
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 EXIT /B
 
