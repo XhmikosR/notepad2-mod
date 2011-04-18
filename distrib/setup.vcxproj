@@ -75,24 +75,28 @@
     <IntDir>obj\x86-32.lite\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <TargetName>setuplite</TargetName>
+    <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Lite|x64'">
     <OutDir>setup.x86-64\</OutDir>
     <IntDir>obj\x86-64.lite\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <TargetName>setuplite</TargetName>
+    <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Full|Win32'">
     <OutDir>setup.x86-32\</OutDir>
     <IntDir>obj\x86-32.full\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <TargetName>setupfull</TargetName>
+    <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Full|x64'">
     <OutDir>setup.x86-64\</OutDir>
     <IntDir>obj\x86-64.full\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <TargetName>setupfull</TargetName>
+    <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Lite|Win32'">
     <ClCompile>
@@ -120,9 +124,6 @@
       <MinimumRequiredVersion>5.01</MinimumRequiredVersion>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
-    <Manifest>
-      <AdditionalManifestFiles>res\lite\setup.manifest</AdditionalManifestFiles>
-    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Lite|x64'">
     <ClCompile>
@@ -151,9 +152,6 @@
       <MinimumRequiredVersion>5.02</MinimumRequiredVersion>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
-    <Manifest>
-      <AdditionalManifestFiles>res\lite\setup.manifest</AdditionalManifestFiles>
-    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Full|Win32'">
     <ClCompile>
@@ -180,9 +178,6 @@
       <MinimumRequiredVersion>5.01</MinimumRequiredVersion>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
-    <Manifest>
-      <AdditionalManifestFiles>res\full\setup.manifest</AdditionalManifestFiles>
-    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Full|x64'">
     <ClCompile>
@@ -210,9 +205,6 @@
       <MinimumRequiredVersion>5.02</MinimumRequiredVersion>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
-    <Manifest>
-      <AdditionalManifestFiles>res\full\setup.manifest</AdditionalManifestFiles>
-    </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="setup.c">
