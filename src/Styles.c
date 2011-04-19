@@ -26,15 +26,15 @@
 #include <shlobj.h>
 #include <shlwapi.h>
 #include <stdio.h>
-#include "dialogs.h"
-#include "helpers.h"
-#include "notepad2.h"
 #include "scintilla.h"
 #include "scilexer.h"
+#include "notepad2.h"
 #include "edit.h"
 #include "styles.h"
-#include "SciCall.h"
+#include "dialogs.h"
+#include "helpers.h"
 #include "resource.h"
+#include "SciCall.h"
 
 extern int iEncoding;
 

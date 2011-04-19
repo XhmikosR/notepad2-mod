@@ -31,12 +31,12 @@
 #include <time.h>
 #include "scintilla.h"
 #include "scilexer.h"
+#include "notepad2.h"
 #include "edit.h"
 #include "styles.h"
-#include "helpers.h"
 #include "dialogs.h"
-#include "notepad2.h"
-#include "scicall.h"
+#include "helpers.h"
+#include "SciCall.h"
 #include "resource.h"
 
 
@@ -1808,15 +1808,15 @@ void CreateBars(HWND hwnd,HINSTANCE hInstance)
     }
   }
 
-  if (!bExternalBitmap && IsXP() && flagToolbarLook == 1) {
-    if (BitmapAlphaBlend(hbmpCopy,GetSysColor(COLOR_3DFACE),0x60)) {
-      himl = ImageList_Create(bmp.bmWidth/NUMTOOLBITMAPS,bmp.bmHeight,ILC_COLOR32|ILC_MASK,0,0);
-      ImageList_AddMasked(himl,hbmpCopy,CLR_DEFAULT);
-      SendMessage(hwndToolbar,TB_SETDISABLEDIMAGELIST,0,(LPARAM)himl);
-    }
-  }
-  else if (!bExternalBitmap && (!IsXP() || flagToolbarLook == 2)) {
-    if (BitmapGrayScale(hbmpCopy) &&  BitmapMergeAlpha(hbmpCopy,GetSysColor(COLOR_3DFACE))) {
+  if (!bExternalBitmap) {
+    BOOL fProcessed = FALSE;
+    if (flagToolbarLook == 1)
+      fProcessed = BitmapAlphaBlend(hbmpCopy,GetSysColor(COLOR_3DFACE),0x60);
+    else if (flagToolbarLook == 2 || (!IsXP() && flagToolbarLook == 0))
+      fProcessed = BitmapGrayScale(hbmpCopy);
+    if (fProcessed && !IsXP())
+      BitmapMergeAlpha(hbmpCopy,GetSysColor(COLOR_3DFACE));
+    if (fProcessed) {
       himl = ImageList_Create(bmp.bmWidth/NUMTOOLBITMAPS,bmp.bmHeight,ILC_COLOR32|ILC_MASK,0,0);
       ImageList_AddMasked(himl,hbmpCopy,CLR_DEFAULT);
       SendMessage(hwndToolbar,TB_SETDISABLEDIMAGELIST,0,(LPARAM)himl);
@@ -3030,9 +3030,9 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
 
     case IDM_EDIT_ENCLOSESELECTION:
       if (EditEncloseSelectionDlg(hwnd,wchPrefixSelection,wchAppendSelection)) {
-        SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+        BeginWaitCursor();
         EditEncloseSelection(hwndEdit,wchPrefixSelection,wchAppendSelection);
-        SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+        EndWaitCursor();
       }
       break;
 
@@ -3045,75 +3045,75 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
 
 
     case IDM_EDIT_PADWITHSPACES:
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+      BeginWaitCursor();
       EditPadWithSpaces(hwndEdit,FALSE,FALSE);
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+      EndWaitCursor();
       break;
 
 
     case IDM_EDIT_STRIP1STCHAR:
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+      BeginWaitCursor();
       EditStripFirstCharacter(hwndEdit);
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+      EndWaitCursor();
       break;
 
 
     case IDM_EDIT_STRIPLASTCHAR:
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+      BeginWaitCursor();
       EditStripLastCharacter(hwndEdit);
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+      EndWaitCursor();
       break;
 
 
     case IDM_EDIT_TRIMLINES:
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+      BeginWaitCursor();
       EditStripTrailingBlanks(hwndEdit,FALSE);
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+      EndWaitCursor();
       break;
 
 
     case IDM_EDIT_COMPRESSWS:
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+      BeginWaitCursor();
       EditCompressSpaces(hwndEdit);
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+      EndWaitCursor();
       break;
 
 
     case IDM_EDIT_REMOVEBLANKLINES:
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+      BeginWaitCursor();
       EditRemoveBlankLines(hwndEdit);
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+      EndWaitCursor();
       break;
 
 
     case IDM_EDIT_MODIFYLINES:
       if (EditModifyLinesDlg(hwnd,wchPrefixLines,wchAppendLines)) {
-        SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+        BeginWaitCursor();
         EditModifyLines(hwndEdit,wchPrefixLines,wchAppendLines);
-        SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+        EndWaitCursor();
       }
       break;
 
 
     case IDM_EDIT_ALIGN:
       if (EditAlignDlg(hwnd,&iAlignMode)) {
-        SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+        BeginWaitCursor();
         EditAlignText(hwndEdit,iAlignMode);
-        SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+        EndWaitCursor();
       }
       break;
 
 
     case IDM_EDIT_SORTLINES:
       if (EditSortDlg(hwnd,&iSortOptions)) {
-        SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+        BeginWaitCursor();
         StatusSetText(hwndStatus,255,L"...");
         StatusSetSimple(hwndStatus,TRUE);
         InvalidateRect(hwndStatus,NULL,TRUE);
         UpdateWindow(hwndStatus);
         EditSortLines(hwndEdit,iSortOptions);
         StatusSetSimple(hwndStatus,FALSE);
-        SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+        EndWaitCursor();
       }
       break;
 
@@ -3126,98 +3126,98 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
         if (ColumnWrapDlg(hwnd,IDD_COLUMNWRAP,&iWrapCol))
         {
           iWrapCol = max(min(iWrapCol,512),1);
-          SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+          BeginWaitCursor();
           EditWrapToColumn(hwndEdit,iWrapCol);
-          SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+          EndWaitCursor();
         }
       }
       break;
 
 
     case IDM_EDIT_SPLITLINES:
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+      BeginWaitCursor();
       SendMessage(hwndEdit,SCI_TARGETFROMSELECTION,0,0);
       SendMessage(hwndEdit,SCI_LINESSPLIT,0,0);
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+      EndWaitCursor();
       break;
 
 
     case IDM_EDIT_JOINLINES:
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+      BeginWaitCursor();
       SendMessage(hwndEdit,SCI_TARGETFROMSELECTION,0,0);
       SendMessage(hwndEdit,SCI_LINESJOIN,0,0);
       EditJoinLinesEx(hwndEdit);
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+      EndWaitCursor();
       break;
 
 
     case IDM_EDIT_JOINLINESEX:
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+      BeginWaitCursor();
       EditJoinLinesEx(hwndEdit);
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+      EndWaitCursor();
       break;
 
 
     case IDM_EDIT_CONVERTUPPERCASE:
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+      BeginWaitCursor();
       SendMessage(hwndEdit,SCI_UPPERCASE,0,0);
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+      EndWaitCursor();
       break;
 
 
     case IDM_EDIT_CONVERTLOWERCASE:
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+      BeginWaitCursor();
       SendMessage(hwndEdit,SCI_LOWERCASE,0,0);
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+      EndWaitCursor();
       break;
 
 
     case IDM_EDIT_INVERTCASE:
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+      BeginWaitCursor();
       EditInvertCase(hwndEdit);
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+      EndWaitCursor();
       break;
 
 
     case IDM_EDIT_TITLECASE:
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+      BeginWaitCursor();
       EditTitleCase(hwndEdit);
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+      EndWaitCursor();
       break;
 
 
     case IDM_EDIT_SENTENCECASE:
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+      BeginWaitCursor();
       EditSentenceCase(hwndEdit);
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+      EndWaitCursor();
       break;
 
 
     case IDM_EDIT_CONVERTTABS:
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+      BeginWaitCursor();
       EditTabsToSpaces(hwndEdit,iTabWidth,FALSE);
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+      EndWaitCursor();
       break;
 
 
     case IDM_EDIT_CONVERTSPACES:
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+      BeginWaitCursor();
       EditSpacesToTabs(hwndEdit,iTabWidth,FALSE);
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+      EndWaitCursor();
       break;
 
 
     case IDM_EDIT_CONVERTTABS2:
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+      BeginWaitCursor();
       EditTabsToSpaces(hwndEdit,iTabWidth,TRUE);
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+      EndWaitCursor();
       break;
 
 
     case IDM_EDIT_CONVERTSPACES2:
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+      BeginWaitCursor();
       EditSpacesToTabs(hwndEdit,iTabWidth,TRUE);
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+      EndWaitCursor();
       break;
 
 
@@ -3338,15 +3338,15 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
         case SCLEX_XML:
         case SCLEX_CPP:
         case SCLEX_PASCAL:
-          SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+          BeginWaitCursor();
           EditToggleLineComments(hwndEdit,L"//",FALSE);
-          SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+          EndWaitCursor();
           break;
         case SCLEX_VBSCRIPT:
         case SCLEX_VB:
-          SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+          BeginWaitCursor();
           EditToggleLineComments(hwndEdit,L"'",FALSE);
-          SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+          EndWaitCursor();
           break;
         case SCLEX_MAKEFILE:
         case SCLEX_PERL:
@@ -3357,9 +3357,9 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
         case SCLEX_RUBY:
         case SCLEX_POWERSHELL:
         case SCLEX_CMAKE:
-          SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+          BeginWaitCursor();
           EditToggleLineComments(hwndEdit,L"#",TRUE);
-          SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+          EndWaitCursor();
           break;
         case SCLEX_ASM:
         case SCLEX_PROPERTIES:
@@ -3367,25 +3367,25 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
         case SCLEX_AHK:
         case SCLEX_NSIS: // # could also be used instead
         case SCLEX_INNOSETUP:
-          SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+          BeginWaitCursor();
           EditToggleLineComments(hwndEdit,L";",TRUE);
-          SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+          EndWaitCursor();
           break;
         case SCLEX_SQL:
         case SCLEX_LUA:
-          SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+          BeginWaitCursor();
           EditToggleLineComments(hwndEdit,L"--",TRUE);
-          SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+          EndWaitCursor();
           break;
         case SCLEX_BATCH:
-          SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+          BeginWaitCursor();
           EditToggleLineComments(hwndEdit,L"rem ",TRUE);
-          SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+          EndWaitCursor();
           break;
         case SCLEX_LATEX:
-          SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+          BeginWaitCursor();
           EditToggleLineComments(hwndEdit,L"%",TRUE);
-          SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+          EndWaitCursor();
           break;
       }
       break;
@@ -3432,44 +3432,44 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
 
 
     case IDM_EDIT_URLENCODE:
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+      BeginWaitCursor();
       EditURLEncode(hwndEdit);
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+      EndWaitCursor();
       break;
 
 
     case IDM_EDIT_URLDECODE:
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+      BeginWaitCursor();
       EditURLDecode(hwndEdit);
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+      EndWaitCursor();
       break;
 
 
     case IDM_EDIT_ESCAPECCHARS:
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+      BeginWaitCursor();
       EditEscapeCChars(hwndEdit);
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+      EndWaitCursor();
       break;
 
 
     case IDM_EDIT_UNESCAPECCHARS:
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+      BeginWaitCursor();
       EditUnescapeCChars(hwndEdit);
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+      EndWaitCursor();
       break;
 
 
     case IDM_EDIT_CHAR2HEX:
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+      BeginWaitCursor();
       EditChar2Hex(hwndEdit);
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+      EndWaitCursor();
       break;
 
 
     case IDM_EDIT_HEX2CHAR:
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+      BeginWaitCursor();
       EditHex2Char(hwndEdit);
-      SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+      EndWaitCursor();
       break;
 
 
@@ -6231,7 +6231,7 @@ void LoadFlags()
   if (IniSectionGetInt(pIniSection,L"NoFadeHidden",0))
     flagNoFadeHidden = 1;
 
-  flagToolbarLook = IniSectionGetInt(pIniSection,L"ToolbarLook",1);
+  flagToolbarLook = IniSectionGetInt(pIniSection,L"ToolbarLook",IsXP() ? 1 : 2);
   flagToolbarLook = max(min(flagToolbarLook,2),0);
 
   if (IniSectionGetInt(pIniSection,L"SimpleIndentGuides",0))

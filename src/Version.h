@@ -48,9 +48,9 @@
 #else
   #define SETUP_TITLE_STR            "Notepad2-mod Setup"
   #define SETUP_VERSION_LABEL        STRINGIFY(VERSION_MAJOR)"."STRINGIFY(VERSION_MINOR)"."STRINGIFY(VERSION_BUILD)" (modified; rev."STRINGIFY(VERSION_REV)")"
-#endif
+#endif // _WIN64
 #define SETUP_AUTHOR_STR             "XhmikosR"
 
 
-#endif
+#endif // NOTEPAD2_VERSION_H
 

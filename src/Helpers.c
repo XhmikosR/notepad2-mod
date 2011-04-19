@@ -29,6 +29,7 @@
 #include <uxtheme.h>
 #include <stdio.h>
 #include <string.h>
+#include "scintilla.h"
 #include "helpers.h"
 #include "resource.h"
 
@@ -114,34 +115,6 @@ BOOL IniSectionSetString(LPWSTR lpCachedIniSection,LPCWSTR lpName,LPCWSTR lpStri
     return(TRUE);
   }
   return(FALSE);
-}
-
-
-//=============================================================================
-//
-//  BeginWaitCursor()
-//
-void BeginWaitCursor()
-{
-
-  DestroyCursor(
-    SetCursor(
-    LoadCursor(NULL,IDC_WAIT)));
-
-}
-
-
-//=============================================================================
-//
-//  EndWaitCursor()
-//
-void EndWaitCursor()
-{
-
-  DestroyCursor(
-    SetCursor(
-    LoadCursor(NULL,IDC_ARROW)));
-
 }
 
 

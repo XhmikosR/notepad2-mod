@@ -37,7 +37,7 @@ Features
   - Mostly adjustable
 
 
-New in Version 4.2.25-rc7 (released April 02, 2011)
+New in Version 4.2.25-rc8 (released April 19, 2011)
 
   - "Align Lines" with several options (Alt+J)
   - "Modify Lines" supports several variables to insert numbers (Alt+M)

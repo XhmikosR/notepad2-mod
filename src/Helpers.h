@@ -52,8 +52,18 @@ __inline BOOL IniSectionSetInt(LPWSTR lpCachedIniSection,LPCWSTR lpName,int i) {
 }
 
 
-void BeginWaitCursor();
-void EndWaitCursor();
+extern HWND hwndEdit;
+__inline void BeginWaitCursor()
+{
+  SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+}
+__inline void EndWaitCursor()
+{
+  POINT pt;
+  SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+  GetCursorPos(&pt);
+  SetCursorPos(pt.x,pt.y);
+}
 
 
 #define Is2k()    (g_uWinVer >= 0x0500)

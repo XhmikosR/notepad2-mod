@@ -343,7 +343,7 @@ extern "C" BOOL EditPrint(HWND hwnd,LPCWSTR pszDocTitle,LPCWSTR pszPageFormat)
     if (printPage) {
 
       // Show wait cursor...
-      SendMessage(hwnd,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+      BeginWaitCursor();
 
       // Display current page number in Statusbar
       StatusUpdatePrintPage(pageNum);
@@ -440,7 +440,7 @@ extern "C" BOOL EditPrint(HWND hwnd,LPCWSTR pszDocTitle,LPCWSTR pszPageFormat)
   StatusSetSimple(hwndStatus,FALSE);
 
   // Remove wait cursor...
-  SendMessage(hwnd,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+  EndWaitCursor();
 
   return TRUE;
 }

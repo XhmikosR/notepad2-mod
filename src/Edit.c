@@ -27,15 +27,15 @@
 #include <stdio.h>
 #include <string.h>
 #include <limits.h>
-#include "notepad2.h"
-#include "helpers.h"
-#include "dialogs.h"
 #include "scintilla.h"
 #include "scilexer.h"
-#include "styles.h"
+#include "notepad2.h"
 #include "edit.h"
-#include "scicall.h"
+#include "styles.h"
+#include "dialogs.h"
+#include "helpers.h"
 #include "resource.h"
+#include "SciCall.h"
 
 
 extern HWND  hwndMain;
@@ -5614,7 +5614,7 @@ BOOL EditReplaceAll(HWND hwnd,LPCEDITFINDREPLACE lpefr,BOOL bShowInfo)
     return /*EditFindReplaceDlg(hwnd,lpefr,TRUE)*/FALSE;
 
   // Show wait cursor...
-  SendMessage(hwnd,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+  BeginWaitCursor();
 
   lstrcpynA(szFind2,lpefr->szFind,COUNTOF(szFind2));
   if (lpefr->bTransformBS)
@@ -5704,7 +5704,7 @@ BOOL EditReplaceAll(HWND hwnd,LPCEDITFINDREPLACE lpefr,BOOL bShowInfo)
     SendMessage(hwnd,SCI_ENDUNDOACTION,0,0);
 
   // Remove wait cursor
-  SendMessage(hwnd,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+  EndWaitCursor();
 
   if (bShowInfo) {
     if (iCount > 0)
@@ -5746,7 +5746,7 @@ BOOL EditReplaceAllInSelection(HWND hwnd,LPCEDITFINDREPLACE lpefr,BOOL bShowInfo
     return /*EditFindReplaceDlg(hwnd,lpefr,TRUE)*/FALSE;
 
   // Show wait cursor...
-  SendMessage(hwnd,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
+  BeginWaitCursor();
 
   lstrcpynA(szFind2,lpefr->szFind,COUNTOF(szFind2));
   if (lpefr->bTransformBS)
@@ -5860,7 +5860,7 @@ BOOL EditReplaceAllInSelection(HWND hwnd,LPCEDITFINDREPLACE lpefr,BOOL bShowInfo
   }
 
   // Remove wait cursor
-  SendMessage(hwnd,SCI_SETCURSOR,(WPARAM)SC_CURSORNORMAL,0);
+  EndWaitCursor();
 
   if (bShowInfo) {
     if (iCount > 0)

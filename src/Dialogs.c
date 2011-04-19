@@ -27,12 +27,12 @@
 #include <shlwapi.h>
 #include <commdlg.h>
 #include <string.h>
-#include "notepad2.h"
 #include "scintilla.h"
+#include "notepad2.h"
 #include "edit.h"
-#include "helpers.h"
 #include "dlapi.h"
 #include "dialogs.h"
+#include "helpers.h"
 #include "resource.h"
 #include "version.h"
 
