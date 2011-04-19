@@ -417,11 +417,11 @@ BEGIN
     "E",            IDM_EDIT_URLENCODE,     VIRTKEY, SHIFT, CONTROL,
                                                     NOINVERT
     "F",            IDM_EDIT_FIND,          VIRTKEY, CONTROL, NOINVERT
-    "F",            IDM_VIEW_FOLDING,       VIRTKEY, SHIFT, CONTROL, ALT, 
+    "F",            CMD_RECODEDEFAULT,      VIRTKEY, ALT, CONTROL,
                                                     NOINVERT
-    "F",            CMD_RECODEDEFAULT,      VIRTKEY, SHIFT, CONTROL,
+    "F",            IDM_VIEW_FOLDING,       VIRTKEY, SHIFT, CONTROL, ALT,
                                                     NOINVERT
-    "F",            IDM_VIEW_TOGGLEFOLDS,   VIRTKEY, SHIFT, CONTROL, 
+    "F",            IDM_VIEW_TOGGLEFOLDS,   VIRTKEY, SHIFT, CONTROL,
                                                     NOINVERT
     "G",            IDM_EDIT_GOTOLINE,      VIRTKEY, CONTROL, NOINVERT
     "G",            IDM_VIEW_SHOWINDENTGUIDES, VIRTKEY, SHIFT, CONTROL,
