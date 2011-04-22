@@ -755,7 +755,7 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 							levelCurrent--;
 						}
 					} else if ((ch == '{') || (ch == '}') || (foldComment && (ch == '/') && (chNext == '*')) ) {
-						levelCurrent += ((ch == '{') || (ch == '/') ) ? 1 : -1;
+						levelCurrent += (((ch == '{') || (ch == '/') ) ? 1 : -1);
 					}
 				} else if (((state == SCE_HPHP_COMMENT) || (state == SCE_HJ_COMMENT)) && foldComment && (ch == '*') && (chNext == '/')) {
 					levelCurrent--;

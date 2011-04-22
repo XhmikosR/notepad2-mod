@@ -8229,6 +8229,16 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 	case SCI_INDICGETALPHA:
 		return (wParam <= INDIC_MAX) ? vs.indicators[wParam].fillAlpha : 0;
 
+	case SCI_INDICSETOUTLINEALPHA:
+		if (wParam <= INDIC_MAX && lParam >=0 && lParam <= 255) {
+			vs.indicators[wParam].outlineAlpha = lParam;
+			InvalidateStyleRedraw();
+		}
+		break;
+
+	case SCI_INDICGETOUTLINEALPHA:
+		return (wParam <= INDIC_MAX) ? vs.indicators[wParam].outlineAlpha : 0;
+
 	case SCI_SETINDICATORCURRENT:
 		pdoc->decorations.SetCurrentIndicator(wParam);
 		break;

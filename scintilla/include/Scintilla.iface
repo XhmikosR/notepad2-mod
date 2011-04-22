@@ -1890,6 +1890,12 @@ set void IndicSetAlpha=2523(int indicator, int alpha)
 # Get the alpha fill colour of the given indicator.
 get int IndicGetAlpha=2524(int indicator,)
 
+# Set the alpha outline colour of the given indicator.
+set void IndicSetOutlineAlpha=2558(int indicator, int alpha)
+
+# Get the alpha outline colour of the given indicator.
+get int IndicGetOutlineAlpha=2559(int indicator,)
+
 # Set extra ascent for each line
 set void SetExtraAscent=2525(int extraAscent,)
 
