@@ -1730,7 +1730,9 @@ void Editor::PaintSelMargin(Surface *surfWindow, PRectangle &rc) {
 				}
 			}
 			if (highlightDelimiter.isEnabled && (vs.ms[margin].mask & SC_MASK_FOLDERS)) {
-				pdoc->GetHighlightDelimiters(pdoc->LineFromPosition(CurrentPosition()), highlightDelimiter);
+				int lineBack = cs.DocFromDisplay(topLine);
+				int lineFront = cs.DocFromDisplay(((rcMargin.bottom - rcMargin.top) / vs.lineHeight) + topLine) + 1;
+				pdoc->GetHighlightDelimiters(highlightDelimiter, pdoc->LineFromPosition(CurrentPosition()), lineBack, lineFront);
 			}
 
 			// Old code does not know about new markers needed to distinguish all cases
@@ -1745,6 +1747,7 @@ void Editor::PaintSelMargin(Surface *surfWindow, PRectangle &rc) {
 				int lineDoc = cs.DocFromDisplay(visibleLine);
 				PLATFORM_ASSERT(cs.GetVisible(lineDoc));
 				bool firstSubLine = visibleLine == cs.DisplayFromDoc(lineDoc);
+				bool lastSubLine = visibleLine == (cs.DisplayFromDoc(lineDoc + 1) - 1);
 
 				// Decide which fold indicator should be displayed
 				level = pdoc->GetLevel(lineDoc);
@@ -1768,11 +1771,19 @@ void Editor::PaintSelMargin(Surface *surfWindow, PRectangle &rc) {
 								else
 									marks |= 1 << folderEnd;
 							}
-						} else if (levelNum > SC_FOLDLEVELBASE){
+						} else if (levelNum > SC_FOLDLEVELBASE) {
 							marks |= 1 << SC_MARKNUM_FOLDERSUB;
  						}
 					} else {
-						marks |= 1 << SC_MARKNUM_FOLDERSUB;
+						if (levelNum < levelNextNum) {
+							if (cs.GetExpanded(lineDoc)) {
+								marks |= 1 << SC_MARKNUM_FOLDERSUB;
+							} else if (levelNum > SC_FOLDLEVELBASE) {
+								marks |= 1 << SC_MARKNUM_FOLDERSUB;
+							}
+						} else if (levelNum > SC_FOLDLEVELBASE) {
+							marks |= 1 << SC_MARKNUM_FOLDERSUB;
+ 						}
 					}
 					needWhiteClosure = false;
 				} else if (level & SC_FOLDLEVELWHITEFLAG) {
@@ -1803,10 +1814,14 @@ void Editor::PaintSelMargin(Surface *surfWindow, PRectangle &rc) {
 						if (levelNext & SC_FOLDLEVELWHITEFLAG) {
 							marks |= 1 << SC_MARKNUM_FOLDERSUB;
 							needWhiteClosure = true;
-						} else if (levelNextNum > SC_FOLDLEVELBASE) {
-							marks |= 1 << SC_MARKNUM_FOLDERMIDTAIL;
+						} else if (lastSubLine) {
+							if (levelNextNum > SC_FOLDLEVELBASE) {
+								marks |= 1 << SC_MARKNUM_FOLDERMIDTAIL;
+							} else {
+								marks |= 1 << SC_MARKNUM_FOLDERTAIL;
+							}
 						} else {
-							marks |= 1 << SC_MARKNUM_FOLDERTAIL;
+							marks |= 1 << SC_MARKNUM_FOLDERSUB;
 						}
 					} else {
 						marks |= 1 << SC_MARKNUM_FOLDERSUB;

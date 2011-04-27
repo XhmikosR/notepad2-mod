@@ -340,7 +340,7 @@ public:
 	void ClearLevels();
 	int GetLastChild(int lineParent, int level=-1);
 	int GetFoldParent(int line);
-	void GetHighlightDelimiters(int line, HighlightDelimiter &hDelimiter);
+	void GetHighlightDelimiters(HighlightDelimiter &hDelimiter, int line, int topLine, int bottomLine);
 
 	void Indent(bool forwards);
 	int ExtendWordSelect(int pos, int delta, bool onlyWordCharacters=false);
