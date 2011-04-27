@@ -282,6 +282,15 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Line &Numbers\tCtrl+Shift+N", IDM_VIEW_LINENUMBERS
         MENUITEM "Selection &Margin\tCtrl+Shift+M", IDM_VIEW_MARGIN
+
+        POPUP "Mar&k Occurrences"
+        BEGIN
+            MENUITEM "&Red",                        IDM_VIEW_MARKOCCURRENCES_RED
+            MENUITEM "&Green",                      IDM_VIEW_MARKOCCURRENCES_GREEN
+            MENUITEM "&Blue",                       IDM_VIEW_MARKOCCURRENCES_BLUE
+            MENUITEM "&Off",                        IDM_VIEW_MARKOCCURRENCES_OFF
+        END
+
         MENUITEM SEPARATOR
         MENUITEM "Code &Folding\tCtrl+Shift+Alt+F", IDM_VIEW_FOLDING
         MENUITEM "&Toggle All Folds\tCtrl+Shift+F", IDM_VIEW_TOGGLEFOLDS

@@ -5593,6 +5593,76 @@ BOOL EditReplace(HWND hwnd,LPCEDITFINDREPLACE lpefr)
 
 }
 
+//=============================================================================
+//
+//  EditMarkAll()
+//  Mark all occurrences of the text currently selected (by Aleksandar Lekov)
+//
+void EditMarkAll(HWND hwnd, int iMarkOccurrences)
+{
+  struct TextToFind ttf;
+  int iPos;
+  char  *pszText;
+  int iTextLen;
+  int iSelStart;
+  int iSelEnd;
+  int iSelCount;
+  int iMatchesCount;
+
+  // feature is off
+  if (!iMarkOccurrences)
+  {
+      return;
+  }
+
+  iTextLen = (int)SendMessage(hwnd,SCI_GETLENGTH,0,0);
+
+  // get current selection
+  iSelStart = (int)SendMessage(hwnd,SCI_GETSELECTIONSTART,0,0);
+  iSelEnd = (int)SendMessage(hwnd,SCI_GETSELECTIONEND,0,0);
+  iSelCount = iSelEnd - iSelStart;
+
+  // clear existing indicator
+  SendMessage(hwnd, SCI_SETINDICATORCURRENT, 1, 0);
+  SendMessage(hwnd, SCI_INDICATORCLEARRANGE, 0, iTextLen);
+
+  // if nothing selected or multiple lines are selected exit
+  if (iSelCount == 0 ||
+      (int)SendMessage(hwnd, SCI_LINEFROMPOSITION, iSelStart, 0) !=
+      (int)SendMessage(hwnd, SCI_LINEFROMPOSITION, iSelEnd, 0))
+  {
+      return;
+  }
+
+  pszText = LocalAlloc(LPTR,iSelCount + 1);
+  (int)SendMessage(hwnd,SCI_GETSELTEXT,0,(LPARAM)pszText);
+
+  ZeroMemory(&ttf,sizeof(ttf));
+
+  ttf.chrg.cpMin = 0;
+  ttf.chrg.cpMax = iTextLen;
+  ttf.lpstrText = pszText;
+
+  // set style, green should be greener not to confuse with bookmarks' style
+  SendMessage(hwnd, SCI_INDICSETALPHA, 1, iMarkOccurrences == 2 ? 100 : 30);
+  SendMessage(hwnd, SCI_INDICSETFORE, 1, 0xff << ((iMarkOccurrences - 1) << 3));
+  SendMessage(hwnd, SCI_INDICSETSTYLE, 1, INDIC_ROUNDBOX);
+
+  iMatchesCount = 0;
+  while ((iPos = (int)SendMessage(hwnd, SCI_FINDTEXT, SCFIND_MATCHCASE | SCFIND_WHOLEWORD, (LPARAM)&ttf)) != -1
+      && ++iMatchesCount < 1000)
+  {
+    // mark this match
+    SendMessage(hwnd, SCI_INDICATORFILLRANGE, iPos, iSelCount);
+    ttf.chrg.cpMin = ttf.chrgText.cpMin + iSelCount;
+    if (ttf.chrg.cpMin == ttf.chrg.cpMax)
+      break;
+  }
+
+  LocalFree(pszText);
+  return;
+}
+
 
 //=============================================================================
 //

@@ -134,6 +134,7 @@ int       iLongLineMode;
 int       iWrapCol = 0;
 BOOL      bShowSelectionMargin;
 BOOL      bShowLineNumbers;
+int       iMarkOccurrences;
 BOOL      bShowCodeFolding;
 BOOL      bViewWhiteSpace;
 BOOL      bViewEOLs;
@@ -2187,6 +2188,16 @@ void MsgInitMenu(HWND hwnd,WPARAM wParam,LPARAM lParam)
   CheckCmd(hmenu,IDM_VIEW_AUTOINDENTTEXT,bAutoIndent);
   CheckCmd(hmenu,IDM_VIEW_LINENUMBERS,bShowLineNumbers);
   CheckCmd(hmenu,IDM_VIEW_MARGIN,bShowSelectionMargin);
+
+  switch (iMarkOccurrences)
+  {
+    case 0: i = IDM_VIEW_MARKOCCURRENCES_OFF;break;
+    case 1: i = IDM_VIEW_MARKOCCURRENCES_RED;break;
+    case 2: i = IDM_VIEW_MARKOCCURRENCES_GREEN;break;
+    case 3: i = IDM_VIEW_MARKOCCURRENCES_BLUE;break;
+  }
+  CheckMenuRadioItem(hmenu,IDM_VIEW_MARKOCCURRENCES_RED,IDM_VIEW_MARKOCCURRENCES_OFF,i,MF_BYCOMMAND);
+
   CheckCmd(hmenu,IDM_VIEW_FOLDING,bShowCodeFolding);
   EnableCmd(hmenu,IDM_VIEW_TOGGLEFOLDS,bShowCodeFolding);
   CheckCmd(hmenu,IDM_VIEW_SHOWWHITESPACE,bViewWhiteSpace);
@@ -3904,6 +3915,27 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
 
       break;
 
+    case IDM_VIEW_MARKOCCURRENCES_OFF:
+      iMarkOccurrences = 0;
+      // clear all marks
+      SendMessage(hwndEdit, SCI_SETINDICATORCURRENT, 1, 0);
+      SendMessage(hwndEdit, SCI_INDICATORCLEARRANGE, 0, (int)SendMessage(hwndEdit,SCI_GETLENGTH,0,0));
+      break;
+
+    case IDM_VIEW_MARKOCCURRENCES_RED:
+      iMarkOccurrences = 1;
+      EditMarkAll(hwndEdit, iMarkOccurrences);
+      break;
+
+    case IDM_VIEW_MARKOCCURRENCES_GREEN:
+      iMarkOccurrences = 2;
+      EditMarkAll(hwndEdit, iMarkOccurrences);
+      break;
+
+    case IDM_VIEW_MARKOCCURRENCES_BLUE:
+      iMarkOccurrences = 3;
+      EditMarkAll(hwndEdit, iMarkOccurrences);
+      break;
 
     case IDM_VIEW_FOLDING:
       bShowCodeFolding = (bShowCodeFolding) ? FALSE : TRUE;
@@ -4994,6 +5026,9 @@ LRESULT MsgNotify(HWND hwnd,WPARAM wParam,LPARAM lParam)
               SendMessage(hwndEdit,SCI_SETSELECTION,(WPARAM)iCurPos,(LPARAM)iCurPos);
             }
 
+            // mark occurrences of text currently selected
+            EditMarkAll(hwndEdit, iMarkOccurrences);
+
             // Brace Match
             if (bMatchBraces)
             {
@@ -5469,6 +5504,8 @@ void LoadSettings()
   bShowCodeFolding = IniSectionGetInt(pIniSection,L"ShowCodeFolding",1);
   if (bShowCodeFolding) bShowCodeFolding = 1;
 
+  iMarkOccurrences = IniSectionGetInt(pIniSection,L"MarkOccurrences",3);
+
   bViewWhiteSpace = IniSectionGetInt(pIniSection,L"ViewWhiteSpace",0);
   if (bViewWhiteSpace) bViewWhiteSpace = 1;
 
@@ -5720,6 +5757,7 @@ void SaveSettings(BOOL bSaveSettingsNow)
   IniSectionSetInt(pIniSection,L"ShowSelectionMargin",bShowSelectionMargin);
   IniSectionSetInt(pIniSection,L"ShowLineNumbers",bShowLineNumbers);
   IniSectionSetInt(pIniSection,L"ShowCodeFolding",bShowCodeFolding);
+  IniSectionSetInt(pIniSection,L"MarkOccurrences",iMarkOccurrences);
   IniSectionSetInt(pIniSection,L"ViewWhiteSpace",bViewWhiteSpace);
   IniSectionSetInt(pIniSection,L"ViewEOLs",bViewEOLs);
   IniSectionSetInt(pIniSection,L"DefaultEncoding",Encoding_MapIniSetting(FALSE,iDefaultEncoding));

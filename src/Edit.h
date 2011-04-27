@@ -130,6 +130,7 @@ BOOL  EditAlignDlg(HWND,int*);
 BOOL  EditPrint(HWND,LPCWSTR,LPCWSTR);
 void  EditPrintSetup(HWND);
 void  EditPrintInit();
+void  EditMarkAll(HWND,int);
 
 extern int g_DOSEncoding;
 

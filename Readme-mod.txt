@@ -4,10 +4,16 @@ using patches by Kai Liu and others.
 Notable changes:
 * Code folding
 * Support for bookmarks
+* Option to mark all occurrences of a word
 * Syntax highlighting support for AutoHotkey, AutoIt3, Bash, CMake, Inno Setup,
   LaTeX, Lua, NSIS, Ruby, and Tcl scripts
 
 Supported Operating Systems: Windows XP, Vista, 7 both 32-bit and 64-bit 
+
+Contributors:
+* Kai Liu
+* RL Vision
+* Aleksandar Lekov
 
 More information:
 * Source code and binaries:   http://code.google.com/p/notepad2-mod/
