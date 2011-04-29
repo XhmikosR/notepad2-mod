@@ -2530,12 +2530,22 @@ void Editor::DrawEOL(Surface *surface, ViewStyle &vsDraw, PRectangle rcLine, Lin
 	}
 }
 
+void Editor::DrawIndicator(int indicNum, int startPos, int endPos, Surface *surface, ViewStyle &vsDraw,
+		int xStart, PRectangle rcLine, LineLayout *ll, int subLine) {
+	const int subLineStart = ll->positions[ll->LineStart(subLine)];
+	PRectangle rcIndic(
+		ll->positions[startPos] + xStart - subLineStart,
+		rcLine.top + vsDraw.maxAscent,
+		ll->positions[endPos] + xStart - subLineStart,
+		rcLine.top + vsDraw.maxAscent + 3);
+	vsDraw.indicators[indicNum].Draw(surface, rcIndic, rcLine);
+}
+
 void Editor::DrawIndicators(Surface *surface, ViewStyle &vsDraw, int line, int xStart,
         PRectangle rcLine, LineLayout *ll, int subLine, int lineEnd, bool under) {
 	// Draw decorators
 	const int posLineStart = pdoc->LineStart(line);
 	const int lineStart = ll->LineStart(subLine);
-	const int subLineStart = ll->positions[lineStart];
 	const int posLineEnd = posLineStart + lineEnd;
 
 	if (!under) {
@@ -2560,12 +2570,7 @@ void Editor::DrawIndicators(Surface *surface, ViewStyle &vsDraw, int line, int x
 					// IN indicator run, looking for END
 					if (indicPos >= lineEnd || !(ll->indicators[indicPos] & mask)) {
 						// AT end of indicator run, DRAW it!
-						PRectangle rcIndic(
-						    ll->positions[startPos] + xStart - subLineStart,
-						    rcLine.top + vsDraw.maxAscent,
-						    ll->positions[indicPos] + xStart - subLineStart,
-						    rcLine.top + vsDraw.maxAscent + 3);
-						vsDraw.indicators[indicnum].Draw(surface, rcIndic, rcLine);
+						DrawIndicator(indicnum, startPos, indicPos, surface, vsDraw, xStart, rcLine, ll, subLine);
 						// RESET control var
 						startPos = -1;
 					}
@@ -2585,13 +2590,30 @@ void Editor::DrawIndicators(Surface *surface, ViewStyle &vsDraw, int line, int x
 				int endPos = deco->rs.EndRun(startPos);
 				if (endPos > posLineEnd)
 					endPos = posLineEnd;
-				PRectangle rcIndic(
-				    ll->positions[startPos - posLineStart] + xStart - subLineStart,
-				    rcLine.top + vsDraw.maxAscent,
-				    ll->positions[endPos - posLineStart] + xStart - subLineStart,
-				    rcLine.top + vsDraw.maxAscent + 3);
-				vsDraw.indicators[deco->indicator].Draw(surface, rcIndic, rcLine);
+				DrawIndicator(deco->indicator, startPos - posLineStart, endPos - posLineStart,
+					surface, vsDraw, xStart, rcLine, ll, subLine);
 				startPos = deco->rs.EndRun(endPos);
+			}
+		}
+	}
+
+	// Use indicators to highlight matching braces
+	if ((vs.braceHighlightIndicatorSet && (bracesMatchStyle == STYLE_BRACELIGHT)) ||
+		(vs.braceBadLightIndicatorSet && (bracesMatchStyle == STYLE_BRACEBAD))) {
+		int braceIndicator = (bracesMatchStyle == STYLE_BRACELIGHT) ? vs.braceHighlightIndicator : vs.braceBadLightIndicator;
+		if (under == vsDraw.indicators[braceIndicator].under) {
+			Range rangeLine(posLineStart + lineStart, posLineEnd);
+			if (rangeLine.ContainsCharacter(braces[0])) {
+				int braceOffset = braces[0] - posLineStart;
+				if (braceOffset < ll->numCharsInLine) {
+					DrawIndicator(braceIndicator, braceOffset, braceOffset + 1, surface, vsDraw, xStart, rcLine, ll, subLine);
+				}
+			}
+			if (rangeLine.ContainsCharacter(braces[1])) {
+				int braceOffset = braces[1] - posLineStart;
+				if (braceOffset < ll->numCharsInLine) {
+					DrawIndicator(braceIndicator, braceOffset, braceOffset + 1, surface, vsDraw, xStart, rcLine, ll, subLine);
+				}
 			}
 		}
 	}
@@ -3050,7 +3072,8 @@ void Editor::DrawLine(Surface *surface, ViewStyle &vsDraw, int line, int lineVis
 			lineNextWithText++;
 		}
 		if (lineNextWithText > line) {
-			// This line is empty, so use indentation of last line with text
+			xStartText = 100000;	// Don't limit to visible indentation on empty line
+			// This line is empty, so use indentation of first next line with text
 			indentSpace = Platform::Maximum(indentSpace,
 			        pdoc->GetLineIndentation(lineNextWithText));
 		}
@@ -3482,17 +3505,22 @@ void Editor::Paint(Surface *surfaceWindow, PRectangle rcArea) {
 				rcLine.top = ypos;
 				rcLine.bottom = ypos + vs.lineHeight;
 
+				bool bracesIgnoreStyle = false;
+				if ((vs.braceHighlightIndicatorSet && (bracesMatchStyle == STYLE_BRACELIGHT)) ||
+					(vs.braceBadLightIndicatorSet && (bracesMatchStyle == STYLE_BRACEBAD))) {
+					bracesIgnoreStyle = true;
+				}
 				Range rangeLine(pdoc->LineStart(lineDoc), pdoc->LineStart(lineDoc + 1));
 				// Highlight the current braces if any
 				ll->SetBracesHighlight(rangeLine, braces, static_cast<char>(bracesMatchStyle),
-				        highlightGuideColumn * vs.spaceWidth);
+				        highlightGuideColumn * vs.spaceWidth, bracesIgnoreStyle);
 
 				// Draw the line
 				DrawLine(surface, vs, lineDoc, visibleLine, xStart, rcLine, ll, subLine);
 				//durPaint += et.Duration(true);
 
 				// Restore the previous styles for the brace highlights in case layout is in cache.
-				ll->RestoreBracesHighlight(rangeLine, braces);
+				ll->RestoreBracesHighlight(rangeLine, braces, bracesIgnoreStyle);
 
 				bool expanded = cs.GetExpanded(lineDoc);
 				const int level = pdoc->GetLevel(lineDoc);
@@ -3624,6 +3652,9 @@ long Editor::FormatRange(bool draw, Sci_RangeToFormat *pfr) {
 	vsPrint.whitespaceBackgroundSet = false;
 	vsPrint.whitespaceForegroundSet = false;
 	vsPrint.showCaretLineBackground = false;
+	// Don't highlight matching braces using indicators
+	vsPrint.braceHighlightIndicatorSet = false;
+	vsPrint.braceBadLightIndicatorSet = false;
 
 	// Set colours for printing according to users settings
 	for (size_t sty = 0; sty < vsPrint.stylesSize; sty++) {
@@ -8379,8 +8410,22 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 		SetBraceHighlight(static_cast<int>(wParam), lParam, STYLE_BRACELIGHT);
 		break;
 
+	case SCI_BRACEHIGHLIGHTINDICATOR:
+		if (lParam >= 0 && lParam <= INDIC_MAX) {
+			vs.braceHighlightIndicatorSet = wParam != 0;
+			vs.braceHighlightIndicator = lParam;
+		}
+		break;
+
 	case SCI_BRACEBADLIGHT:
 		SetBraceHighlight(static_cast<int>(wParam), -1, STYLE_BRACEBAD);
+		break;
+
+	case SCI_BRACEBADLIGHTINDICATOR:
+		if (lParam >= 0 && lParam <= INDIC_MAX) {
+			vs.braceBadLightIndicatorSet = wParam != 0;
+			vs.braceBadLightIndicator = lParam;
+		}
 		break;
 
 	case SCI_BRACEMATCH:

@@ -63,8 +63,8 @@ public:
 	bool InLine(int offset, int line) const;
 	void SetLineStart(int line, int start);
 	void SetBracesHighlight(Range rangeLine, Position braces[],
-		char bracesMatchStyle, int xHighlight);
-	void RestoreBracesHighlight(Range rangeLine, Position braces[]);
+		char bracesMatchStyle, int xHighlight, bool ignoreStyle);
+	void RestoreBracesHighlight(Range rangeLine, Position braces[], bool ignoreStyle);
 	int FindBefore(int x, int lower, int upper) const;
 	int EndLineStyle() const;
 };

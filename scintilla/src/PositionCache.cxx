@@ -151,15 +151,15 @@ void LineLayout::SetLineStart(int line, int start) {
 }
 
 void LineLayout::SetBracesHighlight(Range rangeLine, Position braces[],
-                                    char bracesMatchStyle, int xHighlight) {
-	if (rangeLine.ContainsCharacter(braces[0])) {
+                                    char bracesMatchStyle, int xHighlight, bool ignoreStyle) {
+	if (!ignoreStyle && rangeLine.ContainsCharacter(braces[0])) {
 		int braceOffset = braces[0] - rangeLine.start;
 		if (braceOffset < numCharsInLine) {
 			bracePreviousStyles[0] = styles[braceOffset];
 			styles[braceOffset] = bracesMatchStyle;
 		}
 	}
-	if (rangeLine.ContainsCharacter(braces[1])) {
+	if (!ignoreStyle && rangeLine.ContainsCharacter(braces[1])) {
 		int braceOffset = braces[1] - rangeLine.start;
 		if (braceOffset < numCharsInLine) {
 			bracePreviousStyles[1] = styles[braceOffset];
@@ -172,14 +172,14 @@ void LineLayout::SetBracesHighlight(Range rangeLine, Position braces[],
 	}
 }
 
-void LineLayout::RestoreBracesHighlight(Range rangeLine, Position braces[]) {
-	if (rangeLine.ContainsCharacter(braces[0])) {
+void LineLayout::RestoreBracesHighlight(Range rangeLine, Position braces[], bool ignoreStyle) {
+	if (!ignoreStyle && rangeLine.ContainsCharacter(braces[0])) {
 		int braceOffset = braces[0] - rangeLine.start;
 		if (braceOffset < numCharsInLine) {
 			styles[braceOffset] = bracePreviousStyles[0];
 		}
 	}
-	if (rangeLine.ContainsCharacter(braces[1])) {
+	if (!ignoreStyle && rangeLine.ContainsCharacter(braces[1])) {
 		int braceOffset = braces[1] - rangeLine.start;
 		if (braceOffset < numCharsInLine) {
 			styles[braceOffset] = bracePreviousStyles[1];

@@ -1446,8 +1446,14 @@ fun int LineLength=2350(int line,)
 # Highlight the characters at two positions.
 fun void BraceHighlight=2351(position pos1, position pos2)
 
+# Use specified indicator to highlight matching braces instead of changing their style.
+fun void BraceHighlightIndicator=2498(bool useBraceHighlightIndicator, int indicator)
+
 # Highlight the character at a position indicating there is no matching brace.
 fun void BraceBadLight=2352(position pos,)
+
+# Use specified indicator to highlight non matching brace instead of changing its style.
+fun void BraceBadLightIndicator=2499(bool useBraceBadLightIndicator, int indicator)
 
 # Find the position of a matching brace or INVALID_POSITION if no match.
 fun position BraceMatch=2353(position pos,)

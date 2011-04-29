@@ -370,6 +370,8 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 		int line, int lineEnd, int xStart, int subLine, int subLineStart,
 		bool overrideBackground, ColourAllocated background,
 		bool drawWrapMark, ColourAllocated wrapColour);
+	void DrawIndicator(int indicNum, int startPos, int endPos, Surface *surface, ViewStyle &vsDraw,
+		int xStart, PRectangle rcLine, LineLayout *ll, int subLine);
 	void DrawIndicators(Surface *surface, ViewStyle &vsDraw, int line, int xStart,
 		PRectangle rcLine, LineLayout *ll, int subLine, int lineEnd, bool under);
 	void DrawAnnotation(Surface *surface, ViewStyle &vsDraw, int line, int xStart,

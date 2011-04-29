@@ -204,6 +204,10 @@ ViewStyle::ViewStyle(const ViewStyle &source) {
 	marginStyleOffset = source.marginStyleOffset;
 	annotationVisible = source.annotationVisible;
 	annotationStyleOffset = source.annotationStyleOffset;
+	braceHighlightIndicatorSet = source.braceHighlightIndicatorSet;
+	braceHighlightIndicator = source.braceHighlightIndicator;
+	braceBadLightIndicatorSet = source.braceBadLightIndicatorSet;
+	braceBadLightIndicator = source.braceBadLightIndicator;
 }
 
 ViewStyle::~ViewStyle() {
@@ -312,6 +316,10 @@ void ViewStyle::Init(size_t stylesSize_) {
 	marginStyleOffset = 0;
 	annotationVisible = ANNOTATION_HIDDEN;
 	annotationStyleOffset = 0;
+	braceHighlightIndicatorSet = false;
+	braceHighlightIndicator = 0;
+	braceBadLightIndicatorSet = false;
+	braceBadLightIndicator = 0;
 }
 
 void ViewStyle::RefreshColourPalette(Palette &pal, bool want) {

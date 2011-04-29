@@ -129,6 +129,10 @@ public:
 	int marginStyleOffset;
 	int annotationVisible;
 	int annotationStyleOffset;
+	bool braceHighlightIndicatorSet;
+	int braceHighlightIndicator;
+	bool braceBadLightIndicatorSet;
+	int braceBadLightIndicator;
 
 	ViewStyle();
 	ViewStyle(const ViewStyle &source);
