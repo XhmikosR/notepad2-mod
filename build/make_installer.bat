@@ -18,7 +18,7 @@ CD /D %~dp0
 rem SET "PERL_PATH=H:\progs\thirdparty\Perl"
 
 rem Check the building environment
-rem IF NOT EXIST "%PERL_PATH%"    CALL :SUBMSG "INFO" "The Perl direcotry wasn't found; the addon won't be built"
+rem IF NOT EXIST "%PERL_PATH%"    CALL :SUBMSG "INFO" "The Perl directory wasn't found; the addon won't be built"
 IF NOT DEFINED VS100COMNTOOLS CALL :SUBMSG "ERROR" "Visual Studio 2010 wasn't found; the installer won't be built"
 
 rem Check for the help switches
