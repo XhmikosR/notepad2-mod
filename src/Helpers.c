@@ -34,7 +34,6 @@
 #include "resource.h"
 
 
-
 //=============================================================================
 //
 //  Manipulation of (cached) ini file sections
@@ -1497,14 +1496,14 @@ DWORD_PTR SHGetFileInfo2(LPCWSTR pszPath,DWORD dwFileAttributes,
 
     DWORD_PTR dw = SHGetFileInfo(pszPath,dwFileAttributes,psfi,cbFileInfo,uFlags);
     if (lstrlen(psfi->szDisplayName) < lstrlen(PathFindFileName(pszPath)))
-      PathAddExtension(psfi->szDisplayName,PathFindExtension(pszPath));
+      StrCatBuff(psfi->szDisplayName,PathFindExtension(pszPath),COUNTOF(psfi->szDisplayName));
     return(dw);
   }
 
   else {
     DWORD_PTR dw = SHGetFileInfo(pszPath,FILE_ATTRIBUTE_NORMAL,psfi,cbFileInfo,uFlags|SHGFI_USEFILEATTRIBUTES);
     if (lstrlen(psfi->szDisplayName) < lstrlen(PathFindFileName(pszPath)))
-      PathAddExtension(psfi->szDisplayName,PathFindExtension(pszPath));
+      StrCatBuff(psfi->szDisplayName,PathFindExtension(pszPath),COUNTOF(psfi->szDisplayName));
     return(dw);
   }
 
@@ -2081,7 +2080,6 @@ static int GetHexDigit(char ch) {
 /**
  * Convert C style \a, \b, \f, \n, \r, \t, \v, \xhh and \uhhhh into their indicated characters.
  */
-extern HWND hwndEdit;
 unsigned int UnSlash(char *s,UINT cpEdit) {
   char *sStart = s;
   char *o = s;

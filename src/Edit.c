@@ -3922,7 +3922,7 @@ void EditCompressSpaces(HWND hwnd)
 //
 //  EditRemoveBlankLines()
 //
-void EditRemoveBlankLines(HWND hwnd)
+void EditRemoveBlankLines(HWND hwnd,BOOL bMerge)
 {
   int iSelStart = (int)SendMessage(hwnd,SCI_GETSELECTIONSTART,0,0);
   int iSelEnd   = (int)SendMessage(hwnd,SCI_GETSELECTIONEND,0,0);
@@ -3942,24 +3942,38 @@ void EditRemoveBlankLines(HWND hwnd)
     if (iSelStart > SendMessage(hwnd,SCI_POSITIONFROMLINE,(WPARAM)iLineStart,0))
       iLineStart++;
 
-    if (iSelEnd <= SendMessage(hwnd,SCI_POSITIONFROMLINE,(WPARAM)iLineEnd,0))
+    if (iSelEnd <= SendMessage(hwnd,SCI_POSITIONFROMLINE,(WPARAM)iLineEnd,0) &&
+        iLineEnd != SendMessage(hwnd,SCI_GETLINECOUNT,0,0)-1)
       iLineEnd--;
 
     SendMessage(hwnd,SCI_BEGINUNDOACTION,0,0);
 
     for (iLine = iLineStart; iLine <= iLineEnd; )
     {
-      int iPos = (int)SendMessage(hwnd,SCI_POSITIONFROMLINE,(WPARAM)iLine,0);
-      if (SendMessage(hwnd,SCI_GETLINEENDPOSITION,(WPARAM)iLine,0) == iPos)
-      {
-        int iPos2 = (int)SendMessage(hwnd,SCI_POSITIONFROMLINE,(WPARAM)iLine+1,0);
-        SendMessage(hwnd,SCI_SETTARGETSTART,(WPARAM)iPos,0);
-        SendMessage(hwnd,SCI_SETTARGETEND,(WPARAM)iPos2,0);
+      int nBlanks = 0;
+      while (iLine + nBlanks <= iLineEnd &&
+              SendMessage(hwnd,SCI_POSITIONFROMLINE,(WPARAM)iLine + nBlanks,0) ==
+              SendMessage(hwnd,SCI_GETLINEENDPOSITION,(WPARAM)iLine + nBlanks,0))
+        nBlanks++;
+
+      if (nBlanks == 0 || (nBlanks == 1 && bMerge))
+        iLine += nBlanks + 1;
+
+      else {
+        int iTargetStart;
+        int iTargetEnd;
+
+        if (bMerge)
+          nBlanks--;
+        iTargetStart = (int)SendMessage(hwnd,SCI_POSITIONFROMLINE,(WPARAM)iLine,0);
+        iTargetEnd   = (int)SendMessage(hwnd,SCI_POSITIONFROMLINE,(WPARAM)iLine + nBlanks,0);
+        SendMessage(hwnd,SCI_SETTARGETSTART,(WPARAM)iTargetStart,0);
+        SendMessage(hwnd,SCI_SETTARGETEND,(WPARAM)iTargetEnd,0);
         SendMessage(hwnd,SCI_REPLACETARGET,0,(LPARAM)"");
-        iLineEnd--;
+        if (bMerge)
+          iLine++;
+        iLineEnd -= nBlanks;
       }
-      else
-        iLine++;
     }
     SendMessage(hwnd,SCI_ENDUNDOACTION,0,0);
   }
@@ -4622,8 +4636,6 @@ void EditSortLines(HWND hwnd,int iSortFlags)
 //
 void EditJumpTo(HWND hwnd,int iNewLine,int iNewCol)
 {
-  //int iScrLines;
-  //int iTopLine;
   int iMaxLine = (int)SendMessage(hwnd,SCI_GETLINECOUNT,0,0);
 
   // Jumpt to end with line set to -1
@@ -4657,15 +4669,6 @@ void EditJumpTo(HWND hwnd,int iNewLine,int iNewCol)
     iNewPos = min(iNewPos,iLineEndPos);
     SendMessage(hwnd,SCI_GOTOPOS,(WPARAM)iNewPos,0);
     SendMessage(hwnd,SCI_CHOOSECARETX,0,0);
-
-    //iScrLines = SendMessage(hwnd,SCI_LINESONSCREEN,0,0);
-    //iTopLine = SendMessage(hwnd,SCI_GETFIRSTVISIBLELINE,0,0);
-    //if (iScrLines > 20) {
-    //  if (iNewLine - iTopLine < 5)
-    //    SendMessage(hwnd,SCI_LINESCROLL,0,(LPARAM)max(iNewLine-5,0)-iTopLine);
-    //  else if (iNewLine - (iTopLine + iScrLines) > -5)
-    //    SendMessage(hwnd,SCI_LINESCROLL,0,(LPARAM)max(iNewLine-iScrLines+5,0)-iTopLine);
-    //}
 
     SendMessage(hwnd,SCI_SETXCARETPOLICY,CARET_SLOP|CARET_EVEN,50);
     SendMessage(hwnd,SCI_SETYCARETPOLICY,CARET_EVEN,0);
@@ -4712,6 +4715,24 @@ void EditFixPositions(HWND hwnd)
     if (iNewPos != iAnchorPos)
       SendMessage(hwnd,SCI_SETANCHOR,(WPARAM)iNewPos,0);
   }
+}
+
+
+//=============================================================================
+//
+//  EditEnsureSelectionVisible()
+//
+void EditEnsureSelectionVisible(HWND hwnd)
+{
+  int iAnchorPos = (int)SendMessage(hwnd,SCI_GETANCHOR,0,0);
+  int iCurrentPos = (int)SendMessage(hwnd,SCI_GETCURRENTPOS,0,0);
+  SendMessage(hwnd,SCI_ENSUREVISIBLE,
+    (WPARAM)SendMessage(hwnd,SCI_LINEFROMPOSITION,(WPARAM)iAnchorPos,0),0);
+  if (iAnchorPos != iCurrentPos) {
+    SendMessage(hwnd,SCI_ENSUREVISIBLE,
+      (WPARAM)SendMessage(hwnd,SCI_LINEFROMPOSITION,(WPARAM)iCurrentPos,0),0);
+  }
+  EditSelectEx(hwnd,iAnchorPos,iCurrentPos);
 }
 
 

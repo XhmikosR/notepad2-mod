@@ -37,12 +37,13 @@ Features
   - Mostly adjustable
 
 
-New in Version 4.2.25-rc8 (released April 19, 2011)
+New in Version 4.2.25-rc9 (released May 05, 2011)
 
   - "Align Lines" with several options (Alt+J)
   - "Modify Lines" supports several variables to insert numbers (Alt+M)
   - "Sort Lines" (Alt+O) handles column sort (rectangular selection)
-  - "Sort Lines" als handles shuffle, remove duplicate and unique lines
+  - "Sort Lines" also handles shuffle, remove duplicates and uniques
+  - "Merge Blank Lines" (Alt+Y)
   - Use built-in Windows functionality for "Title Case" on Windows 7
   - Convert between characters and hex codes (Ctrl+Alt+X, Ctrl+Alt+C)
   - "Recode file as default encoding" (Ctrl+Shift+F)
@@ -75,6 +76,8 @@ New in Version 4.2.25-rc8 (released April 19, 2011)
   - Ini-options to block suppression of notification messages
   - Simplified appearance of word wrap settings dialog
   - Remapped "Unescape C Special Chars" to Ctrl+Alt+R (fix duplicate)
+  - Reloading keeps scrolling position more unerringly with word wrap
+  - Jumps with /g switch locate position more accurately with word wrap
   - Various internal optimizations and fixes
   - Improved look of disabled toolbar buttons on Windows XP and above
   - Improved overall look of toolbar buttons on Windows 2k
@@ -610,6 +613,7 @@ Keyboard Shortcuts for Notepad2
     Alt+U                 Strip last character.
     Alt+W                 Strip trailing blanks.
     Alt+P                 Compress whitespace.
+    Alt+Y                 Merge blank lines.
     Alt+R                 Remove blank lines.
     Alt+M                 Modify lines.
     Alt+J                 Align lines.

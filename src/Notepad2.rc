@@ -170,6 +170,7 @@ BEGIN
             MENUITEM "Strip &Last Character\tAlt+U", IDM_EDIT_STRIPLASTCHAR
             MENUITEM "Strip &Trailing Blanks\tAlt+W", IDM_EDIT_TRIMLINES
             MENUITEM "Compress &Whitespace\tAlt+P", IDM_EDIT_COMPRESSWS
+            MENUITEM "Merge &Blank Lines\tAlt+Y",   IDM_EDIT_MERGEBLANKLINES
             MENUITEM "&Remove Blank Lines\tAlt+R",  IDM_EDIT_REMOVEBLANKLINES
 
             MENUITEM SEPARATOR
@@ -587,6 +588,7 @@ BEGIN
     "X",            IDM_EDIT_CUTLINE,       VIRTKEY, SHIFT, CONTROL,
                                                     NOINVERT
     "Y",            IDM_EDIT_REDO,          VIRTKEY, CONTROL, NOINVERT
+    "Y",            IDM_EDIT_MERGEBLANKLINES, VIRTKEY, ALT, NOINVERT
     "Y",            IDM_EDIT_UNDO,          VIRTKEY, SHIFT, CONTROL,
                                                     NOINVERT
     "Z",            IDM_EDIT_UNDO,          VIRTKEY, CONTROL, NOINVERT

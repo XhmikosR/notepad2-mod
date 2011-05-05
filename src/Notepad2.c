@@ -873,8 +873,10 @@ HWND InitInstance(HINSTANCE hInstance,LPSTR pszCmdLine,int nCmdShow)
     }
     else {
       if (bOpened = FileLoad(FALSE,FALSE,FALSE,FALSE,lpFileArg)) {
-        if (flagJumpTo) // Jump to position
+        if (flagJumpTo) { // Jump to position
           EditJumpTo(hwndEdit,iInitialLine,iInitialColumn);
+          EditEnsureSelectionVisible(hwndEdit);
+        }
       }
     }
     GlobalFree(lpFileArg);
@@ -921,6 +923,7 @@ HWND InitInstance(HINSTANCE hInstance,LPSTR pszCmdLine,int nCmdShow)
       bAutoIndent = bAutoIndent2;
       if (flagJumpTo)
         EditJumpTo(hwndEdit,iInitialLine,iInitialColumn);
+      EditEnsureSelectionVisible(hwndEdit);
     }
   }
 
@@ -962,11 +965,13 @@ HWND InitInstance(HINSTANCE hInstance,LPSTR pszCmdLine,int nCmdShow)
         if (!flagJumpTo)
           EditJumpTo(hwndEdit,-1,0);
         EditFindPrev(hwndEdit,&efrData,FALSE);
+        EditEnsureSelectionVisible(hwndEdit);
       }
       else {
         if (!flagJumpTo)
           SendMessage(hwndEdit,SCI_DOCUMENTSTART,0,0);
         EditFindNext(hwndEdit,&efrData,FALSE);
+        EditEnsureSelectionVisible(hwndEdit);
       }
     }
     GlobalFree(lpMatchArg);
@@ -1282,6 +1287,7 @@ LRESULT CALLBACK MainWndProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lParam)
             if (params->iInitialLine == 0)
               params->iInitialLine = 1;
             EditJumpTo(hwndEdit,params->iInitialLine,params->iInitialColumn);
+            EditEnsureSelectionVisible(hwndEdit);
           }
 
           flagLexerSpecified = 0;
@@ -1403,24 +1409,28 @@ LRESULT CALLBACK MainWndProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lParam)
 
               int iCurPos     = (int)SendMessage(hwndEdit,SCI_GETCURRENTPOS,0,0);
               int iAnchorPos  = (int)SendMessage(hwndEdit,SCI_GETANCHOR,0,0);
-              int iCurTopLine = (int)SendMessage(hwndEdit,SCI_GETFIRSTVISIBLELINE,0,0);
+              int iVisTopLine = (int)SendMessage(hwndEdit,SCI_GETFIRSTVISIBLELINE,0,0);
+              int iDocTopLine = (int)SendMessage(hwndEdit,SCI_DOCLINEFROMVISIBLE,(WPARAM)iVisTopLine,0);
               int iXOffset    = (int)SendMessage(hwndEdit,SCI_GETXOFFSET,0,0);
               BOOL bIsTail    = (iCurPos == iAnchorPos) && (iCurPos == SendMessage(hwndEdit,SCI_GETLENGTH,0,0));
 
               iWeakSrcEncoding = iEncoding;
               if (FileLoad(TRUE,FALSE,TRUE,FALSE,szCurFile)) {
 
-                if (bIsTail && iFileWatchingMode == 2)
+                if (bIsTail && iFileWatchingMode == 2) {
                   EditJumpTo(hwndEdit,-1,0);
+                  EditEnsureSelectionVisible(hwndEdit);
+                }
 
                 else if (SendMessage(hwndEdit,SCI_GETLENGTH,0,0) >= 4) {
                   char tch[5] = "";
                   SendMessage(hwndEdit,SCI_GETTEXT,5,(LPARAM)tch);
                   if (lstrcmpiA(tch,".LOG") != 0) {
-                    int iTopLineAfterLoad;
-                    SendMessage(hwndEdit,SCI_SETSEL,(WPARAM)iAnchorPos,(LPARAM)iCurPos);
-                    iTopLineAfterLoad = (int)SendMessage(hwndEdit,SCI_GETFIRSTVISIBLELINE,0,0);
-                    SendMessage(hwndEdit,SCI_LINESCROLL,0,(LPARAM)(iCurTopLine - iTopLineAfterLoad));
+                    int iNewTopLine;
+                    SendMessage(hwndEdit,SCI_SETSEL,iAnchorPos,iCurPos);
+                    SendMessage(hwndEdit,SCI_ENSUREVISIBLE,(WPARAM)iDocTopLine,0);
+                    iNewTopLine = (int)SendMessage(hwndEdit,SCI_GETFIRSTVISIBLELINE,0,0);
+                    SendMessage(hwndEdit,SCI_LINESCROLL,0,(LPARAM)iVisTopLine - iNewTopLine);
                     SendMessage(hwndEdit,SCI_SETXOFFSET,(WPARAM)iXOffset,0);
                   }
                 }
@@ -2115,6 +2125,7 @@ void MsgInitMenu(HWND hwnd,WPARAM wParam,LPARAM lParam)
   //EnableCmd(hmenu,IDM_EDIT_STRIP1STCHAR,!bReadOnly);
   //EnableCmd(hmenu,IDM_EDIT_STRIPLASTCHAR,!bReadOnly);
   //EnableCmd(hmenu,IDM_EDIT_TRIMLINES,!bReadOnly);
+  //EnableCmd(hmenu,IDM_EDIT_MERGEBLANKLINES,!bReadOnly);
   //EnableCmd(hmenu,IDM_EDIT_REMOVEBLANKLINES,!bReadOnly);
 
   EnableCmd(hmenu,IDM_EDIT_SORTLINES,
@@ -2293,7 +2304,8 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
 
           int iCurPos     = (int)SendMessage(hwndEdit,SCI_GETCURRENTPOS,0,0);
           int iAnchorPos  = (int)SendMessage(hwndEdit,SCI_GETANCHOR,0,0);
-          int iCurTopLine = (int)SendMessage(hwndEdit,SCI_GETFIRSTVISIBLELINE,0,0);
+          int iVisTopLine = (int)SendMessage(hwndEdit,SCI_GETFIRSTVISIBLELINE,0,0);
+          int iDocTopLine = (int)SendMessage(hwndEdit,SCI_DOCLINEFROMVISIBLE,(WPARAM)iVisTopLine,0);
           int iXOffset    = (int)SendMessage(hwndEdit,SCI_GETXOFFSET,0,0);
 
           if ((bModified || iEncoding != iOriginalEncoding) && MsgBox(MBOKCANCEL,IDS_ASK_REVERT) != IDOK)
@@ -2308,10 +2320,11 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
               char tch[5] = "";
               SendMessage(hwndEdit,SCI_GETTEXT,5,(LPARAM)tch);
               if (lstrcmpiA(tch,".LOG") != 0) {
-                int iTopLineAfterLoad;
-                SendMessage(hwndEdit,SCI_SETSEL,(WPARAM)iAnchorPos,(LPARAM)iCurPos);
-                iTopLineAfterLoad = (int)SendMessage(hwndEdit,SCI_GETFIRSTVISIBLELINE,0,0);
-                SendMessage(hwndEdit,SCI_LINESCROLL,0,(LPARAM)(iCurTopLine - iTopLineAfterLoad));
+                int iNewTopLine;
+                SendMessage(hwndEdit,SCI_SETSEL,iAnchorPos,iCurPos);
+                SendMessage(hwndEdit,SCI_ENSUREVISIBLE,(WPARAM)iDocTopLine,0);
+                iNewTopLine = (int)SendMessage(hwndEdit,SCI_GETFIRSTVISIBLELINE,0,0);
+                SendMessage(hwndEdit,SCI_LINESCROLL,0,(LPARAM)iVisTopLine - iNewTopLine);
                 SendMessage(hwndEdit,SCI_SETXOFFSET,(WPARAM)iXOffset,0);
               }
             }
@@ -3090,9 +3103,16 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
       break;
 
 
+    case IDM_EDIT_MERGEBLANKLINES:
+      BeginWaitCursor();
+      EditRemoveBlankLines(hwndEdit,TRUE);
+      EndWaitCursor();
+      break;
+
+
     case IDM_EDIT_REMOVEBLANKLINES:
       BeginWaitCursor();
-      EditRemoveBlankLines(hwndEdit);
+      EditRemoveBlankLines(hwndEdit,FALSE);
       EndWaitCursor();
       break;
 
@@ -6875,6 +6895,7 @@ BOOL FileLoad(BOOL bDontSave,BOOL bNew,BOOL bReload,BOOL bNoEncDetect,LPCWSTR lp
         SendMessage(hwndEdit,SCI_NEWLINE,0,0);
         SendMessage(hwndEdit,SCI_ENDUNDOACTION,0,0);
         EditJumpTo(hwndEdit,-1,0);
+        EditEnsureSelectionVisible(hwndEdit);
       }
     }
 
@@ -7788,6 +7809,7 @@ void CALLBACK PasteBoardTimer(HWND hwnd,UINT uMsg,UINT_PTR idEvent,DWORD dwTime)
       SendMessage(hwndEdit,SCI_PASTE,0,0);
       SendMessage(hwndEdit,SCI_NEWLINE,0,0);
       SendMessage(hwndEdit,SCI_ENDUNDOACTION,0,0);
+      EditEnsureSelectionVisible(hwndEdit);
       bAutoIndent = bAutoIndent2;
     }
 

@@ -105,7 +105,7 @@ void  EditStripFirstCharacter(HWND);
 void  EditStripLastCharacter(HWND);
 void  EditStripTrailingBlanks(HWND,BOOL);
 void  EditCompressSpaces(HWND);
-void  EditRemoveBlankLines(HWND);
+void  EditRemoveBlankLines(HWND,BOOL);
 void  EditWrapToColumn(HWND,int);
 void  EditJoinLinesEx(HWND);
 void  EditSortLines(HWND,int);
@@ -113,6 +113,7 @@ void  EditSortLines(HWND,int);
 void  EditJumpTo(HWND,int,int);
 void  EditSelectEx(HWND,int,int);
 void  EditFixPositions(HWND);
+void  EditEnsureSelectionVisible(HWND);
 void  EditGetExcerpt(HWND,LPWSTR,DWORD);
 
 HWND  EditFindReplaceDlg(HWND,LPCEDITFINDREPLACE,BOOL);
