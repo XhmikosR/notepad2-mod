@@ -37,13 +37,13 @@ Features
   - Mostly adjustable
 
 
-New in Version 4.2.25-rc9 (released May 05, 2011)
+New in Version 4.2.25 (released May 06, 2011)
 
   - "Align Lines" with several options (Alt+J)
   - "Modify Lines" supports several variables to insert numbers (Alt+M)
   - "Sort Lines" (Alt+O) handles column sort (rectangular selection)
   - "Sort Lines" also handles shuffle, remove duplicates and uniques
-  - "Merge Blank Lines" (Alt+Y)
+  - "Merge Blank Lines" block command (Alt+Y)
   - Use built-in Windows functionality for "Title Case" on Windows 7
   - Convert between characters and hex codes (Ctrl+Alt+X, Ctrl+Alt+C)
   - "Recode file as default encoding" (Ctrl+Shift+F)
