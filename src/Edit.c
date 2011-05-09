@@ -4663,15 +4663,9 @@ void EditJumpTo(HWND hwnd,int iNewLine,int iNewCol)
       iNewPos = (int)SendMessage(hwnd,SCI_POSITIONAFTER,(WPARAM)iNewPos,0);
     }
 
-    SendMessage(hwnd,SCI_SETXCARETPOLICY,CARET_SLOP|CARET_STRICT|CARET_EVEN,50);
-    SendMessage(hwnd,SCI_SETYCARETPOLICY,CARET_SLOP|CARET_STRICT|CARET_EVEN,5);
-
     iNewPos = min(iNewPos,iLineEndPos);
-    SendMessage(hwnd,SCI_GOTOPOS,(WPARAM)iNewPos,0);
+    EditSelectEx(hwnd,-1,iNewPos); // SCI_GOTOPOS(pos) is equivalent to SCI_SETSEL(-1, pos)
     SendMessage(hwnd,SCI_CHOOSECARETX,0,0);
-
-    SendMessage(hwnd,SCI_SETXCARETPOLICY,CARET_SLOP|CARET_EVEN,50);
-    SendMessage(hwnd,SCI_SETYCARETPOLICY,CARET_EVEN,0);
   }
 }
 
@@ -4682,6 +4676,15 @@ void EditJumpTo(HWND hwnd,int iNewLine,int iNewCol)
 //
 void EditSelectEx(HWND hwnd,int iAnchorPos,int iCurrentPos)
 {
+  int iNewLine = (int)SendMessage(hwnd,SCI_LINEFROMPOSITION,(WPARAM)iCurrentPos,0);
+  int iAnchorLine = (int)SendMessage(hwnd,SCI_LINEFROMPOSITION,(WPARAM)iAnchorPos,0);
+
+  // Ensure that the first and last lines of a selection are always unfolded
+  // This needs to be done *before* the SCI_SETSEL message
+  SciCall_EnsureVisible(iAnchorLine);
+  if (iAnchorLine != iNewLine)
+    SciCall_EnsureVisible(iNewLine);
+
   SendMessage(hwnd,SCI_SETXCARETPOLICY,CARET_SLOP|CARET_STRICT|CARET_EVEN,50);
   SendMessage(hwnd,SCI_SETYCARETPOLICY,CARET_SLOP|CARET_STRICT|CARET_EVEN,5);
   SendMessage(hwnd,SCI_SETSEL,iAnchorPos,iCurrentPos);
