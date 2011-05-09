@@ -97,6 +97,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <AdditionalDependencies>comctl32.lib;shlwapi.lib;imm32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -104,7 +105,6 @@
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
       <MinimumRequiredVersion>5.01</MinimumRequiredVersion>
-      <MergeSections>.rdata=.text</MergeSections>
     </Link>
     <PreBuildEvent>
       <Command>cd ..
@@ -124,6 +124,7 @@ update_version.bat</Command>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <AdditionalDependencies>comctl32.lib;shlwapi.lib;imm32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -131,7 +132,6 @@ update_version.bat</Command>
       <ProgramDatabaseFile>$(OutDir)Notepad2.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <MinimumRequiredVersion>5.02</MinimumRequiredVersion>
-      <MergeSections>.rdata=.text</MergeSections>
     </Link>
     <PreBuildEvent>
       <Command>cd ..
@@ -148,8 +148,6 @@ update_version.bat</Command>
       <PreprocessorDefinitions>WIN32;STATIC_BUILD;SCI_LEXER;BOOKMARK_EDITION;NDEBUG;UNICODE;_UNICODE;_CRT_SECURE_NO_WARNINGS;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>
-      </DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
