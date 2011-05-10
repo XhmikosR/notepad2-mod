@@ -282,10 +282,10 @@ BEGIN
                                                 IDM_VIEW_HILITECURRENTLINE
         POPUP "Mar&k Occurrences"
         BEGIN
-            MENUITEM "&Red",                        IDM_VIEW_MARKOCCURRENCES_RED
-            MENUITEM "&Green",                      IDM_VIEW_MARKOCCURRENCES_GREEN
-            MENUITEM "&Blue",                       IDM_VIEW_MARKOCCURRENCES_BLUE
             MENUITEM "&Off",                        IDM_VIEW_MARKOCCURRENCES_OFF
+            MENUITEM "&Blue",                       IDM_VIEW_MARKOCCURRENCES_BLUE
+            MENUITEM "&Green",                      IDM_VIEW_MARKOCCURRENCES_GREEN
+            MENUITEM "&Red",                        IDM_VIEW_MARKOCCURRENCES_RED
         END
 
         MENUITEM SEPARATOR
