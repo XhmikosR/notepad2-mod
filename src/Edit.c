@@ -5626,7 +5626,7 @@ void EditMarkAll(HWND hwnd, int iMarkOccurrences)
 {
   struct TextToFind ttf;
   int iPos;
-  char  *pszText;
+  char *pszText;
   int iTextLen;
   int iSelStart;
   int iSelEnd;
@@ -5635,9 +5635,7 @@ void EditMarkAll(HWND hwnd, int iMarkOccurrences)
 
   // feature is off
   if (!iMarkOccurrences)
-  {
-      return;
-  }
+    return;
 
   iTextLen = (int)SendMessage(hwnd,SCI_GETLENGTH,0,0);
 
@@ -5654,9 +5652,7 @@ void EditMarkAll(HWND hwnd, int iMarkOccurrences)
   if (iSelCount == 0 ||
       (int)SendMessage(hwnd, SCI_LINEFROMPOSITION, iSelStart, 0) !=
       (int)SendMessage(hwnd, SCI_LINEFROMPOSITION, iSelEnd, 0))
-  {
-      return;
-  }
+    return;
 
   pszText = LocalAlloc(LPTR,iSelCount + 1);
   (int)SendMessage(hwnd,SCI_GETSELTEXT,0,(LPARAM)pszText);
