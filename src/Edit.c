@@ -5622,7 +5622,7 @@ BOOL EditReplace(HWND hwnd,LPCEDITFINDREPLACE lpefr)
 //  EditMarkAll()
 //  Mark all occurrences of the text currently selected (by Aleksandar Lekov)
 //
-void EditMarkAll(HWND hwnd, int iMarkOccurrences)
+void EditMarkAll(HWND hwnd, int iMarkOccurrences, BOOL bMarkOccurrencesMatchCase, BOOL bMarkOccurrencesMatchWords)
 {
   struct TextToFind ttf;
   int iPos;
@@ -5636,6 +5636,7 @@ void EditMarkAll(HWND hwnd, int iMarkOccurrences)
   // feature is off
   if (!iMarkOccurrences)
     return;
+
 
   iTextLen = (int)SendMessage(hwnd,SCI_GETLENGTH,0,0);
 
@@ -5654,8 +5655,25 @@ void EditMarkAll(HWND hwnd, int iMarkOccurrences)
       (int)SendMessage(hwnd, SCI_LINEFROMPOSITION, iSelEnd, 0))
     return;
 
+
   pszText = LocalAlloc(LPTR,iSelCount + 1);
   (int)SendMessage(hwnd,SCI_GETSELTEXT,0,(LPARAM)pszText);
+
+
+  // exit if selection is not a word and Match whole words only is enabled
+  if (bMarkOccurrencesMatchWords)
+  {
+    iSelStart = 0;
+    while (pszText[iSelStart])
+    {
+      if (StrChrIA(" \t\r\n@#$%^&*~-=+()[]{}\\/:;'\"", pszText[iSelStart]))
+      {
+        LocalFree(pszText);
+        return;
+      }
+      iSelStart++;
+    }
+  }
 
   ZeroMemory(&ttf,sizeof(ttf));
 
@@ -5663,13 +5681,15 @@ void EditMarkAll(HWND hwnd, int iMarkOccurrences)
   ttf.chrg.cpMax = iTextLen;
   ttf.lpstrText = pszText;
 
-  // set style, green should be greener not to confuse with bookmarks' style
-  SendMessage(hwnd, SCI_INDICSETALPHA, 1, iMarkOccurrences == 2 ? 100 : 30);
+  // set style
+  SendMessage(hwnd, SCI_INDICSETALPHA, 1, 100);
   SendMessage(hwnd, SCI_INDICSETFORE, 1, 0xff << ((iMarkOccurrences - 1) << 3));
   SendMessage(hwnd, SCI_INDICSETSTYLE, 1, INDIC_ROUNDBOX);
 
   iMatchesCount = 0;
-  while ((iPos = (int)SendMessage(hwnd, SCI_FINDTEXT, SCFIND_MATCHCASE | SCFIND_WHOLEWORD, (LPARAM)&ttf)) != -1
+  while ((iPos = (int)SendMessage(hwnd, SCI_FINDTEXT,
+      (bMarkOccurrencesMatchCase ? SCFIND_MATCHCASE : 0) | (bMarkOccurrencesMatchWords ? SCFIND_WHOLEWORD : 0),
+      (LPARAM)&ttf)) != -1
       && ++iMatchesCount < 1000)
   {
     // mark this match

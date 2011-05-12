@@ -135,6 +135,8 @@ int       iWrapCol = 0;
 BOOL      bShowSelectionMargin;
 BOOL      bShowLineNumbers;
 int       iMarkOccurrences;
+BOOL      bMarkOccurrencesMatchCase;
+BOOL      bMarkOccurrencesMatchWords;
 BOOL      bShowCodeFolding;
 BOOL      bViewWhiteSpace;
 BOOL      bViewEOLs;
@@ -2203,11 +2205,15 @@ void MsgInitMenu(HWND hwnd,WPARAM wParam,LPARAM lParam)
   switch (iMarkOccurrences)
   {
     case 0: i = IDM_VIEW_MARKOCCURRENCES_OFF;break;
-    case 1: i = IDM_VIEW_MARKOCCURRENCES_RED;break;
-    case 2: i = IDM_VIEW_MARKOCCURRENCES_GREEN;break;
     case 3: i = IDM_VIEW_MARKOCCURRENCES_BLUE;break;
+    case 2: i = IDM_VIEW_MARKOCCURRENCES_GREEN;break;
+    case 1: i = IDM_VIEW_MARKOCCURRENCES_RED;break;
   }
-  CheckMenuRadioItem(hmenu,IDM_VIEW_MARKOCCURRENCES_RED,IDM_VIEW_MARKOCCURRENCES_OFF,i,MF_BYCOMMAND);
+  CheckMenuRadioItem(hmenu,IDM_VIEW_MARKOCCURRENCES_OFF,IDM_VIEW_MARKOCCURRENCES_RED,i,MF_BYCOMMAND);
+  CheckCmd(hmenu,IDM_VIEW_MARKOCCURRENCES_CASE,bMarkOccurrencesMatchCase);
+  CheckCmd(hmenu,IDM_VIEW_MARKOCCURRENCES_WORD,bMarkOccurrencesMatchWords);
+  EnableCmd(hmenu,IDM_VIEW_MARKOCCURRENCES_CASE,iMarkOccurrences != 0);
+  EnableCmd(hmenu,IDM_VIEW_MARKOCCURRENCES_WORD,iMarkOccurrences != 0);
 
   CheckCmd(hmenu,IDM_VIEW_FOLDING,bShowCodeFolding);
   EnableCmd(hmenu,IDM_VIEW_TOGGLEFOLDS,bShowCodeFolding);
@@ -3944,17 +3950,27 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
 
     case IDM_VIEW_MARKOCCURRENCES_RED:
       iMarkOccurrences = 1;
-      EditMarkAll(hwndEdit, iMarkOccurrences);
+      EditMarkAll(hwndEdit, iMarkOccurrences, bMarkOccurrencesMatchCase, bMarkOccurrencesMatchWords);
       break;
 
     case IDM_VIEW_MARKOCCURRENCES_GREEN:
       iMarkOccurrences = 2;
-      EditMarkAll(hwndEdit, iMarkOccurrences);
+      EditMarkAll(hwndEdit, iMarkOccurrences, bMarkOccurrencesMatchCase, bMarkOccurrencesMatchWords);
       break;
 
     case IDM_VIEW_MARKOCCURRENCES_BLUE:
       iMarkOccurrences = 3;
-      EditMarkAll(hwndEdit, iMarkOccurrences);
+      EditMarkAll(hwndEdit, iMarkOccurrences, bMarkOccurrencesMatchCase, bMarkOccurrencesMatchWords);
+      break;
+
+    case IDM_VIEW_MARKOCCURRENCES_CASE:
+      bMarkOccurrencesMatchCase = (bMarkOccurrencesMatchCase) ? FALSE : TRUE;
+      EditMarkAll(hwndEdit, iMarkOccurrences, bMarkOccurrencesMatchCase, bMarkOccurrencesMatchWords);
+      break;
+
+    case IDM_VIEW_MARKOCCURRENCES_WORD:
+      bMarkOccurrencesMatchWords = (bMarkOccurrencesMatchWords) ? FALSE : TRUE;
+      EditMarkAll(hwndEdit, iMarkOccurrences, bMarkOccurrencesMatchCase, bMarkOccurrencesMatchWords);
       break;
 
     case IDM_VIEW_FOLDING:
@@ -5047,7 +5063,7 @@ LRESULT MsgNotify(HWND hwnd,WPARAM wParam,LPARAM lParam)
             }
 
             // mark occurrences of text currently selected
-            EditMarkAll(hwndEdit, iMarkOccurrences);
+            EditMarkAll(hwndEdit, iMarkOccurrences, bMarkOccurrencesMatchCase, bMarkOccurrencesMatchWords);
 
             // Brace Match
             if (bMatchBraces)
@@ -5525,6 +5541,8 @@ void LoadSettings()
   if (bShowCodeFolding) bShowCodeFolding = 1;
 
   iMarkOccurrences = IniSectionGetInt(pIniSection,L"MarkOccurrences",3);
+  bMarkOccurrencesMatchCase = IniSectionGetInt(pIniSection,L"MarkOccurrencesMatchCase",0);
+  bMarkOccurrencesMatchWords = IniSectionGetInt(pIniSection,L"MarkOccurrencesMatchWholeWords",1);
 
   bViewWhiteSpace = IniSectionGetInt(pIniSection,L"ViewWhiteSpace",0);
   if (bViewWhiteSpace) bViewWhiteSpace = 1;
@@ -5778,6 +5796,8 @@ void SaveSettings(BOOL bSaveSettingsNow)
   IniSectionSetInt(pIniSection,L"ShowLineNumbers",bShowLineNumbers);
   IniSectionSetInt(pIniSection,L"ShowCodeFolding",bShowCodeFolding);
   IniSectionSetInt(pIniSection,L"MarkOccurrences",iMarkOccurrences);
+  IniSectionSetInt(pIniSection,L"MarkOccurrencesMatchCase",bMarkOccurrencesMatchCase);
+  IniSectionSetInt(pIniSection,L"MarkOccurrencesMatchWholeWords",bMarkOccurrencesMatchWords);
   IniSectionSetInt(pIniSection,L"ViewWhiteSpace",bViewWhiteSpace);
   IniSectionSetInt(pIniSection,L"ViewEOLs",bViewEOLs);
   IniSectionSetInt(pIniSection,L"DefaultEncoding",Encoding_MapIniSetting(FALSE,iDefaultEncoding));
