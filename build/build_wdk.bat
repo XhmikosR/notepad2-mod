@@ -80,18 +80,9 @@ IF "%~2" == "" (
 
 
 :START
-IF /I "%BUILDTYPE%" == "Clean" GOTO x86
-
-rem Update the svn revision before building
-PUSHD ..
-CALL "update_version.bat"
-POPD
-
-
-:x86
 SET "INCLUDE=%WDKBASEDIR%\inc\api;%WDKBASEDIR%\inc\api\crt\stl60;%WDKBASEDIR%\inc\crt;%WDKBASEDIR%\inc\ddk"
 SET "LIB=%WDKBASEDIR%\lib\crt\i386;%WDKBASEDIR%\lib\win7\i386"
-SET "PATH=%WDKBASEDIR%\bin\x86;%WDKBASEDIR%\bin\x86\x86"
+SET "PATH=%WDKBASEDIR%\bin\x86;%WDKBASEDIR%\bin\x86\x86;%PATH%"
 
 IF /I "%ARCH%" == "x64" GOTO x64
 
@@ -123,7 +114,7 @@ IF /I "%ARCH%" == "all" GOTO x64
 
 :x64
 SET "LIB=%WDKBASEDIR%\lib\crt\amd64;%WDKBASEDIR%\lib\win7\amd64"
-SET "PATH=%WDKBASEDIR%\bin\x86;%WDKBASEDIR%\bin\x86\amd64"
+SET "PATH=%WDKBASEDIR%\bin\x86;%WDKBASEDIR%\bin\x86\amd64;%PATH%"
 
 IF /I "%ARCH%" == "x86" GOTO END
 

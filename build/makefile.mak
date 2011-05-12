@@ -68,7 +68,7 @@ RFLAGS        = $(RFLAGS) /d "WIN32"
 ###############
 ##  Targets  ##
 ###############
-BUILD:	CHECKDIRS $(EXE)
+BUILD:	CHECKDIRS UPDATEREV $(EXE)
 
 CHECKDIRS:
 	IF NOT EXIST "$(OBJDIR)" MD "$(OBJDIR)"
@@ -83,6 +83,12 @@ CLEAN:
 	IF EXIST "$(BINDIR)"              RD /Q "$(BINDIR)"
 
 REBUILD:	CLEAN BUILD
+
+UPDATEREV:
+	CD ..
+	CALL "update_version.bat"
+	CD build
+	ECHO.
 
 
 ####################
