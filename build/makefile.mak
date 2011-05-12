@@ -71,13 +71,16 @@ RFLAGS        = $(RFLAGS) /d "WIN32"
 BUILD:	CHECKDIRS $(EXE)
 
 CHECKDIRS:
-	-MKDIR "$(OBJDIR)" >NUL 2>&1
+	IF NOT EXIST "$(OBJDIR)" MD "$(OBJDIR)"
 
 CLEAN:
 	ECHO Cleaning... & ECHO.
-	-DEL "$(EXE)" "$(OBJDIR)\*.obj" "$(OBJDIR)\Notepad2.res" \
-	"$(BINDIR)\Notepad2.pdb" >NUL 2>&1
-	-RMDIR /Q "$(OBJDIR)" "$(BINDIR)" >NUL 2>&1
+	IF EXIST "$(EXE)"                 DEL "$(EXE)"
+	IF EXIST "$(OBJDIR)\*.obj"        DEL "$(OBJDIR)\*.obj"
+	IF EXIST "$(OBJDIR)\Notepad2.res" DEL "$(OBJDIR)\Notepad2.res"
+	IF EXIST "$(BINDIR)\Notepad2.pdb" DEL "$(BINDIR)\Notepad2.pdb"
+	IF EXIST "$(OBJDIR)"              RD /Q "$(OBJDIR)"
+	IF EXIST "$(BINDIR)"              RD /Q "$(BINDIR)"
 
 REBUILD:	CLEAN BUILD
 

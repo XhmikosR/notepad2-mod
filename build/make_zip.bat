@@ -117,9 +117,9 @@ CALL :SubZipFiles %INPUTDIRx64% x86-64
 
 rem Compress everything into a single ZIP file
 PUSHD "packages"
-DEL "Notepad2-mod.zip" >NUL 2>&1
-RD /S /Q "temp_zip" >NUL 2>&1
-MD "temp_zip" >NUL 2>&1
+IF EXIST "Notepad2-mod.zip" DEL "Notepad2-mod.zip"
+IF EXIST "temp_zip"         RD /S /Q "temp_zip"
+IF NOT EXIST "temp_zip"     MD "temp_zip"
 
 COPY /Y /V "Notepad2-mod.%NP2_VER%_r%VerRev%*.zip" "temp_zip\" >NUL 2>&1
 COPY /Y /V "Notepad2-mod.%NP2_VER%_r%VerRev%*.exe" "temp_zip\" >NUL 2>&1
@@ -134,7 +134,7 @@ CALL :SUBMSG "INFO" "Notepad2-mod.zip created successfully!"
 MOVE /Y "Notepad2-mod.zip" ".." >NUL 2>&1
 
 POPD
-RD /S /Q "temp_zip" >NUL 2>&1
+IF EXIST "temp_zip" RD /S /Q "temp_zip"
 
 POPD
 
@@ -150,8 +150,9 @@ EXIT /B
 TITLE Creating the %2 ZIP file...
 CALL :SUBMSG "INFO" "Creating the %2 ZIP file..."
 
-RD /S /Q "temp_zip" >NUL 2>&1
-MD "temp_zip" "packages" >NUL 2>&1
+IF EXIST "temp_zip"     RD /S /Q "temp_zip"
+IF NOT EXIST "temp_zip" MD "temp_zip"
+IF NOT EXIST "packages" MD "packages"
 
 COPY /Y /V "..\License.txt" "temp_zip\"
 COPY /Y /V "..\%1\Notepad2.exe" "temp_zip\"
@@ -170,7 +171,7 @@ CALL :SUBMSG "INFO" "Notepad2-mod.%NP2_VER%_r%VerRev%_%2%SUFFIX%.zip created suc
 
 MOVE /Y "Notepad2-mod.%NP2_VER%_r%VerRev%_%2%SUFFIX%.zip" "..\packages" >NUL 2>&1
 POPD
-RD /S /Q "temp_zip" >NUL 2>&1
+IF EXIST "temp_zip" RD /S /Q "temp_zip"
 EXIT /B
 
 

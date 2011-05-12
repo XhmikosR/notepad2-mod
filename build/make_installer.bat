@@ -143,7 +143,7 @@ PUSHD "..\distrib"
 TITLE Building %BINDIR% installer...
 CALL :SUBMSG "INFO" "Building %BINDIR% installer..."
 
-MD "temp\%BINDIR%" >NUL 2>&1
+IF NOT EXIST "temp\%BINDIR%" MD "temp\%BINDIR%"
 
 COPY /B /V /Y "..\%1\Notepad2.exe" "temp\%BINDIR%\notepad2.exe"
 COPY /B /V /Y "..\License.txt" "temp\%BINDIR%\license.txt"
@@ -155,24 +155,24 @@ COPY /B /V /Y "..\Readme.txt" "temp\%BINDIR%\readme.txt"
 COPY /B /V /Y "..\Readme-mod.txt" "temp\%BINDIR%\readme-mod.txt"
 
 rem Set the version for the DisplayVersion registry value
-CALL tools\BatchSubstitute.bat "4.2.25.0" "%NP2_VER%.%VerRev%" "temp\%BINDIR%\notepad2.inf" >notepad2.inf.tmp
+CALL "tools\BatchSubstitute.bat" "4.2.25.0" "%NP2_VER%.%VerRev%" "temp\%BINDIR%\notepad2.inf" >notepad2.inf.tmp
 COPY /Y "temp\%BINDIR%\notepad2.inf" "notepad2.inf.orig" >NUL
 MOVE /Y "notepad2.inf.tmp" "temp\%BINDIR%\notepad2.inf" >NUL
 
 rem get the size and put it in the inf file
 PUSHD "temp\%BINDIR%"
 FOR /F "tokens=*" %%a IN ('"DIR /-C | FIND "bytes" | FIND /V "free""') DO SET summaryout=%%a
-FOR /F "tokens=1,2 delims=)" %%a IN ("%summaryout%") DO SET filesout=%%a&set sizeout=%%b
+FOR /F "tokens=1,2 delims=)" %%a IN ("%summaryout%") DO SET filesout=%%a & SET sizeout=%%b
 SET /A sizeout=%sizeout:bytes=%/1024
 POPD
 
-CALL tools\BatchSubstitute.bat "1111" "%sizeout%" "temp\%BINDIR%\notepad2.inf" >notepad2.inf.tmp
+CALL "tools\BatchSubstitute.bat" "1111" "%sizeout%" "temp\%BINDIR%\notepad2.inf" >notepad2.inf.tmp
 COPY /Y "temp\%BINDIR%\notepad2.inf" "notepad2.inf.orig" >NUL
 MOVE /Y "notepad2.inf.tmp" "temp\%BINDIR%\notepad2.inf" >NUL
 
-tools\cabutcd.exe "temp\%BINDIR%" "res\cabinet.%BINDIR%.cab"
-DEL "notepad2.inf.orig" >NUL 2>&1
-RD /Q /S "temp\%BINDIR%" >NUL 2>&1
+"tools\cabutcd.exe" "temp\%BINDIR%" "res\cabinet.%BINDIR%.cab"
+IF EXIST "notepad2.inf.orig" DEL "notepad2.inf.orig"
+IF EXIST "temp\%BINDIR%"     RD /Q /S "temp\%BINDIR%"
 
 
 CALL "%VS100COMNTOOLS%vsvars32.bat" >NUL
@@ -187,7 +187,7 @@ rem   "%PERL_PATH%\perl\bin\perl.exe" "addon_build.pl"
 rem   POPD
 rem )
 
-MD "..\build\packages" >NUL 2>&1
+IF NOT EXIST "..\build\packages" MD "..\build\packages"
 rem IF EXIST "%PERL_PATH%" (
 rem   MOVE "setup.%BINDIR%\addon.7z"    "..\build\packages\Notepad2-mod.%NP2_VER%_r%VerRev%_%BINDIR%%SUFFIX%_Addon.7z" >NUL
 rem )
@@ -195,8 +195,10 @@ MOVE "setup.%BINDIR%\setupfull.exe" "..\build\packages\Notepad2-mod.%NP2_VER%_r%
 rem MOVE "setup.%BINDIR%\setuplite.exe" "..\build\packages\Notepad2-mod.%NP2_VER%_r%VerRev%_%BINDIR%%SUFFIX%_Setup_Silent.exe" >NUL
 
 rem Cleanup
-RD /Q "setup.%BINDIR%" "temp" >NUL 2>&1
-RD /Q /S "tools\addon" "obj" >NUL 2>&1
+IF EXIST "setup.%BINDIR%" RD /Q "setup.%BINDIR%"
+IF EXIST "temp"           RD /Q "temp"
+IF EXIST "tools\addon"    RD /Q /S "tools\addon"
+IF EXIST "obj"            RD /Q /S "obj"
 
 POPD
 EXIT /B
