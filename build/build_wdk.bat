@@ -84,54 +84,54 @@ SET "INCLUDE=%WDKBASEDIR%\inc\api;%WDKBASEDIR%\inc\api\crt\stl60;%WDKBASEDIR%\in
 SET "LIB=%WDKBASEDIR%\lib\crt\i386;%WDKBASEDIR%\lib\win7\i386"
 SET "PATH=%WDKBASEDIR%\bin\x86;%WDKBASEDIR%\bin\x86\x86;%PATH%"
 
-IF /I "%ARCH%" == "x64" GOTO x64
+IF "%ARCH%" == "x64" GOTO x64
 
 TITLE Building Notepad2-mod x86 with WDK...
 ECHO. & ECHO.
 
-IF /I "%BUILDTYPE%" == "Build" (
+IF "%BUILDTYPE%" == "Build" (
   CALL :SUBNMAKE
 
-  IF /I "%ARCH%" == "x86" GOTO END
-  IF /I "%ARCH%" == "x64" GOTO x64
-  IF /I "%ARCH%" == "all" GOTO x64
+  IF "%ARCH%" == "x86" GOTO END
+  IF "%ARCH%" == "x64" GOTO x64
+  IF "%ARCH%" == "all" GOTO x64
 )
 
-IF /I "%BUILDTYPE%" == "Rebuild" (
+IF "%BUILDTYPE%" == "Rebuild" (
   CALL :SUBNMAKE
 
-  IF /I "%ARCH%" == "x86" GOTO END
-  IF /I "%ARCH%" == "x64" GOTO x64
-  IF /I "%ARCH%" == "all" GOTO x64
+  IF "%ARCH%" == "x86" GOTO END
+  IF "%ARCH%" == "x64" GOTO x64
+  IF "%ARCH%" == "all" GOTO x64
 )
 
-IF /I "%BUILDTYPE%" == "Clean" CALL :SUBNMAKE
+IF "%BUILDTYPE%" == "Clean" CALL :SUBNMAKE
 
-IF /I "%ARCH%" == "x86" GOTO END
-IF /I "%ARCH%" == "x64" GOTO x64
-IF /I "%ARCH%" == "all" GOTO x64
+IF "%ARCH%" == "x86" GOTO END
+IF "%ARCH%" == "x64" GOTO x64
+IF "%ARCH%" == "all" GOTO x64
 
 
 :x64
 SET "LIB=%WDKBASEDIR%\lib\crt\amd64;%WDKBASEDIR%\lib\win7\amd64"
 SET "PATH=%WDKBASEDIR%\bin\x86;%WDKBASEDIR%\bin\x86\amd64;%PATH%"
 
-IF /I "%ARCH%" == "x86" GOTO END
+IF "%ARCH%" == "x86" GOTO END
 
 TITLE Building Notepad2-mod x64 with WDK...
 ECHO. & ECHO.
 
-IF /I "%BUILDTYPE%" == "Build" (
+IF "%BUILDTYPE%" == "Build" (
   CALL :SUBNMAKE "x64=1"
   GOTO END
 )
 
-IF /I "%BUILDTYPE%" == "Rebuild" (
+IF "%BUILDTYPE%" == "Rebuild" (
   CALL :SUBNMAKE "x64=1"
   GOTO END
 )
 
-IF /I "%BUILDTYPE%" == "Clean" CALL :SUBNMAKE "x64=1"
+IF "%BUILDTYPE%" == "Clean" CALL :SUBNMAKE "x64=1"
 
 
 :END

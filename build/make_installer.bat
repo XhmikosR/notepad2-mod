@@ -129,11 +129,11 @@ EXIT /B
 
 
 :SubInstaller
-IF /I "%2"=="x86" (
+IF "%2"=="x86" (
   SET "ARCH=Win32"
   SET "BINDIR=x86-32"
 )
-IF /I "%2"=="x64" (
+IF "%2"=="x64" (
   SET "ARCH=x64"
   SET "BINDIR=x86-64"
 )

@@ -82,20 +82,20 @@ CALL "%VS100COMNTOOLS%vsvars32.bat" >NUL
 
 
 :x86
-IF /I "%ARCH%" == "x64" GOTO x64
+IF "%ARCH%" == "x64" GOTO x64
 
 TITLE Building Notepad2-mod x86 with ICL12...
 ECHO. & ECHO.
 
 CALL :SUBMSVC %BUILDTYPE% "Win32"
 
-IF /I "%ARCH%" == "x86" GOTO END
-IF /I "%ARCH%" == "x64" GOTO x64
-IF /I "%ARCH%" == "all" GOTO x64
+IF "%ARCH%" == "x86" GOTO END
+IF "%ARCH%" == "x64" GOTO x64
+IF "%ARCH%" == "all" GOTO x64
 
 
 :x64
-IF /I "%ARCH%" == "x86" GOTO END
+IF "%ARCH%" == "x86" GOTO END
 
 TITLE Building Notepad2-mod x64 with ICL12...
 ECHO. & ECHO.
