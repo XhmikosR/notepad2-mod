@@ -713,6 +713,55 @@ bool SCI_METHOD Document::IsDBCSLeadByte(char ch) const {
 	return false;
 }
 
+inline bool IsSpaceOrTab(int ch) {
+	return ch == ' ' || ch == '\t';
+}
+
+// Need to break text into segments near lengthSegment but taking into
+// account the encoding to not break inside a UTF-8 or DBCS character
+// and also trying to avoid breaking inside a pair of combining characters.
+// The segment length must always be long enough (more than 4 bytes)
+// so that there will be at least one whole character to make a segment.
+// For UTF-8, text must consist only of valid whole characters.
+// In preference order from best to worst:
+//   1) Break after space
+//   2) Break before punctuation
+//   3) Break after whole character
+
+int Document::SafeSegment(const char *text, int length, int lengthSegment) {
+	if (length <= lengthSegment)
+		return length;
+	int lastSpaceBreak = -1;
+	int lastPunctuationBreak = -1;
+	int lastEncodingAllowedBreak = -1;
+	for (int j=0; j < lengthSegment;) {
+		unsigned char ch = static_cast<unsigned char>(text[j]);
+		if (j > 0) {
+			if (IsSpaceOrTab(text[j - 1]) && !IsSpaceOrTab(text[j])) {
+				lastSpaceBreak = j;
+			}
+			if (ch < 'A') {
+				lastPunctuationBreak = j;
+			}
+		}
+		lastEncodingAllowedBreak = j;
+
+		if (dbcsCodePage == SC_CP_UTF8) {
+			j += (ch < 0x80) ? 1 : BytesFromLead(ch);
+		} else if (dbcsCodePage) {
+			j += IsDBCSLeadByte(ch) ? 2 : 1;
+		} else {
+			j++;
+		}
+	}
+	if (lastSpaceBreak >= 0) {
+		return lastSpaceBreak;
+	} else if (lastPunctuationBreak >= 0) {
+		return lastPunctuationBreak;
+	}
+	return lastEncodingAllowedBreak;
+}
+
 void Document::ModifiedAt(int pos) {
 	if (endStyled > pos)
 		endStyled = pos;

@@ -2185,7 +2185,7 @@ void Editor::LayoutLine(int line, Surface *surface, ViewStyle &vstyle, LineLayou
 						} else {
 							lastSegItalics = vstyle.styles[ll->styles[charInLine]].italic;
 							posCache.MeasureWidths(surface, vstyle, ll->styles[charInLine], ll->chars + startseg,
-							        lenSeg, ll->positions + startseg + 1);
+							        lenSeg, ll->positions + startseg + 1, pdoc);
 						}
 					}
 				} else {    // invisible
@@ -2801,7 +2801,7 @@ void Editor::DrawLine(Surface *surface, ViewStyle &vsDraw, int line, int lineVis
 
 	ll->psel = &sel;
 
-	BreakFinder bfBack(ll, lineStart, lineEnd, posLineStart, IsUnicodeMode(), xStartVisible, selBackDrawn);
+	BreakFinder bfBack(ll, lineStart, lineEnd, posLineStart, xStartVisible, selBackDrawn, pdoc);
 	int next = bfBack.First();
 
 	// Background drawing loop
@@ -2891,8 +2891,8 @@ void Editor::DrawLine(Surface *surface, ViewStyle &vsDraw, int line, int lineVis
 
 	inIndentation = subLine == 0;	// Do not handle indentation except on first subline.
 	// Foreground drawing loop
-	BreakFinder bfFore(ll, lineStart, lineEnd, posLineStart, IsUnicodeMode(), xStartVisible,
-		((!twoPhaseDraw && selBackDrawn) || vsDraw.selforeset));
+	BreakFinder bfFore(ll, lineStart, lineEnd, posLineStart, xStartVisible,
+		((!twoPhaseDraw && selBackDrawn) || vsDraw.selforeset), pdoc);
 	next = bfFore.First();
 
 	while (next < lineEnd) {
