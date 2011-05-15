@@ -121,8 +121,9 @@ IF EXIST "Notepad2-mod.zip" DEL "Notepad2-mod.zip"
 IF EXIST "temp_zip"         RD /S /Q "temp_zip"
 IF NOT EXIST "temp_zip"     MD "temp_zip"
 
-COPY /Y /V "Notepad2-mod.%NP2_VER%_r%VerRev%*.zip" "temp_zip\" >NUL 2>&1
-COPY /Y /V "Notepad2-mod.%NP2_VER%_r%VerRev%*.exe" "temp_zip\" >NUL 2>&1
+IF EXIST "Notepad2-mod.%NP2_VER%_r%VerRev%*.7z"  COPY /Y /V "Notepad2-mod.%NP2_VER%_r%VerRev%*.7z"  "temp_zip\" >NUL
+IF EXIST "Notepad2-mod.%NP2_VER%_r%VerRev%*.exe" COPY /Y /V "Notepad2-mod.%NP2_VER%_r%VerRev%*.exe" "temp_zip\" >NUL
+IF EXIST "Notepad2-mod.%NP2_VER%_r%VerRev%*.zip" COPY /Y /V "Notepad2-mod.%NP2_VER%_r%VerRev%*.zip" "temp_zip\" >NUL
 
 PUSHD "temp_zip"
 
@@ -131,7 +132,7 @@ IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
 CALL :SUBMSG "INFO" "Notepad2-mod.zip created successfully!"
 
-MOVE /Y "Notepad2-mod.zip" ".." >NUL 2>&1
+MOVE /Y "Notepad2-mod.zip" ".." >NUL
 
 POPD
 IF EXIST "temp_zip" RD /S /Q "temp_zip"
@@ -154,12 +155,12 @@ IF EXIST "temp_zip"     RD /S /Q "temp_zip"
 IF NOT EXIST "temp_zip" MD "temp_zip"
 IF NOT EXIST "packages" MD "packages"
 
-COPY /Y /V "..\License.txt" "temp_zip\"
-COPY /Y /V "..\%1\Notepad2.exe" "temp_zip\"
+COPY /Y /V "..\License.txt"                      "temp_zip\"
+COPY /Y /V "..\%1\Notepad2.exe"                  "temp_zip\"
 COPY /Y /V "..\distrib\res\cabinet\notepad2.ini" "temp_zip\Notepad2.ini"
-COPY /Y /V "..\Notepad2.txt" "temp_zip\"
-COPY /Y /V "..\Readme.txt" "temp_zip\"
-COPY /Y /V "..\Readme-mod.txt" "temp_zip\"
+COPY /Y /V "..\Notepad2.txt"                     "temp_zip\"
+COPY /Y /V "..\Readme.txt"                       "temp_zip\"
+COPY /Y /V "..\Readme-mod.txt"                   "temp_zip\"
 
 PUSHD "temp_zip"
 START "" /B /WAIT "..\..\distrib\tools\7za.exe" a -tzip -mx=9^
@@ -169,7 +170,7 @@ IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
 CALL :SUBMSG "INFO" "Notepad2-mod.%NP2_VER%_r%VerRev%_%2%SUFFIX%.zip created successfully!"
 
-MOVE /Y "Notepad2-mod.%NP2_VER%_r%VerRev%_%2%SUFFIX%.zip" "..\packages" >NUL 2>&1
+MOVE /Y "Notepad2-mod.%NP2_VER%_r%VerRev%_%2%SUFFIX%.zip" "..\packages" >NUL
 POPD
 IF EXIST "temp_zip" RD /S /Q "temp_zip"
 EXIT /B

@@ -145,14 +145,14 @@ CALL :SUBMSG "INFO" "Building %BINDIR% installer..."
 
 IF NOT EXIST "temp\%BINDIR%" MD "temp\%BINDIR%"
 
-COPY /B /V /Y "..\%1\Notepad2.exe" "temp\%BINDIR%\notepad2.exe"
-COPY /B /V /Y "..\License.txt" "temp\%BINDIR%\license.txt"
-COPY /B /V /Y "res\cabinet\notepad2.inf" "temp\%BINDIR%\notepad2.inf"
-COPY /B /V /Y "res\cabinet\notepad2.ini" "temp\%BINDIR%\notepad2.ini"
+COPY /B /V /Y "..\%1\Notepad2.exe"             "temp\%BINDIR%\notepad2.exe"
+COPY /B /V /Y "..\License.txt"                 "temp\%BINDIR%\license.txt"
+COPY /B /V /Y "res\cabinet\notepad2.inf"       "temp\%BINDIR%\notepad2.inf"
+COPY /B /V /Y "res\cabinet\notepad2.ini"       "temp\%BINDIR%\notepad2.ini"
 COPY /B /V /Y "res\cabinet\notepad2.redir.ini" "temp\%BINDIR%\notepad2.redir.ini"
-COPY /B /V /Y "..\Notepad2.txt" "temp\%BINDIR%\notepad2.txt"
-COPY /B /V /Y "..\Readme.txt" "temp\%BINDIR%\readme.txt"
-COPY /B /V /Y "..\Readme-mod.txt" "temp\%BINDIR%\readme-mod.txt"
+COPY /B /V /Y "..\Notepad2.txt"                "temp\%BINDIR%\notepad2.txt"
+COPY /B /V /Y "..\Readme.txt"                  "temp\%BINDIR%\readme.txt"
+COPY /B /V /Y "..\Readme-mod.txt"              "temp\%BINDIR%\readme-mod.txt"
 
 rem Set the version for the DisplayVersion registry value
 CALL "tools\BatchSubstitute.bat" "4.2.25.0" "%NP2_VER%.%VerRev%" "temp\%BINDIR%\notepad2.inf" >notepad2.inf.tmp

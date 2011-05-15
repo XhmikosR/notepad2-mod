@@ -68,27 +68,25 @@ RFLAGS        = $(RFLAGS) /d "WIN32"
 ###############
 ##  Targets  ##
 ###############
-BUILD:	CHECKDIRS UPDATEREV $(EXE)
+BUILD:	PREBUILD $(EXE)
 
-CHECKDIRS:
+PREBUILD:
 	IF NOT EXIST "$(OBJDIR)" MD "$(OBJDIR)"
+	CD ..
+	CALL "update_version.bat"
+	CD "build"
+	ECHO.
 
 CLEAN:
 	ECHO Cleaning... & ECHO.
 	IF EXIST "$(EXE)"                 DEL "$(EXE)"
 	IF EXIST "$(OBJDIR)\*.obj"        DEL "$(OBJDIR)\*.obj"
-	IF EXIST "$(OBJDIR)\Notepad2.res" DEL "$(OBJDIR)\Notepad2.res"
 	IF EXIST "$(BINDIR)\Notepad2.pdb" DEL "$(BINDIR)\Notepad2.pdb"
-	IF EXIST "$(OBJDIR)"              RD /Q "$(OBJDIR)"
-	IF EXIST "$(BINDIR)"              RD /Q "$(BINDIR)"
+	IF EXIST "$(OBJDIR)\Notepad2.res" DEL "$(OBJDIR)\Notepad2.res"
+	-IF EXIST "$(OBJDIR)"             RD /Q "$(OBJDIR)"
+	-IF EXIST "$(BINDIR)"             RD /Q "$(BINDIR)"
 
 REBUILD:	CLEAN BUILD
-
-UPDATEREV:
-	CD ..
-	CALL "update_version.bat"
-	CD build
-	ECHO.
 
 
 ####################

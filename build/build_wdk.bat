@@ -160,9 +160,9 @@ ECHO. & ECHO.
 ECHO Executing "%~nx0" will use the defaults: "%~nx0 build all"
 ECHO.
 ECHO If you skip the second argument the default one will be used. Example:
-ECHO "%~nx0 rebuild" is equivalent to "%~nx0 rebuild all"
+ECHO "%~nx0 rebuild" is the same as "%~nx0 rebuild all"
 ECHO.
-ECHO NOTE: "%~nx0 x86" won't work.
+ECHO WARNING: "%~nx0 x86" won't work.
 ECHO.
 ENDLOCAL
 EXIT /B
