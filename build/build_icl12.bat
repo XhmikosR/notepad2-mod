@@ -57,18 +57,43 @@ rem Check for the second switch
 IF "%~2" == "" (
   SET "ARCH=all"
 ) ELSE (
-  IF /I "%~2" == "x86"   SET "ARCH=x86" & GOTO START
-  IF /I "%~2" == "/x86"  SET "ARCH=x86" & GOTO START
-  IF /I "%~2" == "-x86"  SET "ARCH=x86" & GOTO START
-  IF /I "%~2" == "--x86" SET "ARCH=x86" & GOTO START
-  IF /I "%~2" == "x64"   SET "ARCH=x64" & GOTO START
-  IF /I "%~2" == "/x64"  SET "ARCH=x64" & GOTO START
-  IF /I "%~2" == "-x64"  SET "ARCH=x64" & GOTO START
-  IF /I "%~2" == "--x64" SET "ARCH=x64" & GOTO START
-  IF /I "%~2" == "all"   SET "ARCH=all" & GOTO START
-  IF /I "%~2" == "/all"  SET "ARCH=all" & GOTO START
-  IF /I "%~2" == "-all"  SET "ARCH=all" & GOTO START
-  IF /I "%~2" == "--all" SET "ARCH=all" & GOTO START
+  IF /I "%~2" == "x86"   SET "ARCH=x86" & GOTO CHECKTHIRDARG
+  IF /I "%~2" == "/x86"  SET "ARCH=x86" & GOTO CHECKTHIRDARG
+  IF /I "%~2" == "-x86"  SET "ARCH=x86" & GOTO CHECKTHIRDARG
+  IF /I "%~2" == "--x86" SET "ARCH=x86" & GOTO CHECKTHIRDARG
+  IF /I "%~2" == "x64"   SET "ARCH=x64" & GOTO CHECKTHIRDARG
+  IF /I "%~2" == "/x64"  SET "ARCH=x64" & GOTO CHECKTHIRDARG
+  IF /I "%~2" == "-x64"  SET "ARCH=x64" & GOTO CHECKTHIRDARG
+  IF /I "%~2" == "--x64" SET "ARCH=x64" & GOTO CHECKTHIRDARG
+  IF /I "%~2" == "all"   SET "ARCH=all" & GOTO CHECKTHIRDARG
+  IF /I "%~2" == "/all"  SET "ARCH=all" & GOTO CHECKTHIRDARG
+  IF /I "%~2" == "-all"  SET "ARCH=all" & GOTO CHECKTHIRDARG
+  IF /I "%~2" == "--all" SET "ARCH=all" & GOTO CHECKTHIRDARG
+
+  ECHO.
+  ECHO Unsupported commandline switch!
+  ECHO Run "%~nx0 help" for details about the commandline switches.
+  CALL :SUBMSG "ERROR" "Compilation failed!"
+)
+
+
+:CHECKTHIRDARG
+rem Check for the third switch
+IF "%~3" == "" (
+  SET "CONFIG=Release"
+) ELSE (
+  IF /I "%~3" == "Debug"     SET "CONFIG=Debug"   & GOTO START
+  IF /I "%~3" == "/Debug"    SET "CONFIG=Debug"   & GOTO START
+  IF /I "%~3" == "-Debug"    SET "CONFIG=Debug"   & GOTO START
+  IF /I "%~3" == "--Debug"   SET "CONFIG=Debug"   & GOTO START
+  IF /I "%~3" == "Release"   SET "CONFIG=Release" & GOTO START
+  IF /I "%~3" == "/Release"  SET "CONFIG=Release" & GOTO START
+  IF /I "%~3" == "-Release"  SET "CONFIG=Release" & GOTO START
+  IF /I "%~3" == "--Release" SET "CONFIG=Release" & GOTO START
+  IF /I "%~3" == "all"       SET "CONFIG=all"     & GOTO START
+  IF /I "%~3" == "/all"      SET "CONFIG=all"     & GOTO START
+  IF /I "%~3" == "-all"      SET "CONFIG=all"     & GOTO START
+  IF /I "%~3" == "--all"     SET "CONFIG=all"     & GOTO START
 
   ECHO.
   ECHO Unsupported commandline switch!
@@ -84,10 +109,31 @@ CALL "%VS100COMNTOOLS%vsvars32.bat" >NUL
 :x86
 IF "%ARCH%" == "x64" GOTO x64
 
-TITLE Building Notepad2-mod x86 with ICL12...
-ECHO. & ECHO.
+IF "%BUILDTYPE%" == "Build" (
+  IF "%CONFIG%" == "Release" CALL :SUBMSVC %BUILDTYPE% Release Win32
+  IF "%CONFIG%" == "Debug"   CALL :SUBMSVC %BUILDTYPE% Debug Win32
+  IF "%CONFIG%" == "all"     CALL :SUBMSVC %BUILDTYPE% Release Win32 && CALL :SUBMSVC %BUILDTYPE% Debug Win32
 
-CALL :SUBMSVC %BUILDTYPE% "Win32"
+  IF "%ARCH%" == "x86" GOTO END
+  IF "%ARCH%" == "x64" GOTO x64
+  IF "%ARCH%" == "all" GOTO x64
+)
+
+IF "%BUILDTYPE%" == "Rebuild" (
+  IF "%CONFIG%" == "Release" CALL :SUBMSVC %BUILDTYPE% Release Win32
+  IF "%CONFIG%" == "Debug"   CALL :SUBMSVC %BUILDTYPE% Debug Win32
+  IF "%CONFIG%" == "all"     CALL :SUBMSVC %BUILDTYPE% Release Win32 && CALL :SUBMSVC %BUILDTYPE% Debug Win32
+
+  IF "%ARCH%" == "x86" GOTO END
+  IF "%ARCH%" == "x64" GOTO x64
+  IF "%ARCH%" == "all" GOTO x64
+)
+
+IF "%BUILDTYPE%" == "Clean" (
+  IF "%CONFIG%" == "Release" CALL :SUBMSVC %BUILDTYPE% Release Win32
+  IF "%CONFIG%" == "Debug"   CALL :SUBMSVC %BUILDTYPE% Debug Win32
+  IF "%CONFIG%" == "all"     CALL :SUBMSVC %BUILDTYPE% Release Win32 && CALL :SUBMSVC %BUILDTYPE% Debug Win32
+)
 
 IF "%ARCH%" == "x86" GOTO END
 IF "%ARCH%" == "x64" GOTO x64
@@ -97,11 +143,25 @@ IF "%ARCH%" == "all" GOTO x64
 :x64
 IF "%ARCH%" == "x86" GOTO END
 
-TITLE Building Notepad2-mod x64 with ICL12...
-ECHO. & ECHO.
+IF "%BUILDTYPE%" == "Build" (
+  IF "%CONFIG%" == "Release" CALL :SUBMSVC %BUILDTYPE% Release x64
+  IF "%CONFIG%" == "Debug"   CALL :SUBMSVC %BUILDTYPE% Debug x64
+  IF "%CONFIG%" == "all"     CALL :SUBMSVC %BUILDTYPE% Release x64 && CALL :SUBMSVC %BUILDTYPE% Debug x64
+  GOTO END
+)
 
-CALL :SUBMSVC %BUILDTYPE% "x64"
-GOTO END
+IF "%BUILDTYPE%" == "Rebuild" (
+  IF "%CONFIG%" == "Release" CALL :SUBMSVC %BUILDTYPE% Release x64
+  IF "%CONFIG%" == "Debug"   CALL :SUBMSVC %BUILDTYPE% Debug x64
+  IF "%CONFIG%" == "all"     CALL :SUBMSVC %BUILDTYPE% Release x64 && CALL :SUBMSVC %BUILDTYPE% Debug x64
+  GOTO END
+)
+
+IF "%BUILDTYPE%" == "Clean" (
+  IF "%CONFIG%" == "Release" CALL :SUBMSVC %BUILDTYPE% Release x64
+  IF "%CONFIG%" == "Debug"   CALL :SUBMSVC %BUILDTYPE% Debug x64
+  IF "%CONFIG%" == "all"     CALL :SUBMSVC %BUILDTYPE% Release x64 && CALL :SUBMSVC %BUILDTYPE% Debug x64
+)
 
 
 :END
@@ -111,7 +171,9 @@ EXIT /B
 
 
 :SUBMSVC
-devenv /nologo Notepad2_icl12.sln /%~1 "Release|%~2"
+ECHO.
+TITLE Building Notepad2-mod with ICL12 - %~1 "%~2|%~3"...
+devenv /nologo Notepad2_icl12.sln /%~1 "%~2|%~3"
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 EXIT /B
 
@@ -119,17 +181,19 @@ EXIT /B
 :SHOWHELP
 TITLE "%~nx0 %1"
 ECHO. & ECHO.
-ECHO Usage:   %~nx0 [Clean^|Build^|Rebuild] [x86^|x64^|all]
+ECHO Usage:  %~nx0 [Clean^|Build^|Rebuild] [x86^|x64^|all] [Debug^|Release^|all]
 ECHO.
-ECHO Notes:   You can also prefix the commands with "-", "--" or "/".
-ECHO          The arguments are case insesitive.
+ECHO Notes:  You can also prefix the commands with "-", "--" or "/".
+ECHO         The arguments are case insesitive.
 ECHO. & ECHO.
-ECHO Executing "%~nx0" will use the defaults: "%~nx0 build all"
+ECHO Executing "%~nx0" will use the defaults: "%~nx0 build all release"
 ECHO.
-ECHO If you skip the second argument the default one will be used. Example:
-ECHO "%~nx0 rebuild" is equivalent to "%~nx0 rebuild all"
+ECHO If you skip the second argument the default one will be used.
+ECHO The same goes for the third argument. Examples:
+ECHO "%~nx0 rebuild" is the same as "%~nx0 rebuild all release"
+ECHO "%~nx0 rebuild x86" is the same as "%~nx0 rebuild x86 release"
 ECHO.
-ECHO NOTE: "%~nx0 x86" won't work.
+ECHO WARNING: "%~nx0 x86" or "%~nx0 debug" won't work.
 ECHO.
 ENDLOCAL
 EXIT /B
