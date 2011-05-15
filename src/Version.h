@@ -19,7 +19,7 @@
 #include "Version_rev.h"
 
 #define DO_STRINGIFY(x) #x
-#define STRINGIFY(x) DO_STRINGIFY(x)
+#define STRINGIFY(x)    DO_STRINGIFY(x)
 
 #define VERSION_MAJOR 4
 #define VERSION_MINOR 2
@@ -38,6 +38,7 @@
 #define VERSION_AUTHORNAME           L"Florian Balmer"
 #define VERSION_WEBPAGEDISPLAY       L"flo's freeware - http://www.flos-freeware.ch"
 #define VERSION_EMAILDISPLAY         L"florian.balmer@gmail.com"
+//#define VERSION_COMPANYNAME          L"Florian Balmer et all"
 #define VERSION_MODPAGEDISPLAY       L"http://code.google.com/p/notepad2-mod/"
 
 

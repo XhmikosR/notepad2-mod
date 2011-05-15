@@ -176,7 +176,6 @@ update_version.bat
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <OptimizeForWindowsApplication>true</OptimizeForWindowsApplication>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <GenerateAlternateCodePaths>SSSE3</GenerateAlternateCodePaths>
       <DisableSpecificDiagnostics>2</DisableSpecificDiagnostics>
     </ClCompile>
     <ResourceCompile>
@@ -216,7 +215,6 @@ update_version.bat
       <DisableSpecificWarnings>4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <OptimizeForWindowsApplication>true</OptimizeForWindowsApplication>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <GenerateAlternateCodePaths>SSSE3</GenerateAlternateCodePaths>
       <DisableSpecificDiagnostics>2</DisableSpecificDiagnostics>
     </ClCompile>
     <ResourceCompile>

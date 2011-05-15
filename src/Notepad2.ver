@@ -54,7 +54,7 @@ BEGIN
       VALUE "InternalName",     APPNAME_STRA
       VALUE "ProductName",      APPNAME_STRA
       #endif
-      //VALUE "CompanyName",    "Florian Balmer"
+      //VALUE "CompanyName",      VERSION_COMPANYNAME
       VALUE "FileVersion",      VERSION_FILEVERSION
       VALUE "ProductVersion",   VERSION_FILEVERSION
       VALUE "LegalCopyright",   VERSION_LEGALCOPYRIGHT_LONG
