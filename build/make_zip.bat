@@ -13,7 +13,7 @@ rem *                                       http://code.google.com/p/notepad2-mo
 rem *
 rem ******************************************************************************
 
-SETLOCAL
+SETLOCAL ENABLEEXTENSIONS
 CD /D %~dp0
 
 rem Check for the help switches

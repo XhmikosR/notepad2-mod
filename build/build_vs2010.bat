@@ -13,7 +13,7 @@ rem *                                       http://code.google.com/p/notepad2-mo
 rem *
 rem ******************************************************************************
 
-SETLOCAL
+SETLOCAL ENABLEEXTENSIONS
 CD /D %~dp0
 
 rem Check the building environment
@@ -108,31 +108,17 @@ CALL "%VS100COMNTOOLS%vsvars32.bat" >NUL
 :x86
 IF "%ARCH%" == "x64" GOTO x64
 
-IF "%BUILDTYPE%" == "Build" (
-  IF "%CONFIG%" == "Release" CALL :SUBMSVC %BUILDTYPE% Release Win32
-  IF "%CONFIG%" == "Debug"   CALL :SUBMSVC %BUILDTYPE% Debug Win32
-  IF "%CONFIG%" == "all"     CALL :SUBMSVC %BUILDTYPE% Release Win32 && CALL :SUBMSVC %BUILDTYPE% Debug Win32
+IF "%BUILDTYPE%" == "Build" IF "%CONFIG%" == "Release" CALL :SUBMSVC %BUILDTYPE% Release Win32
+IF "%BUILDTYPE%" == "Build" IF "%CONFIG%" == "Debug"   CALL :SUBMSVC %BUILDTYPE% Debug Win32
+IF "%BUILDTYPE%" == "Build" IF "%CONFIG%" == "all"     CALL :SUBMSVC %BUILDTYPE% Release Win32 && CALL :SUBMSVC %BUILDTYPE% Debug Win32
 
-  IF "%ARCH%" == "x86" GOTO END
-  IF "%ARCH%" == "x64" GOTO x64
-  IF "%ARCH%" == "all" GOTO x64
-)
+IF "%BUILDTYPE%" == "Rebuild" IF "%CONFIG%" == "Release" CALL :SUBMSVC %BUILDTYPE% Release Win32
+IF "%BUILDTYPE%" == "Rebuild" IF "%CONFIG%" == "Debug"   CALL :SUBMSVC %BUILDTYPE% Debug Win32
+IF "%BUILDTYPE%" == "Rebuild" IF "%CONFIG%" == "all"     CALL :SUBMSVC %BUILDTYPE% Release Win32 && CALL :SUBMSVC %BUILDTYPE% Debug Win32
 
-IF "%BUILDTYPE%" == "Rebuild" (
-  IF "%CONFIG%" == "Release" CALL :SUBMSVC %BUILDTYPE% Release Win32
-  IF "%CONFIG%" == "Debug"   CALL :SUBMSVC %BUILDTYPE% Debug Win32
-  IF "%CONFIG%" == "all"     CALL :SUBMSVC %BUILDTYPE% Release Win32 && CALL :SUBMSVC %BUILDTYPE% Debug Win32
-
-  IF "%ARCH%" == "x86" GOTO END
-  IF "%ARCH%" == "x64" GOTO x64
-  IF "%ARCH%" == "all" GOTO x64
-)
-
-IF "%BUILDTYPE%" == "Clean" (
-  IF "%CONFIG%" == "Release" CALL :SUBMSVC %BUILDTYPE% Release Win32
-  IF "%CONFIG%" == "Debug"   CALL :SUBMSVC %BUILDTYPE% Debug Win32
-  IF "%CONFIG%" == "all"     CALL :SUBMSVC %BUILDTYPE% Release Win32 && CALL :SUBMSVC %BUILDTYPE% Debug Win32
-)
+IF "%BUILDTYPE%" == "Clean" IF "%CONFIG%" == "Release" CALL :SUBMSVC %BUILDTYPE% Release Win32
+IF "%BUILDTYPE%" == "Clean" IF "%CONFIG%" == "Debug"   CALL :SUBMSVC %BUILDTYPE% Debug Win32
+IF "%BUILDTYPE%" == "Clean" IF "%CONFIG%" == "all"     CALL :SUBMSVC %BUILDTYPE% Release Win32 && CALL :SUBMSVC %BUILDTYPE% Debug Win32
 
 IF "%ARCH%" == "x86" GOTO END
 IF "%ARCH%" == "x64" GOTO x64
@@ -142,25 +128,17 @@ IF "%ARCH%" == "all" GOTO x64
 :x64
 IF "%ARCH%" == "x86" GOTO END
 
-IF "%BUILDTYPE%" == "Build" (
-  IF "%CONFIG%" == "Release" CALL :SUBMSVC %BUILDTYPE% Release x64
-  IF "%CONFIG%" == "Debug"   CALL :SUBMSVC %BUILDTYPE% Debug x64
-  IF "%CONFIG%" == "all"     CALL :SUBMSVC %BUILDTYPE% Release x64 && CALL :SUBMSVC %BUILDTYPE% Debug x64
-  GOTO END
-)
+IF "%BUILDTYPE%" == "Build" IF "%CONFIG%" == "Release" CALL :SUBMSVC %BUILDTYPE% Release x64
+IF "%BUILDTYPE%" == "Build" IF "%CONFIG%" == "Debug"   CALL :SUBMSVC %BUILDTYPE% Debug x64
+IF "%BUILDTYPE%" == "Build" IF "%CONFIG%" == "all"     CALL :SUBMSVC %BUILDTYPE% Release x64 && CALL :SUBMSVC %BUILDTYPE% Debug x64
 
-IF "%BUILDTYPE%" == "Rebuild" (
-  IF "%CONFIG%" == "Release" CALL :SUBMSVC %BUILDTYPE% Release x64
-  IF "%CONFIG%" == "Debug"   CALL :SUBMSVC %BUILDTYPE% Debug x64
-  IF "%CONFIG%" == "all"     CALL :SUBMSVC %BUILDTYPE% Release x64 && CALL :SUBMSVC %BUILDTYPE% Debug x64
-  GOTO END
-)
+IF "%BUILDTYPE%" == "Rebuild" IF "%CONFIG%" == "Release" CALL :SUBMSVC %BUILDTYPE% Release x64
+IF "%BUILDTYPE%" == "Rebuild" IF "%CONFIG%" == "Debug"   CALL :SUBMSVC %BUILDTYPE% Debug x64
+IF "%BUILDTYPE%" == "Rebuild" IF "%CONFIG%" == "all"     CALL :SUBMSVC %BUILDTYPE% Release x64 && CALL :SUBMSVC %BUILDTYPE% Debug x64
 
-IF "%BUILDTYPE%" == "Clean" (
-  IF "%CONFIG%" == "Release" CALL :SUBMSVC %BUILDTYPE% Release x64
-  IF "%CONFIG%" == "Debug"   CALL :SUBMSVC %BUILDTYPE% Debug x64
-  IF "%CONFIG%" == "all"     CALL :SUBMSVC %BUILDTYPE% Release x64 && CALL :SUBMSVC %BUILDTYPE% Debug x64
-)
+IF "%BUILDTYPE%" == "Clean" IF "%CONFIG%" == "Release" CALL :SUBMSVC %BUILDTYPE% Release x64
+IF "%BUILDTYPE%" == "Clean" IF "%CONFIG%" == "Debug"   CALL :SUBMSVC %BUILDTYPE% Debug x64
+IF "%BUILDTYPE%" == "Clean" IF "%CONFIG%" == "all"     CALL :SUBMSVC %BUILDTYPE% Release x64 && CALL :SUBMSVC %BUILDTYPE% Debug x64
 
 
 :END
