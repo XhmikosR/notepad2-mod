@@ -335,6 +335,9 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	virtual void ScrollText(int linesToMove);
 	void HorizontalScrollTo(int xPos);
 	void VerticalCentreCaret();
+	void MoveSelectedLines(int lineDelta);
+	void MoveSelectedLinesUp();
+	void MoveSelectedLinesDown();
 	void MoveCaretInsideView(bool ensureVisible=true);
 	int DisplayFromPosition(int pos);
 

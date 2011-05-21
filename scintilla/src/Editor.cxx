@@ -1027,6 +1027,59 @@ void Editor::VerticalCentreCaret() {
 	}
 }
 
+void Editor::MoveSelectedLines(int lineDelta) {
+
+	// if selection doesn't start at the beginning of the line, set the new start
+	int selectionStart = SelectionStart().Position();
+	int startLine = pdoc->LineFromPosition(selectionStart);
+	int beginningOfStartLine = pdoc->LineStart(startLine);
+	selectionStart = beginningOfStartLine;
+
+	// if selection doesn't end at the beginning of a line greater than that of the start,
+	// then set it at the beginning of the next one
+	int selectionEnd = SelectionEnd().Position();
+	int endLine = pdoc->LineFromPosition(selectionEnd);
+	int beginningOfEndLine = pdoc->LineStart(endLine);
+	if (selectionEnd > beginningOfEndLine
+		|| selectionStart == selectionEnd) {
+		selectionEnd = pdoc->LineStart(endLine + 1);
+	}
+
+	// if there's nowhere for the selection to move
+	// (i.e. at the beginning going up or at the end going down),
+	// stop it right there!
+	if ((selectionStart == 0 && lineDelta < 0)
+		|| (selectionEnd == pdoc->Length() && lineDelta > 0)
+	        || selectionStart == selectionEnd) {
+		return;
+	}
+
+	UndoGroup ug(pdoc);
+
+	SetSelection(selectionStart, selectionEnd);
+
+	SelectionText selectedText;
+	CopySelectionRange(&selectedText);
+
+	int selectionLength = SelectionRange(selectionStart, selectionEnd).Length();
+	ClearSelection();
+
+	Point currentLocation = LocationFromPosition(CurrentPosition());
+	int currentLine = LineFromLocation(currentLocation);
+	GoToLine(currentLine + lineDelta);
+
+	pdoc->InsertCString(CurrentPosition(), selectedText.s);
+	SetSelection(CurrentPosition(), CurrentPosition() + selectionLength);
+}
+
+void Editor::MoveSelectedLinesUp() {
+	MoveSelectedLines(-1);
+}
+
+void Editor::MoveSelectedLinesDown() {
+	MoveSelectedLines(1);
+}
+
 void Editor::MoveCaretInsideView(bool ensureVisible) {
 	PRectangle rcClient = GetTextRectangle();
 	Point pt = PointMainCaret();
@@ -4688,6 +4741,8 @@ void Editor::NotifyMacroRecord(unsigned int iMessage, uptr_t wParam, sptr_t lPar
 	case SCI_SELECTIONDUPLICATE:
 	case SCI_COPYALLOWLINE:
 	case SCI_VERTICALCENTRECARET:
+	case SCI_MOVESELECTEDLINESUP:
+	case SCI_MOVESELECTEDLINESDOWN:
 		break;
 
 		// Filter out all others like display changes. Also, newlines are redundant
@@ -6303,7 +6358,7 @@ void Editor::ButtonMove(Point pt) {
 		if (hsStart != -1 && !PositionIsHotspot(movePos.Position()))
 			SetHotSpotRange(NULL);
 
-		if (hotSpotClickPos != INVALID_POSITION && PositionFromLocation(pt,true,false) != hotSpotClickPos ) {
+		if (hotSpotClickPos != INVALID_POSITION && PositionFromLocation(pt,true,false) != hotSpotClickPos) {
 			if (inDragDrop == ddNone) {
 				DisplayCursor(Window::cursorText);
 			}
@@ -6687,7 +6742,7 @@ void Editor::ToggleContraction(int line) {
 }
 
 int Editor::ContractedFoldNext(int lineStart) {
-	for (int line = lineStart; line<pdoc->LinesTotal(); ) {
+	for (int line = lineStart; line<pdoc->LinesTotal();) {
 		if (!cs.GetExpanded(line) && (pdoc->GetLevel(line) & SC_FOLDLEVELHEADERFLAG))
 			return line;
 		line = cs.ContractedNext(line+1);
@@ -6972,6 +7027,14 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 
 	case SCI_VERTICALCENTRECARET:
 		VerticalCentreCaret();
+		break;
+
+	case SCI_MOVESELECTEDLINESUP:
+		MoveSelectedLinesUp();
+		break;
+
+	case SCI_MOVESELECTEDLINESDOWN:
+		MoveSelectedLinesDown();
 		break;
 
 	case SCI_COPYRANGE:

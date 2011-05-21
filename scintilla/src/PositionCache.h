@@ -136,7 +136,7 @@ public:
 	enum { lengthStartSubdivision = 300 };
 	// Try to make each subdivided run lengthEachSubdivision or shorter.
 	enum { lengthEachSubdivision = 100 };
-	BreakFinder(LineLayout *ll_, int lineStart_, int lineEnd_, int posLineStart_, 
+	BreakFinder(LineLayout *ll_, int lineStart_, int lineEnd_, int posLineStart_,
 		int xStart, bool breakForSelection, Document *pdoc_);
 	~BreakFinder();
 	int First() const;
@@ -153,7 +153,7 @@ public:
 	~PositionCache();
 	void Clear();
 	void SetSize(size_t size_);
-	int GetSize() const { return size; }
+	size_t GetSize() const { return size; }
 	void MeasureWidths(Surface *surface, ViewStyle &vstyle, unsigned int styleNumber,
 		const char *s, unsigned int len, int *positions, Document *pdoc);
 };

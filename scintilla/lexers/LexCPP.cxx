@@ -435,7 +435,7 @@ int SCI_METHOD LexerCPP::WordListSet(int n, const char *wl) {
 struct After {
 	int line;
 	After(int line_) : line(line_) {}
-	bool operator() (PPDefinition &p) const {
+	bool operator()(PPDefinition &p) const {
 		return p.line > line;
 	}
 };
@@ -741,7 +741,7 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 				}
 				break;
 			case SCE_C_TRIPLEVERBATIM:
-				if (sc.Match ("\"\"\"")) {
+				if (sc.Match("\"\"\"")) {
 					while (sc.Match('"')) {
 						sc.Forward();
 					}
@@ -805,7 +805,7 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 				if (sc.chPrev == 'R') {
 					sc.SetState(SCE_C_STRINGRAW|activitySet);
 					rawStringTerminator = ")";
-					for (int termPos = sc.currentPos + 1;;termPos++) {
+					for (int termPos = sc.currentPos + 1;; termPos++) {
 						char chTerminator = styler.SafeGetCharAt(termPos, '(');
 						if (chTerminator == '(')
 							break;

@@ -2125,6 +2125,12 @@ fun int ContractedFoldNext=2618(int lineStart,)
 # Centre current line in window.
 fun void VerticalCentreCaret=2619(,)
 
+# Move the selected lines up one line, shifting the line above after the selection
+fun void MoveSelectedLinesUp=2620(,)
+
+# Move the selected lines down one line, shifting the line below before the selection
+fun void MoveSelectedLinesDown=2621(,)
+
 # Start notifying the container of all key presses and commands.
 fun void StartRecord=3001(,)
 

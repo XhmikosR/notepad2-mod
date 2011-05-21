@@ -754,8 +754,8 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 						} else if (styler.Match(j, "end")) {
 							levelCurrent--;
 						}
-					} else if ((ch == '{') || (ch == '}') || (foldComment && (ch == '/') && (chNext == '*')) ) {
-						levelCurrent += (((ch == '{') || (ch == '/') ) ? 1 : -1);
+					} else if ((ch == '{') || (ch == '}') || (foldComment && (ch == '/') && (chNext == '*'))) {
+						levelCurrent += (((ch == '{') || (ch == '/')) ? 1 : -1);
 					}
 				} else if (((state == SCE_HPHP_COMMENT) || (state == SCE_HJ_COMMENT)) && foldComment && (ch == '*') && (chNext == '/')) {
 					levelCurrent--;
@@ -882,7 +882,7 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 		         (state != SCE_HPHP_COMMENTLINE) &&
 		         (ch == '<') &&
 		         (chNext == '?') &&
-				 !IsScriptCommentState(state) ) {
+				 !IsScriptCommentState(state)) {
  			beforeLanguage = scriptLanguage;
 			scriptLanguage = segIsScriptingIndicator(styler, i + 2, i + 6, eScriptPHP);
 			if (scriptLanguage != eScriptPHP && isStringState(state)) continue;
@@ -971,8 +971,7 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 			styler.ColourTo(i, SCE_H_ASP);
 			ch = static_cast<unsigned char>(styler.SafeGetCharAt(i));
 			continue;
-		}
-		else if (isDjango && state == SCE_H_COMMENT && (ch == '#' && chNext == '}')) {
+		} else if (isDjango && state == SCE_H_COMMENT && (ch == '#' && chNext == '}')) {
 			styler.ColourTo(i - 1, StateToPrint);
 			i += 1;
 			visibleChars += 1;
@@ -1056,7 +1055,7 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 				 (ch == '!') &&
 				 (StateToPrint != SCE_H_CDATA) &&
 				 (!IsCommentState(StateToPrint)) &&
-				 (!IsScriptCommentState(StateToPrint)) ) {
+				 (!IsScriptCommentState(StateToPrint))) {
 			beforePreProc = state;
 			styler.ColourTo(i - 2, StateToPrint);
 			if ((chNext == '-') && (chNext2 == '-')) {
