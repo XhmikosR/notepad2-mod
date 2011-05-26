@@ -258,7 +258,6 @@ update_version.bat
     <ClCompile Include="..\scintilla\lexlib\LexerModule.cxx" />
     <ClCompile Include="..\scintilla\lexlib\LexerSimple.cxx" />
     <ClCompile Include="..\scintilla\lexlib\PropSetSimple.cxx" />
-    <ClInclude Include="..\scintilla\lexlib\SparseState.h" />
     <ClCompile Include="..\scintilla\lexlib\StyleContext.cxx" />
     <ClCompile Include="..\scintilla\lexlib\WordList.cxx" />
     <ClCompile Include="..\scintilla\src\AutoComplete.cxx" />
@@ -308,6 +307,7 @@ update_version.bat
     <ClInclude Include="..\scintilla\lexlib\LexerSimple.h" />
     <ClInclude Include="..\scintilla\lexlib\OptionSet.h" />
     <ClInclude Include="..\scintilla\lexlib\PropSetSimple.h" />
+    <ClInclude Include="..\scintilla\lexlib\SparseState.h" />
     <ClInclude Include="..\scintilla\lexlib\StyleContext.h" />
     <ClInclude Include="..\scintilla\lexlib\WordList.h" />
     <ClInclude Include="..\scintilla\src\AutoComplete.h" />

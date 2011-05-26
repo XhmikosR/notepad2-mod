@@ -132,9 +132,6 @@
     <ClCompile Include="..\scintilla\lexlib\PropSetSimple.cxx">
       <Filter>Scintilla\lexlib</Filter>
     </ClCompile>
-    <ClInclude Include="..\scintilla\lexlib\SparseState.h">
-      <Filter>Scintilla\lexlib</Filter>
-    </ClInclude>
     <ClCompile Include="..\scintilla\lexlib\StyleContext.cxx">
       <Filter>Scintilla\lexlib</Filter>
     </ClCompile>
@@ -286,6 +283,9 @@
     </ClInclude>
     <ClInclude Include="..\scintilla\lexlib\PropSetSimple.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\lexlib\SparseState.h">
+      <Filter>Scintilla\lexlib</Filter>
     </ClInclude>
     <ClInclude Include="..\scintilla\lexlib\StyleContext.h">
       <Filter>Header Files</Filter>
