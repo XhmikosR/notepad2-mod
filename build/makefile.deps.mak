@@ -29,33 +29,33 @@ LEX_HEADERS = \
     $(SCI_LIB)\CharacterSet.h \
     $(SCI_LIB)\LexerModule.h
 
-$(OBJDIR)\LexAHK.obj: $(SCI_LEX)\LexAHK.cxx $(LEX_HEADERS)
-$(OBJDIR)\LexAsm.obj: $(SCI_LEX)\LexAsm.cxx $(LEX_HEADERS) $(SCI_LIB)\OptionSet.h
-$(OBJDIR)\LexAU3.obj: $(SCI_LEX)\LexAU3.cxx $(LEX_HEADERS)
-$(OBJDIR)\LexBash.obj: $(SCI_LEX)\LexBash.cxx $(LEX_HEADERS)
-$(OBJDIR)\LexCmake.obj: $(SCI_LEX)\LexCmake.cxx $(LEX_HEADERS)
-$(OBJDIR)\LexConf.obj: $(SCI_LEX)\LexConf.cxx $(LEX_HEADERS)
-$(OBJDIR)\LexCPP.obj: $(SCI_LEX)\LexCPP.cxx $(LEX_HEADERS) $(SCI_LIB)\OptionSet.h $(SCI_LIB)\SparseState.h
-$(OBJDIR)\LexCSS.obj: $(SCI_LEX)\LexCSS.cxx $(LEX_HEADERS)
-$(OBJDIR)\LexHTML.obj: $(SCI_LEX)\LexHTML.cxx $(LEX_HEADERS)
-$(OBJDIR)\LexInno.obj: $(SCI_LEX)\LexInno.cxx $(LEX_HEADERS)
-$(OBJDIR)\LexLua.obj: $(SCI_LEX)\LexLua.cxx $(LEX_HEADERS)
-$(OBJDIR)\LexNsis.obj: $(SCI_LEX)\LexNsis.cxx $(LEX_HEADERS)
-$(OBJDIR)\LexOthers.obj: $(SCI_LEX)\LexOthers.cxx $(LEX_HEADERS)
-$(OBJDIR)\LexPascal.obj: $(SCI_LEX)\LexPascal.cxx $(LEX_HEADERS)
-$(OBJDIR)\LexPerl.obj: $(SCI_LEX)\LexPerl.cxx $(LEX_HEADERS) $(SCI_LIB)\OptionSet.h
-$(OBJDIR)\LexPowerShell.obj: $(SCI_LEX)\LexPowerShell.cxx $(LEX_HEADERS)
-$(OBJDIR)\LexPython.obj: $(SCI_LEX)\LexPython.cxx $(LEX_HEADERS)
-$(OBJDIR)\LexRuby.obj: $(SCI_LEX)\LexRuby.cxx $(LEX_HEADERS)
-$(OBJDIR)\LexSQL.obj: $(SCI_LEX)\LexSQL.cxx $(LEX_HEADERS) $(SCI_LIB)\OptionSet.h
-$(OBJDIR)\LexTCL.obj: $(SCI_LEX)\LexTCL.cxx $(LEX_HEADERS)
-$(OBJDIR)\LexVB.obj: $(SCI_LEX)\LexVB.cxx $(LEX_HEADERS)
+$(SCI_LEX_OBJDIR)\LexAHK.obj: $(SCI_LEX)\LexAHK.cxx $(LEX_HEADERS)
+$(SCI_LEX_OBJDIR)\LexAsm.obj: $(SCI_LEX)\LexAsm.cxx $(LEX_HEADERS) $(SCI_LIB)\OptionSet.h
+$(SCI_LEX_OBJDIR)\LexAU3.obj: $(SCI_LEX)\LexAU3.cxx $(LEX_HEADERS)
+$(SCI_LEX_OBJDIR)\LexBash.obj: $(SCI_LEX)\LexBash.cxx $(LEX_HEADERS)
+$(SCI_LEX_OBJDIR)\LexCmake.obj: $(SCI_LEX)\LexCmake.cxx $(LEX_HEADERS)
+$(SCI_LEX_OBJDIR)\LexConf.obj: $(SCI_LEX)\LexConf.cxx $(LEX_HEADERS)
+$(SCI_LEX_OBJDIR)\LexCPP.obj: $(SCI_LEX)\LexCPP.cxx $(LEX_HEADERS) $(SCI_LIB)\OptionSet.h $(SCI_LIB)\SparseState.h
+$(SCI_LEX_OBJDIR)\LexCSS.obj: $(SCI_LEX)\LexCSS.cxx $(LEX_HEADERS)
+$(SCI_LEX_OBJDIR)\LexHTML.obj: $(SCI_LEX)\LexHTML.cxx $(LEX_HEADERS)
+$(SCI_LEX_OBJDIR)\LexInno.obj: $(SCI_LEX)\LexInno.cxx $(LEX_HEADERS)
+$(SCI_LEX_OBJDIR)\LexLua.obj: $(SCI_LEX)\LexLua.cxx $(LEX_HEADERS)
+$(SCI_LEX_OBJDIR)\LexNsis.obj: $(SCI_LEX)\LexNsis.cxx $(LEX_HEADERS)
+$(SCI_LEX_OBJDIR)\LexOthers.obj: $(SCI_LEX)\LexOthers.cxx $(LEX_HEADERS)
+$(SCI_LEX_OBJDIR)\LexPascal.obj: $(SCI_LEX)\LexPascal.cxx $(LEX_HEADERS)
+$(SCI_LEX_OBJDIR)\LexPerl.obj: $(SCI_LEX)\LexPerl.cxx $(LEX_HEADERS) $(SCI_LIB)\OptionSet.h
+$(SCI_LEX_OBJDIR)\LexPowerShell.obj: $(SCI_LEX)\LexPowerShell.cxx $(LEX_HEADERS)
+$(SCI_LEX_OBJDIR)\LexPython.obj: $(SCI_LEX)\LexPython.cxx $(LEX_HEADERS)
+$(SCI_LEX_OBJDIR)\LexRuby.obj: $(SCI_LEX)\LexRuby.cxx $(LEX_HEADERS)
+$(SCI_LEX_OBJDIR)\LexSQL.obj: $(SCI_LEX)\LexSQL.cxx $(LEX_HEADERS) $(SCI_LIB)\OptionSet.h
+$(SCI_LEX_OBJDIR)\LexTCL.obj: $(SCI_LEX)\LexTCL.cxx $(LEX_HEADERS)
+$(SCI_LEX_OBJDIR)\LexVB.obj: $(SCI_LEX)\LexVB.cxx $(LEX_HEADERS)
 
 
 ########################
 ##  scintilla\lexlib  ##
 ########################
-$(OBJDIR)\Accessor.obj: \
+$(SCI_LIB_OBJDIR)\Accessor.obj: \
     $(SCI_LIB)\Accessor.cxx \
     $(SCI_LIB)\Accessor.h \
     $(SCI_INC)\SciLexer.h \
@@ -63,11 +63,11 @@ $(OBJDIR)\Accessor.obj: \
     $(SCI_LIB)\WordList.h \
     $(SCI_LIB)\LexAccessor.h
 
-$(OBJDIR)\CharacterSet.obj: \
+$(SCI_LIB_OBJDIR)\CharacterSet.obj: \
     $(SCI_LIB)\CharacterSet.cxx \
     $(SCI_LIB)\CharacterSet.h
 
-$(OBJDIR)\LexerBase.obj: \
+$(SCI_LIB_OBJDIR)\LexerBase.obj: \
     $(SCI_LIB)\LexerBase.cxx \
     $(SCI_LIB)\LexerBase.h \
     $(SCI_INC)\ILexer.h \
@@ -79,7 +79,7 @@ $(OBJDIR)\LexerBase.obj: \
     $(SCI_LIB)\Accessor.h \
     $(SCI_LIB)\LexerModule.h
 
-$(OBJDIR)\LexerModule.obj: \
+$(SCI_LIB_OBJDIR)\LexerModule.obj: \
     $(SCI_LIB)\LexerModule.cxx \
     $(SCI_INC)\ILexer.h \
     $(SCI_INC)\Scintilla.h \
@@ -92,7 +92,7 @@ $(OBJDIR)\LexerModule.obj: \
     $(SCI_LIB)\LexerBase.h \
     $(SCI_LIB)\LexerSimple.h
 
-$(OBJDIR)\LexerSimple.obj: \
+$(SCI_LIB_OBJDIR)\LexerSimple.obj: \
     $(SCI_LIB)\LexerSimple.cxx \
     $(SCI_LIB)\LexerSimple.h \
     $(SCI_INC)\ILexer.h \
@@ -105,18 +105,18 @@ $(OBJDIR)\LexerSimple.obj: \
     $(SCI_LIB)\LexerModule.h \
     $(SCI_LIB)\LexerBase.h
 
-$(OBJDIR)\PropSetSimple.obj: \
+$(SCI_LIB_OBJDIR)\PropSetSimple.obj: \
     $(SCI_LIB)\PropSetSimple.cxx \
     $(SCI_INC)\Platform.h
 
-$(OBJDIR)\StyleContext.obj: \
+$(SCI_LIB_OBJDIR)\StyleContext.obj: \
     $(SCI_LIB)\StyleContext.cxx \
     $(SCI_LIB)\Accessor.h \
     $(SCI_LIB)\StyleContext.h \
     $(SCI_INC)\ILexer.h \
     $(SCI_LIB)\LexAccessor.h
 
-$(OBJDIR)\WordList.obj: \
+$(SCI_LIB_OBJDIR)\WordList.obj: \
     $(SCI_LIB)\WordList.cxx \
     $(SCI_LIB)\WordList.h
 
@@ -124,19 +124,19 @@ $(OBJDIR)\WordList.obj: \
 #####################
 ##  scintilla\src  ##
 #####################
-$(OBJDIR)\AutoComplete.obj: \
+$(SCI_SRC_OBJDIR)\AutoComplete.obj: \
     $(SCI_SRC)\AutoComplete.cxx \
     $(SCI_INC)\Platform.h \
     $(SCI_LIB)\CharacterSet.h \
     $(SCI_SRC)\AutoComplete.h
 
-$(OBJDIR)\CallTip.obj: \
+$(SCI_SRC_OBJDIR)\CallTip.obj: \
     $(SCI_SRC)\CallTip.cxx \
     $(SCI_INC)\Platform.h \
     $(SCI_INC)\Scintilla.h \
     $(SCI_SRC)\CallTip.h
 
-$(OBJDIR)\Catalogue.obj: \
+$(SCI_SRC_OBJDIR)\Catalogue.obj: \
     $(SCI_SRC)\Catalogue.cxx \
     $(SCI_INC)\ILexer.h \
     $(SCI_INC)\Scintilla.h \
@@ -144,7 +144,7 @@ $(OBJDIR)\Catalogue.obj: \
     $(SCI_LIB)\LexerModule.h \
     $(SCI_SRC)\Catalogue.h
 
-$(OBJDIR)\CellBuffer.obj: \
+$(SCI_SRC_OBJDIR)\CellBuffer.obj: \
     $(SCI_SRC)\CellBuffer.cxx \
     $(SCI_INC)\Platform.h \
     $(SCI_INC)\Scintilla.h \
@@ -152,11 +152,11 @@ $(OBJDIR)\CellBuffer.obj: \
     $(SCI_SRC)\Partitioning.h \
     $(SCI_SRC)\CellBuffer.h
 
-$(OBJDIR)\CharClassify.obj: \
+$(SCI_SRC_OBJDIR)\CharClassify.obj: \
     $(SCI_SRC)\CharClassify.cxx \
     $(SCI_SRC)\CharClassify.h
 
-$(OBJDIR)\ContractionState.obj: \
+$(SCI_SRC_OBJDIR)\ContractionState.obj: \
     $(SCI_SRC)\ContractionState.cxx \
     $(SCI_INC)\Platform.h \
     $(SCI_SRC)\SplitVector.h \
@@ -164,7 +164,7 @@ $(OBJDIR)\ContractionState.obj: \
     $(SCI_SRC)\RunStyles.h \
     $(SCI_SRC)\ContractionState.h
 
-$(OBJDIR)\Decoration.obj: \
+$(SCI_SRC_OBJDIR)\Decoration.obj: \
     $(SCI_SRC)\Decoration.cxx \
     $(SCI_INC)\Platform.h \
     $(SCI_INC)\Scintilla.h \
@@ -173,7 +173,7 @@ $(OBJDIR)\Decoration.obj: \
     $(SCI_SRC)\RunStyles.h \
     $(SCI_SRC)\Decoration.h
 
-$(OBJDIR)\Document.obj: \
+$(SCI_SRC_OBJDIR)\Document.obj: \
     $(SCI_SRC)\Document.cxx \
     $(SCI_INC)\Platform.h \
     $(SCI_INC)\ILexer.h \
@@ -190,7 +190,7 @@ $(OBJDIR)\Document.obj: \
     $(SCI_SRC)\RESearch.h \
     $(SCI_SRC)\UniConversion.h
 
-$(OBJDIR)\Editor.obj: \
+$(SCI_SRC_OBJDIR)\Editor.obj: \
     $(SCI_SRC)\Editor.cxx \
     $(SCI_INC)\Platform.h \
     $(SCI_INC)\Scintilla.h \
@@ -212,7 +212,7 @@ $(OBJDIR)\Editor.obj: \
     $(SCI_SRC)\Selection.h \
     $(SCI_SRC)\PositionCache.h
 
-$(OBJDIR)\ExternalLexer.obj: \
+$(SCI_SRC_OBJDIR)\ExternalLexer.obj: \
     $(SCI_SRC)\ExternalLexer.cxx \
     $(SCI_INC)\Platform.h \
     $(SCI_INC)\ILexer.h \
@@ -222,26 +222,26 @@ $(OBJDIR)\ExternalLexer.obj: \
     $(SCI_SRC)\Catalogue.h \
     $(SCI_SRC)\ExternalLexer.h
 
-$(OBJDIR)\Indicator.obj: \
+$(SCI_SRC_OBJDIR)\Indicator.obj: \
     $(SCI_SRC)\Indicator.cxx \
     $(SCI_INC)\Platform.h \
     $(SCI_INC)\Scintilla.h \
     $(SCI_SRC)\Indicator.h
 
-$(OBJDIR)\KeyMap.obj: \
+$(SCI_SRC_OBJDIR)\KeyMap.obj: \
     $(SCI_SRC)\KeyMap.cxx \
     $(SCI_INC)\Platform.h \
     $(SCI_INC)\Scintilla.h \
     $(SCI_SRC)\KeyMap.h
 
-$(OBJDIR)\LineMarker.obj: \
+$(SCI_SRC_OBJDIR)\LineMarker.obj: \
     $(SCI_SRC)\LineMarker.cxx \
     $(SCI_INC)\Platform.h \
     $(SCI_INC)\Scintilla.h \
     $(SCI_SRC)\XPM.h \
     $(SCI_SRC)\LineMarker.h
 
-$(OBJDIR)\PerLine.obj: \
+$(SCI_SRC_OBJDIR)\PerLine.obj: \
     $(SCI_SRC)\PerLine.cxx \
     $(SCI_INC)\Platform.h \
     $(SCI_INC)\Scintilla.h \
@@ -250,7 +250,7 @@ $(OBJDIR)\PerLine.obj: \
     $(SCI_SRC)\CellBuffer.h \
     $(SCI_SRC)\PerLine.h
 
-$(OBJDIR)\PositionCache.obj: \
+$(SCI_SRC_OBJDIR)\PositionCache.obj: \
     $(SCI_SRC)\PositionCache.cxx \
     $(SCI_INC)\Platform.h  \
     $(SCI_INC)\Scintilla.h \
@@ -272,12 +272,12 @@ $(OBJDIR)\PositionCache.obj: \
     $(SCI_SRC)\Selection.h \
     $(SCI_SRC)\PositionCache.h
 
-$(OBJDIR)\RESearch.obj: \
+$(SCI_SRC_OBJDIR)\RESearch.obj: \
     $(SCI_SRC)\RESearch.cxx \
     $(SCI_SRC)\CharClassify.h \
     $(SCI_SRC)\RESearch.h
 
-$(OBJDIR)\RunStyles.obj: \
+$(SCI_SRC_OBJDIR)\RunStyles.obj: \
     $(SCI_SRC)\RunStyles.cxx \
     $(SCI_INC)\Platform.h \
     $(SCI_INC)\Scintilla.h \
@@ -285,7 +285,7 @@ $(OBJDIR)\RunStyles.obj: \
     $(SCI_SRC)\Partitioning.h \
     $(SCI_SRC)\RunStyles.h
 
-$(OBJDIR)\ScintillaBase.obj: \
+$(SCI_SRC_OBJDIR)\ScintillaBase.obj: \
     $(SCI_SRC)\ScintillaBase.cxx \
     $(SCI_INC)\Platform.h \
     $(SCI_INC)\ILexer.h \
@@ -312,23 +312,23 @@ $(OBJDIR)\ScintillaBase.obj: \
     $(SCI_SRC)\Selection.h \
     $(SCI_SRC)\ScintillaBase.h
 
-$(OBJDIR)\Selection.obj: \
+$(SCI_SRC_OBJDIR)\Selection.obj: \
     $(SCI_SRC)\Selection.cxx \
     $(SCI_INC)\Platform.h \
     $(SCI_INC)\Scintilla.h \
     $(SCI_SRC)\Selection.h
 
-$(OBJDIR)\Style.obj: \
+$(SCI_SRC_OBJDIR)\Style.obj: \
     $(SCI_SRC)\Style.cxx \
     $(SCI_INC)\Platform.h \
     $(SCI_INC)\Scintilla.h \
     $(SCI_SRC)\Style.h
 
-$(OBJDIR)\UniConversion.obj: \
+$(SCI_SRC_OBJDIR)\UniConversion.obj: \
     $(SCI_SRC)\UniConversion.cxx \
     $(SCI_SRC)\UniConversion.h
 
-$(OBJDIR)\ViewStyle.obj: \
+$(SCI_SRC_OBJDIR)\ViewStyle.obj: \
     $(SCI_SRC)\ViewStyle.cxx \
     $(SCI_INC)\Platform.h \
     $(SCI_INC)\Scintilla.h \
@@ -341,7 +341,7 @@ $(OBJDIR)\ViewStyle.obj: \
     $(SCI_SRC)\Style.h \
     $(SCI_SRC)\ViewStyle.h
 
-$(OBJDIR)\XPM.obj: \
+$(SCI_SRC_OBJDIR)\XPM.obj: \
     $(SCI_SRC)\XPM.cxx \
     $(SCI_INC)\Platform.h \
     $(SCI_SRC)\XPM.h
@@ -350,14 +350,14 @@ $(OBJDIR)\XPM.obj: \
 #######################
 ##  scintilla\win32  ##
 #######################
-$(OBJDIR)\PlatWin.obj: \
+$(SCI_WIN_OBJDIR)\PlatWin.obj: \
     $(SCI_WIN)\PlatWin.cxx \
     $(SCI_INC)\Platform.h \
     $(SCI_SRC)\UniConversion.h \
     $(SCI_SRC)\XPM.h \
     $(SCI_SRC)\FontQuality.h
 
-$(OBJDIR)\ScintillaWin.obj: \
+$(SCI_WIN_OBJDIR)\ScintillaWin.obj: \
     $(SCI_WIN)\ScintillaWin.cxx \
     $(SCI_INC)\Platform.h \
     $(SCI_INC)\ILexer.h \
@@ -388,74 +388,74 @@ $(OBJDIR)\ScintillaWin.obj: \
 ###########
 ##  src  ##
 ###########
-$(OBJDIR)\Dialogs.obj: \
-    $(SRC)\Dialogs.c \
-    $(SRC)\Notepad2.h \
-    $(SRC)\Edit.h \
-    $(SRC)\Helpers.h \
-    $(SRC)\Dlapi.h \
-    $(SRC)\Dialogs.h \
-    $(SRC)\resource.h \
-    $(SRC)\Version.h \
-    $(SRC)\Version_rev.h
+$(NP2_SRC_OBJDIR)\Dialogs.obj: \
+    $(NP2_SRC)\Dialogs.c \
+    $(NP2_SRC)\Notepad2.h \
+    $(NP2_SRC)\Edit.h \
+    $(NP2_SRC)\Helpers.h \
+    $(NP2_SRC)\Dlapi.h \
+    $(NP2_SRC)\Dialogs.h \
+    $(NP2_SRC)\resource.h \
+    $(NP2_SRC)\Version.h \
+    $(NP2_SRC)\Version_rev.h
 
-$(OBJDIR)\Dlapi.obj: \
-    $(SRC)\Dlapi.c \
-    $(SRC)\Dlapi.h
+$(NP2_SRC_OBJDIR)\Dlapi.obj: \
+    $(NP2_SRC)\Dlapi.c \
+    $(NP2_SRC)\Dlapi.h
 
-$(OBJDIR)\Edit.obj: \
-    $(SRC)\Edit.c \
-    $(SRC)\Notepad2.h \
-    $(SRC)\Helpers.h \
-    $(SRC)\Dialogs.h \
-    $(SRC)\Styles.h \
-    $(SRC)\Edit.h \
-    $(SRC)\SciCall.h \
-    $(SRC)\resource.h
+$(NP2_SRC_OBJDIR)\Edit.obj: \
+    $(NP2_SRC)\Edit.c \
+    $(NP2_SRC)\Notepad2.h \
+    $(NP2_SRC)\Helpers.h \
+    $(NP2_SRC)\Dialogs.h \
+    $(NP2_SRC)\Styles.h \
+    $(NP2_SRC)\Edit.h \
+    $(NP2_SRC)\SciCall.h \
+    $(NP2_SRC)\resource.h
 
-$(OBJDIR)\Helpers.obj: \
-    $(SRC)\Helpers.c \
-    $(SRC)\Helpers.h
+$(NP2_SRC_OBJDIR)\Helpers.obj: \
+    $(NP2_SRC)\Helpers.c \
+    $(NP2_SRC)\Helpers.h
 
-$(OBJDIR)\Notepad2.obj: \
-    $(SRC)\Notepad2.c \
-    $(SRC)\Edit.h \
-    $(SRC)\Styles.h \
-    $(SRC)\Helpers.h \
-    $(SRC)\Dialogs.h \
-    $(SRC)\Notepad2.h \
-    $(SRC)\SciCall.h \
-    $(SRC)\resource.h
+$(NP2_SRC_OBJDIR)\Notepad2.obj: \
+    $(NP2_SRC)\Notepad2.c \
+    $(NP2_SRC)\Edit.h \
+    $(NP2_SRC)\Styles.h \
+    $(NP2_SRC)\Helpers.h \
+    $(NP2_SRC)\Dialogs.h \
+    $(NP2_SRC)\Notepad2.h \
+    $(NP2_SRC)\SciCall.h \
+    $(NP2_SRC)\resource.h
 
-$(OBJDIR)\Notepad2.res: \
-    $(SRC)\Notepad2.rc \
-    $(SRC)\Notepad2.ver \
-    $(SRC)\Version.h \
-    $(SRC)\Version_rev.h \
-    $(RES)\Copy.cur \
-    $(RES)\Encoding.bmp \
-    $(RES)\Next.bmp \
-    $(RES)\Notepad2.exe.manifest \
-    $(RES)\Notepad2.ico \
-    $(RES)\Open.bmp \
-    $(RES)\Pick.bmp \
-    $(RES)\Prev.bmp \
-    $(RES)\Run.ico \
-    $(RES)\Styles.ico \
-    $(RES)\Toolbar.bmp
+$(NP2_SRC_OBJDIR)\Notepad2.res: \
+    $(NP2_SRC)\Notepad2.rc \
+    $(NP2_SRC)\Notepad2.ver \
+    $(NP2_SRC)\Version.h \
+    $(NP2_SRC)\Version_rev.h \
+    $(NP2_RES)\Copy.cur \
+    $(NP2_RES)\Encoding.bmp \
+    $(NP2_RES)\Next.bmp \
+    $(NP2_RES)\Notepad2.exe.manifest \
+    $(NP2_RES)\Notepad2.ico \
+    $(NP2_RES)\Open.bmp \
+    $(NP2_RES)\Pick.bmp \
+    $(NP2_RES)\Prev.bmp \
+    $(NP2_RES)\Run.ico \
+    $(NP2_RES)\Styles.ico \
+    $(NP2_RES)\Toolbar.bmp
 
-$(OBJDIR)\Print.obj: \
-    $(SRC)\Print.cpp \
-    $(SRC)\Dialogs.h \
-    $(SRC)\Helpers.h \
-    $(SRC)\resource.h
+$(NP2_SRC_OBJDIR)\Print.obj: \
+    $(NP2_SRC)\Print.cpp \
+    $(NP2_SRC)\Dialogs.h \
+    $(NP2_SRC)\Helpers.h \
+    $(NP2_SRC)\resource.h
 
-$(OBJDIR)\Styles.obj: \
-    $(SRC)\Styles.c \
-    $(SRC)\Dialogs.h \
-    $(SRC)\Helpers.h \
-    $(SRC)\Notepad2.h \
-    $(SRC)\Edit.h \
-    $(SRC)\Styles.h \
-    $(SRC)\SciCall.h \
-    $(SRC)\resource.h
+$(NP2_SRC_OBJDIR)\Styles.obj: \
+    $(NP2_SRC)\Styles.c \
+    $(NP2_SRC)\Dialogs.h \
+    $(NP2_SRC)\Helpers.h \
+    $(NP2_SRC)\Notepad2.h \
+    $(NP2_SRC)\Edit.h \
+    $(NP2_SRC)\Styles.h \
+    $(NP2_SRC)\SciCall.h \
+    $(NP2_SRC)\resource.h
