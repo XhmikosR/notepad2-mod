@@ -342,14 +342,14 @@ EDITLEXER lexCPP = { SCLEX_CPP, 63004, L"C/C++ Source Code", L"c; cpp; cxx; cc; 
 
 
 KEYWORDLIST KeyWords_CS = {
-"abstract as ascending base bool break by byte case catch char checked "
-"class const continue decimal default delegate descending do double else "
-"enum equals event explicit extern false finally fixed float for foreach "
-"from goto group if implicit in int interface internal into is join lock "
-"let long namespace new null object on operator orderby out override params "
-"private protected public readonly ref return sbyte sealed select short "
-"sizeof stackalloc static string struct switch this throw true try typeof "
-"uint ulong unchecked unsafe ushort using var virtual void where while",
+"abstract add alias as ascending base bool break by byte case catch char checked "
+"class const continue decimal default delegate descending do double dynamic else "
+"enum equals event explicit extern false finally fixed float for foreach from get "
+"global goto group if implicit in int interface internal into is join lock let long "
+"namespace new null object on operator orderby out override params partial private "
+"protected public readonly ref remove return sbyte sealed select set short sizeof "
+"stackalloc static string struct switch this throw true try typeof uint ulong "
+"unchecked unsafe ushort using value var virtual void volatile where while yield",
 "",
 "", "", "", "", "", "", "" };
 
