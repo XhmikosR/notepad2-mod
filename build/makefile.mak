@@ -45,7 +45,8 @@ NP2_SRC         = ..\src
 NP2_RES         = ..\res
 
 
-DEFINES       = /D "BOOKMARK_EDITION" /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE"
+DEFINES       = /D "BOOKMARK_EDITION" /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE" \
+                /D "_STL70_" /D "_STATIC_CPPLIB"
 INCLUDEDIRS   = /I "$(SCI_INC)" /I "$(SCI_LEX)" /I "$(SCI_LIB)" /I "$(SCI_SRC)" \
                 /I "$(SCI_WIN)"
 CXXFLAGS      = /nologo /c /W3 /WX /EHsc /MD /O2 /GL /MP $(DEFINES) $(INCLUDEDIRS)
@@ -53,7 +54,7 @@ LDFLAGS       = /NOLOGO /WX /INCREMENTAL:NO /RELEASE /OPT:REF /OPT:ICF /MERGE:.r
                 /DYNAMICBASE /NXCOMPAT /LTCG /DEBUG
 LIBS          = kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib shlwapi.lib \
                 comdlg32.lib comctl32.lib winspool.lib imm32.lib ole32.lib oleaut32.lib \
-                psapi.lib
+                psapi.lib ntstc_msvcrt.lib
 RFLAGS        = /l 0x0409 /d "_UNICODE" /d "UNICODE" /d "BOOKMARK_EDITION"
 SCI_CXXFLAGS  = $(CXXFLAGS) /D "STATIC_BUILD" /D "SCI_LEXER"
 
