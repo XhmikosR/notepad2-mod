@@ -73,6 +73,20 @@ void Indicator::Draw(Surface *surface, const PRectangle &rc, const PRectangle &r
 		rcBox.left = rc.left;
 		rcBox.right = rc.right;
 		surface->AlphaRectangle(rcBox, (style == INDIC_ROUNDBOX) ? 1 : 0, fore.allocated, fillAlpha, fore.allocated, outlineAlpha, 0);
+	} else if (style == INDIC_DASH) {
+		int x = rc.left;
+		while (x < rc.right) {
+			surface->MoveTo(x, ymid);
+			surface->LineTo(Platform::Minimum(x + 4, rc.right), ymid);
+			x += 7;
+		}
+	} else if (style == INDIC_DOTS) {
+		int x = rc.left;
+		while (x < rc.right) {
+			PRectangle rcDot(x, ymid, x+1, ymid+1);
+			surface->FillRectangle(rcDot, fore.allocated);
+			x += 2;
+		}
 	} else {	// Either INDIC_PLAIN or unknown
 		surface->MoveTo(rc.left, ymid);
 		surface->LineTo(rc.right, ymid);
