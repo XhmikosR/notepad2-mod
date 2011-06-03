@@ -19,6 +19,10 @@
 .SILENT:
 
 
+CC = cl.exe
+LD = link.exe
+RC = rc.exe
+
 !IFDEF x64
 BINDIR  = ..\bin\WDK\Release_x64
 !ELSE
@@ -198,30 +202,30 @@ OBJECTS = \
 ##  Batch rules  ##
 ###################
 {$(SCI_LEX)}.cxx{$(SCI_LEX_OBJDIR)}.obj::
-    cl $(SCI_CXXFLAGS) /Fo"$(SCI_LEX_OBJDIR)/" /Tp $<
+    $(CC) $(SCI_CXXFLAGS) /Fo"$(SCI_LEX_OBJDIR)/" /Tp $<
 
 {$(SCI_LIB)}.cxx{$(SCI_LIB_OBJDIR)}.obj::
-    cl $(SCI_CXXFLAGS) /Fo"$(SCI_LIB_OBJDIR)/" /Tp $<
+    $(CC) $(SCI_CXXFLAGS) /Fo"$(SCI_LIB_OBJDIR)/" /Tp $<
 
 {$(SCI_SRC)}.cxx{$(SCI_SRC_OBJDIR)}.obj::
-    cl $(SCI_CXXFLAGS) /Fo"$(SCI_SRC_OBJDIR)/" /Tp $<
+    $(CC) $(SCI_CXXFLAGS) /Fo"$(SCI_SRC_OBJDIR)/" /Tp $<
 
 {$(SCI_WIN)}.cxx{$(SCI_WIN_OBJDIR)}.obj::
-    cl $(SCI_CXXFLAGS) /Fo"$(SCI_WIN_OBJDIR)/" /Tp $<
+    $(CC) $(SCI_CXXFLAGS) /Fo"$(SCI_WIN_OBJDIR)/" /Tp $<
 
 {$(NP2_SRC)}.cpp{$(NP2_SRC_OBJDIR)}.obj::
-    cl $(CXXFLAGS) /Fo"$(NP2_SRC_OBJDIR)/" /Tp $<
+    $(CC) $(CXXFLAGS) /Fo"$(NP2_SRC_OBJDIR)/" /Tp $<
 
 {$(NP2_SRC)}.c{$(NP2_SRC_OBJDIR)}.obj::
-    cl $(CXXFLAGS) /Fo"$(NP2_SRC_OBJDIR)/" /Tc $<
+    $(CC) $(CXXFLAGS) /Fo"$(NP2_SRC_OBJDIR)/" /Tc $<
 
 
 ################
 ##  Commands  ##
 ################
 $(EXE): $(OBJECTS)
-	rc $(RFLAGS) /fo"$(NP2_SRC_OBJDIR)\Notepad2.res" "$(NP2_SRC)\Notepad2.rc" >NUL
-	link $(LDFLAGS) $(LIBS) $(OBJECTS) /OUT:"$(EXE)"
+	$(RC) $(RFLAGS) /fo"$(NP2_SRC_OBJDIR)\Notepad2.res" "$(NP2_SRC)\Notepad2.rc" >NUL
+	$(LD) $(LDFLAGS) $(LIBS) $(OBJECTS) /OUT:"$(EXE)"
 
 
 ####################
