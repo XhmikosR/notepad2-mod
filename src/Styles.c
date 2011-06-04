@@ -1879,6 +1879,7 @@ void Style_SetLexer(HWND hwnd,PEDITLEXER pLexNew)
   SciCall_SetProperty("fold.comment", "1");
   SciCall_SetProperty("fold.html", "1");
   SciCall_SetProperty("fold.preprocessor", "1");
+  SciCall_SetProperty("fold.cpp.comment.explicit", "0");
 
   // Add KeyWord Lists
   for (i = 0; i < 9; i++)
