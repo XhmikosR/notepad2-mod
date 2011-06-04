@@ -2191,6 +2191,12 @@ void MsgInitMenu(HWND hwnd,WPARAM wParam,LPARAM lParam)
   EnableCmd(hmenu,IDM_EDIT_SELTOPREV,i && lstrlenA(efrData.szFind));
   EnableCmd(hmenu,IDM_EDIT_FINDMATCHINGBRACE,i);
   EnableCmd(hmenu,IDM_EDIT_SELTOMATCHINGBRACE,i);
+#ifdef BOOKMARK_EDITION
+  EnableCmd(hmenu,BME_EDIT_BOOKMARKPREV,i);
+  EnableCmd(hmenu,BME_EDIT_BOOKMARKNEXT,i);
+  EnableCmd(hmenu,BME_EDIT_BOOKMARKTOGGLE,i);
+  EnableCmd(hmenu,BME_EDIT_BOOKMARKCLEAR,i);
+#endif
 
   CheckCmd(hmenu,IDM_VIEW_USE2NDDEFAULT,Style_GetUse2ndDefault(hwndEdit));
 
