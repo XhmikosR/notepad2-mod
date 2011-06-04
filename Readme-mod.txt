@@ -1,12 +1,12 @@
-This version of Notepad2 has been modified from Florian Balmer's original version
-using patches by Kai Liu and others.
+This version of Notepad2 has been modified from Florian Balmer's original
+version using patches by Kai Liu and others.
 
 Notable changes:
 * Code folding
 * Support for bookmarks
 * Option to mark all occurrences of a word
-* Syntax highlighting support for AutoHotkey, AutoIt3, Bash, CMake, Inno Setup,
-  LaTeX, Lua, NSIS, Ruby, and Tcl scripts
+* Syntax highlighting support for AutoHotkey, AutoIt3, Bash, CMake,
+  Inno Setup, LaTeX, Lua, NSIS, Ruby, and Tcl scripts
 
 Supported Operating Systems: Windows XP, Vista, 7 both 32-bit and 64-bit
 
@@ -22,6 +22,6 @@ More information:
 * Kai Liu's website:          http://code.kliu.org/misc/notepad2/
 * Bookmark Edition website:   http://www.rlvision.com/notepad2/about.asp
 
-Notepad2-mod 4.2.25 has been created with Scintilla 2.26. The unused lexers
-are commented out in "scintilla/src/Catalogue.cxx". You can use WDK 7.1, or MSVC 2010,
-or Intel Parallel Composer 2011 to build Notepad2-mod.
+Notepad2-mod 4.2.25 has been created with Scintilla 2.26.  The unused lexers
+are commented out in "scintilla/src/Catalogue.cxx".  You can use WDK 7.1,
+or MSVC 2010, or Intel Parallel Composer 2011 to build Notepad2-mod.
