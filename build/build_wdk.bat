@@ -152,7 +152,7 @@ ECHO. & ECHO.
 ECHO Usage:   %~nx0 [Clean^|Build^|Rebuild] [x86^|x64^|all]
 ECHO.
 ECHO Notes:   You can also prefix the commands with "-", "--" or "/".
-ECHO          The arguments are case insesitive.
+ECHO          The arguments are not case sensitive.
 ECHO. & ECHO.
 ECHO Edit "%~nx0" and set your WDK directory.
 ECHO You shouldn't need to make any changes other than that.

@@ -208,16 +208,16 @@ EXIT /B
 rem Get the version
 FOR /F "tokens=3,4 delims= " %%K IN (
   'FINDSTR /I /L /C:"define VERSION_MAJOR" "..\src\Version.h"') DO (
-  SET "VerMajor=%%K"&Call :SubVerMajor %%VerMajor:*Z=%%)
+  SET "VerMajor=%%K" & Call :SubVerMajor %%VerMajor:*Z=%%)
 FOR /F "tokens=3,4 delims= " %%L IN (
   'FINDSTR /I /L /C:"define VERSION_MINOR" "..\src\Version.h"') DO (
-  SET "VerMinor=%%L"&Call :SubVerMinor %%VerMinor:*Z=%%)
+  SET "VerMinor=%%L" & Call :SubVerMinor %%VerMinor:*Z=%%)
 FOR /F "tokens=3,4 delims= " %%M IN (
   'FINDSTR /I /L /C:"define VERSION_BUILD" "..\src\Version.h"') DO (
-  SET "VerBuild=%%M"&Call :SubVerBuild %%VerBuild:*Z=%%)
+  SET "VerBuild=%%M" & Call :SubVerBuild %%VerBuild:*Z=%%)
 FOR /F "tokens=3,4 delims= " %%N IN (
   'FINDSTR /I /L /C:"define VERSION_REV" "..\src\Version_rev.h"') DO (
-  SET "VerRev=%%N"&Call :SubVerRev %%VerRev:*Z=%%)
+  SET "VerRev=%%N" & Call :SubVerRev %%VerRev:*Z=%%)
 
 SET NP2_VER=%VerMajor%.%VerMinor%.%VerBuild%
 EXIT /B
@@ -249,7 +249,7 @@ ECHO. & ECHO.
 ECHO Usage:   %~nx0 [ICL12^|VS2010^|WDK]
 ECHO.
 ECHO Notes:   You can also prefix the commands with "-", "--" or "/".
-ECHO          The arguments are case insesitive.
+ECHO          The arguments are not case sensitive.
 ECHO. & ECHO.
 ECHO Executing "%~nx0" will use the defaults: "%~nx0 WDK"
 ECHO.
