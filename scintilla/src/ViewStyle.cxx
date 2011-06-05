@@ -78,6 +78,7 @@ FontRealised::FontRealised(const FontSpecification &fs) {
 }
 
 FontRealised::~FontRealised() {
+	font.Release();
 	delete frNext;
 	frNext = 0;
 }
