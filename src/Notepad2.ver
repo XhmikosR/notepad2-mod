@@ -43,17 +43,10 @@ BEGIN
   BEGIN
     BLOCK "040904b0"
     BEGIN
-      #if defined(_WIN64)
-      VALUE "Comments",         APPNAME_STRA_X64
-      VALUE "FileDescription",  APPNAME_STRA_X64
-      VALUE "InternalName",     APPNAME_STRA_X64
-      VALUE "ProductName",      APPNAME_STRA_X64
-      #else
-      VALUE "Comments",         APPNAME_STRA
-      VALUE "FileDescription",  APPNAME_STRA
-      VALUE "InternalName",     APPNAME_STRA
-      VALUE "ProductName",      APPNAME_STRA
-      #endif
+      VALUE "Comments",         MY_APPNAME MY_ARCH
+      VALUE "FileDescription",  MY_APPNAME MY_ARCH
+      VALUE "InternalName",     MY_APPNAME MY_ARCH
+      VALUE "ProductName",      MY_APPNAME MY_ARCH
       //VALUE "CompanyName",      VERSION_COMPANYNAME
       VALUE "FileVersion",      VERSION_FILEVERSION
       VALUE "ProductVersion",   VERSION_FILEVERSION

@@ -25,12 +25,7 @@
 #define VERSION_MINOR 2
 #define VERSION_BUILD 25
 
-#define APPNAME_STRW                 L"Notepad2-mod"
-#define APPNAME_STRW_X64             L"Notepad2-mod x64"
-#define APPNAME_STRA                 "Notepad2-mod"
-#define APPNAME_STRA_X64             "Notepad2-mod x64"
-
-
+#define MY_APPNAME                   L"Notepad2-mod"
 #define VERSION_FILEVERSION_NUM      VERSION_MAJOR,VERSION_MINOR,VERSION_BUILD,VERSION_REV
 #define VERSION_FILEVERSION          STRINGIFY(VERSION_MAJOR) ", " STRINGIFY(VERSION_MINOR) ", " STRINGIFY(VERSION_BUILD) ", " STRINGIFY(VERSION_REV)
 #define VERSION_LEGALCOPYRIGHT_SHORT L"Copyright © 2004-2011"
@@ -40,7 +35,11 @@
 #define VERSION_EMAILDISPLAY         L"florian.balmer@gmail.com"
 //#define VERSION_COMPANYNAME          L"Florian Balmer et all"
 #define VERSION_MODPAGEDISPLAY       L"http://code.google.com/p/notepad2-mod"
-
+#if defined(_WIN64)
+#define MY_ARCH " x64"
+#else
+#define MY_ARCH ""
+#endif
 
 // Setup specific
 #if defined(_WIN64)
