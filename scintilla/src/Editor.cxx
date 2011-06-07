@@ -4538,7 +4538,7 @@ void Editor::NotifyModified(Document *, DocModification mh, void *) {
 			braces[0] = MovePositionForDeletion(braces[0], mh.position, mh.length);
 			braces[1] = MovePositionForDeletion(braces[1], mh.position, mh.length);
 		}
-		if (cs.LinesDisplayed() < cs.LinesInDoc()) {
+		if (cs.HiddenLines()) {
 			// Some lines are hidden so may need shown.
 			// TODO: check if the modified area is hidden.
 			if (mh.modificationType & SC_MOD_BEFOREINSERT) {
