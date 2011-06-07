@@ -2197,6 +2197,8 @@ void MsgInitMenu(HWND hwnd,WPARAM wParam,LPARAM lParam)
   EnableCmd(hmenu,BME_EDIT_BOOKMARKTOGGLE,i);
   EnableCmd(hmenu,BME_EDIT_BOOKMARKCLEAR,i);
 #endif
+  EnableCmd(hmenu,IDM_VIEW_TOGGLEFOLDS,i && bShowCodeFolding);
+  CheckCmd(hmenu,IDM_VIEW_FOLDING,bShowCodeFolding);
 
   CheckCmd(hmenu,IDM_VIEW_USE2NDDEFAULT,Style_GetUse2ndDefault(hwndEdit));
 
@@ -2221,8 +2223,6 @@ void MsgInitMenu(HWND hwnd,WPARAM wParam,LPARAM lParam)
   EnableCmd(hmenu,IDM_VIEW_MARKOCCURRENCES_CASE,iMarkOccurrences != 0);
   EnableCmd(hmenu,IDM_VIEW_MARKOCCURRENCES_WORD,iMarkOccurrences != 0);
 
-  CheckCmd(hmenu,IDM_VIEW_FOLDING,bShowCodeFolding);
-  EnableCmd(hmenu,IDM_VIEW_TOGGLEFOLDS,bShowCodeFolding);
   CheckCmd(hmenu,IDM_VIEW_SHOWWHITESPACE,bViewWhiteSpace);
   CheckCmd(hmenu,IDM_VIEW_SHOWEOLS,bViewEOLs);
   CheckCmd(hmenu,IDM_VIEW_WORDWRAPSYMBOLS,bShowWordWrapSymbols);
@@ -6569,7 +6569,7 @@ void UpdateToolbar()
   EnableTool(IDT_EDIT_REPLACE,i /*&& !bReadOnly*/);
   EnableTool(IDT_EDIT_CLEAR,i /*&& !bReadOnly*/);
 
-  EnableTool(IDT_VIEW_TOGGLEFOLDS,bShowCodeFolding);
+  EnableTool(IDT_VIEW_TOGGLEFOLDS,i && bShowCodeFolding);
 
   CheckTool(IDT_VIEW_WORDWRAP,fWordWrap);
 
