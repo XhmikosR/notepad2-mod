@@ -1712,9 +1712,9 @@ void EditTitleCase(HWND hwnd)
   BOOL bWordEnd = TRUE;
   BOOL bChanged = FALSE;
 
-#ifdef BOOKMARK_EDITION
-  BOOL bPrevWasSpace = FALSE;
-#endif
+//#ifdef BOOKMARK_EDITION
+  //BOOL bPrevWasSpace = FALSE;
+//#endif
 
   iCurPos    = (int)SendMessage(hwnd,SCI_GETCURRENTPOS,0,0);
   iAnchorPos = (int)SendMessage(hwnd,SCI_GETANCHOR,0,0);
@@ -6162,7 +6162,7 @@ INT_PTR CALLBACK EditModifyLinesDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM
     case WM_NCACTIVATE:
       if (!(BOOL)wParam) {
         if (id_hover != 0) {
-          int _id_hover = id_hover;
+          //int _id_hover = id_hover;
           id_hover = 0;
           id_capture = 0;
           //InvalidateRect(GetDlgItem(hwnd,id_hover),NULL,FALSE);
@@ -6202,13 +6202,13 @@ INT_PTR CALLBACK EditModifyLinesDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM
               }
             }
             else if (id_hover != 0) {
-              int _id_hover = id_hover;
+              //int _id_hover = id_hover;
               id_hover = 0;
               //InvalidateRect(GetDlgItem(hwnd,_id_hover),NULL,FALSE);
             }
           }
           else if (id_hover != 0) {
-            int _id_hover = id_hover;
+            //int _id_hover = id_hover;
             id_hover = 0;
             //InvalidateRect(GetDlgItem(hwnd,_id_hover),NULL,FALSE);
           }
