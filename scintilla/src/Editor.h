@@ -202,7 +202,7 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	SelectionPosition posDrop;
 	int hotSpotClickPos;
 	int lastXChosen;
-	int lineAnchor;
+	int lineAnchorPos;
 	int originalAnchorPos;
 	int wordSelectAnchorStartPos;
 	int wordSelectAnchorEndPos;
@@ -492,7 +492,7 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	bool PointInSelection(Point pt);
 	bool PointInSelMargin(Point pt);
 	Window::Cursor GetMarginCursor(Point pt);
-	void LineSelection(int lineCurrent_, int lineAnchor_);
+	void LineSelection(int lineCurrentPos_, int lineAnchorPos_);
 	void WordSelection(int pos);
 	void DwellEnd(bool mouseMoved);
 	void MouseLeave();
