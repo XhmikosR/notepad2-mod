@@ -160,6 +160,7 @@ update_version.bat</Command>
       <MinimumRequiredVersion>5.01</MinimumRequiredVersion>
       <MergeSections>.rdata=.text</MergeSections>
       <LargeAddressAware>true</LargeAddressAware>
+      <SetChecksum>true</SetChecksum>
     </Link>
     <PreBuildEvent>
       <Command>cd ..
@@ -187,6 +188,7 @@ update_version.bat</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <MinimumRequiredVersion>5.02</MinimumRequiredVersion>
       <MergeSections>.rdata=.text</MergeSections>
+      <SetChecksum>true</SetChecksum>
     </Link>
     <PreBuildEvent>
       <Command>cd ..
