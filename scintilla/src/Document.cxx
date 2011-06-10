@@ -2113,6 +2113,7 @@ long BuiltinRegex::FindText(Document *doc, int minPos, int maxPos, const char *s
 	int pos = -1;
 	int lenRet = 0;
 	char searchEnd = s[*length - 1];
+	char searchEndPrev = (*length > 1) ? s[*length - 2] : '\0';
 	int lineRangeBreak = lineRangeEnd + increment;
 	for (int line = lineRangeStart; line != lineRangeBreak; line += increment) {
 		int startOfLine = doc->LineStart(line);
@@ -2124,7 +2125,7 @@ long BuiltinRegex::FindText(Document *doc, int minPos, int maxPos, const char *s
 				startOfLine = startPos;
 			}
 			if (line == lineRangeEnd) {
-				if ((endPos != endOfLine) && (searchEnd == '$'))
+				if ((endPos != endOfLine) && (searchEnd == '$') && (searchEndPrev != '\\'))
 					continue;	// Can't match end of line if end position before end of line
 				endOfLine = endPos;
 			}
@@ -2135,7 +2136,7 @@ long BuiltinRegex::FindText(Document *doc, int minPos, int maxPos, const char *s
 				startOfLine = endPos;
 			}
 			if (line == lineRangeStart) {
-				if ((startPos != endOfLine) && (searchEnd == '$'))
+				if ((startPos != endOfLine) && (searchEnd == '$') && (searchEndPrev != '\\'))
 					continue;	// Can't match end of line if start position before end of line
 				endOfLine = startPos;
 			}
