@@ -3603,7 +3603,7 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
         break;
     }
 
-    //case IDM_EDIT_BOOKMARKPREV:
+    //case IMD_EDIT_BOOKMARKPREV:
     case BME_EDIT_BOOKMARKPREV:
     {
         int iPos = (int)SendMessage( hwndEdit , SCI_GETCURRENTPOS , 0 , 0);

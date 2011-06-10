@@ -704,7 +704,7 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,7,90,110,10
 #ifdef BOOKMARK_EDITION
     CONTROL         "Regular &expression search",IDC_FINDREGEXP,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,7,102,97,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,102,98,10
     CONTROL         "&Transform backslashes",IDC_FINDTRANSFORMBS,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,7,114,86,10
 #else

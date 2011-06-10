@@ -1712,9 +1712,9 @@ void EditTitleCase(HWND hwnd)
   BOOL bWordEnd = TRUE;
   BOOL bChanged = FALSE;
 
-//#ifdef BOOKMARK_EDITION
-  //BOOL bPrevWasSpace = FALSE;
-//#endif
+#ifdef BOOKMARK_EDITION
+  BOOL bPrevWasSpace = FALSE;
+#endif
 
   iCurPos    = (int)SendMessage(hwnd,SCI_GETCURRENTPOS,0,0);
   iAnchorPos = (int)SendMessage(hwnd,SCI_GETANCHOR,0,0);
@@ -1760,6 +1760,40 @@ void EditTitleCase(HWND hwnd)
 
       else {
 
+
+#ifdef BOOKMARK_EDITION
+      //Slightly enhanced function to make Title Case: Added some '-characters and bPrevWasSpace makes it better (for example "'Don't'" will now work)
+      bPrevWasSpace = TRUE;
+      for (i = 0; i < cchTextW; i++)
+      {
+          if (!IsCharAlphaNumericW(pszTextW[i]) && (!StrChr(L"'`´’",pszTextW[i]) ||  bPrevWasSpace ) )
+          {
+              bNewWord = TRUE;
+          }
+          else
+          {
+              if (bNewWord)
+              {
+                if (IsCharLowerW(pszTextW[i]))
+                {
+                  pszTextW[i] = LOWORD(CharUpperW((LPWSTR)MAKELONG(pszTextW[i],0)));
+                  bChanged = TRUE;
+                }
+              }
+              else
+              {
+                if (IsCharUpperW(pszTextW[i]))
+                {
+                  pszTextW[i] = LOWORD(CharLowerW((LPWSTR)MAKELONG(pszTextW[i],0)));
+                  bChanged = TRUE;
+                }
+              }
+              bNewWord = FALSE;
+           }
+               if( StrChr(L" \r\n\t[](){}",pszTextW[i]) ) bPrevWasSpace = TRUE; else bPrevWasSpace = FALSE;
+      }
+#else
+
         for (i = 0; i < cchTextW; i++) {
           BOOL bAlphaNumeric = IsCharAlphaNumericW(pszTextW[i]);
           if (!bAlphaNumeric && (!StrChr(L"\x0027\x2019\x0060\x00B4",pszTextW[i]) || bWordEnd)) {
@@ -1782,6 +1816,7 @@ void EditTitleCase(HWND hwnd)
           }
           bWordEnd = !bAlphaNumeric;
         }
+#endif
       }
 
       if (bChanged) {
@@ -4931,7 +4966,11 @@ INT_PTR CALLBACK EditFindReplaceDlgProcW(HWND hwnd,UINT umsg,WPARAM wParam,LPARA
           CheckDlgButton(hwnd,IDC_FINDTRANSFORMBS,BST_CHECKED);
 
 #ifdef BOOKMARK_EDITION
-        if (lpefr->bWildcardSearch) CheckDlgButton(hwnd,IDC_WILDCARDSEARCH,BST_CHECKED);
+        if (lpefr->bWildcardSearch)
+        {
+            CheckDlgButton(hwnd,IDC_WILDCARDSEARCH,BST_CHECKED);
+            CheckDlgButton(hwnd,IDC_FINDREGEXP,BST_UNCHECKED);
+        }
 #endif
 
         if (lpefr->bNoFindWrap)
