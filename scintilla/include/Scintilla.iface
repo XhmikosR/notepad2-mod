@@ -1947,6 +1947,16 @@ set void MarginSetStyleOffset=2537(int style,)
 # Get the start of the range of style numbers used for margin text
 get int MarginGetStyleOffset=2538(,)
 
+enu MarginOption=SC_MARGINOPTION_
+val SC_MARGINOPTION_NONE=0
+val SC_MARGINOPTION_SUBLINESELECT=1
+
+# Set the margin options.
+set void SetMarginOptions=2539(int marginOptions,)
+
+# Get the margin options.
+get int GetMarginOptions=2557(,)
+
 # Set the annotation text for a line
 set void AnnotationSetText=2540(int line, string text)
 

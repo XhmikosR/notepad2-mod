@@ -34,7 +34,7 @@
 // Luckily microsoft has done the heavy lifting for us, so we'll just use their stub functions!
 #if defined(_MSC_VER) && (_MSC_VER > 1200) && !defined(WDK_BUILD)
 #define COMPILE_MULTIMON_STUBS
-#include "MultiMon.h"
+#include <MultiMon.h>
 #endif
 
 #ifndef IDC_HAND
