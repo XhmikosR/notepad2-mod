@@ -800,6 +800,9 @@ set void SetSelectionEnd=2144(position pos,)
 # Returns the position at the end of the selection.
 get position GetSelectionEnd=2145(,)
 
+# Set caret to a position, while removing any existing selection.
+fun void SetEmptySelection=2556(position pos,)
+
 # Sets the print magnification added to the point size of each style for printing.
 set void SetPrintMagnification=2146(int magnification,)
 
@@ -2142,6 +2145,12 @@ fun void MoveSelectedLinesUp=2620(,)
 
 # Move the selected lines down one line, shifting the line below before the selection
 fun void MoveSelectedLinesDown=2621(,)
+
+# Set the identifier reported as idFrom in notification messages.
+set void SetIdentifier=2622(int identifier,)
+
+# Get the identifier.
+get int GetIdentifier=2623(,)
 
 # Start notifying the container of all key presses and commands.
 fun void StartRecord=3001(,)

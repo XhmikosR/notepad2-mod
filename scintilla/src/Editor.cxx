@@ -4303,6 +4303,10 @@ void Editor::DelCharBack(bool allowLineStartDeletion) {
 
 void Editor::NotifyFocus(bool) {}
 
+void Editor::SetCtrlID(int identifier) {
+	ctrlID = identifier; 
+}
+
 void Editor::NotifyStyleToNeeded(int endStyleNeeded) {
 	SCNotification scn = {0};
 	scn.nmhdr.code = SCN_STYLENEEDED;
@@ -7495,6 +7499,10 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 	case SCI_GETSELECTIONEND:
 		return sel.LimitsForRectangularElseMain().end.Position();
 
+	case SCI_SETEMPTYSELECTION:
+		SetEmptySelection(wParam);
+		break;
+
 	case SCI_SETPRINTMAGNIFICATION:
 		printMagnification = wParam;
 		break;
@@ -9136,6 +9144,13 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 	case SCI_CHANGELEXERSTATE:
 		pdoc->ChangeLexerState(wParam, lParam);
 		break;
+	
+	case SCI_SETIDENTIFIER:
+		SetCtrlID(wParam);
+		break;
+	
+	case SCI_GETIDENTIFIER:
+		return GetCtrlID();
 
 	default:
 		return DefWndProc(iMessage, wParam, lParam);
