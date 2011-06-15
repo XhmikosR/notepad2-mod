@@ -465,6 +465,7 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	int StartEndDisplayLine(int pos, bool start);
 	virtual int KeyCommand(unsigned int iMessage);
 	virtual int KeyDefault(int /* key */, int /*modifiers*/);
+	int KeyDownWithModifiers(int key, int modifiers, bool *consumed);
 	int KeyDown(int key, bool shift, bool ctrl, bool alt, bool *consumed=0);
 
 	int GetWhitespaceVisible();

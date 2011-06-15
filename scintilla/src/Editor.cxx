@@ -2929,6 +2929,8 @@ void Editor::DrawLine(Surface *surface, ViewStyle &vsDraw, int line, int lineVis
 	if (vsDraw.edgeState == EDGE_LINE) {
 		int edgeX = theEdge * vsDraw.spaceWidth;
 		rcSegment.left = edgeX + xStart;
+		if ((ll->wrapIndent != 0) && (lineStart != 0))
+			rcSegment.left -= ll->wrapIndent;
 		rcSegment.right = rcSegment.left + 1;
 		surface->FillRectangle(rcSegment, vsDraw.edgecolour.allocated);
 	}
@@ -5531,10 +5533,8 @@ int Editor::KeyDefault(int key, int modifiers) {
 	return 0;
 }
 
-int Editor::KeyDown(int key, bool shift, bool ctrl, bool alt, bool *consumed) {
+int Editor::KeyDownWithModifiers(int key, int modifiers, bool *consumed) {
 	DwellEnd(false);
-	int modifiers = (shift ? SCI_SHIFT : 0) | (ctrl ? SCI_CTRL : 0) |
-	        (alt ? SCI_ALT : 0);
 	int msg = kmap.Find(key, modifiers);
 	if (msg) {
 		if (consumed)
@@ -5545,6 +5545,12 @@ int Editor::KeyDown(int key, bool shift, bool ctrl, bool alt, bool *consumed) {
 			*consumed = false;
 		return KeyDefault(key, modifiers);
 	}
+}
+
+int Editor::KeyDown(int key, bool shift, bool ctrl, bool alt, bool *consumed) {
+	int modifiers = (shift ? SCI_SHIFT : 0) | (ctrl ? SCI_CTRL : 0) |
+	        (alt ? SCI_ALT : 0);
+	return KeyDownWithModifiers(key, modifiers, consumed);
 }
 
 void Editor::SetWhitespaceVisible(int view) {

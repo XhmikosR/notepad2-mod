@@ -2293,6 +2293,7 @@ val SCMOD_SHIFT=1
 val SCMOD_CTRL=2
 val SCMOD_ALT=4
 val SCMOD_SUPER=8
+val SCMOD_META=16
 
 ################################################
 # For SciLexer.h

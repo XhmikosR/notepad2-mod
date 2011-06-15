@@ -886,6 +886,7 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
 #define SCMOD_CTRL 2
 #define SCMOD_ALT 4
 #define SCMOD_SUPER 8
+#define SCMOD_META 16
 #define SCN_STYLENEEDED 2000
 #define SCN_CHARADDED 2001
 #define SCN_SAVEPOINTREACHED 2002
