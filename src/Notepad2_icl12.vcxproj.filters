@@ -282,16 +282,16 @@
       <Filter>Scintilla\lexlib</Filter>
     </ClInclude>
     <ClInclude Include="..\scintilla\lexlib\PropSetSimple.h">
-      <Filter>Header Files</Filter>
+      <Filter>Scintilla\lexlib</Filter>
     </ClInclude>
     <ClInclude Include="..\scintilla\lexlib\SparseState.h">
       <Filter>Scintilla\lexlib</Filter>
     </ClInclude>
     <ClInclude Include="..\scintilla\lexlib\StyleContext.h">
-      <Filter>Header Files</Filter>
+      <Filter>Scintilla\lexlib</Filter>
     </ClInclude>
     <ClInclude Include="..\scintilla\lexlib\WordList.h">
-      <Filter>Header Files</Filter>
+      <Filter>Scintilla\lexlib</Filter>
     </ClInclude>
     <ClInclude Include="..\scintilla\src\AutoComplete.h">
       <Filter>Scintilla\src</Filter>
