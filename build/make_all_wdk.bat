@@ -18,8 +18,8 @@ SETLOCAL
 CD /D %~dp0
 
 CALL "build_wdk.bat"
-CALL "make_installer.bat"
-CALL "make_zip.bat"
+CALL "make_installer.bat" wdk
+CALL "make_zip.bat" wdk
 
 
 :END

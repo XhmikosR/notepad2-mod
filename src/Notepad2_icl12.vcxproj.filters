@@ -108,9 +108,6 @@
     <ClCompile Include="..\scintilla\lexlib\PropSetSimple.cxx">
       <Filter>Scintilla\lexlib</Filter>
     </ClCompile>
-    <ClInclude Include="..\scintilla\lexlib\SparseState.h">
-      <Filter>Scintilla\lexlib</Filter>
-    </ClInclude>
     <ClCompile Include="..\scintilla\lexlib\StyleContext.cxx">
       <Filter>Scintilla\lexlib</Filter>
     </ClCompile>
@@ -260,6 +257,9 @@
     <ClInclude Include="..\scintilla\lexlib\PropSetSimple.h">
       <Filter>Scintilla\lexlib</Filter>
     </ClInclude>
+    <ClInclude Include="..\scintilla\lexlib\SparseState.h">
+      <Filter>Scintilla\lexlib</Filter>
+    </ClInclude>
     <ClInclude Include="..\scintilla\lexlib\StyleContext.h">
       <Filter>Scintilla\lexlib</Filter>
     </ClInclude>
@@ -377,6 +377,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\res\Toolbar.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Notepad2.ver">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

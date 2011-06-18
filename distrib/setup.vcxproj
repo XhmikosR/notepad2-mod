@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>SetupStub</ProjectName>
+    <ProjectName>Setup</ProjectName>
     <ProjectGuid>{AA902504-68C0-68D1-8905-72BCDCCD10C7}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <SccProjectName />
@@ -41,22 +41,18 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Full|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>Windows7.1SDK</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Full|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>Windows7.1SDK</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Lite|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>Windows7.1SDK</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Lite|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>Windows7.1SDK</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -79,24 +75,28 @@
     <IntDir>obj\x86-32.lite\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <TargetName>setuplite</TargetName>
+    <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Lite|x64'">
     <OutDir>setup.x86-64\</OutDir>
     <IntDir>obj\x86-64.lite\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <TargetName>setuplite</TargetName>
+    <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Full|Win32'">
     <OutDir>setup.x86-32\</OutDir>
     <IntDir>obj\x86-32.full\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <TargetName>setupfull</TargetName>
+    <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Full|x64'">
     <OutDir>setup.x86-64\</OutDir>
     <IntDir>obj\x86-64.full\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <TargetName>setupfull</TargetName>
+    <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Lite|Win32'">
     <ClCompile>
@@ -105,8 +105,6 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;UNICODE;_WIN32_WINNT=0x0600;SETUP_LITE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions>
-      </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <ResourceCompile>
@@ -124,9 +122,6 @@
       <MinimumRequiredVersion>5.01</MinimumRequiredVersion>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
-    <Manifest>
-      <AdditionalManifestFiles>res\lite\setup.manifest</AdditionalManifestFiles>
-    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Lite|x64'">
     <ClCompile>
@@ -135,8 +130,6 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_WIN64;NDEBUG;_WINDOWS;UNICODE;_WIN32_WINNT=0x0600;SETUP_LITE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions>
-      </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DisableSpecificWarnings>4267</DisableSpecificWarnings>
     </ClCompile>
@@ -155,9 +148,6 @@
       <MinimumRequiredVersion>5.02</MinimumRequiredVersion>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
-    <Manifest>
-      <AdditionalManifestFiles>res\lite\setup.manifest</AdditionalManifestFiles>
-    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Full|Win32'">
     <ClCompile>
@@ -166,8 +156,6 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;UNICODE;_WIN32_WINNT=0x0600;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions>
-      </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <ResourceCompile>
@@ -184,9 +172,6 @@
       <MinimumRequiredVersion>5.01</MinimumRequiredVersion>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
-    <Manifest>
-      <AdditionalManifestFiles>res\full\setup.manifest</AdditionalManifestFiles>
-    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Full|x64'">
     <ClCompile>
@@ -195,8 +180,6 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_WIN64;NDEBUG;_WINDOWS;UNICODE;_WIN32_WINNT=0x0600;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions>
-      </AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DisableSpecificWarnings>4267</DisableSpecificWarnings>
     </ClCompile>
@@ -214,9 +197,6 @@
       <MinimumRequiredVersion>5.02</MinimumRequiredVersion>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
-    <Manifest>
-      <AdditionalManifestFiles>res\full\setup.manifest</AdditionalManifestFiles>
-    </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="setup.c">

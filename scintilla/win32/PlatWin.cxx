@@ -11,6 +11,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <time.h>
+#include <limits.h>
 
 /* notepad2-mod custom code start */
 #if !defined(_WIN32_WINNT)
@@ -27,11 +28,13 @@
 #include "XPM.h"
 #include "FontQuality.h"
 
+/* notepad2-mod custom code
+   MultiMon.h is not included in WDK 7.1 */
 // We want to use multi monitor functions, but via LoadLibrary etc
 // Luckily microsoft has done the heavy lifting for us, so we'll just use their stub functions!
-#if defined(_MSC_VER) && (MSC_VER > 1200)
+#if defined(_MSC_VER) && (_MSC_VER > 1200) && !defined(WDK_BUILD)
 #define COMPILE_MULTIMON_STUBS
-#include "MultiMon.h"
+#include <MultiMon.h>
 #endif
 
 #ifndef IDC_HAND
@@ -444,7 +447,7 @@ SurfaceImpl::SurfaceImpl() :
 	bitmap(0), bitmapOld(0),
 	paletteOld(0) {
 	// Windows 9x has only a 16 bit coordinate system so break after 30000 pixels
-	maxWidthMeasure = IsNT() ? 1000000 : 30000;
+	maxWidthMeasure = IsNT() ? INT_MAX : 30000;
 	// There appears to be a 16 bit string length limit in GDI on NT and a limit of
 	// 8192 characters on Windows 95.
 	maxLenText = IsNT() ? 65535 : 8192;

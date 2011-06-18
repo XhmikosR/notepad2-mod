@@ -11,7 +11,7 @@
 *
 * See License.txt for details about distribution and modification.
 *
-*                                              (c) Florian Balmer 1996-2010
+*                                              (c) Florian Balmer 1996-2011
 *                                                  florian.balmer@gmail.com
 *                                               http://www.flos-freeware.ch
 *
@@ -26,10 +26,10 @@
 #define MBYESNOCANCEL  4
 #define MBOKCANCEL     8
 
-int MsgBox(int,UINT,...);
+int  MsgBox(int,UINT,...);
 void DisplayCmdLineHelp();
 BOOL GetDirectory(HWND,int,LPWSTR,LPCWSTR,BOOL);
-BOOL CALLBACK AboutDlgProc(HWND,UINT,WPARAM,LPARAM);
+INT_PTR CALLBACK AboutDlgProc(HWND,UINT,WPARAM,LPARAM);
 void RunDlg(HWND,LPCWSTR);
 BOOL OpenWithDlg(HWND,LPCWSTR);
 BOOL FavoritesDlg(HWND,LPWSTR);
@@ -44,7 +44,7 @@ BOOL SelectDefEncodingDlg(HWND,int *);
 BOOL SelectEncodingDlg(HWND,int *);
 BOOL RecodeDlg(HWND,int *);
 BOOL SelectDefLineEndingDlg(HWND,int *);
-int  InfoBox(int,LPCWSTR,int,...);
+INT_PTR InfoBox(int,LPCWSTR,int,...);
 
 
 // End of Dialogs.h

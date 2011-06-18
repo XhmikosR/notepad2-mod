@@ -1,5 +1,7 @@
 #define IDC_STATIC                      -1
 
+#define IDR_RT_MANIFEST                 1
+
 #define IDR_CABINET                     100
 #define IDR_LICENSE                     101
 

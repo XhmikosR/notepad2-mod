@@ -11,7 +11,7 @@
 *
 * See License.txt for details about distribution and modification.
 *
-*                                              (c) Florian Balmer 1996-2010
+*                                              (c) Florian Balmer 1996-2011
 *                                                  florian.balmer@gmail.com
 *                                               http://www.flos-freeware.ch
 *
@@ -22,7 +22,7 @@
 #define _DLAPI_H_
 
 #ifdef __cplusplus
-extern L"C" { // C-Declarations
+extern "C" { // C-Declarations
 #endif //__cplusplus
 
 
@@ -114,7 +114,7 @@ typedef struct tagDLITEM // dli
 
 } DLITEM, *LPDLITEM;
 
-DirList_GetItem(HWND,int,LPDLITEM);
+int DirList_GetItem(HWND,int,LPDLITEM);
 
 
 //==== DlGetItemEx() ==========================================================
@@ -126,10 +126,6 @@ int DirList_GetItemEx(HWND,int,LPWIN32_FIND_DATA);
 
 BOOL DirList_PropertyDlg(HWND,int);
 
-
-//==== DlDoDragDrop() =========================================================
-
-void DirList_DoDragDrop(HWND,LPARAM);
 
 //==== DlGetLongPathName() ====================================================
 
@@ -175,8 +171,7 @@ LRESULT DriveBox_GetDispInfo(HWND,LPARAM);
 #define _IL_Next(pidl) ((LPITEMIDLIST)(((LPBYTE)(pidl)) + pidl->mkid.cb))
 
 //==== IL_Create() ============================================================
-LPITEMIDLIST IL_Create(LPMALLOC,
-                       LPCITEMIDLIST,UINT,
+LPITEMIDLIST IL_Create(LPCITEMIDLIST,UINT,
                        LPCITEMIDLIST,UINT);
 
 //==== IL_GetSize() ===========================================================

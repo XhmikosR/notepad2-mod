@@ -254,20 +254,17 @@ static void FoldModulaDoc( unsigned int startPos,
 				int clv_old = curLevel;
 				int pos;
 				char ch;
-				bool found;
 				int clv_new;
 				while( cln > 0 ) {
 					clv_new = styler.LevelAt( cln - 1 ) >> 16;
 					if( clv_new < clv_old ) {
 						nextLevel--;
 						pos = styler.LineStart( cln );
-						found = false;
 						while( ( ch = styler.SafeGetCharAt( pos ) ) != '\n' ) {
 							if( ch == 'P' ) {
 								if( styler.StyleAt(pos) == SCE_MODULA_KEYWORD )	{
 									if( checkKeyIdentOper( styler, pos, endPos,
 														"PROCEDURE", '(' ) ) {
-										found = true;
 										break;
 									}
 								}

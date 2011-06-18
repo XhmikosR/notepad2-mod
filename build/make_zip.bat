@@ -13,33 +13,17 @@ rem *                                       http://code.google.com/p/notepad2-mo
 rem *
 rem ******************************************************************************
 
-SETLOCAL
+SETLOCAL ENABLEEXTENSIONS
 CD /D %~dp0
 
-rem check for the help switches
-IF /I "%~1"=="help" GOTO SHOWHELP
-IF /I "%~1"=="/help" GOTO SHOWHELP
-IF /I "%~1"=="-help" GOTO SHOWHELP
+rem Check for the help switches
+IF /I "%~1"=="help"   GOTO SHOWHELP
+IF /I "%~1"=="/help"  GOTO SHOWHELP
+IF /I "%~1"=="-help"  GOTO SHOWHELP
 IF /I "%~1"=="--help" GOTO SHOWHELP
-IF /I "%~1"=="/?" GOTO SHOWHELP
-GOTO CHECKFIRSTARG
+IF /I "%~1"=="/?"     GOTO SHOWHELP
 
 
-:SHOWHELP
-TITLE "make_zip.bat %1"
-ECHO. & ECHO.
-ECHO Usage:   make_zip.bat [ICL12^|VS2010^|WDK]
-ECHO.
-ECHO Notes:   You can also prefix the commands with "-", "--" or "/".
-ECHO          The arguments are case insesitive.
-ECHO. & ECHO.
-ECHO Executing "make_zip.bat" will use the defaults: "make_zip.bat WDK"
-ECHO.
-ENDLOCAL
-EXIT /B
-
-
-:CHECKFIRSTARG
 rem Check for the first switch
 IF "%~1" == "" (
   SET INPUTDIRx86=bin\WDK\Release_x86
@@ -133,12 +117,26 @@ CALL :SubZipFiles %INPUTDIRx64% x86-64
 
 rem Compress everything into a single ZIP file
 PUSHD "packages"
-DEL "Notepad2.zip" >NUL 2>&1
+IF EXIST "Notepad2.zip" DEL "Notepad2.zip"
+IF EXIST "temp_zip"     RD /S /Q "temp_zip"
+IF NOT EXIST "temp_zip" MD "temp_zip"
 
-START "" /B /WAIT "..\..\distrib\tools\7za.exe" a -tzip -mx=9 Notepad2.zip * >NUL
+IF EXIST "Notepad2.%NP2_VER%_r%VerRev%*.7z"  COPY /Y /V "Notepad2.%NP2_VER%_r%VerRev%*.7z"  "temp_zip\" >NUL
+IF EXIST "Notepad2.%NP2_VER%_r%VerRev%*.exe" COPY /Y /V "Notepad2.%NP2_VER%_r%VerRev%*.exe" "temp_zip\" >NUL
+IF EXIST "Notepad2.%NP2_VER%_r%VerRev%*.zip" COPY /Y /V "Notepad2.%NP2_VER%_r%VerRev%*.zip" "temp_zip\" >NUL
+
+PUSHD "temp_zip"
+
+START "" /B /WAIT "..\..\..\distrib\tools\7za.exe" a -tzip -mx=9 Notepad2.zip * >NUL
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
 CALL :SUBMSG "INFO" "Notepad2.zip created successfully!"
+
+MOVE /Y "Notepad2.zip" ".." >NUL
+
+POPD
+IF EXIST "temp_zip" RD /S /Q "temp_zip"
+
 POPD
 
 
@@ -153,15 +151,16 @@ EXIT /B
 TITLE Creating the %2 ZIP file...
 CALL :SUBMSG "INFO" "Creating the %2 ZIP file..."
 
-RD /S /Q "temp_zip" >NUL 2>&1
-MD "temp_zip" "packages" >NUL 2>&1
+IF EXIST "temp_zip"     RD /S /Q "temp_zip"
+IF NOT EXIST "temp_zip" MD "temp_zip"
+IF NOT EXIST "packages" MD "packages"
 
-COPY /Y /V "..\License.txt" "temp_zip\"
-COPY /Y /V "..\%1\Notepad2.exe" "temp_zip\"
+COPY /Y /V "..\License.txt"                      "temp_zip\"
+COPY /Y /V "..\%1\Notepad2.exe"                  "temp_zip\"
 COPY /Y /V "..\distrib\res\cabinet\notepad2.ini" "temp_zip\Notepad2.ini"
-COPY /Y /V "..\Notepad2.txt" "temp_zip\"
-COPY /Y /V "..\Readme.txt" "temp_zip\"
-COPY /Y /V "..\Readme-mod.txt" "temp_zip\"
+COPY /Y /V "..\Notepad2.txt"                     "temp_zip\"
+COPY /Y /V "..\Readme.txt"                       "temp_zip\"
+COPY /Y /V "..\Readme-mod.txt"                   "temp_zip\"
 
 PUSHD "temp_zip"
 START "" /B /WAIT "..\..\distrib\tools\7za.exe" a -tzip -mx=9^
@@ -169,11 +168,11 @@ START "" /B /WAIT "..\..\distrib\tools\7za.exe" a -tzip -mx=9^
  "Notepad2.ini" "Notepad2.txt" "Readme.txt" "Readme-mod.txt" >NUL
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
-CALL :SUBMSG "INFO" Notepad2.%NP2_VER%_r%VerRev%_%2%SUFFIX%.zip created successfully!"
+CALL :SUBMSG "INFO" "Notepad2.%NP2_VER%_r%VerRev%_%2%SUFFIX%.zip created successfully!"
 
-MOVE /Y "Notepad2.%NP2_VER%_r%VerRev%_%2%SUFFIX%.zip" "..\packages" >NUL 2>&1
+MOVE /Y "Notepad2.%NP2_VER%_r%VerRev%_%2%SUFFIX%.zip" "..\packages" >NUL
 POPD
-RD /S /Q "temp_zip" >NUL 2>&1
+IF EXIST "temp_zip" RD /S /Q "temp_zip"
 EXIT /B
 
 
@@ -181,16 +180,16 @@ EXIT /B
 rem Get the version
 FOR /F "tokens=3,4 delims= " %%K IN (
   'FINDSTR /I /L /C:"define VERSION_MAJOR" "..\src\Version.h"') DO (
-  SET "VerMajor=%%K"&Call :SubVerMajor %%VerMajor:*Z=%%)
+  SET "VerMajor=%%K" & Call :SubVerMajor %%VerMajor:*Z=%%)
 FOR /F "tokens=3,4 delims= " %%L IN (
   'FINDSTR /I /L /C:"define VERSION_MINOR" "..\src\Version.h"') DO (
-  SET "VerMinor=%%L"&Call :SubVerMinor %%VerMinor:*Z=%%)
+  SET "VerMinor=%%L" & Call :SubVerMinor %%VerMinor:*Z=%%)
 FOR /F "tokens=3,4 delims= " %%M IN (
   'FINDSTR /I /L /C:"define VERSION_BUILD" "..\src\Version.h"') DO (
-  SET "VerBuild=%%M"&Call :SubVerBuild %%VerBuild:*Z=%%)
+  SET "VerBuild=%%M" & Call :SubVerBuild %%VerBuild:*Z=%%)
 FOR /F "tokens=3,4 delims= " %%N IN (
   'FINDSTR /I /L /C:"define VERSION_REV" "..\src\Version_rev.h"') DO (
-  SET "VerRev=%%N"&Call :SubVerRev %%VerRev:*Z=%%)
+  SET "VerRev=%%N" & Call :SubVerRev %%VerRev:*Z=%%)
 
 SET NP2_VER=%VerMajor%.%VerMinor%.%VerBuild%
 EXIT /B
@@ -213,6 +212,20 @@ EXIT /B
 
 :SubVerRev
 SET VerRev=%*
+EXIT /B
+
+
+:SHOWHELP
+TITLE "%~nx0 %1"
+ECHO. & ECHO.
+ECHO Usage:   %~nx0 [ICL12^|VS2010^|WDK]
+ECHO.
+ECHO Notes:   You can also prefix the commands with "-", "--" or "/".
+ECHO          The arguments are not case sensitive.
+ECHO. & ECHO.
+ECHO Executing "%~nx0" will use the defaults: "%~nx0 WDK"
+ECHO.
+ENDLOCAL
 EXIT /B
 
 

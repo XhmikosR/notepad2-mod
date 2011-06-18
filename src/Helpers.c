@@ -13,7 +13,7 @@
 *
 * See License.txt for details about distribution and modification.
 *
-*                                              (c) Florian Balmer 1996-2010
+*                                              (c) Florian Balmer 1996-2011
 *                                                  florian.balmer@gmail.com
 *                                               http://www.flos-freeware.ch
 *
@@ -29,9 +29,9 @@
 #include <uxtheme.h>
 #include <stdio.h>
 #include <string.h>
+#include "scintilla.h"
 #include "helpers.h"
 #include "resource.h"
-
 
 
 //=============================================================================
@@ -119,34 +119,6 @@ BOOL IniSectionSetString(LPWSTR lpCachedIniSection,LPCWSTR lpName,LPCWSTR lpStri
 
 //=============================================================================
 //
-//  BeginWaitCursor()
-//
-void BeginWaitCursor()
-{
-
-  DestroyCursor(
-    SetCursor(
-    LoadCursor(NULL,IDC_WAIT)));
-
-}
-
-
-//=============================================================================
-//
-//  EndWaitCursor()
-//
-void EndWaitCursor()
-{
-
-  DestroyCursor(
-    SetCursor(
-    LoadCursor(NULL,IDC_ARROW)));
-
-}
-
-
-//=============================================================================
-//
 //  PrivateIsAppThemed()
 //
 extern HMODULE hModUxTheme;
@@ -159,7 +131,7 @@ BOOL PrivateIsAppThemed()
     pfnIsAppThemed = GetProcAddress(hModUxTheme,"IsAppThemed");
 
     if (pfnIsAppThemed)
-      bIsAppThemed = pfnIsAppThemed();
+      bIsAppThemed = (BOOL)pfnIsAppThemed();
   }
   return bIsAppThemed;
 }
@@ -183,7 +155,7 @@ HRESULT PrivateSetCurrentProcessExplicitAppUserModelID(PCWSTR AppID)
     GetProcAddress(GetModuleHandleA("shell32.dll"),"SetCurrentProcessExplicitAppUserModelID");
 
   if (pfnSetCurrentProcessExplicitAppUserModelID)
-    return(pfnSetCurrentProcessExplicitAppUserModelID(AppID));
+    return((HRESULT)pfnSetCurrentProcessExplicitAppUserModelID(AppID));
 
   else
     return(S_OK);
@@ -213,11 +185,10 @@ BOOL IsElevated() {
         if (dwReturnLength == sizeof(te))
           bIsElevated = te.TokenIsElevated;
     }
-    CloseHandle( hToken );
+    CloseHandle(hToken);
   }
   return bIsElevated;
 }
-
 
 
 //=============================================================================
@@ -242,6 +213,97 @@ BOOL IsElevated() {
 
 //=============================================================================
 //
+//  BitmapMergeAlpha()
+//  Merge alpha channel into color channel
+//
+BOOL BitmapMergeAlpha(HBITMAP hbmp,COLORREF crDest)
+{
+  BITMAP bmp;
+  if (GetObject(hbmp,sizeof(BITMAP),&bmp)) {
+
+    if (bmp.bmBitsPixel == 32) {
+
+      int x,y;
+      RGBQUAD *prgba = bmp.bmBits;
+
+      for (y = 0; y < bmp.bmHeight; y++) {
+        for (x = 0; x < bmp.bmWidth; x++) {
+          BYTE alpha = prgba[x].rgbReserved;
+          prgba[x].rgbRed = ((prgba[x].rgbRed * alpha) + (GetRValue(crDest) * (255-alpha))) >> 8;
+          prgba[x].rgbGreen = ((prgba[x].rgbGreen * alpha) + (GetGValue(crDest) * (255-alpha))) >> 8;
+          prgba[x].rgbBlue = ((prgba[x].rgbBlue * alpha) + (GetBValue(crDest) * (255-alpha))) >> 8;
+          prgba[x].rgbReserved = 0xFF;
+        }
+        prgba = (RGBQUAD*)((LPBYTE)prgba + bmp.bmWidthBytes);
+      }
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+
+//=============================================================================
+//
+//  BitmapAlphaBlend()
+//  Perform alpha blending to color channel only
+//
+BOOL BitmapAlphaBlend(HBITMAP hbmp,COLORREF crDest,BYTE alpha)
+{
+  BITMAP bmp;
+  if (GetObject(hbmp,sizeof(BITMAP),&bmp)) {
+
+    if (bmp.bmBitsPixel == 32) {
+
+      int x,y;
+      RGBQUAD *prgba = bmp.bmBits;
+
+      for (y = 0; y < bmp.bmHeight; y++) {
+        for (x = 0; x < bmp.bmWidth; x++) {
+          prgba[x].rgbRed = ((prgba[x].rgbRed * alpha) + (GetRValue(crDest) * (255-alpha))) >> 8;
+          prgba[x].rgbGreen = ((prgba[x].rgbGreen * alpha) + (GetGValue(crDest) * (255-alpha))) >> 8;
+          prgba[x].rgbBlue = ((prgba[x].rgbBlue * alpha) + (GetBValue(crDest) * (255-alpha))) >> 8;
+        }
+        prgba = (RGBQUAD*)((LPBYTE)prgba + bmp.bmWidthBytes);
+      }
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+
+//=============================================================================
+//
+//  BitmapGrayScale()
+//  Gray scale color channel only
+//
+BOOL BitmapGrayScale(HBITMAP hbmp)
+{
+  BITMAP bmp;
+  if (GetObject(hbmp,sizeof(BITMAP),&bmp)) {
+
+    if (bmp.bmBitsPixel == 32) {
+
+      int x,y;
+      RGBQUAD *prgba = bmp.bmBits;
+
+      for (y = 0; y < bmp.bmHeight; y++) {
+        for (x = 0; x < bmp.bmWidth; x++) {
+          prgba[x].rgbRed = prgba[x].rgbGreen = prgba[x].rgbBlue =
+          (((BYTE)((prgba[x].rgbRed * 38 + prgba[x].rgbGreen * 75 + prgba[x].rgbBlue * 15) >> 7) * 0x80) + (0xD0 * (255-0x80))) >> 8;
+        }
+        prgba = (RGBQUAD*)((LPBYTE)prgba + bmp.bmWidthBytes);
+      }
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+
+//=============================================================================
+//
 //  VerifyContrast()
 //  Check if two colors can be distinguished
 //
@@ -257,6 +319,29 @@ BOOL VerifyContrast(COLORREF cr1,COLORREF cr2)
   return(
     ((abs((3*r1 + 5*g1 + 1*b1) - (3*r2 + 6*g2 + 1*b2))) >= 400) ||
     ((abs(r1-r2) + abs(b1-b2) + abs(g1-g2)) >= 400));
+}
+
+
+//=============================================================================
+//
+//  IsFontAvailable()
+//  Test if a certain font is installed on the system
+//
+int CALLBACK EnumFontsProc(CONST LOGFONT *plf,CONST TEXTMETRIC *ptm,DWORD FontType,LPARAM lParam)
+{
+  *((PBOOL)lParam) = TRUE;
+  return(FALSE);
+}
+
+BOOL IsFontAvailable(LPCWSTR lpszFontName)
+{
+  BOOL fFound = FALSE;
+
+  HDC hDC = GetDC(NULL);
+  EnumFonts(hDC,lpszFontName,EnumFontsProc,(LPARAM)&fFound);
+  ReleaseDC(NULL,hDC);
+
+  return(fFound);
 }
 
 
@@ -278,6 +363,8 @@ BOOL SetWindowTitle(HWND hwnd,UINT uIDAppName,BOOL bIsElevated,UINT uIDUntitled,
   WCHAR szElevatedAppName[128];
   WCHAR szReadOnly[32];
   WCHAR szTitle[512];
+  static WCHAR szCachedFile[MAX_PATH];
+  static WCHAR szCachedDisplayName[MAX_PATH];
   static const WCHAR *pszSep = L" - ";
   static const WCHAR *pszMod = L"* ";
 
@@ -308,11 +395,15 @@ BOOL SetWindowTitle(HWND hwnd,UINT uIDAppName,BOOL bIsElevated,UINT uIDUntitled,
   {
     if (iFormat < 2 && !PathIsRoot(lpszFile))
     {
-      SHFILEINFO shfi;
-      if (SHGetFileInfo2(lpszFile,0,&shfi,sizeof(SHFILEINFO),SHGFI_DISPLAYNAME))
-        lstrcat(szTitle,shfi.szDisplayName);
-      else
-        lstrcat(szTitle,PathFindFileName(lpszFile));
+      if (lstrcmp(szCachedFile,lpszFile) != 0) {
+        SHFILEINFO shfi;
+        lstrcpy(szCachedFile,lpszFile);
+        if (SHGetFileInfo2(lpszFile,0,&shfi,sizeof(SHFILEINFO),SHGFI_DISPLAYNAME))
+          lstrcpy(szCachedDisplayName,shfi.szDisplayName);
+        else
+          lstrcpy(szCachedDisplayName,PathFindFileName(lpszFile));
+      }
+      lstrcat(szTitle,szCachedDisplayName);
       if (iFormat == 1) {
         WCHAR tchPath[MAX_PATH];
         StrCpyN(tchPath,lpszFile,COUNTOF(tchPath));
@@ -326,8 +417,11 @@ BOOL SetWindowTitle(HWND hwnd,UINT uIDAppName,BOOL bIsElevated,UINT uIDUntitled,
       lstrcat(szTitle,lpszFile);
   }
 
-  else
+  else {
+    lstrcpy(szCachedFile,L"");
+    lstrcpy(szCachedDisplayName,L"");
     lstrcat(szTitle,szUntitled);
+  }
 
   if (bReadOnly && GetString(uIDReadOnly,szReadOnly,COUNTOF(szReadOnly)))
   {
@@ -355,8 +449,8 @@ void SetWindowTransparentMode(HWND hwnd,BOOL bTransparentMode)
 
   if (bTransparentMode) {
     if (fp = GetProcAddress(GetModuleHandle(L"User32"),"SetLayeredWindowAttributes")) {
-      SetWindowLong(hwnd,GWL_EXSTYLE,
-        GetWindowLong(hwnd,GWL_EXSTYLE) | WS_EX_LAYERED);
+      SetWindowLongPtr(hwnd,GWL_EXSTYLE,
+        GetWindowLongPtr(hwnd,GWL_EXSTYLE) | WS_EX_LAYERED);
 
       // get opacity level from registry
       iAlphaPercent = IniGetInt(L"Settings2",L"OpacityLevel",75);
@@ -369,8 +463,8 @@ void SetWindowTransparentMode(HWND hwnd,BOOL bTransparentMode)
   }
 
   else
-    SetWindowLong(hwnd,GWL_EXSTYLE,
-      GetWindowLong(hwnd,GWL_EXSTYLE) & ~WS_EX_LAYERED);
+    SetWindowLongPtr(hwnd,GWL_EXSTYLE,
+      GetWindowLongPtr(hwnd,GWL_EXSTYLE) & ~WS_EX_LAYERED);
 }
 
 
@@ -508,7 +602,7 @@ void ResizeDlg_Init(HWND hwnd,int cxFrame,int cyFrame,int nIdGrip)
   pm->cxFrame = cxFrame;
   pm->cyFrame = cyFrame;
 
-  AdjustWindowRectEx(&rc,GetWindowLongPtr(hwnd,GWL_STYLE)|WS_THICKFRAME,FALSE,0);
+  AdjustWindowRectEx(&rc,GetWindowLong(hwnd,GWL_STYLE)|WS_THICKFRAME,FALSE,0);
   pm->mmiPtMinX = rc.right-rc.left;
   pm->mmiPtMinY = rc.bottom-rc.top;
 
@@ -672,7 +766,7 @@ BOOL StatusSetText(HWND hwnd,UINT nPart,LPCWSTR lpszText)
 {
 
   UINT uFlags = (nPart == 255) ? nPart|SBT_NOBORDERS : nPart;
-  return SendMessage(hwnd,SB_SETTEXT,uFlags,(LPARAM)lpszText);
+  return (BOOL)SendMessage(hwnd,SB_SETTEXT,uFlags,(LPARAM)lpszText);
 
 }
 
@@ -708,7 +802,7 @@ BOOL StatusSetTextID(HWND hwnd,UINT nPart,UINT uID)
   if (!GetString(uID,szText,256))
     return FALSE;
 
-  return SendMessage(hwnd,SB_SETTEXT,uFlags,(LPARAM)szText);
+  return (BOOL)SendMessage(hwnd,SB_SETTEXT,uFlags,(LPARAM)szText);
 
 }
 
@@ -747,7 +841,7 @@ int Toolbar_GetButtons(HWND hwnd,int cmdBase,LPWSTR lpszButtons,int cchButtons)
   TBBUTTON tbb;
 
   lstrcpy(tchButtons,L"");
-  c = min(50,SendMessage(hwnd,TB_BUTTONCOUNT,0,0));
+  c = min(50,(int)SendMessage(hwnd,TB_BUTTONCOUNT,0,0));
 
   for (i = 0; i < c; i++) {
     SendMessage(hwnd,TB_GETBUTTON,(WPARAM)i,(LPARAM)&tbb);
@@ -773,7 +867,7 @@ int Toolbar_SetButtons(HWND hwnd,int cmdBase,LPCWSTR lpszButtons,LPCTBBUTTON ptb
   while (p = StrStr(tchButtons,L"  "))
     MoveMemory((WCHAR*)p,(WCHAR*)p+1,(lstrlen(p) + 1) * sizeof(WCHAR));
 
-  c = SendMessage(hwnd,TB_BUTTONCOUNT,0,0);
+  c = (int)SendMessage(hwnd,TB_BUTTONCOUNT,0,0);
   for (i = 0; i < c; i++)
     SendMessage(hwnd,TB_DELETEBUTTON,0,0);
 
@@ -793,7 +887,7 @@ int Toolbar_SetButtons(HWND hwnd,int cmdBase,LPCWSTR lpszButtons,LPCTBBUTTON ptb
     }
     p = StrEnd(p)+1;
   }
-  return(SendMessage(hwnd,TB_BUTTONCOUNT,0,0));
+  return((int)SendMessage(hwnd,TB_BUTTONCOUNT,0,0));
 }
 
 
@@ -900,9 +994,9 @@ void PathAbsoluteFromApp(LPWSTR lpszSrc,LPWSTR lpszDest,int cchDest,BOOL bExpand
   WCHAR wchPath[MAX_PATH];
   WCHAR wchResult[MAX_PATH];
 
-  if (StrCmpNI(lpszSrc,L"%CSIDL:MYDOCUMENTS%",COUNTOF("%CSIDL:MYDOCUMENTS%")-1) == 0) {
+  if (StrCmpNI(lpszSrc,L"%CSIDL:MYDOCUMENTS%",CSTRLEN("%CSIDL:MYDOCUMENTS%")) == 0) {
     SHGetFolderPath(NULL,CSIDL_PERSONAL,NULL,SHGFP_TYPE_CURRENT,wchPath);
-    PathAppend(wchPath,lpszSrc+COUNTOF("%CSIDL:MYDOCUMENTS%")-1);
+    PathAppend(wchPath,lpszSrc+CSTRLEN("%CSIDL:MYDOCUMENTS%"));
   }
   else
     lstrcpyn(wchPath,lpszSrc,COUNTOF(wchPath));
@@ -1105,7 +1199,7 @@ BOOL PathCreateDeskLnk(LPCWSTR pszDocument)
   lstrcpy(tchArguments,L"-n ");
   lstrcat(tchArguments,tchDocTemp);
 
-  SHGetSpecialFolderPath(NULL,tchLinkDir,CSIDL_DESKTOP,TRUE);
+  SHGetSpecialFolderPath(NULL,tchLinkDir,CSIDL_DESKTOPDIRECTORY,TRUE);
 
   GetString(IDS_LINKDESCRIPTION,tchDescription,COUNTOF(tchDescription));
 
@@ -1202,13 +1296,33 @@ BOOL PathCreateFavLnk(LPCWSTR pszName,LPCWSTR pszTarget,LPCWSTR pszDir)
 
 //=============================================================================
 //
+//  StrLTrim()
+//
+BOOL StrLTrim(LPWSTR pszSource,LPCWSTR pszTrimChars)
+{
+  LPWSTR psz;
+
+  if (!pszSource || !*pszSource)
+    return FALSE;
+
+  psz = pszSource;
+  while (StrChrI(pszTrimChars,*psz))
+    psz++;
+
+  MoveMemory(pszSource,psz,sizeof(WCHAR)*(lstrlen(psz) + 1));
+
+  return TRUE;
+}
+
+
+//=============================================================================
+//
 //  TrimString()
 //
 BOOL TrimString(LPWSTR lpString)
 {
 
   LPWSTR psz;
-
 
   if (!lpString || !*lpString)
     return FALSE;
@@ -1299,9 +1413,25 @@ void PrepareFilterStr(LPWSTR lpFilter)
 //
 void StrTab2Space(LPWSTR lpsz)
 {
-  WCHAR *c;
+  WCHAR *c = lpsz;
   while (c = StrChr(lpsz,L'\t'))
     *c = L' ';
+}
+
+
+//=============================================================================
+//
+//  PathFixBackslashes() - in place conversion
+//
+void PathFixBackslashes(LPWSTR lpsz)
+{
+  WCHAR *c = lpsz;
+  while (c = StrChr(c,L'/')) {
+    if (*CharPrev(lpsz,c) == L':' && *CharNext(c) == L'/')
+      c += 2;
+    else
+      *c = L'\\';
+  }
 }
 
 
@@ -1338,72 +1468,44 @@ void PathCanonicalizeEx(LPWSTR lpSrc)
 //
 //  GetLongPathNameEx()
 //
-//  Works fine with Windows 95!
 //
-extern LPMALLOC g_lpMalloc;
-
-DWORD GetLongPathNameEx(LPCWSTR lpszShortPath,LPWSTR lpszLongPath,DWORD cchBuffer)
+DWORD GetLongPathNameEx(LPWSTR lpszPath,DWORD cchBuffer)
 {
-  WCHAR wszShortPath[MAX_PATH];
-  WCHAR *pwchSep;
-  LPSHELLFOLDER lpsfDesktop;
-  ULONG chParsed = 0;
-  ULONG dwAttributes = 0;
-  LPITEMIDLIST  pidl = NULL;
-  BOOL fSucceeded = FALSE;
-
-  //MessageBox(GetFocus(),lpszShortPath,L"GetLongPathNameEx(): lpszShortPath",0);
-
-  // Convert lpszShortPath to a UNICODE string
-  /*MultiByteToWideChar(
-    CP_ACP,MB_PRECOMPOSED,lpszShortPath,-1,wszShortPath,MAX_PATH);*/
-  lstrcpy(wszShortPath,lpszShortPath);
-
-  // convert slashes to backlsashes
-  while (pwchSep = StrChr(wszShortPath,L'/'))
-    *pwchSep = L'\\';
-
-  // Get Desktop Folder
-  if (NOERROR == SHGetDesktopFolder(&lpsfDesktop))
-  {
-    // Convert wszShortPath to a pidl
-    if (NOERROR == lpsfDesktop->lpVtbl->ParseDisplayName(
-                     lpsfDesktop,NULL,NULL,wszShortPath,&chParsed,&pidl,&dwAttributes))
-    {
-      if (SHGetPathFromIDList(pidl,lpszLongPath))
-        fSucceeded = FALSE;
-      g_lpMalloc->lpVtbl->Free(g_lpMalloc,pidl);
-    }
+  DWORD dwRet = GetLongPathName(lpszPath,lpszPath,cchBuffer);
+  if (dwRet) {
+    if (PathGetDriveNumber(lpszPath) != -1)
+      CharUpperBuff(lpszPath,1);
+    return(dwRet);
   }
-
-  //MessageBox(GetFocus(),lpszLongPath,L"GetLongPathNameEx(): lpszLongPath",0);
-
-  if (fSucceeded)
-    return(lstrlen(lpszLongPath));
-  else {
-    if (lpszShortPath != lpszLongPath)
-      lstrcpy(lpszLongPath,lpszShortPath);
-    return(0);
-  }
-
-  cchBuffer;
+  return(0);
 }
 
 
 //=============================================================================
 //
-//  SHGetFileInfo2() - return a default name when the file has been removed
+//  SHGetFileInfo2()
+//
+//  Return a default name when the file has been removed, and always append
+//  a filename extension
 //
 DWORD_PTR SHGetFileInfo2(LPCWSTR pszPath,DWORD dwFileAttributes,
                          SHFILEINFO *psfi,UINT cbFileInfo,UINT uFlags)
 {
 
-  if (PathFileExists(pszPath))
-    return SHGetFileInfo(pszPath,dwFileAttributes,psfi,cbFileInfo,uFlags);
+  if (PathFileExists(pszPath)) {
 
-  else
-    return SHGetFileInfo(pszPath,FILE_ATTRIBUTE_NORMAL,
-                         psfi,cbFileInfo,uFlags|SHGFI_USEFILEATTRIBUTES);
+    DWORD_PTR dw = SHGetFileInfo(pszPath,dwFileAttributes,psfi,cbFileInfo,uFlags);
+    if (lstrlen(psfi->szDisplayName) < lstrlen(PathFindFileName(pszPath)))
+      StrCatBuff(psfi->szDisplayName,PathFindExtension(pszPath),COUNTOF(psfi->szDisplayName));
+    return(dw);
+  }
+
+  else {
+    DWORD_PTR dw = SHGetFileInfo(pszPath,FILE_ATTRIBUTE_NORMAL,psfi,cbFileInfo,uFlags|SHGFI_USEFILEATTRIBUTES);
+    if (lstrlen(psfi->szDisplayName) < lstrlen(PathFindFileName(pszPath)))
+      StrCatBuff(psfi->szDisplayName,PathFindExtension(pszPath),COUNTOF(psfi->szDisplayName));
+    return(dw);
+  }
 
 }
 
@@ -1493,7 +1595,7 @@ LRESULT ComboBox_AddStringA2W(UINT uCP,HWND hwnd,LPCSTR lpString)
 UINT CodePageFromCharSet(UINT uCharSet)
 {
   CHARSETINFO ci;
-  if (TranslateCharsetInfo((DWORD*)uCharSet,&ci,TCI_SRCCHARSET))
+  if (TranslateCharsetInfo((DWORD*)(UINT_PTR)uCharSet,&ci,TCI_SRCCHARSET))
     return(ci.ciACP);
   else
     return(GetACP());
@@ -1655,7 +1757,7 @@ BOOL MRU_Load(LPMRULIST pmru) {
   WCHAR *pIniSection = LocalAlloc(LPTR,sizeof(WCHAR)*32*1024);
 
   MRU_Empty(pmru);
-  LoadIniSection(pmru->szRegKey,pIniSection,LocalSize(pIniSection)/sizeof(WCHAR));
+  LoadIniSection(pmru->szRegKey,pIniSection,(int)LocalSize(pIniSection)/sizeof(WCHAR));
 
   for (i = 0; i < pmru->iSize; i++) {
     wsprintf(tchName,L"%.2i",i+1);
@@ -1756,7 +1858,7 @@ BOOL GetThemedDialogFont(LPWSTR lpFaceName,WORD* wSize)
 
   if (hModUxTheme = GetModuleHandle(L"uxtheme.dll")) {
     if ((BOOL)(GetProcAddress(hModUxTheme,"IsAppThemed"))()) {
-      hTheme = (HTHEME)(GetProcAddress(hModUxTheme,"OpenThemeData"))(NULL,L"WINDOWSTYLE;WINDOW");
+      hTheme = (HTHEME)(INT_PTR)(GetProcAddress(hModUxTheme,"OpenThemeData"))(NULL,L"WINDOWSTYLE;WINDOW");
       if (hTheme) {
         if (S_OK == (HRESULT)(GetProcAddress(hModUxTheme,"GetThemeSysFont"))(hTheme,/*TMT_MSGBOXFONT*/805,&lf)) {
           if (lf.lfHeight < 0)
@@ -1909,7 +2011,7 @@ INT_PTR ThemedDialogBoxParam(
   DLGPROC lpDialogFunc,
   LPARAM dwInitParam) {
 
-  INT ret;
+  INT_PTR ret;
   DLGTEMPLATE *pDlgTemplate;
 
   pDlgTemplate = LoadThemedDialogTemplate(lpTemplate,hInstance);
@@ -1956,7 +2058,7 @@ static BOOL IsOctalDigit(char ch) {
 /**
  * If the character is an hexa digit, get its value.
  */
-static int GetHexaDigit(char ch) {
+static int GetHexDigit(char ch) {
   if (ch >= '0' && ch <= '9') {
     return ch - '0';
   }
@@ -1970,71 +2072,85 @@ static int GetHexaDigit(char ch) {
 }
 
 /**
- * Convert C style \a, \b, \f, \n, \r, \t, \v, \ooo and \xhh into their indicated characters.
+ * Convert C style \a, \b, \f, \n, \r, \t, \v, \xhh and \uhhhh into their indicated characters.
  */
-unsigned int UnSlash(char *s) {
+unsigned int UnSlash(char *s,UINT cpEdit) {
   char *sStart = s;
   char *o = s;
 
   while (*s) {
     if (*s == '\\') {
       s++;
-      if (*s == 'a') {
+      if (*s == 'a')
         *o = '\a';
-      } else if (*s == 'b') {
+      else if (*s == 'b')
         *o = '\b';
-      } else if (*s == 'f') {
+      else if (*s == 'f')
         *o = '\f';
-      } else if (*s == 'n') {
+      else if (*s == 'n')
         *o = '\n';
-      } else if (*s == 'r') {
+      else if (*s == 'r')
         *o = '\r';
-      } else if (*s == 't') {
+      else if (*s == 't')
         *o = '\t';
-      } else if (*s == 'v') {
+      else if (*s == 'v')
         *o = '\v';
-      } else if (IsOctalDigit(*s)) {
-        int val = *s - '0';
-        if (IsOctalDigit(*(s + 1))) {
+      else if (*s == 'x' || *s == 'u') {
+        BOOL bShort = (*s == 'x');
+        char ch[8];
+        char *pch = ch;
+        WCHAR val[2] = L"";
+        int hex;
+        val[0] = 0;
+        hex = GetHexDigit(*(s+1));
+        if (hex >= 0) {
           s++;
-          val *= 8;
-          val += *s - '0';
-          if (IsOctalDigit(*(s + 1))) {
+          val[0] = hex;
+          hex = GetHexDigit(*(s+1));
+          if (hex >= 0) {
             s++;
-            val *= 8;
-            val += *s - '0';
+            val[0] *= 16;
+            val[0] += hex;
+            if (!bShort) {
+              hex = GetHexDigit(*(s+1));
+              if (hex >= 0) {
+                s++;
+                val[0] *= 16;
+                val[0] += hex;
+                hex = GetHexDigit(*(s+1));
+                if (hex >= 0) {
+                  s++;
+                  val[0] *= 16;
+                  val[0] += hex;
+                }
+              }
+            }
           }
-        }
-        *o = (char)(val);
-      } else if (*s == 'x') {
-        int val, ghd;
-        s++;
-        val = 0;
-        ghd = GetHexaDigit(*s);
-        if (ghd >= 0) {
-          s++;
-          val = ghd;
-          ghd = GetHexaDigit(*s);
-          if (ghd >= 0) {
-            s++;
-            val *= 16;
-            val += ghd;
+          if (val[0]) {
+            val[1] = 0;
+            WideCharToMultiByte(cpEdit,0,val,-1,ch,COUNTOF(ch),NULL,NULL);
+            *o = *pch++;
+            while (*pch)
+              *++o = *pch++;
           }
+          else
+            o--;
         }
-        *o = (char)(val);
-      } else {
-        *o = *s;
+        else
+          o--;
       }
-    } else {
-      *o = *s;
+      else
+        *o = *s;
     }
+    else
+      *o = *s;
     o++;
     if (*s) {
       s++;
     }
   }
   *o = '\0';
-  return o - sStart;
+  return (unsigned int)(o - sStart);
 }
 
 /**
@@ -2056,15 +2172,15 @@ unsigned int UnSlashLowOctal(char *s) {
       s++;
   }
   *o = '\0';
-  return o - sStart;
+  return (unsigned int)(o - sStart);
 }
 
-void TransformBackslashes(char* pszInput,BOOL bRegEx)
+void TransformBackslashes(char* pszInput,BOOL bRegEx,UINT cpEdit)
 {
   if (bRegEx)
     UnSlashLowOctal(pszInput);
   else
-    UnSlash(pszInput);
+    UnSlash(pszInput,cpEdit);
 }
 
 
@@ -2205,7 +2321,7 @@ static VOID GetTrayWndRect(LPRECT lpTrayRect)
 }
 
 // Check to see if the animation has been disabled
-static BOOL GetDoAnimateMinimize(VOID)
+/*static */BOOL GetDoAnimateMinimize(VOID)
 {
   ANIMATIONINFO ai;
 
