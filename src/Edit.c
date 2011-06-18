@@ -5925,7 +5925,7 @@ INT_PTR CALLBACK EditModifyLinesDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM
     case WM_NCACTIVATE:
       if (!(BOOL)wParam) {
         if (id_hover != 0) {
-          int _id_hover = id_hover;
+          //int _id_hover = id_hover;
           id_hover = 0;
           id_capture = 0;
           //InvalidateRect(GetDlgItem(hwnd,id_hover),NULL,FALSE);
@@ -5965,13 +5965,13 @@ INT_PTR CALLBACK EditModifyLinesDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM
               }
             }
             else if (id_hover != 0) {
-              int _id_hover = id_hover;
+              //int _id_hover = id_hover;
               id_hover = 0;
               //InvalidateRect(GetDlgItem(hwnd,_id_hover),NULL,FALSE);
             }
           }
           else if (id_hover != 0) {
-            int _id_hover = id_hover;
+            //int _id_hover = id_hover;
             id_hover = 0;
             //InvalidateRect(GetDlgItem(hwnd,_id_hover),NULL,FALSE);
           }

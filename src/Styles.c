@@ -339,13 +339,14 @@ EDITLEXER lexCPP = { SCLEX_CPP, 63004, L"C/C++ Source Code", L"c; cpp; cxx; cc; 
 
 
 KEYWORDLIST KeyWords_CS = {
-"abstract as base bool break byte case catch char checked class const "
-"continue decimal default delegate do double else enum event explicit "
-"extern false finally fixed float for foreach goto if implicit in int interface "
-"internal is lock long namespace new null object operator out override "
-"params private protected public readonly ref return sbyte sealed short "
-"sizeof stackalloc static string struct switch this throw true try typeof "
-"uint ulong unchecked unsafe ushort using virtual void while",
+"abstract add alias as ascending base bool break by byte case catch char checked "
+"class const continue decimal default delegate descending do double dynamic else "
+"enum equals event explicit extern false finally fixed float for foreach from get "
+"global goto group if implicit in int interface internal into is join lock let long "
+"namespace new null object on operator orderby out override params partial private "
+"protected public readonly ref remove return sbyte sealed select set short sizeof "
+"stackalloc static string struct switch this throw true try typeof uint ulong "
+"unchecked unsafe ushort using value var virtual void volatile where while yield",
 "",
 "", "", "", "", "", "", "" };
 
@@ -401,7 +402,7 @@ KEYWORDLIST KeyWords_MAK = {
 "", "", "", "", "", "", "", "", "" };
 
 
-EDITLEXER lexMAK = { SCLEX_MAKEFILE, 63007, L"Makefiles", L"mak; make; mk; dsp", L"", &KeyWords_MAK, {
+EDITLEXER lexMAK = { SCLEX_MAKEFILE, 63007, L"Makefiles", L"mak; make; mk; dsp; msc; msvc", L"", &KeyWords_MAK, {
                      { STYLE_DEFAULT, 63126, L"Default", L"fore:#0A246A", L"" },
                      //{ SCE_MAKE_DEFAULT, L"Default", L"", L"" },
                      { SCE_MAKE_COMMENT, 63127, L"Comment", L"fore:#008000", L"" },
@@ -2604,7 +2605,7 @@ int Style_GetLexerIconId(PEDITLEXER plex)
 //
 //  Style_AddLexerToTreeView()
 //
-void Style_AddLexerToTreeView(HWND hwnd,PEDITLEXER plex)
+HTREEITEM Style_AddLexerToTreeView(HWND hwnd,PEDITLEXER plex)
 {
   int i = 0;
   WCHAR tch[128];
@@ -2643,6 +2644,8 @@ void Style_AddLexerToTreeView(HWND hwnd,PEDITLEXER plex)
     TreeView_InsertItem(hwnd,&tvis);
     i++;
   }
+
+  return hTreeNode;
 }
 
 
@@ -2692,6 +2695,8 @@ INT_PTR CALLBACK Style_ConfigDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lP
         int i;
         SHFILEINFO shfi;
         LOGFONT lf;
+        HTREEITEM currentLex;
+        int found = 0;
 
         hwndTV = GetDlgItem(hwnd,IDC_STYLELIST);
         fDragging = FALSE;
@@ -2702,14 +2707,21 @@ INT_PTR CALLBACK Style_ConfigDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lP
 
         // Add lexers
         for (i = 0; i < NUMLEXERS; i++)
-          Style_AddLexerToTreeView(hwndTV,pLexArray[i]);
+        {
+          if (!found && lstrcmp(pLexArray[i]->pszName,pLexCurrent->pszName) == 0)
+          {
+              found = 1;
+              currentLex = Style_AddLexerToTreeView(hwndTV,pLexArray[i]);
+          }
+          else
+              Style_AddLexerToTreeView(hwndTV,pLexArray[i]);
+        }
 
-        pCurrentLexer = 0;
         pCurrentStyle = 0;
 
         //SetExplorerTheme(hwndTV);
         //TreeView_Expand(hwndTV,TreeView_GetRoot(hwndTV),TVE_EXPAND);
-        TreeView_Select(hwndTV,TreeView_GetRoot(hwndTV),TVGN_CARET);
+        TreeView_Select(hwndTV,currentLex,TVGN_CARET);
 
         SendDlgItemMessage(hwnd,IDC_STYLEEDIT,EM_LIMITTEXT,COUNTOF(lexDefault.Styles[0].szValue)-1,0);
 
