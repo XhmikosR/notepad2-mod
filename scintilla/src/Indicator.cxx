@@ -27,6 +27,17 @@ void Indicator::Draw(Surface *surface, const PRectangle &rc, const PRectangle &r
 			y = 2 - y;
 		}
 		surface->LineTo(rc.right, rc.top + y);	// Finish the line
+	} else if (style == INDIC_SQUIGGLELOW) {
+		surface->MoveTo(rc.left, rc.top);
+		int x = rc.left + 3;
+		int y = 0;
+		while (x < rc.right) {
+			surface->LineTo(x-1, rc.top + y);
+			y = 1 - y;
+        	surface->LineTo(x, rc.top + y);
+			x += 3;
+		}
+		surface->LineTo(rc.right, rc.top + y);	// Finish the line
 	} else if (style == INDIC_TT) {
 		surface->MoveTo(rc.left, ymid);
 		int x = rc.left + 5;
