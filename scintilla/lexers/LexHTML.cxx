@@ -588,6 +588,7 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 	int state = stateForPrintState(StateToPrint);
 	char makoBlockType[200];
 	makoBlockType[0] = '\0';
+	int makoComment = 0;
 	char djangoBlockType[2];
 	djangoBlockType[0] = '\0';
 
@@ -818,6 +819,18 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 			lineStartVisibleChars = 0;
 		}
 
+		// handle start of Mako comment line
+		if (isMako && ch == '#' && chNext == '#') {
+			makoComment = 1;
+		}
+		
+		// handle end of Mako comment line
+		else if (isMako && makoComment && (ch == '\r' || ch == '\n')) {
+			makoComment = 0;
+			styler.ColourTo(i, SCE_HP_COMMENTLINE);
+			state = SCE_HP_DEFAULT;
+		}
+		
 		// Allow falling through to mako handling code if newline is going to end a block
 		if (((ch == '\r' && chNext != '\n') || (ch == '\n')) &&
 			(!isMako || (0 != strcmp(makoBlockType, "%")))) {
