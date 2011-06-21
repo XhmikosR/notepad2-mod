@@ -1536,6 +1536,8 @@ EDITLEXER lexCmake = { SCLEX_CMAKE, 63324, L"Cmake Script", L"cmake; ctest", L""
 
 
 // This array holds all the lexers...
+// Don't forget to change the number of the lexer for HTML and XML
+// in Notepad2.c ParseCommandLine() if you change this array!
 PEDITLEXER pLexArray[NUMLEXERS] =
 {
   &lexDefault,
