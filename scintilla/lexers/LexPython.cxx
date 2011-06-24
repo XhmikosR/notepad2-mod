@@ -264,7 +264,12 @@ static void ColourisePyDoc(unsigned int startPos, int length, int initStyle,
 						}
 					}
 				} else if (keywords2.InList(s)) {
-					style = SCE_P_WORD2;
+					// We don't want to highlight keywords2
+					// that are used as a sub-identifier,
+					// i.e. not open in "foo.open".
+					int pos = styler.GetStartSegment() - 1;
+					if (pos < 0 || (styler.SafeGetCharAt(pos, '\0') != '.'))
+						style = SCE_P_WORD2;
 				}
 				sc.ChangeState(style);
 				sc.SetState(SCE_P_DEFAULT);

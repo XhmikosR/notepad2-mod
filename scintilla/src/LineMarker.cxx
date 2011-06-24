@@ -77,8 +77,6 @@ void LineMarker::Draw(Surface *surface, PRectangle &rcWhole, Font &fontForCharac
 	case LineMarker::head :
 		head = backSelected;
 		tail = backSelected;
-		if (markType == SC_MARK_VLINE)
-			body = backSelected;
 		break;
 	case LineMarker::body :
 		head = backSelected;
@@ -186,7 +184,7 @@ void LineMarker::Draw(Surface *surface, PRectangle &rcWhole, Font &fontForCharac
 
 	} else if (markType == SC_MARK_VLINE) {
 		surface->PenColour(body.allocated);
-		surface->MoveTo(centreX, rcWhole.top + blobSize - (rcWhole.bottom - rcWhole.top)/2);
+		surface->MoveTo(centreX, rcWhole.top);
 		surface->LineTo(centreX, rcWhole.bottom);
 
 	} else if (markType == SC_MARK_LCORNER) {

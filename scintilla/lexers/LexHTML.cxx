@@ -356,7 +356,7 @@ static int classifyWordHTVB(unsigned int start, unsigned int end, WordList &keyw
 		return SCE_HB_DEFAULT;
 }
 
-static void classifyWordHTPy(unsigned int start, unsigned int end, WordList &keywords, Accessor &styler, char *prevWord, script_mode inScriptType) {
+static void classifyWordHTPy(unsigned int start, unsigned int end, WordList &keywords, Accessor &styler, char *prevWord, script_mode inScriptType, bool isMako) {
 	bool wordIsNumber = IsADigit(styler[start]);
 	char s[30 + 1];
 	unsigned int i = 0;
@@ -372,6 +372,8 @@ static void classifyWordHTPy(unsigned int start, unsigned int end, WordList &key
 	else if (wordIsNumber)
 		chAttr = SCE_HP_NUMBER;
 	else if (keywords.InList(s))
+		chAttr = SCE_HP_WORD;
+	else if (isMako && 0 == strcmp(s, "block"))
 		chAttr = SCE_HP_WORD;
 	styler.ColourTo(end, statePrintForState(chAttr, inScriptType));
 	strcpy(prevWord, s);
@@ -494,7 +496,10 @@ static bool isMakoBlockEnd(const int ch, const int chNext, const char *blockType
 			   (0 == strcmp(blockType, "page"))) {
 		return ((ch == '/') && (chNext == '>'));
 	} else if (0 == strcmp(blockType, "%")) {
-		return isLineEnd(ch);
+		if (ch == '/' && isLineEnd(chNext))
+			return 1;
+		else
+		    return isLineEnd(ch);
 	} else if (0 == strcmp(blockType, "{")) {
 		return ch == '}';
 	} else {
@@ -763,7 +768,7 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 				}
 				break;
 			case eScriptPython:
-				if (state != SCE_HP_COMMENTLINE) {
+				if (state != SCE_HP_COMMENTLINE && !isMako) {
 					if ((ch == ':') && ((chNext == '\n') || (chNext == '\r' && chNext2 == '\n'))) {
 						levelCurrent++;
 					} else if ((ch == '\n') && !((chNext == '\r') && (chNext2 == '\n')) && (chNext != '\n')) {
@@ -925,9 +930,10 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 		// handle the start Mako template Python code
 		else if (isMako && scriptLanguage == eScriptNone && ((ch == '<' && chNext == '%') ||
 															 (lineStartVisibleChars == 1 && ch == '%') ||
+															 (lineStartVisibleChars == 1 && ch == '/' && chNext == '%') ||
 															 (ch == '$' && chNext == '{') ||
 															 (ch == '<' && chNext == '/' && chNext2 == '%'))) {
-			if (ch == '%')
+			if (ch == '%' || ch == '/')
 				strcpy(makoBlockType, "%");
 			else if (ch == '$')
 				strcpy(makoBlockType, "{");
@@ -952,10 +958,8 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 			state = SCE_HP_START;
 			scriptLanguage = eScriptPython;
 			styler.ColourTo(i, SCE_H_ASP);
-			if (foldHTMLPreprocessor && ch == '<')
-				levelCurrent++;
 
-			if (ch != '%' && ch != '$') {
+			if (ch != '%' && ch != '$' && ch != '/') {
 				i += strlen(makoBlockType);
 				visibleChars += strlen(makoBlockType);
 				if (keywords4.InList(makoBlockType))
@@ -1098,7 +1102,7 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 				                                    styler.GetStartSegment(), i - 1, aspScript);
 			}
 			if (state == SCE_HP_WORD) {
-				classifyWordHTPy(styler.GetStartSegment(), i - 1, keywords4, styler, prevWord, inScriptType);
+				classifyWordHTPy(styler.GetStartSegment(), i - 1, keywords4, styler, prevWord, inScriptType, isMako);
 			} else {
 				styler.ColourTo(i - 1, StateToPrint);
 			}
@@ -1106,7 +1110,11 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 				i++;
 				visibleChars++;
 		    }
-			if (0 != strcmp(makoBlockType, "%")) {
+			else if (0 == strcmp(makoBlockType, "%") && ch == '/') {
+				i++;
+				visibleChars++;
+			}
+			if (0 != strcmp(makoBlockType, "%") || ch == '/') {
 				styler.ColourTo(i, SCE_H_ASP);
 			}
 			state = beforePreProc;
@@ -1114,9 +1122,6 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 				inScriptType = eNonHtmlScript;
 			else
 				inScriptType = eHtml;
-			if (foldHTMLPreprocessor && ch != '\n' && ch != '\r') {
-				levelCurrent--;
-			}
 			scriptLanguage = eScriptNone;
 			continue;
 		}
@@ -1131,7 +1136,7 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 				                                    styler.GetStartSegment(), i - 1, aspScript);
 			}
 			if (state == SCE_HP_WORD) {
-				classifyWordHTPy(styler.GetStartSegment(), i - 1, keywords4, styler, prevWord, inScriptType);
+				classifyWordHTPy(styler.GetStartSegment(), i - 1, keywords4, styler, prevWord, inScriptType, isMako);
 			} else {
 				styler.ColourTo(i - 1, StateToPrint);
 			}
@@ -1165,7 +1170,7 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 				classifyWordHTVB(styler.GetStartSegment(), i - 1, keywords3, styler, inScriptType);
 				break;
 			case SCE_HP_WORD:
-				classifyWordHTPy(styler.GetStartSegment(), i - 1, keywords4, styler, prevWord, inScriptType);
+				classifyWordHTPy(styler.GetStartSegment(), i - 1, keywords4, styler, prevWord, inScriptType, isMako);
 				break;
 			case SCE_HPHP_WORD:
 				classifyWordHTPHP(styler.GetStartSegment(), i - 1, keywords5, styler);
@@ -1827,7 +1832,7 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 			break;
 		case SCE_HP_WORD:
 			if (!IsAWordChar(ch)) {
-				classifyWordHTPy(styler.GetStartSegment(), i - 1, keywords4, styler, prevWord, inScriptType);
+				classifyWordHTPy(styler.GetStartSegment(), i - 1, keywords4, styler, prevWord, inScriptType, isMako);
 				state = SCE_HP_DEFAULT;
 				if (ch == '#') {
 					state = SCE_HP_COMMENTLINE;
@@ -2116,7 +2121,7 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 		classifyWordHTVB(styler.GetStartSegment(), lengthDoc - 1, keywords3, styler, inScriptType);
 		break;
 	case SCE_HP_WORD:
-		classifyWordHTPy(styler.GetStartSegment(), lengthDoc - 1, keywords4, styler, prevWord, inScriptType);
+		classifyWordHTPy(styler.GetStartSegment(), lengthDoc - 1, keywords4, styler, prevWord, inScriptType, isMako);
 		break;
 	case SCE_HPHP_WORD:
 		classifyWordHTPHP(styler.GetStartSegment(), lengthDoc - 1, keywords5, styler);

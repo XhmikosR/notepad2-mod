@@ -1930,18 +1930,23 @@ void Editor::PaintSelMargin(Surface *surfWindow, PRectangle &rc) {
 				if (marks) {
 					for (int markBit = 0; (markBit < 32) && marks; markBit++) {
 						if (marks & 1) {
-							LineMarker::typeOfFold tFold;
+							LineMarker::typeOfFold tFold = LineMarker::undefined;
 							if (!highlightDelimiter.isCurrentBlockHighlight(lineDoc)) {
 								tFold = LineMarker::undefined;
 							} else if (highlightDelimiter.isBodyBlockFold(lineDoc)) {
 								tFold = LineMarker::body;
 							} else if (highlightDelimiter.isHeadBlockFold(lineDoc)) {
-								tFold = LineMarker::head;
+								if (firstSubLine) {
+									tFold = LineMarker::head;
+								} else {
+									if (cs.GetExpanded(lineDoc)) {
+										tFold = LineMarker::body;
+									} else {
+										tFold = LineMarker::undefined;
+									}
+								}
 							} else if (highlightDelimiter.isTailBlockFold(lineDoc)) {
 								tFold = LineMarker::tail;
-							} else {
-								//Normally, this branch is never used. But I prefer to manage it anyway.
-								tFold = LineMarker::undefined;
 							}
 							vs.markers[markBit].Draw(surface, rcMarker, vs.styles[STYLE_LINENUMBER].font, tFold);
 						}
@@ -5998,7 +6003,7 @@ bool Editor::PositionInSelection(int pos) {
 }
 
 bool Editor::PointInSelection(Point pt) {
-	SelectionPosition pos = SPositionFromLocation(pt);
+	SelectionPosition pos = SPositionFromLocation(pt, false, true);
 	int xPos = XFromPosition(pos);
 	for (size_t r=0; r<sel.Count(); r++) {
 		SelectionRange range = sel.Range(r);
