@@ -63,6 +63,9 @@
     <ClCompile Include="..\scintilla\lexers\LexAU3.cxx">
       <Filter>Scintilla\lexers</Filter>
     </ClCompile>
+    <ClCompile Include="..\scintilla\lexers\LexBash.cxx">
+      <Filter>Scintilla\lexers</Filter>
+    </ClCompile>
     <ClCompile Include="..\scintilla\lexers\LexConf.cxx">
       <Filter>Scintilla\lexers</Filter>
     </ClCompile>
@@ -109,9 +112,6 @@
       <Filter>Scintilla\lexers</Filter>
     </ClCompile>
     <ClCompile Include="..\scintilla\lexers\LexVB.cxx">
-      <Filter>Scintilla\lexers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\scintilla\lexers\LexBash.cxx">
       <Filter>Scintilla\lexers</Filter>
     </ClCompile>
     <ClCompile Include="..\scintilla\lexlib\Accessor.cxx">
