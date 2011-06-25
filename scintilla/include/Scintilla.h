@@ -124,6 +124,7 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
 #define SC_MARK_LEFTRECT 27
 #define SC_MARK_AVAILABLE 28
 #define SC_MARK_UNDERLINE 29
+#define SC_MARK_RGBAIMAGE 30
 #define SC_MARK_CHARACTER 10000
 #define SC_MARKNUM_FOLDEREND 25
 #define SC_MARKNUM_FOLDEROPENMID 26
@@ -811,6 +812,10 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
 #define SCI_MOVESELECTEDLINESDOWN 2621
 #define SCI_SETIDENTIFIER 2622
 #define SCI_GETIDENTIFIER 2623
+#define SCI_RGBAIMAGESETWIDTH 2624
+#define SCI_RGBAIMAGESETHEIGHT 2625
+#define SCI_MARKERDEFINERGBAIMAGE 2626
+#define SCI_REGISTERRGBAIMAGE 2627
 #define SCI_STARTRECORD 3001
 #define SCI_STOPRECORD 3002
 #define SCI_SETLEXER 4001

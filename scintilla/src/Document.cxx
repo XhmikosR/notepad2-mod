@@ -986,7 +986,7 @@ bool Document::InsertChar(int pos, char ch) {
  * Insert a null terminated string.
  */
 bool Document::InsertCString(int position, const char *s) {
-	return InsertString(position, s, strlen(s));
+	return InsertString(position, s, static_cast<int>(strlen(s)));
 }
 
 void Document::ChangeChar(int pos, char ch) {
@@ -1385,7 +1385,7 @@ size_t Document::ExtractChar(int pos, char *bytes) {
 	size_t widthChar = UTF8CharLength(ch);
 	bytes[0] = ch;
 	for (size_t i=1; i<widthChar; i++) {
-		bytes[i] = cb.CharAt(pos+i);
+		bytes[i] = cb.CharAt(static_cast<int>(pos+i));
 		if (!GoodTrailByte(static_cast<unsigned char>(bytes[i]))) { // Bad byte
 			widthChar = 1;
 		}
@@ -1483,7 +1483,8 @@ long Document::FindText(int minPos, int maxPos, const char *search,
 			const size_t maxBytesCharacter = 4;
 			const size_t maxFoldingExpansion = 4;
 			std::vector<char> searchThing(lengthFind * maxBytesCharacter * maxFoldingExpansion + 1);
-			const int lenSearch = pcf->Fold(&searchThing[0], searchThing.size(), search, lengthFind);
+			const int lenSearch = static_cast<int>(
+				pcf->Fold(&searchThing[0], searchThing.size(), search, lengthFind));
 			while (forward ? (pos < endSearch) : (pos >= endSearch)) {
 				int widthFirstCharacter = 0;
 				int indexDocument = 0;
@@ -1494,11 +1495,11 @@ long Document::FindText(int minPos, int maxPos, const char *search,
 					(indexSearch < lenSearch)) {
 					char bytes[maxBytesCharacter + 1];
 					bytes[maxBytesCharacter] = 0;
-					const int widthChar = ExtractChar(pos + indexDocument, bytes);
+					const int widthChar = static_cast<int>(ExtractChar(pos + indexDocument, bytes));
 					if (!widthFirstCharacter)
 						widthFirstCharacter = widthChar;
 					char folded[maxBytesCharacter * maxFoldingExpansion + 1];
-					const int lenFlat = pcf->Fold(folded, sizeof(folded), bytes, widthChar);
+					const int lenFlat = static_cast<int>(pcf->Fold(folded, sizeof(folded), bytes, widthChar));
 					folded[lenFlat] = 0;
 					// Does folded match the buffer
 					characterMatches = 0 == memcmp(folded, &searchThing[0] + indexSearch, lenFlat);
@@ -1522,7 +1523,8 @@ long Document::FindText(int minPos, int maxPos, const char *search,
 			const size_t maxBytesCharacter = 2;
 			const size_t maxFoldingExpansion = 4;
 			std::vector<char> searchThing(lengthFind * maxBytesCharacter * maxFoldingExpansion + 1);
-			const int lenSearch = pcf->Fold(&searchThing[0], searchThing.size(), search, lengthFind);
+			const int lenSearch = static_cast<int>(
+				pcf->Fold(&searchThing[0], searchThing.size(), search, lengthFind));
 			while (forward ? (pos < endSearch) : (pos >= endSearch)) {
 				int indexDocument = 0;
 				int indexSearch = 0;
@@ -1536,7 +1538,7 @@ long Document::FindText(int minPos, int maxPos, const char *search,
 					if (widthChar == 2)
 						bytes[1] = cb.CharAt(pos + indexDocument + 1);
 					char folded[maxBytesCharacter * maxFoldingExpansion + 1];
-					const int lenFlat = pcf->Fold(folded, sizeof(folded), bytes, widthChar);
+					const int lenFlat = static_cast<int>(pcf->Fold(folded, sizeof(folded), bytes, widthChar));
 					folded[lenFlat] = 0;
 					// Does folded match the buffer
 					characterMatches = 0 == memcmp(folded, &searchThing[0] + indexSearch, lenFlat);

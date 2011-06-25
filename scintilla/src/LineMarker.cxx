@@ -7,6 +7,9 @@
 
 #include <string.h>
 
+#include <vector>
+#include <map>
+
 #include "Platform.h"
 
 #include "Scintilla.h"
@@ -36,6 +39,12 @@ void LineMarker::SetXPM(const char *const *linesForm) {
 	delete pxpm;
 	pxpm = new XPM(linesForm);
 	markType = SC_MARK_PIXMAP;
+}
+
+void LineMarker::SetRGBAImage(Point sizeRGBAImage, const unsigned char *pixelsRGBAImage) {
+	delete image;
+	image = new RGBAImage(sizeRGBAImage.x, sizeRGBAImage.y, pixelsRGBAImage);
+	markType = SC_MARK_RGBAIMAGE;
 }
 
 static void DrawBox(Surface *surface, int centreX, int centreY, int armSize, ColourAllocated fore, ColourAllocated back) {
@@ -94,6 +103,10 @@ void LineMarker::Draw(Surface *surface, PRectangle &rcWhole, Font &fontForCharac
 
 	if ((markType == SC_MARK_PIXMAP) && (pxpm)) {
 		pxpm->Draw(surface, rcWhole);
+		return;
+	}
+	if ((markType == SC_MARK_RGBAIMAGE) && (image)) {
+		surface->DrawRGBAImage(rcWhole, image->GetWidth(), image->GetHeight(), image->Pixels());
 		return;
 	}
 	// Restrict most shapes a bit

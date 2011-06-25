@@ -268,6 +268,7 @@ val SC_MARK_FULLRECT=26
 val SC_MARK_LEFTRECT=27
 val SC_MARK_AVAILABLE=28
 val SC_MARK_UNDERLINE=29
+val SC_MARK_RGBAIMAGE=30
 
 val SC_MARK_CHARACTER=10000
 
@@ -2152,6 +2153,20 @@ set void SetIdentifier=2622(int identifier,)
 
 # Get the identifier.
 get int GetIdentifier=2623(,)
+
+# Set the width for future RGBA image data.
+set void RGBAImageSetWidth=2624(int width,)
+
+# Set the height for future RGBA image data.
+set void RGBAImageSetHeight=2625(int height,)
+
+# Define a marker from RGBA data.
+# It has the width and height from RGBAImageSetWidth/Height
+fun void MarkerDefineRGBAImage=2626(int markerNumber, string pixels)
+
+# Register an RGBA image for use in autocompletion lists. 
+# It has the width and height from RGBAImageSetWidth/Height
+fun void RegisterRGBAImage=2627(int type, string pixels)
 
 # Start notifying the container of all key presses and commands.
 fun void StartRecord=3001(,)

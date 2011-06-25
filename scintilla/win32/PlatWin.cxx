@@ -13,6 +13,13 @@
 #include <time.h>
 #include <limits.h>
 
+#ifdef _MSC_VER
+#pragma warning(disable: 4786)
+#endif
+
+#include <vector>
+#include <map>
+
 /* notepad2-mod custom code start */
 #if !defined(_WIN32_WINNT)
 #define _WIN32_WINNT 0x0500
@@ -409,6 +416,7 @@ public:
 	void RoundedRectangle(PRectangle rc, ColourAllocated fore, ColourAllocated back);
 	void AlphaRectangle(PRectangle rc, int cornerSize, ColourAllocated fill, int alphaFill,
 		ColourAllocated outline, int alphaOutline, int flags);
+	void DrawRGBAImage(PRectangle rc, int width, int height, const unsigned char *pixelsImage);
 	void Ellipse(PRectangle rc, ColourAllocated fore, ColourAllocated back);
 	void Copy(PRectangle rc, Point from, Surface &surfaceSource);
 
@@ -698,6 +706,45 @@ void SurfaceImpl::AlphaRectangle(PRectangle rc, int cornerSize, ColourAllocated 
 		BrushColor(outline);
 		RECT rcw = RectFromPRectangle(rc);
 		FrameRect(hdc, &rcw, brush);
+	}
+}
+
+void SurfaceImpl::DrawRGBAImage(PRectangle rc, int width, int height, const unsigned char *pixelsImage) {
+	if (AlphaBlendFn && rc.Width() > 0) {
+		HDC hMemDC = ::CreateCompatibleDC(reinterpret_cast<HDC>(hdc));
+		if (rc.Width() > width)
+			rc.left += (rc.Width() - width) / 2;
+		rc.right = rc.left + width;
+		if (rc.Height() > height)
+			rc.top += (rc.Height() - height) / 2;
+		rc.bottom = rc.top + height;
+
+		BITMAPINFO bpih = {sizeof(BITMAPINFOHEADER), width, height, 1, 32, BI_RGB, 0, 0, 0, 0, 0};
+		unsigned char *image = 0;
+		HBITMAP hbmMem = CreateDIBSection(reinterpret_cast<HDC>(hMemDC), &bpih,
+			DIB_RGB_COLORS, reinterpret_cast<void **>(&image), NULL, 0);
+		HBITMAP hbmOld = SelectBitmap(hMemDC, hbmMem);
+		
+		for (int y=height-1; y>=0; y--) {
+			for (int x=0; x<width; x++) {
+				unsigned char *pixel = image + (y*width+x) * 4;
+				unsigned char alpha = pixelsImage[3];
+				// Input is RGBA, output is BGRA with premultiplied alpha
+				pixel[2] = (*pixelsImage++) * alpha / 255;
+				pixel[1] = (*pixelsImage++) * alpha / 255;
+				pixel[0] = (*pixelsImage++) * alpha / 255;
+				pixel[3] = *pixelsImage++;
+			}
+		}
+		
+		BLENDFUNCTION merge = { AC_SRC_OVER, 0, 255, AC_SRC_ALPHA };
+
+		AlphaBlendFn(reinterpret_cast<HDC>(hdc), rc.left, rc.top, rc.Width(), rc.Height(), hMemDC, 0, 0, width, height, merge);
+
+		SelectBitmap(hMemDC, hbmOld);
+		::DeleteObject(hbmMem);
+		::DeleteDC(hMemDC);
+
 	}
 }
 
@@ -1273,7 +1320,7 @@ public:
 };
 
 char *LineToItem::AllocWord(const char *text) {
-	int chars = strlen(text) + 1;
+	int chars = static_cast<int>(strlen(text) + 1);
 	int newCount = wordsCount + chars;
 	if (newCount > wordsSize) {
 		wordsSize = _ROUND2(newCount * 2, 8192);
@@ -1323,7 +1370,7 @@ ListBox::~ListBox() {
 class ListBoxX : public ListBox {
 	int lineHeight;
 	FontID fontCopy;
-	XPMSet xset;
+	RGBAImageSet images;
 	LineToItem lti;
 	HWND lb;
 	bool unicodeMode;
@@ -1390,6 +1437,7 @@ public:
 	virtual int Find(const char *prefix);
 	virtual void GetValue(int n, char *value, int len);
 	virtual void RegisterImage(int type, const char *xpm_data);
+	virtual void RegisterRGBAImage(int type, int width, int height, const unsigned char *pixelsImage);
 	virtual void ClearRegisteredImages();
 	virtual void SetDoubleClickAction(CallBackAction action, void *data) {
 		doubleClickAction = action;
@@ -1470,7 +1518,7 @@ PRectangle ListBoxX::GetDesiredRect() {
 	HDC hdc = ::GetDC(lb);
 	HFONT oldFont = SelectFont(hdc, fontCopy);
 	SIZE textSize = {0, 0};
-	int len = widestItem ? strlen(widestItem) : 0;
+	int len = static_cast<int>(widestItem ? strlen(widestItem) : 0);
 	if (unicodeMode) {
 		const TextWide tbuf(widestItem, len, unicodeMode);
 		::GetTextExtentPoint32W(hdc, tbuf.buffer, tbuf.tlen, &textSize);
@@ -1496,7 +1544,7 @@ PRectangle ListBoxX::GetDesiredRect() {
 }
 
 int ListBoxX::TextOffset() const {
-	int pixWidth = const_cast<XPMSet*>(&xset)->GetWidth();
+	int pixWidth = images.GetWidth();
 	return pixWidth == 0 ? ItemInset.x : ItemInset.x + pixWidth + (ImageInset.x * 2);
 }
 
@@ -1555,11 +1603,16 @@ void ListBoxX::GetValue(int n, char *value, int len) {
 }
 
 void ListBoxX::RegisterImage(int type, const char *xpm_data) {
-	xset.Add(type, xpm_data);
+	XPM xpmImage(xpm_data);
+	images.Add(type, new RGBAImage(xpmImage));
+}
+
+void ListBoxX::RegisterRGBAImage(int type, int width, int height, const unsigned char *pixelsImage) {
+	images.Add(type, new RGBAImage(width, height, pixelsImage));
 }
 
 void ListBoxX::ClearRegisteredImages() {
-	xset.Clear();
+	images.Clear();
 }
 
 void ListBoxX::Draw(DRAWITEMSTRUCT *pDrawItem) {
@@ -1583,7 +1636,7 @@ void ListBoxX::Draw(DRAWITEMSTRUCT *pDrawItem) {
 		ListItemData item = lti.Get(pDrawItem->itemID);
 		int pixId = item.pixId;
 		const char *text = item.text;
-		int len = strlen(text);
+		int len = static_cast<int>(strlen(text));
 
 		RECT rcText = rcBox;
 		::InsetRect(&rcText, TextInset.x, TextInset.y);
@@ -1599,17 +1652,16 @@ void ListBoxX::Draw(DRAWITEMSTRUCT *pDrawItem) {
 		}
 
 		// Draw the image, if any
-		XPM *pxpm = xset.Get(pixId);
-		if (pxpm) {
+		RGBAImage *pimage = images.Get(pixId);
+		if (pimage) {
 			Surface *surfaceItem = Surface::Allocate();
 			if (surfaceItem) {
 				surfaceItem->Init(pDrawItem->hDC, pDrawItem->hwndItem);
-				//surfaceItem->SetUnicodeMode(unicodeMode);
-				//surfaceItem->SetDBCSMode(codePage);
 				int left = pDrawItem->rcItem.left + ItemInset.x + ImageInset.x;
 				PRectangle rcImage(left, pDrawItem->rcItem.top,
-					left + xset.GetWidth(), pDrawItem->rcItem.bottom);
-				pxpm->Draw(surfaceItem, rcImage);
+					left + images.GetWidth(), pDrawItem->rcItem.bottom);
+				surfaceItem->DrawRGBAImage(rcImage,
+					pimage->GetWidth(), pimage->GetHeight(), pimage->Pixels());
 				delete surfaceItem;
 				::SetTextAlign(pDrawItem->hDC, TA_TOP);
 			}
@@ -1643,7 +1695,7 @@ void ListBoxX::SetList(const char *list, char separator, char typesep) {
 	// the listbox is not visible.
 	SetRedraw(false);
 	Clear();
-	int size = strlen(list) + 1;
+	size_t size = strlen(list) + 1;
 	char *words = new char[size];
 	lti.SetWords(words);
 	memcpy(words, list, size);
@@ -1683,7 +1735,7 @@ void ListBoxX::AdjustWindowRect(PRectangle *rc) const {
 
 int ListBoxX::ItemHeight() const {
 	int itemHeight = lineHeight + (TextInset.y * 2);
-	int pixHeight = const_cast<XPMSet*>(&xset)->GetHeight() + (ImageInset.y * 2);
+	int pixHeight = images.GetHeight() + (ImageInset.y * 2);
 	if (itemHeight < pixHeight) {
 		itemHeight = pixHeight;
 	}
