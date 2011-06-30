@@ -177,7 +177,6 @@ update_version.bat
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DisableSpecificDiagnostics>2</DisableSpecificDiagnostics>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <Parallelization>true</Parallelization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
     </ClCompile>
@@ -221,7 +220,6 @@ update_version.bat
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DisableSpecificDiagnostics>2</DisableSpecificDiagnostics>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <Parallelization>true</Parallelization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
     </ClCompile>
