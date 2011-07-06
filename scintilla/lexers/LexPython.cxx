@@ -419,8 +419,8 @@ static bool IsQuoteLine(int line, Accessor &styler) {
 static void FoldPyDoc(unsigned int startPos, int length, int /*initStyle - unused*/,
                       WordList *[], Accessor &styler) {
 	const int maxPos = startPos + length;
-	const int maxLines = styler.GetLine(maxPos - 1);             // Requested last line
-	const int docLines = styler.GetLine(styler.Length() - 1);  // Available last line
+	const int maxLines = (maxPos == styler.Length()) ? styler.GetLine(maxPos) : styler.GetLine(maxPos - 1);	// Requested last line
+	const int docLines = styler.GetLine(styler.Length());	// Available last line
 
 	// property fold.comment.python
 	//	This option enables folding multi-line comments when using the Python lexer.
@@ -472,14 +472,15 @@ static void FoldPyDoc(unsigned int startPos, int length, int /*initStyle - unuse
 		if (lineNext <= docLines) {
 			// Information about next line is only available if not at end of document
 			indentNext = styler.IndentAmount(lineNext, &spaceFlags, NULL);
-			int style = styler.StyleAt(styler.LineStart(lineNext)) & 31;
+			int lookAtPos = (styler.LineStart(lineNext) == styler.Length()) ? styler.Length() - 1 : styler.LineStart(lineNext);
+			int style = styler.StyleAt(lookAtPos) & 31;
 			quote = foldQuotes && ((style == SCE_P_TRIPLE) || (style == SCE_P_TRIPLEDOUBLE));
 		}
 		const int quote_start = (quote && !prevQuote);
 		const int quote_continue = (quote && prevQuote);
 		const int comment = foldComment && IsCommentLine(lineCurrent, styler);
 		const int comment_start = (comment && !prevComment && (lineNext <= docLines) &&
-		                           IsCommentLine(lineNext, styler) && (lev > SC_FOLDLEVELBASE));
+		                           IsCommentLine(lineNext, styler) && ((lev & SC_FOLDLEVELNUMBERMASK) > SC_FOLDLEVELBASE));
 		const int comment_continue = (comment && prevComment);
 		if ((!quote || !prevQuote) && !comment)
 			indentCurrentLevel = indentCurrent & SC_FOLDLEVELNUMBERMASK;
@@ -558,7 +559,7 @@ static void FoldPyDoc(unsigned int startPos, int length, int /*initStyle - unuse
 		prevComment = comment_start || comment_continue;
 
 		// Set fold level for this line and move to next line
-		styler.SetLevel(lineCurrent, lev);
+		styler.SetLevel(lineCurrent, foldCompact ? lev : lev & ~SC_FOLDLEVELWHITEFLAG);
 		indentCurrent = indentNext;
 		lineCurrent = lineNext;
 	}

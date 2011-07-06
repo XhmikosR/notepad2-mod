@@ -231,7 +231,7 @@ int ContractionState::GetHeight(int lineDoc) const {
 bool ContractionState::SetHeight(int lineDoc, int height) {
 	if (OneToOne() && (height == 1)) {
 		return false;
-	} else {
+	} else if (lineDoc < LinesInDoc()) {
 		EnsureData();
 		if (GetHeight(lineDoc) != height) {
 			if (GetVisible(lineDoc)) {
@@ -244,6 +244,8 @@ bool ContractionState::SetHeight(int lineDoc, int height) {
 			Check();
 			return false;
 		}
+	} else {
+		return false;
 	}
 }
 

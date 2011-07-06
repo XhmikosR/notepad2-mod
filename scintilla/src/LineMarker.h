@@ -17,7 +17,7 @@ namespace Scintilla {
  */
 class LineMarker {
 public:
-	enum typeOfFold { undefined, head, body, tail };
+	enum typeOfFold { undefined, head, body, tail, headWithTail };
 
 	int markType;
 	ColourPair fore;

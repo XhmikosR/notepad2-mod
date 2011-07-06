@@ -1746,13 +1746,6 @@ void Editor::PaintSelMargin(Surface *surfWindow, PRectangle &rc) {
 			rcSelMargin.right = rcSelMargin.left + vs.ms[margin].width;
 
 			if (vs.ms[margin].style != SC_MARGIN_NUMBER) {
-				/* alternate scheme:
-				if (vs.ms[margin].mask & SC_MASK_FOLDERS)
-					surface->FillRectangle(rcSelMargin, vs.styles[STYLE_DEFAULT].back.allocated);
-				else
-					// Required because of special way brush is created for selection margin
-					surface->FillRectangle(rcSelMargin, pixmapSelPattern);
-				*/
 				if (vs.ms[margin].mask & SC_MASK_FOLDERS)
 					// Required because of special way brush is created for selection margin
 					surface->FillRectangle(rcSelMargin, *pixmapSelPattern);
@@ -1781,23 +1774,24 @@ void Editor::PaintSelMargin(Surface *surfWindow, PRectangle &rc) {
 			// lessening of fold level which implies a 'fold tail' but which should not
 			// be displayed until the last of a sequence of whitespace.
 			bool needWhiteClosure = false;
-			int level = pdoc->GetLevel(cs.DocFromDisplay(topLine));
-			if (level & SC_FOLDLEVELWHITEFLAG) {
-				int lineBack = cs.DocFromDisplay(topLine);
-				int levelPrev = level;
-				while ((lineBack > 0) && (levelPrev & SC_FOLDLEVELWHITEFLAG)) {
-					lineBack--;
-					levelPrev = pdoc->GetLevel(lineBack);
+			if (vs.ms[margin].mask & SC_MASK_FOLDERS) {
+				int level = pdoc->GetLevel(cs.DocFromDisplay(topLine));
+				if (level & SC_FOLDLEVELWHITEFLAG) {
+					int lineBack = cs.DocFromDisplay(topLine);
+					int levelPrev = level;
+					while ((lineBack > 0) && (levelPrev & SC_FOLDLEVELWHITEFLAG)) {
+						lineBack--;
+						levelPrev = pdoc->GetLevel(lineBack);
+					}
+					if (!(levelPrev & SC_FOLDLEVELHEADERFLAG)) {
+						if ((level & SC_FOLDLEVELNUMBERMASK) < (levelPrev & SC_FOLDLEVELNUMBERMASK))
+							needWhiteClosure = true;
+					}
 				}
-				if (!(levelPrev & SC_FOLDLEVELHEADERFLAG)) {
-					if ((level & SC_FOLDLEVELNUMBERMASK) < (levelPrev & SC_FOLDLEVELNUMBERMASK))
-						needWhiteClosure = true;
+				if (highlightDelimiter.isEnabled) {
+					int lastLine = cs.DocFromDisplay(topLine + LinesOnScreen()) + 1;
+					pdoc->GetHighlightDelimiters(highlightDelimiter, pdoc->LineFromPosition(CurrentPosition()), lastLine);
 				}
-			}
-			if (highlightDelimiter.isEnabled && (vs.ms[margin].mask & SC_MASK_FOLDERS)) {
-				int lineBack = cs.DocFromDisplay(topLine);
-				int lineFront = cs.DocFromDisplay(((rcMargin.bottom - rcMargin.top) / vs.lineHeight) + topLine) + 1;
-				pdoc->GetHighlightDelimiters(highlightDelimiter, pdoc->LineFromPosition(CurrentPosition()), lineBack, lineFront);
 			}
 
 			// Old code does not know about new markers needed to distinguish all cases
@@ -1814,85 +1808,103 @@ void Editor::PaintSelMargin(Surface *surfWindow, PRectangle &rc) {
 				bool firstSubLine = visibleLine == cs.DisplayFromDoc(lineDoc);
 				bool lastSubLine = visibleLine == (cs.DisplayFromDoc(lineDoc + 1) - 1);
 
-				// Decide which fold indicator should be displayed
-				level = pdoc->GetLevel(lineDoc);
-				int levelNext = pdoc->GetLevel(lineDoc + 1);
 				int marks = pdoc->GetMark(lineDoc);
 				if (!firstSubLine)
 					marks = 0;
-				int levelNum = level & SC_FOLDLEVELNUMBERMASK;
-				int levelNextNum = levelNext & SC_FOLDLEVELNUMBERMASK;
-				if (level & SC_FOLDLEVELHEADERFLAG) {
-					if (firstSubLine) {
-						if (levelNum < levelNextNum) {
-							if (cs.GetExpanded(lineDoc)) {
-								if (levelNum == SC_FOLDLEVELBASE)
-									marks |= 1 << SC_MARKNUM_FOLDEROPEN;
-								else
-									marks |= 1 << folderOpenMid;
-							} else {
-								if (levelNum == SC_FOLDLEVELBASE)
-									marks |= 1 << SC_MARKNUM_FOLDER;
-								else
-									marks |= 1 << folderEnd;
-							}
-						} else if (levelNum > SC_FOLDLEVELBASE) {
-							marks |= 1 << SC_MARKNUM_FOLDERSUB;
- 						}
-					} else {
-						if (levelNum < levelNextNum) {
-							if (cs.GetExpanded(lineDoc)) {
-								marks |= 1 << SC_MARKNUM_FOLDERSUB;
+
+				bool headWithTail = false;
+
+				if (vs.ms[margin].mask & SC_MASK_FOLDERS) {
+					// Decide which fold indicator should be displayed
+					int level = pdoc->GetLevel(lineDoc);
+					int levelNext = pdoc->GetLevel(lineDoc + 1);
+					int levelNum = level & SC_FOLDLEVELNUMBERMASK;
+					int levelNextNum = levelNext & SC_FOLDLEVELNUMBERMASK;
+					if (level & SC_FOLDLEVELHEADERFLAG) {
+						if (firstSubLine) {
+							if (levelNum < levelNextNum) {
+								if (cs.GetExpanded(lineDoc)) {
+									if (levelNum == SC_FOLDLEVELBASE)
+										marks |= 1 << SC_MARKNUM_FOLDEROPEN;
+									else
+										marks |= 1 << folderOpenMid;
+								} else {
+									if (levelNum == SC_FOLDLEVELBASE)
+										marks |= 1 << SC_MARKNUM_FOLDER;
+									else
+										marks |= 1 << folderEnd;
+								}
 							} else if (levelNum > SC_FOLDLEVELBASE) {
 								marks |= 1 << SC_MARKNUM_FOLDERSUB;
+ 							}
+						} else {
+							if (levelNum < levelNextNum) {
+								if (cs.GetExpanded(lineDoc)) {
+									marks |= 1 << SC_MARKNUM_FOLDERSUB;
+								} else if (levelNum > SC_FOLDLEVELBASE) {
+									marks |= 1 << SC_MARKNUM_FOLDERSUB;
+								}
+							} else if (levelNum > SC_FOLDLEVELBASE) {
+								marks |= 1 << SC_MARKNUM_FOLDERSUB;
+ 							}
+						}
+						needWhiteClosure = false;
+						int firstFollowupLine = cs.DocFromDisplay(cs.DisplayFromDoc(lineDoc + 1));
+						int firstFollowupLineLevel = pdoc->GetLevel(firstFollowupLine);
+						int secondFollowupLineLevelNum = pdoc->GetLevel(firstFollowupLine + 1) & SC_FOLDLEVELNUMBERMASK;
+						if (!cs.GetExpanded(lineDoc)) {
+							if ((firstFollowupLineLevel & SC_FOLDLEVELWHITEFLAG) &&
+								(levelNum > secondFollowupLineLevelNum))
+								needWhiteClosure = true;
+
+							if (highlightDelimiter.IsFoldBlockHighlighted(firstFollowupLine))
+								headWithTail = true;
+						}
+					} else if (level & SC_FOLDLEVELWHITEFLAG) {
+						if (needWhiteClosure) {
+							if (levelNext & SC_FOLDLEVELWHITEFLAG) {
+								marks |= 1 << SC_MARKNUM_FOLDERSUB;
+							} else if (levelNextNum > SC_FOLDLEVELBASE) {
+								marks |= 1 << SC_MARKNUM_FOLDERMIDTAIL;
+								needWhiteClosure = false;
+							} else {
+								marks |= 1 << SC_MARKNUM_FOLDERTAIL;
+								needWhiteClosure = false;
 							}
 						} else if (levelNum > SC_FOLDLEVELBASE) {
-							marks |= 1 << SC_MARKNUM_FOLDERSUB;
- 						}
-					}
-					needWhiteClosure = false;
-				} else if (level & SC_FOLDLEVELWHITEFLAG) {
-					if (needWhiteClosure) {
-						if (levelNext & SC_FOLDLEVELWHITEFLAG) {
-							marks |= 1 << SC_MARKNUM_FOLDERSUB;
-						} else if (levelNum > SC_FOLDLEVELBASE) {
-							marks |= 1 << SC_MARKNUM_FOLDERMIDTAIL;
-							needWhiteClosure = false;
-						} else {
-							marks |= 1 << SC_MARKNUM_FOLDERTAIL;
-							needWhiteClosure = false;
+							if (levelNextNum < levelNum) {
+								if (levelNextNum > SC_FOLDLEVELBASE) {
+									marks |= 1 << SC_MARKNUM_FOLDERMIDTAIL;
+								} else {
+									marks |= 1 << SC_MARKNUM_FOLDERTAIL;
+								}
+							} else {
+								marks |= 1 << SC_MARKNUM_FOLDERSUB;
+							}
 						}
 					} else if (levelNum > SC_FOLDLEVELBASE) {
 						if (levelNextNum < levelNum) {
-							if (levelNextNum > SC_FOLDLEVELBASE) {
-								marks |= 1 << SC_MARKNUM_FOLDERMIDTAIL;
+							needWhiteClosure = false;
+							if (levelNext & SC_FOLDLEVELWHITEFLAG) {
+								marks |= 1 << SC_MARKNUM_FOLDERSUB;
+								needWhiteClosure = true;
+							} else if (lastSubLine) {
+								if (levelNextNum > SC_FOLDLEVELBASE) {
+									marks |= 1 << SC_MARKNUM_FOLDERMIDTAIL;
+								} else {
+									marks |= 1 << SC_MARKNUM_FOLDERTAIL;
+								}
 							} else {
-								marks |= 1 << SC_MARKNUM_FOLDERTAIL;
+								marks |= 1 << SC_MARKNUM_FOLDERSUB;
 							}
 						} else {
 							marks |= 1 << SC_MARKNUM_FOLDERSUB;
 						}
-					}
-				} else if (levelNum > SC_FOLDLEVELBASE) {
-					if (levelNextNum < levelNum) {
-						needWhiteClosure = false;
-						if (levelNext & SC_FOLDLEVELWHITEFLAG) {
-							marks |= 1 << SC_MARKNUM_FOLDERSUB;
-							needWhiteClosure = true;
-						} else if (lastSubLine) {
-							if (levelNextNum > SC_FOLDLEVELBASE) {
-								marks |= 1 << SC_MARKNUM_FOLDERMIDTAIL;
-							} else {
-								marks |= 1 << SC_MARKNUM_FOLDERTAIL;
-							}
-						} else {
-							marks |= 1 << SC_MARKNUM_FOLDERSUB;
-						}
-					} else {
-						marks |= 1 << SC_MARKNUM_FOLDERSUB;
 					}
 				}
+
 				marks &= vs.ms[margin].mask;
+
 				PRectangle rcMarker = rcSelMargin;
 				rcMarker.top = yposScreen;
 				rcMarker.bottom = yposScreen + vs.lineHeight;
@@ -1939,22 +1951,22 @@ void Editor::PaintSelMargin(Surface *surfWindow, PRectangle &rc) {
 					for (int markBit = 0; (markBit < 32) && marks; markBit++) {
 						if (marks & 1) {
 							LineMarker::typeOfFold tFold = LineMarker::undefined;
-							if (!highlightDelimiter.isCurrentBlockHighlight(lineDoc)) {
-								tFold = LineMarker::undefined;
-							} else if (highlightDelimiter.isBodyBlockFold(lineDoc)) {
-								tFold = LineMarker::body;
-							} else if (highlightDelimiter.isHeadBlockFold(lineDoc)) {
-								if (firstSubLine) {
-									tFold = LineMarker::head;
-								} else {
-									if (cs.GetExpanded(lineDoc)) {
-										tFold = LineMarker::body;
+							if ((vs.ms[margin].mask & SC_MASK_FOLDERS) && highlightDelimiter.IsFoldBlockHighlighted(lineDoc)) {
+								if (highlightDelimiter.IsBodyOfFoldBlock(lineDoc)) {
+									tFold = LineMarker::body;
+								} else if (highlightDelimiter.IsHeadOfFoldBlock(lineDoc)) {
+									if (firstSubLine) {
+										tFold = headWithTail ? LineMarker::headWithTail : LineMarker::head;
 									} else {
-										tFold = LineMarker::undefined;
+										if (cs.GetExpanded(lineDoc) || headWithTail) {
+											tFold = LineMarker::body;
+										} else {
+											tFold = LineMarker::undefined;
+										}
 									}
+								} else if (highlightDelimiter.IsTailOfFoldBlock(lineDoc)) {
+									tFold = LineMarker::tail;
 								}
-							} else if (highlightDelimiter.isTailBlockFold(lineDoc)) {
-								tFold = LineMarker::tail;
 							}
 							vs.markers[markBit].Draw(surface, rcMarker, vs.styles[STYLE_LINENUMBER].font, tFold);
 						}
@@ -6839,7 +6851,12 @@ void Editor::EnsureLineVisible(int lineDoc, bool enforcePolicy) {
 	WrapLines(true, -1);
 
 	if (!cs.GetVisible(lineDoc)) {
-		int lineParent = pdoc->GetFoldParent(lineDoc);
+		int lookLine = lineDoc;
+		int lookLineLevel = pdoc->GetLevel(lookLine);
+		while ((lookLine > 0) && (lookLineLevel & SC_FOLDLEVELWHITEFLAG)) {
+			lookLineLevel = pdoc->GetLevel(--lookLine);
+		}
+		int lineParent = pdoc->GetFoldParent(lookLine);
 		if (lineParent >= 0) {
 			if (lineDoc != lineParent)
 				EnsureLineVisible(lineParent, enforcePolicy);
@@ -7883,8 +7900,8 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 		return endAtLastLine;
 
 	case SCI_SETCARETSTICKY:
-		PLATFORM_ASSERT((wParam >= SC_CARETSTICKY_OFF) && (wParam <= SC_CARETSTICKY_WHITESPACE));
-		if ((wParam >= SC_CARETSTICKY_OFF) && (wParam <= SC_CARETSTICKY_WHITESPACE)) {
+		PLATFORM_ASSERT(wParam <= SC_CARETSTICKY_WHITESPACE);
+		if (wParam <= SC_CARETSTICKY_WHITESPACE) {
 			caretSticky = wParam;
 		}
 		break;
@@ -8356,7 +8373,7 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 		return vs.caretcolour.desired.AsLong();
 
 	case SCI_SETCARETSTYLE:
-		if (wParam >= CARETSTYLE_INVISIBLE && wParam <= CARETSTYLE_BLOCK)
+		if (wParam <= CARETSTYLE_BLOCK)
 			vs.caretStyle = wParam;
 		else
 			/* Default to the line caret */

@@ -316,14 +316,17 @@ static bool IsSubordinate(int levelStart, int levelTry) {
 		return (levelStart & SC_FOLDLEVELNUMBERMASK) < (levelTry & SC_FOLDLEVELNUMBERMASK);
 }
 
-int Document::GetLastChild(int lineParent, int level) {
+int Document::GetLastChild(int lineParent, int level, int lastLine) {
 	if (level == -1)
 		level = GetLevel(lineParent) & SC_FOLDLEVELNUMBERMASK;
 	int maxLine = LinesTotal();
+	int lookLastLine = (lastLine != -1) ? Platform::Minimum(LinesTotal() - 1, lastLine) : -1;
 	int lineMaxSubord = lineParent;
 	while (lineMaxSubord < maxLine - 1) {
 		EnsureStyledTo(LineStart(lineMaxSubord + 2));
 		if (!IsSubordinate(level, GetLevel(lineMaxSubord + 1)))
+			break;
+		if ((lookLastLine != -1) && (lineMaxSubord >= lookLastLine) && !(GetLevel(lineMaxSubord) & SC_FOLDLEVELWHITEFLAG))
 			break;
 		lineMaxSubord++;
 	}
@@ -355,108 +358,74 @@ int Document::GetFoldParent(int line) {
 	}
 }
 
-void Document::GetHighlightDelimiters(HighlightDelimiter &highlightDelimiter, int line, int topLine, int bottomLine) {
-	int noNeedToParseBefore = Platform::Minimum(line, topLine) - 1;
-	int noNeedToParseAfter = Platform::Maximum(line, bottomLine) + 1;
-	int endLine = LineFromPosition(Length());
-	int beginFoldBlock = noNeedToParseBefore;
-	int endFoldBlock = -1;
-	int beginMarginCorrectlyDrawnZone = noNeedToParseBefore;
-	int endMarginCorrectlyDrawnZone = noNeedToParseAfter;
-	int endOfTailOfWhiteFlag = -1; //endOfTailOfWhiteFlag points the last SC_FOLDLEVELWHITEFLAG if follow a fold block. Otherwise endOfTailOfWhiteFlag points end of fold block.
+void Document::GetHighlightDelimiters(HighlightDelimiter &highlightDelimiter, int line, int lastLine) {
 	int level = GetLevel(line);
-	int levelNumber = -1;
-	int lineLookLevel = 0;
-	int lineLookLevelNumber = -1;
-	int lineLook = line;
-	bool beginFoldBlockFound = false;
-	bool endFoldBlockFound = false;
-	bool beginMarginCorrectlyDrawnZoneFound = false;
-	bool endMarginCorrectlyDrawnZoneFound = false;
+	int lookLastLine = Platform::Maximum(line, lastLine) + 1;
 
-	/*******************************************************************************/
-	/*      search backward (beginFoldBlock & beginMarginCorrectlyDrawnZone)       */
-	/*******************************************************************************/
-	for (endOfTailOfWhiteFlag = line; (lineLook > noNeedToParseBefore || (lineLookLevel & SC_FOLDLEVELWHITEFLAG)) && (!beginFoldBlockFound || !beginMarginCorrectlyDrawnZoneFound); --lineLook) {
-		lineLookLevel = GetLevel(lineLook);
-		if (levelNumber != -1) {
-			lineLookLevelNumber = lineLookLevel & SC_FOLDLEVELNUMBERMASK;
-			if (!beginMarginCorrectlyDrawnZoneFound && (lineLookLevelNumber > levelNumber)) {
-				beginMarginCorrectlyDrawnZoneFound = true;
-				beginMarginCorrectlyDrawnZone = endOfTailOfWhiteFlag;
-			}
-			//find the last space line (SC_FOLDLEVELWHITEFLAG).
-			if (!beginMarginCorrectlyDrawnZoneFound && !(lineLookLevel & SC_FOLDLEVELWHITEFLAG)) {
-				endOfTailOfWhiteFlag = lineLook - 1;
-			}
-			if (!beginFoldBlockFound && (lineLookLevelNumber < levelNumber)) {
-				beginFoldBlockFound = true;
-				beginFoldBlock = lineLook;
-				if (!beginMarginCorrectlyDrawnZoneFound) {
-					beginMarginCorrectlyDrawnZoneFound = true;
-					beginMarginCorrectlyDrawnZone = lineLook - 1;
+	int lookLine = line;
+	int lookLineLevel = level;
+	int lookLineLevelNum = lookLineLevel & SC_FOLDLEVELNUMBERMASK;
+	while ((lookLine > 0) && ((lookLineLevel & SC_FOLDLEVELWHITEFLAG) || 
+		((lookLineLevel & SC_FOLDLEVELHEADERFLAG) && (lookLineLevelNum >= (GetLevel(lookLine + 1) & SC_FOLDLEVELNUMBERMASK))))) {
+		lookLineLevel = GetLevel(--lookLine);
+		lookLineLevelNum = lookLineLevel & SC_FOLDLEVELNUMBERMASK;
+	}
+
+	int beginFoldBlock = (lookLineLevel & SC_FOLDLEVELHEADERFLAG) ? lookLine : GetFoldParent(lookLine);
+	if (beginFoldBlock == -1) {
+		highlightDelimiter.Clear();
+		return;
+	}
+
+	int endFoldBlock = GetLastChild(beginFoldBlock, -1, lookLastLine);
+	int firstChangeableLineBefore = -1;
+	if (endFoldBlock < line) {
+		lookLine = beginFoldBlock - 1;
+		lookLineLevel = GetLevel(lookLine);
+		lookLineLevelNum = lookLineLevel & SC_FOLDLEVELNUMBERMASK;
+		while ((lookLine >= 0) && (lookLineLevelNum >= SC_FOLDLEVELBASE)) {
+			if (lookLineLevel & SC_FOLDLEVELHEADERFLAG) {
+				if (GetLastChild(lookLine, -1, lookLastLine) == line) {
+					beginFoldBlock = lookLine;
+					endFoldBlock = line;
+					firstChangeableLineBefore = line - 1;
 				}
-			} else 	if (!beginFoldBlockFound && lineLookLevelNumber == SC_FOLDLEVELBASE) {
-				beginFoldBlockFound = true;
-				beginFoldBlock = -1;
 			}
-		} else if (!(lineLookLevel & SC_FOLDLEVELWHITEFLAG)) {
-			endOfTailOfWhiteFlag = lineLook - 1;
-			levelNumber = lineLookLevel & SC_FOLDLEVELNUMBERMASK;
-			if (lineLookLevel & SC_FOLDLEVELHEADERFLAG &&
-			        //Managed the folding block when a fold header does not have any subordinate lines to fold away.
-			        (levelNumber < (GetLevel(lineLook + 1) & SC_FOLDLEVELNUMBERMASK))) {
-				beginFoldBlockFound = true;
-				beginFoldBlock = lineLook;
-				beginMarginCorrectlyDrawnZoneFound = true;
-				beginMarginCorrectlyDrawnZone = endOfTailOfWhiteFlag;
-				levelNumber = GetLevel(lineLook + 1) & SC_FOLDLEVELNUMBERMASK;;
+			if ((lookLine > 0) && (lookLineLevelNum == SC_FOLDLEVELBASE) && ((GetLevel(lookLine - 1) & SC_FOLDLEVELNUMBERMASK) > lookLineLevelNum))
+				break;
+			lookLineLevel = GetLevel(--lookLine);
+			lookLineLevelNum = lookLineLevel & SC_FOLDLEVELNUMBERMASK;
+		}
+	}
+	if (firstChangeableLineBefore == -1) {
+		for (lookLine = line - 1, lookLineLevel = GetLevel(lookLine), lookLineLevelNum = lookLineLevel & SC_FOLDLEVELNUMBERMASK; 
+			lookLine >= beginFoldBlock; 
+			lookLineLevel = GetLevel(--lookLine), lookLineLevelNum = lookLineLevel & SC_FOLDLEVELNUMBERMASK) {
+			if ((lookLineLevel & SC_FOLDLEVELWHITEFLAG) || (lookLineLevelNum > (level & SC_FOLDLEVELNUMBERMASK))) {
+				firstChangeableLineBefore = lookLine;
+				break;
 			}
 		}
 	}
+	if (firstChangeableLineBefore == -1)
+		firstChangeableLineBefore = beginFoldBlock - 1;
 
-	/****************************************************************************/
-	/*       search forward (endStartBlock & endMarginCorrectlyDrawnZone)       */
-	/****************************************************************************/
-	if (level & SC_FOLDLEVELHEADERFLAG) {
-		//ignore this line because this line is on first one of block.
-		lineLook = line + 1;
-	} else {
-		lineLook = line;
-	}
-	for (; lineLook < noNeedToParseAfter && (!endFoldBlockFound || !endMarginCorrectlyDrawnZoneFound); ++lineLook) {
-		lineLookLevel = GetLevel(lineLook);
-		lineLookLevelNumber = lineLookLevel & SC_FOLDLEVELNUMBERMASK;
-		if (!endFoldBlockFound && !(lineLookLevel & SC_FOLDLEVELWHITEFLAG) && lineLookLevelNumber < levelNumber) {
-			endFoldBlockFound = true;
-			endFoldBlock = lineLook - 1;
-			if (!endMarginCorrectlyDrawnZoneFound) {
-				endMarginCorrectlyDrawnZoneFound = true;
-				endMarginCorrectlyDrawnZone = lineLook;
-			}
-		} else if (!endFoldBlockFound && lineLookLevel == SC_FOLDLEVELBASE) {
-			endFoldBlockFound = true;
-			endFoldBlock = -1;
-		}
-		if (!endMarginCorrectlyDrawnZoneFound && (lineLookLevel & SC_FOLDLEVELHEADERFLAG) &&
-		        //Managed the folding block when a fold header does not have any subordinate lines to fold away.
-		        (levelNumber < (GetLevel(lineLook + 1) & SC_FOLDLEVELNUMBERMASK))) {
-			endMarginCorrectlyDrawnZoneFound = true;
-			endMarginCorrectlyDrawnZone = lineLook;
+	int firstChangeableLineAfter = -1;
+	for (lookLine = line + 1, lookLineLevel = GetLevel(lookLine), lookLineLevelNum = lookLineLevel & SC_FOLDLEVELNUMBERMASK; 
+		lookLine <= endFoldBlock; 
+		lookLineLevel = GetLevel(++lookLine), lookLineLevelNum = lookLineLevel & SC_FOLDLEVELNUMBERMASK) {
+		if ((lookLineLevel & SC_FOLDLEVELHEADERFLAG) && (lookLineLevelNum < (GetLevel(lookLine + 1) & SC_FOLDLEVELNUMBERMASK))) {
+			firstChangeableLineAfter = lookLine;
+			break;
 		}
 	}
-	if (!endFoldBlockFound && ((lineLook > endLine && lineLookLevelNumber < levelNumber) ||
-	        (levelNumber > SC_FOLDLEVELBASE))) {
-		//manage when endfold is incorrect or on last line.
-		endFoldBlock = lineLook - 1;
-		//useless to set endMarginCorrectlyDrawnZone.
-		//if endMarginCorrectlyDrawnZoneFound equals false then endMarginCorrectlyDrawnZone already equals to endLine + 1.
-	}
+	if (firstChangeableLineAfter == -1)
+		firstChangeableLineAfter = endFoldBlock + 1;
 
 	highlightDelimiter.beginFoldBlock = beginFoldBlock;
 	highlightDelimiter.endFoldBlock = endFoldBlock;
-	highlightDelimiter.beginMarginCorrectlyDrawnZone = beginMarginCorrectlyDrawnZone;
-	highlightDelimiter.endMarginCorrectlyDrawnZone = endMarginCorrectlyDrawnZone;
+	highlightDelimiter.firstChangeableLineBefore = firstChangeableLineBefore;
+	highlightDelimiter.firstChangeableLineAfter = firstChangeableLineAfter;
 }
 
 int Document::ClampPositionIntoDocument(int pos) {

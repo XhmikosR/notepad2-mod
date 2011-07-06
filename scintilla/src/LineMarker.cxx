@@ -84,6 +84,7 @@ void LineMarker::Draw(Surface *surface, PRectangle &rcWhole, Font &fontForCharac
 
 	switch (tFold) {
 	case LineMarker::head :
+	case LineMarker::headWithTail :
 		head = backSelected;
 		tail = backSelected;
 		break;
@@ -243,7 +244,10 @@ void LineMarker::Draw(Surface *surface, PRectangle &rcWhole, Font &fontForCharac
 		DrawPlus(surface, centreX, centreY, blobSize, tail.allocated);
 
 	} else if (markType == SC_MARK_BOXPLUSCONNECTED) {
-		surface->PenColour(body.allocated);
+		if (tFold == LineMarker::headWithTail)
+			surface->PenColour(tail.allocated);
+		else
+			surface->PenColour(body.allocated);
 		surface->MoveTo(centreX, centreY + blobSize);
 		surface->LineTo(centreX, rcWhole.bottom);
 
@@ -301,10 +305,14 @@ void LineMarker::Draw(Surface *surface, PRectangle &rcWhole, Font &fontForCharac
 		DrawPlus(surface, centreX, centreY, blobSize, tail.allocated);
 
 	} else if (markType == SC_MARK_CIRCLEPLUSCONNECTED) {
-		surface->PenColour(body.allocated);
+		if (tFold == LineMarker::headWithTail)
+			surface->PenColour(tail.allocated);
+		else
+			surface->PenColour(body.allocated);
 		surface->MoveTo(centreX, centreY + blobSize);
 		surface->LineTo(centreX, rcWhole.bottom);
 
+		surface->PenColour(body.allocated);
 		surface->MoveTo(centreX, rcWhole.top);
 		surface->LineTo(centreX, centreY - blobSize);
 
