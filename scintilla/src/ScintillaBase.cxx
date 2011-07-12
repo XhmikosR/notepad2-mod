@@ -205,7 +205,8 @@ void ScintillaBase::AutoCompleteStart(int lenEntered, const char *list) {
 	if (ac.chooseSingle && (listType == 0)) {
 		if (list && !strchr(list, ac.GetSeparator())) {
 			const char *typeSep = strchr(list, ac.GetTypesep());
-			int lenInsert = static_cast<int>((typeSep) ? (typeSep-list) : strlen(list));
+			int lenInsert = typeSep ? 
+				static_cast<int>(typeSep-list) : static_cast<int>(strlen(list));
 			if (ac.ignoreCase) {
 				SetEmptySelection(sel.MainCaret() - lenEntered);
 				pdoc->DeleteChars(sel.MainCaret(), lenEntered);

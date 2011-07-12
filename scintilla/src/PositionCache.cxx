@@ -542,16 +542,16 @@ bool PositionCacheEntry::Retrieve(unsigned int styleNumber_, const char *s_,
 	}
 }
 
-int PositionCacheEntry::Hash(unsigned int styleNumber, const char *s, unsigned int len) {
+int PositionCacheEntry::Hash(unsigned int styleNumber_, const char *s, unsigned int len_) {
 	unsigned int ret = s[0] << 7;
-	for (unsigned int i=0; i<len; i++) {
+	for (unsigned int i=0; i<len_; i++) {
 		ret *= 1000003;
 		ret ^= s[i];
 	}
 	ret *= 1000003;
-	ret ^= len;
+	ret ^= len_;
 	ret *= 1000003;
-	ret ^= styleNumber;
+	ret ^= styleNumber_;
 	return ret;
 }
 

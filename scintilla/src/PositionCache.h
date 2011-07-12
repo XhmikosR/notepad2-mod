@@ -110,7 +110,7 @@ public:
 	void Set(unsigned int styleNumber_, const char *s_, unsigned int len_, int *positions_, unsigned int clock);
 	void Clear();
 	bool Retrieve(unsigned int styleNumber_, const char *s_, unsigned int len_, int *positions_) const;
-	static int Hash(unsigned int styleNumber, const char *s, unsigned int len);
+	static int Hash(unsigned int styleNumber_, const char *s, unsigned int len);
 	bool NewerThan(const PositionCacheEntry &other) const;
 	void ResetClock();
 };

@@ -16,6 +16,7 @@
 
 #define PLAT_GTK 0
 #define PLAT_GTK_WIN32 0
+#define PLAT_GTK_MACOSX 0
 #define PLAT_MACOSX 0
 #define PLAT_WIN 0
 #define PLAT_WX  0
@@ -36,6 +37,11 @@
 #if defined(__WIN32__) || defined(_MSC_VER)
 #undef PLAT_GTK_WIN32
 #define PLAT_GTK_WIN32 1
+#endif
+
+#if defined(__APPLE__)
+#undef PLAT_GTK_MACOSX
+#define PLAT_GTK_MACOSX 1
 #endif
 
 #elif defined(__APPLE__)
