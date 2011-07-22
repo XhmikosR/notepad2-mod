@@ -353,7 +353,11 @@ int XPMSet::GetWidth() {
 
 RGBAImage::RGBAImage(int width_, int height_, const unsigned char *pixels_) :
 	height(height_), width(width_) {
-	pixelBytes.assign(pixels_, pixels_ + CountBytes());
+	if (pixels_) {
+		pixelBytes.assign(pixels_, pixels_ + CountBytes());
+	} else {
+		pixelBytes.resize(CountBytes());
+	}
 }
 
 RGBAImage::RGBAImage(const XPM &xpm) {
@@ -365,12 +369,7 @@ RGBAImage::RGBAImage(const XPM &xpm) {
 			ColourDesired colour;
 			bool transparent = false;
 			xpm.PixelAt(x, y, colour, transparent);
-			unsigned char *pixel = &pixelBytes[0] + (y*width+x) * 4;
-			// RGBA
-			pixel[0] = colour.GetRed();
-			pixel[1] = colour.GetGreen();
-			pixel[2] = colour.GetBlue();
-			pixel[3] = transparent ? 0 : 255;
+			SetPixel(x, y, colour, transparent ? 0 : 255);
 		}
 	}
 }
@@ -384,6 +383,15 @@ int RGBAImage::CountBytes() const {
 
 const unsigned char *RGBAImage::Pixels() const {
 	return &pixelBytes[0];
+}
+
+void RGBAImage::SetPixel(int x, int y, ColourDesired colour, int alpha) {
+	unsigned char *pixel = &pixelBytes[0] + (y*width+x) * 4;
+	// RGBA
+	pixel[0] = colour.GetRed();
+	pixel[1] = colour.GetGreen();
+	pixel[2] = colour.GetBlue();
+	pixel[3] = alpha;
 }
 
 RGBAImageSet::RGBAImageSet() : height(-1), width(-1){

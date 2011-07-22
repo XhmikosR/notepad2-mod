@@ -252,6 +252,7 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
 #define INDIC_DASH 9
 #define INDIC_DOTS 10
 #define INDIC_SQUIGGLELOW 11
+#define INDIC_DOTBOX 12
 #define INDIC_MAX 31
 #define INDIC_CONTAINER 8
 #define INDIC0_MASK 0x20
@@ -816,6 +817,8 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
 #define SCI_RGBAIMAGESETHEIGHT 2625
 #define SCI_MARKERDEFINERGBAIMAGE 2626
 #define SCI_REGISTERRGBAIMAGE 2627
+#define SCI_SCROLLTOSTART 2628
+#define SCI_SCROLLTOEND 2629
 #define SCI_STARTRECORD 3001
 #define SCI_STOPRECORD 3002
 #define SCI_SETLEXER 4001
