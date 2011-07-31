@@ -116,6 +116,8 @@ IF "%~1" == "" (
 
 
 :START
+SET "TEMP_NAME=temp%SUFFIX%"
+
 CALL :SubGetVersion
 CALL :SubInstaller %INPUTDIRx86% x86
 CALL :SubInstaller %INPUTDIRx64% x64
@@ -143,36 +145,36 @@ PUSHD "..\distrib"
 TITLE Building %BINDIR% installer...
 CALL :SUBMSG "INFO" "Building %BINDIR% installer..."
 
-IF NOT EXIST "temp\%BINDIR%" MD "temp\%BINDIR%"
+IF NOT EXIST "%TEMP_NAME%\%BINDIR%" MD "%TEMP_NAME%\%BINDIR%"
 
-COPY /B /V /Y "..\%1\Notepad2.exe"             "temp\%BINDIR%\notepad2.exe"
-COPY /B /V /Y "..\License.txt"                 "temp\%BINDIR%\license.txt"
-COPY /B /V /Y "res\cabinet\notepad2.inf"       "temp\%BINDIR%\notepad2.inf"
-COPY /B /V /Y "res\cabinet\notepad2.ini"       "temp\%BINDIR%\notepad2.ini"
-COPY /B /V /Y "res\cabinet\notepad2.redir.ini" "temp\%BINDIR%\notepad2.redir.ini"
-COPY /B /V /Y "..\Notepad2.txt"                "temp\%BINDIR%\notepad2.txt"
-COPY /B /V /Y "..\Readme.txt"                  "temp\%BINDIR%\readme.txt"
-COPY /B /V /Y "..\Readme-mod.txt"              "temp\%BINDIR%\readme-mod.txt"
+COPY /B /V /Y "..\%1\Notepad2.exe"             "%TEMP_NAME%\%BINDIR%\notepad2.exe"
+COPY /B /V /Y "..\License.txt"                 "%TEMP_NAME%\%BINDIR%\license.txt"
+COPY /B /V /Y "res\cabinet\notepad2.inf"       "%TEMP_NAME%\%BINDIR%\notepad2.inf"
+COPY /B /V /Y "res\cabinet\notepad2.ini"       "%TEMP_NAME%\%BINDIR%\notepad2.ini"
+COPY /B /V /Y "res\cabinet\notepad2.redir.ini" "%TEMP_NAME%\%BINDIR%\notepad2.redir.ini"
+COPY /B /V /Y "..\Notepad2.txt"                "%TEMP_NAME%\%BINDIR%\notepad2.txt"
+COPY /B /V /Y "..\Readme.txt"                  "%TEMP_NAME%\%BINDIR%\readme.txt"
+COPY /B /V /Y "..\Readme-mod.txt"              "%TEMP_NAME%\%BINDIR%\readme-mod.txt"
 
 rem Set the version for the DisplayVersion registry value
-CALL "tools\BatchSubstitute.bat" "4.2.25.0" "%NP2_VER%.%VerRev%" "temp\%BINDIR%\notepad2.inf" >notepad2.inf.tmp
-COPY /Y "temp\%BINDIR%\notepad2.inf" "notepad2.inf.orig" >NUL
-MOVE /Y "notepad2.inf.tmp" "temp\%BINDIR%\notepad2.inf" >NUL
+CALL "tools\BatchSubstitute.bat" "4.2.25.0" "%NP2_VER%.%VerRev%" "%TEMP_NAME%\%BINDIR%\notepad2.inf" >notepad2.inf.tmp
+COPY /Y "%TEMP_NAME%\%BINDIR%\notepad2.inf" "notepad2.inf.orig" >NUL
+MOVE /Y "notepad2.inf.tmp" "%TEMP_NAME%\%BINDIR%\notepad2.inf" >NUL
 
 rem get the size and put it in the inf file
-PUSHD "temp\%BINDIR%"
+PUSHD "%TEMP_NAME%\%BINDIR%"
 FOR /F "tokens=*" %%a IN ('"DIR /-C | FIND "bytes" | FIND /V "free""') DO SET summaryout=%%a
 FOR /F "tokens=1,2 delims=)" %%a IN ("%summaryout%") DO SET filesout=%%a & SET sizeout=%%b
 SET /A sizeout=%sizeout:bytes=%/1024
 POPD
 
-CALL "tools\BatchSubstitute.bat" "1111" "%sizeout%" "temp\%BINDIR%\notepad2.inf" >notepad2.inf.tmp
-COPY /Y "temp\%BINDIR%\notepad2.inf" "notepad2.inf.orig" >NUL
-MOVE /Y "notepad2.inf.tmp" "temp\%BINDIR%\notepad2.inf" >NUL
+CALL "tools\BatchSubstitute.bat" "1111" "%sizeout%" "%TEMP_NAME%\%BINDIR%\notepad2.inf" >notepad2.inf.tmp
+COPY /Y "%TEMP_NAME%\%BINDIR%\notepad2.inf" "notepad2.inf.orig" >NUL
+MOVE /Y "notepad2.inf.tmp" "%TEMP_NAME%\%BINDIR%\notepad2.inf" >NUL
 
-"tools\cabutcd.exe" "temp\%BINDIR%" "res\cabinet.%BINDIR%.cab"
+"tools\cabutcd.exe" "%TEMP_NAME%\%BINDIR%" "res\cabinet.%BINDIR%.cab"
 IF EXIST "notepad2.inf.orig" DEL "notepad2.inf.orig"
-IF EXIST "temp\%BINDIR%"     RD /Q /S "temp\%BINDIR%"
+IF EXIST "%TEMP_NAME%\%BINDIR%"     RD /Q /S "%TEMP_NAME%\%BINDIR%"
 
 
 CALL "%VS100COMNTOOLS%vsvars32.bat" >NUL
@@ -196,7 +198,7 @@ rem MOVE "setup.%BINDIR%\setuplite.exe" "..\build\packages\Notepad2-mod.%NP2_VER
 
 rem Cleanup
 IF EXIST "setup.%BINDIR%" RD /Q "setup.%BINDIR%"
-IF EXIST "temp"           RD /Q "temp"
+IF EXIST "%TEMP_NAME%"    RD /Q "%TEMP_NAME%"
 IF EXIST "tools\addon"    RD /Q /S "tools\addon"
 IF EXIST "obj"            RD /Q /S "obj"
 

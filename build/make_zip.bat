@@ -111,6 +111,8 @@ IF "%~1" == "" (
 
 
 :START
+SET "TEMP_NAME=temp_zip%SUFFIX%"
+
 CALL :SubGetVersion
 CALL :SubZipFiles %INPUTDIRx86% x86-32
 CALL :SubZipFiles %INPUTDIRx64% x86-64
@@ -118,14 +120,14 @@ CALL :SubZipFiles %INPUTDIRx64% x86-64
 rem Compress everything into a single ZIP file
 PUSHD "packages"
 IF EXIST "Notepad2-mod.zip" DEL "Notepad2-mod.zip"
-IF EXIST "temp_zip"         RD /S /Q "temp_zip"
-IF NOT EXIST "temp_zip"     MD "temp_zip"
+IF EXIST "%TEMP_NAME%"      RD /S /Q "%TEMP_NAME%"
+IF NOT EXIST "%TEMP_NAME%"  MD "%TEMP_NAME%"
 
-IF EXIST "Notepad2-mod.%NP2_VER%_r%VerRev%*.7z"  COPY /Y /V "Notepad2-mod.%NP2_VER%_r%VerRev%*.7z"  "temp_zip\" >NUL
-IF EXIST "Notepad2-mod.%NP2_VER%_r%VerRev%*.exe" COPY /Y /V "Notepad2-mod.%NP2_VER%_r%VerRev%*.exe" "temp_zip\" >NUL
-IF EXIST "Notepad2-mod.%NP2_VER%_r%VerRev%*.zip" COPY /Y /V "Notepad2-mod.%NP2_VER%_r%VerRev%*.zip" "temp_zip\" >NUL
+IF EXIST "Notepad2-mod.%NP2_VER%_r%VerRev%*.7z"  COPY /Y /V "Notepad2-mod.%NP2_VER%_r%VerRev%*.7z"  "%TEMP_NAME%\" >NUL
+IF EXIST "Notepad2-mod.%NP2_VER%_r%VerRev%*.exe" COPY /Y /V "Notepad2-mod.%NP2_VER%_r%VerRev%*.exe" "%TEMP_NAME%\" >NUL
+IF EXIST "Notepad2-mod.%NP2_VER%_r%VerRev%*.zip" COPY /Y /V "Notepad2-mod.%NP2_VER%_r%VerRev%*.zip" "%TEMP_NAME%\" >NUL
 
-PUSHD "temp_zip"
+PUSHD "%TEMP_NAME%"
 
 START "" /B /WAIT "..\..\..\distrib\tools\7za.exe" a -tzip -mx=9 Notepad2-mod.zip * >NUL
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
@@ -135,7 +137,7 @@ CALL :SUBMSG "INFO" "Notepad2-mod.zip created successfully!"
 MOVE /Y "Notepad2-mod.zip" ".." >NUL
 
 POPD
-IF EXIST "temp_zip" RD /S /Q "temp_zip"
+IF EXIST "%TEMP_NAME%" RD /S /Q "%TEMP_NAME%"
 
 POPD
 
@@ -151,18 +153,18 @@ EXIT /B
 TITLE Creating the %2 ZIP file...
 CALL :SUBMSG "INFO" "Creating the %2 ZIP file..."
 
-IF EXIST "temp_zip"     RD /S /Q "temp_zip"
-IF NOT EXIST "temp_zip" MD "temp_zip"
-IF NOT EXIST "packages" MD "packages"
+IF EXIST "%TEMP_NAME%"     RD /S /Q "%TEMP_NAME%"
+IF NOT EXIST "%TEMP_NAME%" MD "%TEMP_NAME%"
+IF NOT EXIST "packages"    MD "packages"
 
-COPY /Y /V "..\License.txt"                      "temp_zip\"
-COPY /Y /V "..\%1\Notepad2.exe"                  "temp_zip\"
-COPY /Y /V "..\distrib\res\cabinet\notepad2.ini" "temp_zip\Notepad2.ini"
-COPY /Y /V "..\Notepad2.txt"                     "temp_zip\"
-COPY /Y /V "..\Readme.txt"                       "temp_zip\"
-COPY /Y /V "..\Readme-mod.txt"                   "temp_zip\"
+COPY /Y /V "..\License.txt"                      "%TEMP_NAME%\"
+COPY /Y /V "..\%1\Notepad2.exe"                  "%TEMP_NAME%\"
+COPY /Y /V "..\distrib\res\cabinet\notepad2.ini" "%TEMP_NAME%\Notepad2.ini"
+COPY /Y /V "..\Notepad2.txt"                     "%TEMP_NAME%\"
+COPY /Y /V "..\Readme.txt"                       "%TEMP_NAME%\"
+COPY /Y /V "..\Readme-mod.txt"                   "%TEMP_NAME%\"
 
-PUSHD "temp_zip"
+PUSHD "%TEMP_NAME%"
 START "" /B /WAIT "..\..\distrib\tools\7za.exe" a -tzip -mx=9^
  "Notepad2-mod.%NP2_VER%_r%VerRev%_%2%SUFFIX%.zip" "License.txt" "Notepad2.exe"^
  "Notepad2.ini" "Notepad2.txt" "Readme.txt" "Readme-mod.txt" >NUL
@@ -172,7 +174,7 @@ CALL :SUBMSG "INFO" "Notepad2-mod.%NP2_VER%_r%VerRev%_%2%SUFFIX%.zip created suc
 
 MOVE /Y "Notepad2-mod.%NP2_VER%_r%VerRev%_%2%SUFFIX%.zip" "..\packages" >NUL
 POPD
-IF EXIST "temp_zip" RD /S /Q "temp_zip"
+IF EXIST "%TEMP_NAME%" RD /S /Q "%TEMP_NAME%"
 EXIT /B
 
 
