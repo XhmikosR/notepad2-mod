@@ -1133,8 +1133,8 @@ EDITLEXER lexRUBY = { SCLEX_RUBY, 63304, L"Ruby Script", L"rb; ruby; rbw; rake; 
 
 
 KEYWORDLIST KeyWords_LUA = {
-"and break do else elseif end false for function if in local nil not or repeat return then "
-"true until while",
+"and break do else elseif end false for function goto if "
+"in local nil not or repeat return then true until while",
 // Basic Functions
 "_VERSION assert collectgarbage dofile error gcinfo loadfile loadstring print rawget rawset "
 "require tonumber tostring type unpack _ALERT _ERRORMESSAGE _INPUT _PROMPT _OUTPUT _STDERR "

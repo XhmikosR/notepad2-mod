@@ -246,14 +246,6 @@ static bool styleCheckSubPrototype(LexAccessor &styler, unsigned int bk) {
 	return true;
 }
 
-static bool isMatch(const char *sref, char *s) {
-	// match per-line delimiter - must kill trailing CR if CRLF
-	int i = static_cast<int>(strlen(s));
-	if (i != 0 && s[i - 1] == '\r')
-		s[i - 1] = '\0';
-	return (strcmp(sref, s) == 0);
-}
-
 static int actualNumStyle(int numberStyle) {
 	if (numberStyle == PERLNUM_VECTOR || numberStyle == PERLNUM_V_VECTOR) {
 		return SCE_PL_STRING;
@@ -773,15 +765,16 @@ void SCI_METHOD LexerPerl::Lex(unsigned int startPos, int length, int initStyle,
 		case SCE_PL_HERE_QX: {
 				// also implies HereDoc.State == 2
 				sc.Complete();
-				while (!sc.atLineEnd)
-					sc.Forward();
-				char s[HERE_DELIM_MAX];
-				sc.GetCurrent(s, sizeof(s));
-				if (isMatch(HereDoc.Delimiter, s)) {
+				if (HereDoc.DelimiterLength == 0 || sc.Match(HereDoc.Delimiter)) {
+					sc.Forward(HereDoc.DelimiterLength);
+					if (sc.atLineEnd || ((sc.ch == '\r' && sc.chNext == '\n'))) {
 					sc.SetState(SCE_PL_DEFAULT);
 					backFlag = BACK_NONE;
 					HereDoc.State = 0;
 				}
+			}
+				while (!sc.atLineEnd)
+					sc.Forward();
 			}
 			break;
 		case SCE_PL_POD:
@@ -910,12 +903,13 @@ void SCI_METHOD LexerPerl::Lex(unsigned int startPos, int length, int initStyle,
 			break;
 		case SCE_PL_FORMAT: {
 				sc.Complete();
+				if (sc.Match('.')) {
+					sc.Forward();
+					if (sc.atLineEnd || ((sc.ch == '\r' && sc.chNext == '\n')))
+					sc.SetState(SCE_PL_DEFAULT);
+			}
 				while (!sc.atLineEnd)
 					sc.Forward();
-				char s[10];
-				sc.GetCurrent(s, sizeof(s));
-				if (isMatch(".", s))
-					sc.SetState(SCE_PL_DEFAULT);
 			}
 			break;
 		case SCE_PL_ERROR:
@@ -1127,7 +1121,6 @@ void SCI_METHOD LexerPerl::Lex(unsigned int startPos, int length, int initStyle,
 				bool isHereDoc = sc.Match('<', '<');
 				bool hereDocSpace = false;		// for: SCALAR [whitespace] '<<'
 				unsigned int bk = (sc.currentPos > 0) ? sc.currentPos - 1: 0;
-				unsigned int bkend;
 				sc.Complete();
 				styler.Flush();
 				if (styler.StyleAt(bk) == SCE_PL_DEFAULT)
@@ -1196,7 +1189,7 @@ void SCI_METHOD LexerPerl::Lex(unsigned int startPos, int length, int initStyle,
 							// keywords always forced as /PATTERN/: split, if, elsif, while
 							// everything else /PATTERN/ unless digit/space immediately after '/'
 							// for '//', defined-or favoured unless special keywords
-							bkend = bk + 1;
+							unsigned int bkend = bk + 1;
 							while (bk > 0 && styler.StyleAt(bk - 1) == SCE_PL_WORD) {
 								bk--;
 							}
