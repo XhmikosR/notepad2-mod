@@ -409,6 +409,14 @@
 #define SCE_L_TAG 2
 #define SCE_L_MATH 3
 #define SCE_L_COMMENT 4
+#define SCE_L_TAG2 5
+#define SCE_L_MATH2 6
+#define SCE_L_COMMENT2 7
+#define SCE_L_VERBATIM 8
+#define SCE_L_SHORTCMD 9
+#define SCE_L_SPECIAL 10
+#define SCE_L_CMDOPT 11
+#define SCE_L_ERROR 12
 #define SCE_LUA_DEFAULT 0
 #define SCE_LUA_COMMENT 1
 #define SCE_LUA_COMMENTLINE 2

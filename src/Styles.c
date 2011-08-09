@@ -1374,10 +1374,12 @@ EDITLEXER lexAU3 = { SCLEX_AU3, 63276, L"AutoIt3 Script", L"au3", L"", &KeyWords
 
 EDITLEXER lexLATEX = { SCLEX_LATEX, 63281, L"LaTeX Files", L"tex; latex; sty", L"", &KeyWords_NULL, {
                        { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
-                       { SCE_L_COMMAND, 63236, L"Command", L"fore:#0000FF", L"" },
-                       { SCE_L_TAG, 63282, L"Tag", L"fore:#0000FF", L"" },
-                       { SCE_L_MATH, 63283, L"Math", L"fore:#FF0000", L"" },
-                       { SCE_L_COMMENT, 63127, L"Comment", L"fore:#008000", L"" },
+                       { MULTI_STYLE(SCE_L_COMMAND,SCE_L_SHORTCMD,SCE_L_CMDOPT,0), 63236, L"Command", L"fore:#0000FF", L"" },
+                       { MULTI_STYLE(SCE_L_COMMENT,SCE_L_COMMENT2,0,0), 63127, L"Comment", L"fore:#008000", L"" },
+                       { MULTI_STYLE(SCE_L_MATH,SCE_L_MATH2,0,0), 63283, L"Math", L"fore:#FF0000", L"" },
+                       { SCE_L_SPECIAL, 63331, L"Special Char", L"fore:#AAAA00", L"" },
+                       { MULTI_STYLE(SCE_L_TAG,SCE_L_TAG2,0,0), 63282, L"Tag", L"fore:#0000FF", L"" },
+                       { SCE_L_VERBATIM, 63330, L"Verbatim Segment", L"fore:#666666", L"" },
                        { -1, 00000, L"", L"", L"" } } };
 
 
