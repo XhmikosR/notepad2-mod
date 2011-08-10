@@ -664,8 +664,8 @@ EDITLEXER lexASM = { SCLEX_ASM, 63013, L"Assembly Script", L"asm", L"", &KeyWord
 
 KEYWORDLIST KeyWords_PL = {
 "__DATA__ __END__ __FILE__ __LINE__ __PACKAGE__ abs accept alarm and atan2 AUTOLOAD BEGIN "
-"bind binmode bless caller chdir CHECK chmod chomp chop chown chr chroot close closedir cmp "
-"connect continue CORE cos crypt dbmclose dbmopen default defined delete DESTROY die do "
+"bind binmode bless break caller chdir CHECK chmod chomp chop chown chr chroot close closedir "
+"cmp connect continue CORE cos crypt dbmclose dbmopen default defined delete DESTROY die do "
 "dump each else elsif END endgrent endhostent endnetent endprotoent endpwent endservent eof "
 "eq EQ eval exec exists exit exp fcntl fileno flock for foreach fork format formline ge GE "
 "getc getgrent getgrgid getgrnam gethostbyaddr gethostbyname gethostent getlogin "
@@ -1377,9 +1377,9 @@ EDITLEXER lexLATEX = { SCLEX_LATEX, 63281, L"LaTeX Files", L"tex; latex; sty", L
                        { MULTI_STYLE(SCE_L_COMMAND,SCE_L_SHORTCMD,SCE_L_CMDOPT,0), 63236, L"Command", L"fore:#0000FF", L"" },
                        { MULTI_STYLE(SCE_L_COMMENT,SCE_L_COMMENT2,0,0), 63127, L"Comment", L"fore:#008000", L"" },
                        { MULTI_STYLE(SCE_L_MATH,SCE_L_MATH2,0,0), 63283, L"Math", L"fore:#FF0000", L"" },
-                       { SCE_L_SPECIAL, 63331, L"Special Char", L"fore:#AAAA00", L"" },
+                       { SCE_L_SPECIAL, 63330, L"Special Char", L"fore:#AAAA00", L"" },
                        { MULTI_STYLE(SCE_L_TAG,SCE_L_TAG2,0,0), 63282, L"Tag", L"fore:#0000FF", L"" },
-                       { SCE_L_VERBATIM, 63330, L"Verbatim Segment", L"fore:#666666", L"" },
+                       { SCE_L_VERBATIM, 63331, L"Verbatim Segment", L"fore:#666666", L"" },
                        { -1, 00000, L"", L"", L"" } } };
 
 

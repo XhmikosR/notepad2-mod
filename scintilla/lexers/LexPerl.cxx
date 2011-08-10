@@ -442,7 +442,7 @@ void SCI_METHOD LexerPerl::Lex(unsigned int startPos, int length, int initStyle,
 	CharacterSet &setPOD = setModifiers;
 	CharacterSet setNonHereDoc(CharacterSet::setDigits, "=$@");
 	CharacterSet setHereDocDelim(CharacterSet::setAlphaNum, "_");
-	CharacterSet setSubPrototype(CharacterSet::setNone, "\\[$@%&*];");
+	CharacterSet setSubPrototype(CharacterSet::setNone, "\\[$@%&*+];");
 	// for format identifiers
 	CharacterSet setFormatStart(CharacterSet::setAlpha, "_=");
 	CharacterSet &setFormat = setHereDocDelim;
@@ -994,9 +994,9 @@ void SCI_METHOD LexerPerl::Lex(unsigned int startPos, int length, int initStyle,
 				numState = PERLNUM_DECIMAL;
 				dotCount = 0;
 				if (sc.ch == '0') {		// hex,bin,octal
-					if (sc.chNext == 'x') {
+					if (sc.chNext == 'x' || sc.chNext == 'X') {
 						numState = PERLNUM_HEX;
-					} else if (sc.chNext == 'b') {
+					} else if (sc.chNext == 'b' || sc.chNext == 'B') {
 						numState = PERLNUM_BINARY;
 					} else if (IsADigit(sc.chNext)) {
 						numState = PERLNUM_OCTAL;
