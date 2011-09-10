@@ -684,6 +684,13 @@ sptr_t ScintillaWin::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam
 			break;
 
 		case WM_MOUSEWHEEL:
+			// if autocomplete list active then send mousewheel message to it
+			if (ac.Active()) {
+				HWND hWnd = reinterpret_cast<HWND>(ac.lb->GetID());
+				::SendMessage(hWnd, iMessage, wParam, lParam);
+				break;
+			}
+			
 			// Don't handle datazoom.
 			// (A good idea for datazoom would be to "fold" or "unfold" details.
 			// i.e. if datazoomed out only class structures are visible, when datazooming in the control

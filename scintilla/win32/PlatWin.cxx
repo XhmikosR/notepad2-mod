@@ -1387,6 +1387,7 @@ class ListBoxX : public ListBox {
 	PRectangle rcPreSize;
 	Point dragOffset;
 	Point location;	// Caret location at which the list is opened
+	int wheelDelta; // mouse wheel residue
 
 	HWND GetHWND() const;
 	void AppendListItem(const char *startword, const char *numword);
@@ -1414,7 +1415,7 @@ public:
 	ListBoxX() : lineHeight(10), fontCopy(0), lb(0), unicodeMode(false),
 		desiredVisibleRows(5), maxItemCharacters(0), aveCharWidth(8),
 		parent(NULL), ctrlID(0), doubleClickAction(NULL), doubleClickActionData(NULL),
-		widestItem(NULL), maxCharWidth(1), resizeHit(0) {
+		widestItem(NULL), maxCharWidth(1), resizeHit(0), wheelDelta(0) {
 	}
 	virtual ~ListBoxX() {
 		if (fontCopy) {
@@ -1991,6 +1992,10 @@ LRESULT PASCAL ListBoxX::ControlWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
 				}
 			}
 			return 0;
+
+		case WM_MBUTTONDOWN:
+			// disable the scroll wheel button click action
+			return 0;
 		}
 
 		WNDPROC prevWndProc = reinterpret_cast<WNDPROC>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
@@ -2101,6 +2106,31 @@ LRESULT ListBoxX::WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam
 			::ReleaseCapture();
 		}
 		return ::DefWindowProc(hWnd, iMessage, wParam, lParam);
+
+	case WM_MOUSEWHEEL:
+		wheelDelta -= static_cast<short>(HIWORD(wParam));
+		if (abs(wheelDelta) >= WHEEL_DELTA) {
+			int nRows = GetVisibleRows();
+			int linesToScroll = 1;
+			if (nRows > 1) {
+				linesToScroll = nRows - 1;
+			}
+			if (linesToScroll > 3) {
+				linesToScroll = 3;
+			}
+			linesToScroll *= (wheelDelta / WHEEL_DELTA);
+			int top = ::SendMessage(lb, LB_GETTOPINDEX, 0, 0) + linesToScroll;
+			if (top < 0) {
+				top = 0;
+			}
+			::SendMessage(lb, LB_SETTOPINDEX, top, 0);
+			// update wheel delta residue
+			if (wheelDelta >= 0)
+				wheelDelta = wheelDelta % WHEEL_DELTA;
+			else
+				wheelDelta = - (-wheelDelta % WHEEL_DELTA);
+		}
+		break;
 
 	default:
 		return ::DefWindowProc(hWnd, iMessage, wParam, lParam);

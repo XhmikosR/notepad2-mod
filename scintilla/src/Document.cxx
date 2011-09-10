@@ -87,10 +87,10 @@ void LexInterface::Colourise(int start, int end) {
 
 Document::Document() {
 	refCount = 0;
-#ifdef __unix__
-	eolMode = SC_EOL_LF;
-#else
+#ifdef _WIN32
 	eolMode = SC_EOL_CRLF;
+#else
+	eolMode = SC_EOL_LF;
 #endif
 	dbcsCodePage = 0;
 	stylingBits = 5;

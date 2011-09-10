@@ -2559,7 +2559,7 @@ void Editor::DrawEOL(Surface *surface, ViewStyle &vsDraw, PRectangle rcLine, Lin
 
 	// Draw the eol-is-selected rectangle
 	rcSegment.left = xEol + xStart + virtualSpace + blobsWidth;
-	rcSegment.right = xEol + xStart + virtualSpace + blobsWidth + vsDraw.aveCharWidth;
+	rcSegment.right = rcSegment.left + vsDraw.aveCharWidth;
 
 	if (!hideSelection && eolInSelection && vsDraw.selbackset && (line < pdoc->LinesTotal() - 1) && (alpha == SC_ALPHA_NOALPHA)) {
 		surface->FillRectangle(rcSegment, SelectionBackground(vsDraw, eolInSelection == 1));
@@ -2579,7 +2579,7 @@ void Editor::DrawEOL(Surface *surface, ViewStyle &vsDraw, PRectangle rcLine, Lin
 	}
 
 	// Fill the remainder of the line
-	rcSegment.left = xEol + xStart + virtualSpace + blobsWidth + vsDraw.aveCharWidth;
+	rcSegment.left = rcSegment.right;
 	if (rcSegment.left < rcLine.left)
 		rcSegment.left = rcLine.left;
 	rcSegment.right = rcLine.right;
@@ -8395,7 +8395,7 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 		return vs.caretStyle;
 
 	case SCI_SETCARETWIDTH:
-		if (wParam <= 0)
+		if (static_cast<int>(wParam) <= 0)
 			vs.caretWidth = 0;
 		else if (wParam >= 3)
 			vs.caretWidth = 3;
