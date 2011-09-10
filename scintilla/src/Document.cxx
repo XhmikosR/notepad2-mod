@@ -87,10 +87,10 @@ void LexInterface::Colourise(int start, int end) {
 
 Document::Document() {
 	refCount = 0;
-#ifdef __unix__
-	eolMode = SC_EOL_LF;
-#else
+#ifdef _WIN32
 	eolMode = SC_EOL_CRLF;
+#else
+	eolMode = SC_EOL_LF;
 #endif
 	dbcsCodePage = 0;
 	stylingBits = 5;
@@ -316,14 +316,17 @@ static bool IsSubordinate(int levelStart, int levelTry) {
 		return (levelStart & SC_FOLDLEVELNUMBERMASK) < (levelTry & SC_FOLDLEVELNUMBERMASK);
 }
 
-int Document::GetLastChild(int lineParent, int level) {
+int Document::GetLastChild(int lineParent, int level, int lastLine) {
 	if (level == -1)
 		level = GetLevel(lineParent) & SC_FOLDLEVELNUMBERMASK;
 	int maxLine = LinesTotal();
+	int lookLastLine = (lastLine != -1) ? Platform::Minimum(LinesTotal() - 1, lastLine) : -1;
 	int lineMaxSubord = lineParent;
 	while (lineMaxSubord < maxLine - 1) {
 		EnsureStyledTo(LineStart(lineMaxSubord + 2));
 		if (!IsSubordinate(level, GetLevel(lineMaxSubord + 1)))
+			break;
+		if ((lookLastLine != -1) && (lineMaxSubord >= lookLastLine) && !(GetLevel(lineMaxSubord) & SC_FOLDLEVELWHITEFLAG))
 			break;
 		lineMaxSubord++;
 	}
@@ -355,108 +358,74 @@ int Document::GetFoldParent(int line) {
 	}
 }
 
-void Document::GetHighlightDelimiters(HighlightDelimiter &highlightDelimiter, int line, int topLine, int bottomLine) {
-	int noNeedToParseBefore = Platform::Minimum(line, topLine) - 1;
-	int noNeedToParseAfter = Platform::Maximum(line, bottomLine) + 1;
-	int endLine = LineFromPosition(Length());
-	int beginFoldBlock = noNeedToParseBefore;
-	int endFoldBlock = -1;
-	int beginMarginCorrectlyDrawnZone = noNeedToParseBefore;
-	int endMarginCorrectlyDrawnZone = noNeedToParseAfter;
-	int endOfTailOfWhiteFlag = -1; //endOfTailOfWhiteFlag points the last SC_FOLDLEVELWHITEFLAG if follow a fold block. Otherwise endOfTailOfWhiteFlag points end of fold block.
+void Document::GetHighlightDelimiters(HighlightDelimiter &highlightDelimiter, int line, int lastLine) {
 	int level = GetLevel(line);
-	int levelNumber = -1;
-	int lineLookLevel = 0;
-	int lineLookLevelNumber = -1;
-	int lineLook = line;
-	bool beginFoldBlockFound = false;
-	bool endFoldBlockFound = false;
-	bool beginMarginCorrectlyDrawnZoneFound = false;
-	bool endMarginCorrectlyDrawnZoneFound = false;
+	int lookLastLine = Platform::Maximum(line, lastLine) + 1;
 
-	/*******************************************************************************/
-	/*      search backward (beginFoldBlock & beginMarginCorrectlyDrawnZone)       */
-	/*******************************************************************************/
-	for (endOfTailOfWhiteFlag = line; (lineLook > noNeedToParseBefore || (lineLookLevel & SC_FOLDLEVELWHITEFLAG)) && (!beginFoldBlockFound || !beginMarginCorrectlyDrawnZoneFound); --lineLook) {
-		lineLookLevel = GetLevel(lineLook);
-		if (levelNumber != -1) {
-			lineLookLevelNumber = lineLookLevel & SC_FOLDLEVELNUMBERMASK;
-			if (!beginMarginCorrectlyDrawnZoneFound && (lineLookLevelNumber > levelNumber)) {
-				beginMarginCorrectlyDrawnZoneFound = true;
-				beginMarginCorrectlyDrawnZone = endOfTailOfWhiteFlag;
-			}
-			//find the last space line (SC_FOLDLEVELWHITEFLAG).
-			if (!beginMarginCorrectlyDrawnZoneFound && !(lineLookLevel & SC_FOLDLEVELWHITEFLAG)) {
-				endOfTailOfWhiteFlag = lineLook - 1;
-			}
-			if (!beginFoldBlockFound && (lineLookLevelNumber < levelNumber)) {
-				beginFoldBlockFound = true;
-				beginFoldBlock = lineLook;
-				if (!beginMarginCorrectlyDrawnZoneFound) {
-					beginMarginCorrectlyDrawnZoneFound = true;
-					beginMarginCorrectlyDrawnZone = lineLook - 1;
+	int lookLine = line;
+	int lookLineLevel = level;
+	int lookLineLevelNum = lookLineLevel & SC_FOLDLEVELNUMBERMASK;
+	while ((lookLine > 0) && ((lookLineLevel & SC_FOLDLEVELWHITEFLAG) || 
+		((lookLineLevel & SC_FOLDLEVELHEADERFLAG) && (lookLineLevelNum >= (GetLevel(lookLine + 1) & SC_FOLDLEVELNUMBERMASK))))) {
+		lookLineLevel = GetLevel(--lookLine);
+		lookLineLevelNum = lookLineLevel & SC_FOLDLEVELNUMBERMASK;
+	}
+
+	int beginFoldBlock = (lookLineLevel & SC_FOLDLEVELHEADERFLAG) ? lookLine : GetFoldParent(lookLine);
+	if (beginFoldBlock == -1) {
+		highlightDelimiter.Clear();
+		return;
+	}
+
+	int endFoldBlock = GetLastChild(beginFoldBlock, -1, lookLastLine);
+	int firstChangeableLineBefore = -1;
+	if (endFoldBlock < line) {
+		lookLine = beginFoldBlock - 1;
+		lookLineLevel = GetLevel(lookLine);
+		lookLineLevelNum = lookLineLevel & SC_FOLDLEVELNUMBERMASK;
+		while ((lookLine >= 0) && (lookLineLevelNum >= SC_FOLDLEVELBASE)) {
+			if (lookLineLevel & SC_FOLDLEVELHEADERFLAG) {
+				if (GetLastChild(lookLine, -1, lookLastLine) == line) {
+					beginFoldBlock = lookLine;
+					endFoldBlock = line;
+					firstChangeableLineBefore = line - 1;
 				}
-			} else 	if (!beginFoldBlockFound && lineLookLevelNumber == SC_FOLDLEVELBASE) {
-				beginFoldBlockFound = true;
-				beginFoldBlock = -1;
 			}
-		} else if (!(lineLookLevel & SC_FOLDLEVELWHITEFLAG)) {
-			endOfTailOfWhiteFlag = lineLook - 1;
-			levelNumber = lineLookLevel & SC_FOLDLEVELNUMBERMASK;
-			if (lineLookLevel & SC_FOLDLEVELHEADERFLAG &&
-			        //Managed the folding block when a fold header does not have any subordinate lines to fold away.
-			        (levelNumber < (GetLevel(lineLook + 1) & SC_FOLDLEVELNUMBERMASK))) {
-				beginFoldBlockFound = true;
-				beginFoldBlock = lineLook;
-				beginMarginCorrectlyDrawnZoneFound = true;
-				beginMarginCorrectlyDrawnZone = endOfTailOfWhiteFlag;
-				levelNumber = GetLevel(lineLook + 1) & SC_FOLDLEVELNUMBERMASK;;
+			if ((lookLine > 0) && (lookLineLevelNum == SC_FOLDLEVELBASE) && ((GetLevel(lookLine - 1) & SC_FOLDLEVELNUMBERMASK) > lookLineLevelNum))
+				break;
+			lookLineLevel = GetLevel(--lookLine);
+			lookLineLevelNum = lookLineLevel & SC_FOLDLEVELNUMBERMASK;
+		}
+	}
+	if (firstChangeableLineBefore == -1) {
+		for (lookLine = line - 1, lookLineLevel = GetLevel(lookLine), lookLineLevelNum = lookLineLevel & SC_FOLDLEVELNUMBERMASK; 
+			lookLine >= beginFoldBlock; 
+			lookLineLevel = GetLevel(--lookLine), lookLineLevelNum = lookLineLevel & SC_FOLDLEVELNUMBERMASK) {
+			if ((lookLineLevel & SC_FOLDLEVELWHITEFLAG) || (lookLineLevelNum > (level & SC_FOLDLEVELNUMBERMASK))) {
+				firstChangeableLineBefore = lookLine;
+				break;
 			}
 		}
 	}
+	if (firstChangeableLineBefore == -1)
+		firstChangeableLineBefore = beginFoldBlock - 1;
 
-	/****************************************************************************/
-	/*       search forward (endStartBlock & endMarginCorrectlyDrawnZone)       */
-	/****************************************************************************/
-	if (level & SC_FOLDLEVELHEADERFLAG) {
-		//ignore this line because this line is on first one of block.
-		lineLook = line + 1;
-	} else {
-		lineLook = line;
-	}
-	for (; lineLook < noNeedToParseAfter && (!endFoldBlockFound || !endMarginCorrectlyDrawnZoneFound); ++lineLook) {
-		lineLookLevel = GetLevel(lineLook);
-		lineLookLevelNumber = lineLookLevel & SC_FOLDLEVELNUMBERMASK;
-		if (!endFoldBlockFound && !(lineLookLevel & SC_FOLDLEVELWHITEFLAG) && lineLookLevelNumber < levelNumber) {
-			endFoldBlockFound = true;
-			endFoldBlock = lineLook - 1;
-			if (!endMarginCorrectlyDrawnZoneFound) {
-				endMarginCorrectlyDrawnZoneFound = true;
-				endMarginCorrectlyDrawnZone = lineLook;
-			}
-		} else if (!endFoldBlockFound && lineLookLevel == SC_FOLDLEVELBASE) {
-			endFoldBlockFound = true;
-			endFoldBlock = -1;
-		}
-		if (!endMarginCorrectlyDrawnZoneFound && (lineLookLevel & SC_FOLDLEVELHEADERFLAG) &&
-		        //Managed the folding block when a fold header does not have any subordinate lines to fold away.
-		        (levelNumber < (GetLevel(lineLook + 1) & SC_FOLDLEVELNUMBERMASK))) {
-			endMarginCorrectlyDrawnZoneFound = true;
-			endMarginCorrectlyDrawnZone = lineLook;
+	int firstChangeableLineAfter = -1;
+	for (lookLine = line + 1, lookLineLevel = GetLevel(lookLine), lookLineLevelNum = lookLineLevel & SC_FOLDLEVELNUMBERMASK; 
+		lookLine <= endFoldBlock; 
+		lookLineLevel = GetLevel(++lookLine), lookLineLevelNum = lookLineLevel & SC_FOLDLEVELNUMBERMASK) {
+		if ((lookLineLevel & SC_FOLDLEVELHEADERFLAG) && (lookLineLevelNum < (GetLevel(lookLine + 1) & SC_FOLDLEVELNUMBERMASK))) {
+			firstChangeableLineAfter = lookLine;
+			break;
 		}
 	}
-	if (!endFoldBlockFound && ((lineLook > endLine && lineLookLevelNumber < levelNumber) ||
-	        (levelNumber > SC_FOLDLEVELBASE))) {
-		//manage when endfold is incorrect or on last line.
-		endFoldBlock = lineLook - 1;
-		//useless to set endMarginCorrectlyDrawnZone.
-		//if endMarginCorrectlyDrawnZoneFound equals false then endMarginCorrectlyDrawnZone already equals to endLine + 1.
-	}
+	if (firstChangeableLineAfter == -1)
+		firstChangeableLineAfter = endFoldBlock + 1;
 
 	highlightDelimiter.beginFoldBlock = beginFoldBlock;
 	highlightDelimiter.endFoldBlock = endFoldBlock;
-	highlightDelimiter.beginMarginCorrectlyDrawnZone = beginMarginCorrectlyDrawnZone;
-	highlightDelimiter.endMarginCorrectlyDrawnZone = endMarginCorrectlyDrawnZone;
+	highlightDelimiter.firstChangeableLineBefore = firstChangeableLineBefore;
+	highlightDelimiter.firstChangeableLineAfter = firstChangeableLineAfter;
 }
 
 int Document::ClampPositionIntoDocument(int pos) {
@@ -693,7 +662,8 @@ bool SCI_METHOD Document::IsDBCSLeadByte(char ch) const {
 		case 932:
 			// Shift_jis
 			return ((uch >= 0x81) && (uch <= 0x9F)) ||
-				((uch >= 0xE0) && (uch <= 0xEF));
+				((uch >= 0xE0) && (uch <= 0xFC));
+				// Lead bytes F0 to FC may be a Microsoft addition. 
 		case 936:
 			// GBK
 			return (uch >= 0x81) && (uch <= 0xFE);
@@ -986,7 +956,7 @@ bool Document::InsertChar(int pos, char ch) {
  * Insert a null terminated string.
  */
 bool Document::InsertCString(int position, const char *s) {
-	return InsertString(position, s, strlen(s));
+	return InsertString(position, s, static_cast<int>(strlen(s)));
 }
 
 void Document::ChangeChar(int pos, char ch) {
@@ -1143,17 +1113,17 @@ void Document::Indent(bool forwards, int lineBottom, int lineTop) {
 // Convert line endings for a piece of text to a particular mode.
 // Stop at len or when a NUL is found.
 // Caller must delete the returned pointer.
-char *Document::TransformLineEnds(int *pLenOut, const char *s, size_t len, int eolMode) {
+char *Document::TransformLineEnds(int *pLenOut, const char *s, size_t len, int eolModeWanted) {
 	char *dest = new char[2 * len + 1];
 	const char *sptr = s;
 	char *dptr = dest;
 	for (size_t i = 0; (i < len) && (*sptr != '\0'); i++) {
 		if (*sptr == '\n' || *sptr == '\r') {
-			if (eolMode == SC_EOL_CR) {
+			if (eolModeWanted == SC_EOL_CR) {
 				*dptr++ = '\r';
-			} else if (eolMode == SC_EOL_LF) {
+			} else if (eolModeWanted == SC_EOL_LF) {
 				*dptr++ = '\n';
-			} else { // eolMode == SC_EOL_CRLF
+			} else { // eolModeWanted == SC_EOL_CRLF
 				*dptr++ = '\r';
 				*dptr++ = '\n';
 			}
@@ -1385,7 +1355,7 @@ size_t Document::ExtractChar(int pos, char *bytes) {
 	size_t widthChar = UTF8CharLength(ch);
 	bytes[0] = ch;
 	for (size_t i=1; i<widthChar; i++) {
-		bytes[i] = cb.CharAt(pos+i);
+		bytes[i] = cb.CharAt(static_cast<int>(pos+i));
 		if (!GoodTrailByte(static_cast<unsigned char>(bytes[i]))) { // Bad byte
 			widthChar = 1;
 		}
@@ -1458,7 +1428,6 @@ long Document::FindText(int minPos, int maxPos, const char *search,
 
 		// Compute actual search ranges needed
 		const int lengthFind = (*length == -1) ? static_cast<int>(strlen(search)) : *length;
-		const int endSearch = (startPos <= endPos) ? endPos - lengthFind + 1 : endPos;
 
 		//Platform::DebugPrintf("Find %d %d %s %d\n", startPos, endPos, ft->lpstrText, lengthFind);
 		const int limitPos = Platform::Maximum(startPos, endPos);
@@ -1468,6 +1437,7 @@ long Document::FindText(int minPos, int maxPos, const char *search,
 			pos = NextPosition(pos, increment);
 		}
 		if (caseSensitive) {
+			const int endSearch = (startPos <= endPos) ? endPos - lengthFind + 1 : endPos;
 			while (forward ? (pos < endSearch) : (pos >= endSearch)) {
 				bool found = (pos + lengthFind) <= limitPos;
 				for (int indexSearch = 0; (indexSearch < lengthFind) && found; indexSearch++) {
@@ -1483,8 +1453,9 @@ long Document::FindText(int minPos, int maxPos, const char *search,
 			const size_t maxBytesCharacter = 4;
 			const size_t maxFoldingExpansion = 4;
 			std::vector<char> searchThing(lengthFind * maxBytesCharacter * maxFoldingExpansion + 1);
-			const int lenSearch = pcf->Fold(&searchThing[0], searchThing.size(), search, lengthFind);
-			while (forward ? (pos < endSearch) : (pos >= endSearch)) {
+			const int lenSearch = static_cast<int>(
+				pcf->Fold(&searchThing[0], searchThing.size(), search, lengthFind));
+			while (forward ? (pos < endPos) : (pos >= endPos)) {
 				int widthFirstCharacter = 0;
 				int indexDocument = 0;
 				int indexSearch = 0;
@@ -1494,11 +1465,13 @@ long Document::FindText(int minPos, int maxPos, const char *search,
 					(indexSearch < lenSearch)) {
 					char bytes[maxBytesCharacter + 1];
 					bytes[maxBytesCharacter] = 0;
-					const int widthChar = ExtractChar(pos + indexDocument, bytes);
+					const int widthChar = static_cast<int>(ExtractChar(pos + indexDocument, bytes));
 					if (!widthFirstCharacter)
 						widthFirstCharacter = widthChar;
+					if ((pos + indexDocument + widthChar) > limitPos)
+						break;
 					char folded[maxBytesCharacter * maxFoldingExpansion + 1];
-					const int lenFlat = pcf->Fold(folded, sizeof(folded), bytes, widthChar);
+					const int lenFlat = static_cast<int>(pcf->Fold(folded, sizeof(folded), bytes, widthChar));
 					folded[lenFlat] = 0;
 					// Does folded match the buffer
 					characterMatches = 0 == memcmp(folded, &searchThing[0] + indexSearch, lenFlat);
@@ -1522,8 +1495,9 @@ long Document::FindText(int minPos, int maxPos, const char *search,
 			const size_t maxBytesCharacter = 2;
 			const size_t maxFoldingExpansion = 4;
 			std::vector<char> searchThing(lengthFind * maxBytesCharacter * maxFoldingExpansion + 1);
-			const int lenSearch = pcf->Fold(&searchThing[0], searchThing.size(), search, lengthFind);
-			while (forward ? (pos < endSearch) : (pos >= endSearch)) {
+			const int lenSearch = static_cast<int>(
+				pcf->Fold(&searchThing[0], searchThing.size(), search, lengthFind));
+			while (forward ? (pos < endPos) : (pos >= endPos)) {
 				int indexDocument = 0;
 				int indexSearch = 0;
 				bool characterMatches = true;
@@ -1535,8 +1509,10 @@ long Document::FindText(int minPos, int maxPos, const char *search,
 					const int widthChar = IsDBCSLeadByte(bytes[0]) ? 2 : 1;
 					if (widthChar == 2)
 						bytes[1] = cb.CharAt(pos + indexDocument + 1);
+					if ((pos + indexDocument + widthChar) > limitPos)
+						break;
 					char folded[maxBytesCharacter * maxFoldingExpansion + 1];
-					const int lenFlat = pcf->Fold(folded, sizeof(folded), bytes, widthChar);
+					const int lenFlat = static_cast<int>(pcf->Fold(folded, sizeof(folded), bytes, widthChar));
 					folded[lenFlat] = 0;
 					// Does folded match the buffer
 					characterMatches = 0 == memcmp(folded, &searchThing[0] + indexSearch, lenFlat);
@@ -1553,7 +1529,7 @@ long Document::FindText(int minPos, int maxPos, const char *search,
 					break;
 			}
 		} else {
-			CaseFolderTable caseFolder;
+			const int endSearch = (startPos <= endPos) ? endPos - lengthFind + 1 : endPos;
 			std::vector<char> searchThing(lengthFind + 1);
 			pcf->Fold(&searchThing[0], searchThing.size(), search, lengthFind);
 			while (forward ? (pos < endSearch) : (pos >= endSearch)) {

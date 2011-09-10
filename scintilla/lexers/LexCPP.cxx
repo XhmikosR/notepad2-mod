@@ -803,15 +803,20 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 				sc.SetState(SCE_C_REGEX|activitySet);	// JavaScript's RegEx
 			} else if (sc.ch == '\"') {
 				if (sc.chPrev == 'R') {
-					sc.SetState(SCE_C_STRINGRAW|activitySet);
-					rawStringTerminator = ")";
-					for (int termPos = sc.currentPos + 1;; termPos++) {
-						char chTerminator = styler.SafeGetCharAt(termPos, '(');
-						if (chTerminator == '(')
-							break;
-						rawStringTerminator += chTerminator;
+					styler.Flush();
+					if (MaskActive(styler.StyleAt(sc.currentPos - 1)) == SCE_C_STRINGRAW) {
+						sc.SetState(SCE_C_STRINGRAW|activitySet);
+						rawStringTerminator = ")";
+						for (int termPos = sc.currentPos + 1;; termPos++) {
+							char chTerminator = styler.SafeGetCharAt(termPos, '(');
+							if (chTerminator == '(')
+								break;
+							rawStringTerminator += chTerminator;
+						}
+						rawStringTerminator += '\"';
+					} else {
+						sc.SetState(SCE_C_STRING|activitySet);
 					}
-					rawStringTerminator += '\"';
 				} else {
 					sc.SetState(SCE_C_STRING|activitySet);
 				}

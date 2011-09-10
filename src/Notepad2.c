@@ -5661,7 +5661,7 @@ void ParseCommandLine()
             LocalFree(lpSchemeArg);
             lpSchemeArg = NULL;
           }
-          iInitialLexer = 1;
+          iInitialLexer = 20;
           flagLexerSpecified = 1;
           break;
 
@@ -5670,7 +5670,7 @@ void ParseCommandLine()
             LocalFree(lpSchemeArg);
             lpSchemeArg = NULL;
           }
-          iInitialLexer = 2;
+          iInitialLexer = 21;
           flagLexerSpecified = 1;
           break;
 

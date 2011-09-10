@@ -13,6 +13,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include <algorithm>
 #include <memory>
 
@@ -1611,8 +1612,10 @@ void Editor::LinesSplit(int pixelWidth) {
 				unsigned int posLineStart = pdoc->LineStart(line);
 				LayoutLine(line, surface, vs, ll, pixelWidth);
 				for (int subLine = 1; subLine < ll->lines; subLine++) {
-					pdoc->InsertCString(posLineStart + (subLine - 1) * strlen(eol) +
-					        ll->LineStart(subLine), eol);
+					pdoc->InsertCString(
+						static_cast<int>(posLineStart + (subLine - 1) * strlen(eol) +
+							ll->LineStart(subLine)),
+						eol);
 					targetEnd += static_cast<int>(strlen(eol));
 				}
 			}
@@ -1655,7 +1658,8 @@ static int WidthStyledText(Surface *surface, ViewStyle &vs, int styleOffset,
 		size_t endSegment = start;
 		while ((endSegment+1 < len) && (static_cast<size_t>(styles[endSegment+1]) == style))
 			endSegment++;
-		width += surface->WidthText(vs.styles[style+styleOffset].font, text + start, endSegment - start + 1);
+		width += surface->WidthText(vs.styles[style+styleOffset].font, text + start, 
+			static_cast<int>(endSegment - start + 1));
 		start = endSegment + 1;
 	}
 	return width;
@@ -1670,7 +1674,8 @@ static int WidestLineWidth(Surface *surface, ViewStyle &vs, int styleOffset, con
 		if (st.multipleStyles) {
 			widthSubLine = WidthStyledText(surface, vs, styleOffset, st.text + start, st.styles + start, lenLine);
 		} else {
-			widthSubLine = surface->WidthText(vs.styles[styleOffset + st.style].font, st.text + start, lenLine);
+			widthSubLine = surface->WidthText(vs.styles[styleOffset + st.style].font,
+				st.text + start, static_cast<int>(lenLine));
 		}
 		if (widthSubLine > widthMax)
 			widthMax = widthSubLine;
@@ -1691,21 +1696,24 @@ void DrawStyledText(Surface *surface, ViewStyle &vs, int styleOffset, PRectangle
 			while (end < length-1 && st.styles[start+end+1] == style)
 				end++;
 			style += styleOffset;
-			int width = surface->WidthText(vs.styles[style].font, st.text + start + i, end - i + 1);
+			int width = surface->WidthText(vs.styles[style].font,
+				st.text + start + i, static_cast<int>(end - i + 1));
 			PRectangle rcSegment = rcText;
 			rcSegment.left = x;
 			rcSegment.right = x + width + 1;
 			surface->DrawTextNoClip(rcSegment, vs.styles[style].font,
-					ascent, st.text + start + i, end - i + 1,
+					ascent, st.text + start + i,
+					static_cast<int>(end - i + 1),
 					vs.styles[style].fore.allocated,
 					vs.styles[style].back.allocated);
 			x += width;
 			i = end + 1;
 		}
 	} else {
-		int style = st.style + styleOffset;
+		size_t style = st.style + styleOffset;
 		surface->DrawTextNoClip(rcText, vs.styles[style].font,
-				rcText.top + vs.maxAscent, st.text + start, length,
+				rcText.top + vs.maxAscent, st.text + start,
+				static_cast<int>(length),
 				vs.styles[style].fore.allocated,
 				vs.styles[style].back.allocated);
 	}
@@ -1738,13 +1746,6 @@ void Editor::PaintSelMargin(Surface *surfWindow, PRectangle &rc) {
 			rcSelMargin.right = rcSelMargin.left + vs.ms[margin].width;
 
 			if (vs.ms[margin].style != SC_MARGIN_NUMBER) {
-				/* alternate scheme:
-				if (vs.ms[margin].mask & SC_MASK_FOLDERS)
-					surface->FillRectangle(rcSelMargin, vs.styles[STYLE_DEFAULT].back.allocated);
-				else
-					// Required because of special way brush is created for selection margin
-					surface->FillRectangle(rcSelMargin, pixmapSelPattern);
-				*/
 				if (vs.ms[margin].mask & SC_MASK_FOLDERS)
 					// Required because of special way brush is created for selection margin
 					surface->FillRectangle(rcSelMargin, *pixmapSelPattern);
@@ -1773,23 +1774,24 @@ void Editor::PaintSelMargin(Surface *surfWindow, PRectangle &rc) {
 			// lessening of fold level which implies a 'fold tail' but which should not
 			// be displayed until the last of a sequence of whitespace.
 			bool needWhiteClosure = false;
-			int level = pdoc->GetLevel(cs.DocFromDisplay(topLine));
-			if (level & SC_FOLDLEVELWHITEFLAG) {
-				int lineBack = cs.DocFromDisplay(topLine);
-				int levelPrev = level;
-				while ((lineBack > 0) && (levelPrev & SC_FOLDLEVELWHITEFLAG)) {
-					lineBack--;
-					levelPrev = pdoc->GetLevel(lineBack);
+			if (vs.ms[margin].mask & SC_MASK_FOLDERS) {
+				int level = pdoc->GetLevel(cs.DocFromDisplay(topLine));
+				if (level & SC_FOLDLEVELWHITEFLAG) {
+					int lineBack = cs.DocFromDisplay(topLine);
+					int levelPrev = level;
+					while ((lineBack > 0) && (levelPrev & SC_FOLDLEVELWHITEFLAG)) {
+						lineBack--;
+						levelPrev = pdoc->GetLevel(lineBack);
+					}
+					if (!(levelPrev & SC_FOLDLEVELHEADERFLAG)) {
+						if ((level & SC_FOLDLEVELNUMBERMASK) < (levelPrev & SC_FOLDLEVELNUMBERMASK))
+							needWhiteClosure = true;
+					}
 				}
-				if (!(levelPrev & SC_FOLDLEVELHEADERFLAG)) {
-					if ((level & SC_FOLDLEVELNUMBERMASK) < (levelPrev & SC_FOLDLEVELNUMBERMASK))
-						needWhiteClosure = true;
+				if (highlightDelimiter.isEnabled) {
+					int lastLine = cs.DocFromDisplay(topLine + LinesOnScreen()) + 1;
+					pdoc->GetHighlightDelimiters(highlightDelimiter, pdoc->LineFromPosition(CurrentPosition()), lastLine);
 				}
-			}
-			if (highlightDelimiter.isEnabled && (vs.ms[margin].mask & SC_MASK_FOLDERS)) {
-				int lineBack = cs.DocFromDisplay(topLine);
-				int lineFront = cs.DocFromDisplay(((rcMargin.bottom - rcMargin.top) / vs.lineHeight) + topLine) + 1;
-				pdoc->GetHighlightDelimiters(highlightDelimiter, pdoc->LineFromPosition(CurrentPosition()), lineBack, lineFront);
 			}
 
 			// Old code does not know about new markers needed to distinguish all cases
@@ -1806,85 +1808,103 @@ void Editor::PaintSelMargin(Surface *surfWindow, PRectangle &rc) {
 				bool firstSubLine = visibleLine == cs.DisplayFromDoc(lineDoc);
 				bool lastSubLine = visibleLine == (cs.DisplayFromDoc(lineDoc + 1) - 1);
 
-				// Decide which fold indicator should be displayed
-				level = pdoc->GetLevel(lineDoc);
-				int levelNext = pdoc->GetLevel(lineDoc + 1);
 				int marks = pdoc->GetMark(lineDoc);
 				if (!firstSubLine)
 					marks = 0;
-				int levelNum = level & SC_FOLDLEVELNUMBERMASK;
-				int levelNextNum = levelNext & SC_FOLDLEVELNUMBERMASK;
-				if (level & SC_FOLDLEVELHEADERFLAG) {
-					if (firstSubLine) {
-						if (levelNum < levelNextNum) {
-							if (cs.GetExpanded(lineDoc)) {
-								if (levelNum == SC_FOLDLEVELBASE)
-									marks |= 1 << SC_MARKNUM_FOLDEROPEN;
-								else
-									marks |= 1 << folderOpenMid;
-							} else {
-								if (levelNum == SC_FOLDLEVELBASE)
-									marks |= 1 << SC_MARKNUM_FOLDER;
-								else
-									marks |= 1 << folderEnd;
-							}
-						} else if (levelNum > SC_FOLDLEVELBASE) {
-							marks |= 1 << SC_MARKNUM_FOLDERSUB;
- 						}
-					} else {
-						if (levelNum < levelNextNum) {
-							if (cs.GetExpanded(lineDoc)) {
-								marks |= 1 << SC_MARKNUM_FOLDERSUB;
+
+				bool headWithTail = false;
+
+				if (vs.ms[margin].mask & SC_MASK_FOLDERS) {
+					// Decide which fold indicator should be displayed
+					int level = pdoc->GetLevel(lineDoc);
+					int levelNext = pdoc->GetLevel(lineDoc + 1);
+					int levelNum = level & SC_FOLDLEVELNUMBERMASK;
+					int levelNextNum = levelNext & SC_FOLDLEVELNUMBERMASK;
+					if (level & SC_FOLDLEVELHEADERFLAG) {
+						if (firstSubLine) {
+							if (levelNum < levelNextNum) {
+								if (cs.GetExpanded(lineDoc)) {
+									if (levelNum == SC_FOLDLEVELBASE)
+										marks |= 1 << SC_MARKNUM_FOLDEROPEN;
+									else
+										marks |= 1 << folderOpenMid;
+								} else {
+									if (levelNum == SC_FOLDLEVELBASE)
+										marks |= 1 << SC_MARKNUM_FOLDER;
+									else
+										marks |= 1 << folderEnd;
+								}
 							} else if (levelNum > SC_FOLDLEVELBASE) {
 								marks |= 1 << SC_MARKNUM_FOLDERSUB;
+ 							}
+						} else {
+							if (levelNum < levelNextNum) {
+								if (cs.GetExpanded(lineDoc)) {
+									marks |= 1 << SC_MARKNUM_FOLDERSUB;
+								} else if (levelNum > SC_FOLDLEVELBASE) {
+									marks |= 1 << SC_MARKNUM_FOLDERSUB;
+								}
+							} else if (levelNum > SC_FOLDLEVELBASE) {
+								marks |= 1 << SC_MARKNUM_FOLDERSUB;
+ 							}
+						}
+						needWhiteClosure = false;
+						int firstFollowupLine = cs.DocFromDisplay(cs.DisplayFromDoc(lineDoc + 1));
+						int firstFollowupLineLevel = pdoc->GetLevel(firstFollowupLine);
+						int secondFollowupLineLevelNum = pdoc->GetLevel(firstFollowupLine + 1) & SC_FOLDLEVELNUMBERMASK;
+						if (!cs.GetExpanded(lineDoc)) {
+							if ((firstFollowupLineLevel & SC_FOLDLEVELWHITEFLAG) &&
+								(levelNum > secondFollowupLineLevelNum))
+								needWhiteClosure = true;
+
+							if (highlightDelimiter.IsFoldBlockHighlighted(firstFollowupLine))
+								headWithTail = true;
+						}
+					} else if (level & SC_FOLDLEVELWHITEFLAG) {
+						if (needWhiteClosure) {
+							if (levelNext & SC_FOLDLEVELWHITEFLAG) {
+								marks |= 1 << SC_MARKNUM_FOLDERSUB;
+							} else if (levelNextNum > SC_FOLDLEVELBASE) {
+								marks |= 1 << SC_MARKNUM_FOLDERMIDTAIL;
+								needWhiteClosure = false;
+							} else {
+								marks |= 1 << SC_MARKNUM_FOLDERTAIL;
+								needWhiteClosure = false;
 							}
 						} else if (levelNum > SC_FOLDLEVELBASE) {
-							marks |= 1 << SC_MARKNUM_FOLDERSUB;
- 						}
-					}
-					needWhiteClosure = false;
-				} else if (level & SC_FOLDLEVELWHITEFLAG) {
-					if (needWhiteClosure) {
-						if (levelNext & SC_FOLDLEVELWHITEFLAG) {
-							marks |= 1 << SC_MARKNUM_FOLDERSUB;
-						} else if (levelNum > SC_FOLDLEVELBASE) {
-							marks |= 1 << SC_MARKNUM_FOLDERMIDTAIL;
-							needWhiteClosure = false;
-						} else {
-							marks |= 1 << SC_MARKNUM_FOLDERTAIL;
-							needWhiteClosure = false;
+							if (levelNextNum < levelNum) {
+								if (levelNextNum > SC_FOLDLEVELBASE) {
+									marks |= 1 << SC_MARKNUM_FOLDERMIDTAIL;
+								} else {
+									marks |= 1 << SC_MARKNUM_FOLDERTAIL;
+								}
+							} else {
+								marks |= 1 << SC_MARKNUM_FOLDERSUB;
+							}
 						}
 					} else if (levelNum > SC_FOLDLEVELBASE) {
 						if (levelNextNum < levelNum) {
-							if (levelNextNum > SC_FOLDLEVELBASE) {
-								marks |= 1 << SC_MARKNUM_FOLDERMIDTAIL;
+							needWhiteClosure = false;
+							if (levelNext & SC_FOLDLEVELWHITEFLAG) {
+								marks |= 1 << SC_MARKNUM_FOLDERSUB;
+								needWhiteClosure = true;
+							} else if (lastSubLine) {
+								if (levelNextNum > SC_FOLDLEVELBASE) {
+									marks |= 1 << SC_MARKNUM_FOLDERMIDTAIL;
+								} else {
+									marks |= 1 << SC_MARKNUM_FOLDERTAIL;
+								}
 							} else {
-								marks |= 1 << SC_MARKNUM_FOLDERTAIL;
+								marks |= 1 << SC_MARKNUM_FOLDERSUB;
 							}
 						} else {
 							marks |= 1 << SC_MARKNUM_FOLDERSUB;
 						}
-					}
-				} else if (levelNum > SC_FOLDLEVELBASE) {
-					if (levelNextNum < levelNum) {
-						needWhiteClosure = false;
-						if (levelNext & SC_FOLDLEVELWHITEFLAG) {
-							marks |= 1 << SC_MARKNUM_FOLDERSUB;
-							needWhiteClosure = true;
-						} else if (lastSubLine) {
-							if (levelNextNum > SC_FOLDLEVELBASE) {
-								marks |= 1 << SC_MARKNUM_FOLDERMIDTAIL;
-							} else {
-								marks |= 1 << SC_MARKNUM_FOLDERTAIL;
-							}
-						} else {
-							marks |= 1 << SC_MARKNUM_FOLDERSUB;
-						}
-					} else {
-						marks |= 1 << SC_MARKNUM_FOLDERSUB;
 					}
 				}
+
 				marks &= vs.ms[margin].mask;
+
 				PRectangle rcMarker = rcSelMargin;
 				rcMarker.top = yposScreen;
 				rcMarker.bottom = yposScreen + vs.lineHeight;
@@ -1930,18 +1950,23 @@ void Editor::PaintSelMargin(Surface *surfWindow, PRectangle &rc) {
 				if (marks) {
 					for (int markBit = 0; (markBit < 32) && marks; markBit++) {
 						if (marks & 1) {
-							LineMarker::typeOfFold tFold;
-							if (!highlightDelimiter.isCurrentBlockHighlight(lineDoc)) {
-								tFold = LineMarker::undefined;
-							} else if (highlightDelimiter.isBodyBlockFold(lineDoc)) {
-								tFold = LineMarker::body;
-							} else if (highlightDelimiter.isHeadBlockFold(lineDoc)) {
-								tFold = LineMarker::head;
-							} else if (highlightDelimiter.isTailBlockFold(lineDoc)) {
-								tFold = LineMarker::tail;
-							} else {
-								//Normally, this branch is never used. But I prefer to manage it anyway.
-								tFold = LineMarker::undefined;
+							LineMarker::typeOfFold tFold = LineMarker::undefined;
+							if ((vs.ms[margin].mask & SC_MASK_FOLDERS) && highlightDelimiter.IsFoldBlockHighlighted(lineDoc)) {
+								if (highlightDelimiter.IsBodyOfFoldBlock(lineDoc)) {
+									tFold = LineMarker::body;
+								} else if (highlightDelimiter.IsHeadOfFoldBlock(lineDoc)) {
+									if (firstSubLine) {
+										tFold = headWithTail ? LineMarker::headWithTail : LineMarker::head;
+									} else {
+										if (cs.GetExpanded(lineDoc) || headWithTail) {
+											tFold = LineMarker::body;
+										} else {
+											tFold = LineMarker::undefined;
+										}
+									}
+								} else if (highlightDelimiter.IsTailOfFoldBlock(lineDoc)) {
+									tFold = LineMarker::tail;
+								}
 							}
 							vs.markers[markBit].Draw(surface, rcMarker, vs.styles[STYLE_LINENUMBER].font, tFold);
 						}
@@ -2366,10 +2391,12 @@ ColourAllocated Editor::TextBackground(ViewStyle &vsDraw, bool overrideBackgroun
 			return vsDraw.edgecolour.allocated;
 		if (inHotspot && vsDraw.hotspotBackgroundSet)
 			return vsDraw.hotspotBackground.allocated;
-		if (overrideBackground && (styleMain != STYLE_BRACELIGHT) && (styleMain != STYLE_BRACEBAD))
-			return background;
 	}
-	return vsDraw.styles[styleMain].back.allocated;
+	if (overrideBackground && (styleMain != STYLE_BRACELIGHT) && (styleMain != STYLE_BRACEBAD)) {
+		return background;
+	} else {
+		return vsDraw.styles[styleMain].back.allocated;
+	}
 }
 
 void Editor::DrawIndentGuide(Surface *surface, int lineVisible, int lineHeight, int start, PRectangle rcSegment, bool highlight) {
@@ -2532,7 +2559,7 @@ void Editor::DrawEOL(Surface *surface, ViewStyle &vsDraw, PRectangle rcLine, Lin
 
 	// Draw the eol-is-selected rectangle
 	rcSegment.left = xEol + xStart + virtualSpace + blobsWidth;
-	rcSegment.right = xEol + xStart + virtualSpace + blobsWidth + vsDraw.aveCharWidth;
+	rcSegment.right = rcSegment.left + vsDraw.aveCharWidth;
 
 	if (!hideSelection && eolInSelection && vsDraw.selbackset && (line < pdoc->LinesTotal() - 1) && (alpha == SC_ALPHA_NOALPHA)) {
 		surface->FillRectangle(rcSegment, SelectionBackground(vsDraw, eolInSelection == 1));
@@ -2552,7 +2579,7 @@ void Editor::DrawEOL(Surface *surface, ViewStyle &vsDraw, PRectangle rcLine, Lin
 	}
 
 	// Fill the remainder of the line
-	rcSegment.left = xEol + xStart + virtualSpace + blobsWidth + vsDraw.aveCharWidth;
+	rcSegment.left = rcSegment.right;
 	if (rcSegment.left < rcLine.left)
 		rcSegment.left = rcLine.left;
 	rcSegment.right = rcLine.right;
@@ -4772,6 +4799,8 @@ void Editor::NotifyMacroRecord(unsigned int iMessage, uptr_t wParam, sptr_t lPar
 	case SCI_VERTICALCENTRECARET:
 	case SCI_MOVESELECTEDLINESUP:
 	case SCI_MOVESELECTEDLINESDOWN:
+	case SCI_SCROLLTOSTART:
+	case SCI_SCROLLTOEND:
 		break;
 
 		// Filter out all others like display changes. Also, newlines are redundant
@@ -4864,10 +4893,13 @@ void Editor::ChangeCaseOfSelection(int caseMapping) {
 				while (sMapped[lastDifference] == sText[lastDifference])
 					lastDifference--;
 				size_t endSame = sMapped.size() - 1 - lastDifference;
-				pdoc->DeleteChars(currentNoVS.Start().Position() + firstDifference,
-					rangeBytes - firstDifference - endSame);
-				pdoc->InsertString(currentNoVS.Start().Position() + firstDifference,
-					sMapped.c_str() + firstDifference, lastDifference - firstDifference + 1);
+				pdoc->DeleteChars(
+					static_cast<int>(currentNoVS.Start().Position() + firstDifference),
+					static_cast<int>(rangeBytes - firstDifference - endSame));
+				pdoc->InsertString(
+					static_cast<int>(currentNoVS.Start().Position() + firstDifference),
+					sMapped.c_str() + firstDifference,
+					static_cast<int>(lastDifference - firstDifference + 1));
 				// Automatic movement changes selection so reset to exactly the same as it was.
 				sel.Range(r) = current;
 			}
@@ -5508,6 +5540,12 @@ int Editor::KeyCommand(unsigned int iMessage) {
 		            StartEndDisplayLine(sel.MainCaret(), false), 1), Selection::selStream);
 		SetLastXChosen();
 		break;
+	case SCI_SCROLLTOSTART:
+		ScrollTo(0);
+		break;
+	case SCI_SCROLLTOEND:
+		ScrollTo(MaxScrollPos());
+		break;
 	}
 	return 0;
 }
@@ -5808,7 +5846,7 @@ void Editor::CopySelectionRange(SelectionText *ss, bool allowLineCopy) {
 			int end = pdoc->LineEnd(currentLine);
 
 			char *text = CopyRange(start, end);
-			int textLen = text ? strlen(text) : 0;
+			size_t textLen = text ? strlen(text) : 0;
 			// include room for \r\n\0
 			textLen += 3;
 			char *textWithEndl = new char[textLen];
@@ -5819,7 +5857,7 @@ void Editor::CopySelectionRange(SelectionText *ss, bool allowLineCopy) {
 				strncat(textWithEndl, "\r", textLen);
 			if (pdoc->eolMode != SC_EOL_CR)
 				strncat(textWithEndl, "\n", textLen);
-			ss->Set(textWithEndl, strlen(textWithEndl) + 1,
+			ss->Set(textWithEndl, static_cast<int>(strlen(textWithEndl) + 1),
 				pdoc->dbcsCodePage, vs.styles[STYLE_DEFAULT].characterSet, false, true);
 			delete []text;
 		}
@@ -5832,7 +5870,7 @@ void Editor::CopySelectionRange(SelectionText *ss, bool allowLineCopy) {
 				delimiterLength = 1;
 			}
 		}
-		int size = sel.Length() + delimiterLength * sel.Count();
+		size_t size = sel.Length() + delimiterLength * sel.Count();
 		char *text = new char[size + 1];
 		int j = 0;
 		std::vector<SelectionRange> rangesInOrder = sel.RangesCopy();
@@ -5855,7 +5893,7 @@ void Editor::CopySelectionRange(SelectionText *ss, bool allowLineCopy) {
 			}
 		}
 		text[size] = '\0';
-		ss->Set(text, size + 1, pdoc->dbcsCodePage,
+		ss->Set(text, static_cast<int>(size + 1), pdoc->dbcsCodePage,
 			vs.styles[STYLE_DEFAULT].characterSet, sel.IsRectangular(), sel.selType == Selection::selLines);
 	}
 }
@@ -5981,21 +6019,21 @@ bool Editor::PositionInSelection(int pos) {
 }
 
 bool Editor::PointInSelection(Point pt) {
-	SelectionPosition pos = SPositionFromLocation(pt);
-	int xPos = XFromPosition(pos);
+	SelectionPosition pos = SPositionFromLocation(pt, false, true);
+	Point ptPos = LocationFromPosition(pos);
 	for (size_t r=0; r<sel.Count(); r++) {
 		SelectionRange range = sel.Range(r);
 		if (range.Contains(pos)) {
 			bool hit = true;
 			if (pos == range.Start()) {
 				// see if just before selection
-				if (pt.x < xPos) {
+				if (pt.x < ptPos.x) {
 					hit = false;
 				}
 			}
 			if (pos == range.End()) {
 				// see if just after selection
-				if (pt.x > xPos) {
+				if (pt.x > ptPos.x) {
 					hit = false;
 				}
 			}
@@ -6806,7 +6844,12 @@ void Editor::EnsureLineVisible(int lineDoc, bool enforcePolicy) {
 	WrapLines(true, -1);
 
 	if (!cs.GetVisible(lineDoc)) {
-		int lineParent = pdoc->GetFoldParent(lineDoc);
+		int lookLine = lineDoc;
+		int lookLineLevel = pdoc->GetLevel(lookLine);
+		while ((lookLine > 0) && (lookLineLevel & SC_FOLDLEVELWHITEFLAG)) {
+			lookLineLevel = pdoc->GetLevel(--lookLine);
+		}
+		int lineParent = pdoc->GetFoldParent(lookLine);
 		if (lineParent >= 0) {
 			if (lineDoc != lineParent)
 				EnsureLineVisible(lineParent, enforcePolicy);
@@ -6902,9 +6945,9 @@ int Editor::WrapCount(int line) {
 
 void Editor::AddStyledText(char *buffer, int appendLength) {
 	// The buffer consists of alternating character bytes and style bytes
-	size_t textLength = appendLength / 2;
+	int textLength = appendLength / 2;
 	char *text = new char[textLength];
-	size_t i;
+	int i;
 	for (i = 0; i < textLength; i++) {
 		text[i] = buffer[i*2];
 	}
@@ -7012,7 +7055,7 @@ sptr_t Editor::StyleGetMessage(unsigned int iMessage, uptr_t wParam, sptr_t lPar
 }
 
 sptr_t Editor::StringResult(sptr_t lParam, const char *val) {
-	const int n = strlen(val);
+	const size_t n = strlen(val);
 	if (lParam != 0) {
 		char *ptr = reinterpret_cast<char *>(lParam);
 		strcpy(ptr, val);
@@ -7850,8 +7893,8 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 		return endAtLastLine;
 
 	case SCI_SETCARETSTICKY:
-		PLATFORM_ASSERT((wParam >= SC_CARETSTICKY_OFF) && (wParam <= SC_CARETSTICKY_WHITESPACE));
-		if ((wParam >= SC_CARETSTICKY_OFF) && (wParam <= SC_CARETSTICKY_WHITESPACE)) {
+		PLATFORM_ASSERT(wParam <= SC_CARETSTICKY_WHITESPACE);
+		if (wParam <= SC_CARETSTICKY_WHITESPACE) {
 			caretSticky = wParam;
 		}
 		break;
@@ -8010,6 +8053,22 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 	case SCI_MARKERDEFINEPIXMAP:
 		if (wParam <= MARKER_MAX) {
 			vs.markers[wParam].SetXPM(CharPtrFromSPtr(lParam));
+		};
+		InvalidateStyleData();
+		RedrawSelMargin();
+		break;
+
+	case SCI_RGBAIMAGESETWIDTH:
+		sizeRGBAImage.x = wParam;
+		break;
+
+	case SCI_RGBAIMAGESETHEIGHT:
+		sizeRGBAImage.y = wParam;
+		break;
+
+	case SCI_MARKERDEFINERGBAIMAGE:
+		if (wParam <= MARKER_MAX) {
+			vs.markers[wParam].SetRGBAImage(sizeRGBAImage, reinterpret_cast<unsigned char *>(lParam));
 		};
 		InvalidateStyleData();
 		RedrawSelMargin();
@@ -8307,7 +8366,7 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 		return vs.caretcolour.desired.AsLong();
 
 	case SCI_SETCARETSTYLE:
-		if (wParam >= CARETSTYLE_INVISIBLE && wParam <= CARETSTYLE_BLOCK)
+		if (wParam <= CARETSTYLE_BLOCK)
 			vs.caretStyle = wParam;
 		else
 			/* Default to the line caret */
@@ -8319,7 +8378,7 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 		return vs.caretStyle;
 
 	case SCI_SETCARETWIDTH:
-		if (wParam <= 0)
+		if (static_cast<int>(wParam) <= 0)
 			vs.caretWidth = 0;
 		else if (wParam >= 3)
 			vs.caretWidth = 3;
@@ -8458,6 +8517,8 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 	case SCI_DOCUMENTSTARTEXTEND:
 	case SCI_DOCUMENTEND:
 	case SCI_DOCUMENTENDEXTEND:
+	case SCI_SCROLLTOSTART:
+	case SCI_SCROLLTOEND:
 
 	case SCI_STUTTEREDPAGEUP:
 	case SCI_STUTTEREDPAGEUPEXTEND:

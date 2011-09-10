@@ -57,6 +57,9 @@
     <ClCompile Include="..\scintilla\lexers\LexAsm.cxx">
       <Filter>Scintilla\lexers</Filter>
     </ClCompile>
+    <ClCompile Include="..\scintilla\lexers\LexBash.cxx">
+      <Filter>Scintilla\lexers</Filter>
+    </ClCompile>
     <ClCompile Include="..\scintilla\lexers\LexConf.cxx">
       <Filter>Scintilla\lexers</Filter>
     </ClCompile>
@@ -204,9 +207,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Notepad2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SciCall.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Styles.h">

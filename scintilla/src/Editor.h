@@ -131,6 +131,7 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	 * When a style attribute is changed, this cache is flushed. */
 	bool stylesValid;
 	ViewStyle vs;
+	Point sizeRGBAImage;
 	Palette palette;
 
 	int printMagnification;

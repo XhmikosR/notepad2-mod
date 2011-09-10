@@ -22,8 +22,6 @@
     <ProjectName>Setup</ProjectName>
     <ProjectGuid>{AA902504-68C0-68D1-8905-72BCDCCD10C7}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <SccProjectName />
-    <SccLocalPath />
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Full|Win32'" Label="Configuration">
@@ -119,7 +117,6 @@
       <OptimizeReferences>true</OptimizeReferences>
       <SubSystem>Windows</SubSystem>
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
-      <MinimumRequiredVersion>5.01</MinimumRequiredVersion>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
   </ItemDefinitionGroup>
@@ -145,7 +142,6 @@
       <OptimizeReferences>true</OptimizeReferences>
       <SubSystem>Windows</SubSystem>
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
-      <MinimumRequiredVersion>5.02</MinimumRequiredVersion>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
   </ItemDefinitionGroup>
@@ -169,7 +165,6 @@
       <AdditionalOptions>/STUB:dosstub.bin</AdditionalOptions>
       <OptimizeReferences>true</OptimizeReferences>
       <SubSystem>Windows</SubSystem>
-      <MinimumRequiredVersion>5.01</MinimumRequiredVersion>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
   </ItemDefinitionGroup>
@@ -194,7 +189,6 @@
       <AdditionalOptions>/STUB:dosstub.bin</AdditionalOptions>
       <OptimizeReferences>true</OptimizeReferences>
       <SubSystem>Windows</SubSystem>
-      <MinimumRequiredVersion>5.02</MinimumRequiredVersion>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
   </ItemDefinitionGroup>

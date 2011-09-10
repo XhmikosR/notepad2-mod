@@ -268,6 +268,7 @@ val SC_MARK_FULLRECT=26
 val SC_MARK_LEFTRECT=27
 val SC_MARK_AVAILABLE=28
 val SC_MARK_UNDERLINE=29
+val SC_MARK_RGBAIMAGE=30
 
 val SC_MARK_CHARACTER=10000
 
@@ -554,6 +555,7 @@ val INDIC_STRAIGHTBOX=8
 val INDIC_DASH=9
 val INDIC_DOTS=10
 val INDIC_SQUIGGLELOW=11
+val INDIC_DOTBOX=12
 val INDIC_MAX=31
 val INDIC_CONTAINER=8
 val INDIC0_MASK=0x20
@@ -2153,6 +2155,26 @@ set void SetIdentifier=2622(int identifier,)
 # Get the identifier.
 get int GetIdentifier=2623(,)
 
+# Set the width for future RGBA image data.
+set void RGBAImageSetWidth=2624(int width,)
+
+# Set the height for future RGBA image data.
+set void RGBAImageSetHeight=2625(int height,)
+
+# Define a marker from RGBA data.
+# It has the width and height from RGBAImageSetWidth/Height
+fun void MarkerDefineRGBAImage=2626(int markerNumber, string pixels)
+
+# Register an RGBA image for use in autocompletion lists.
+# It has the width and height from RGBAImageSetWidth/Height
+fun void RegisterRGBAImage=2627(int type, string pixels)
+
+# Scroll to start of document.
+fun void ScrollToStart=2628(,)
+
+# Scroll to end of document.
+fun void ScrollToEnd=2629(,)
+
 # Start notifying the container of all key presses and commands.
 fun void StartRecord=3001(,)
 
@@ -2661,6 +2683,16 @@ val SCE_PL_POD_VERB=31
 val SCE_PL_SUB_PROTOTYPE=40
 val SCE_PL_FORMAT_IDENT=41
 val SCE_PL_FORMAT=42
+val SCE_PL_STRING_VAR=43
+val SCE_PL_XLAT=44
+val SCE_PL_REGEX_VAR=54
+val SCE_PL_REGSUBST_VAR=55
+val SCE_PL_BACKTICKS_VAR=57
+val SCE_PL_HERE_QQ_VAR=61
+val SCE_PL_HERE_QX_VAR=62
+val SCE_PL_STRING_QQ_VAR=64
+val SCE_PL_STRING_QX_VAR=65
+val SCE_PL_STRING_QR_VAR=66
 # Lexical states for SCLEX_RUBY
 lex Ruby=SCLEX_RUBY SCE_RB_
 val SCE_RB_DEFAULT=0
@@ -2735,6 +2767,14 @@ val SCE_L_COMMAND=1
 val SCE_L_TAG=2
 val SCE_L_MATH=3
 val SCE_L_COMMENT=4
+val SCE_L_TAG2=5
+val SCE_L_MATH2=6
+val SCE_L_COMMENT2=7
+val SCE_L_VERBATIM=8
+val SCE_L_SHORTCMD=9
+val SCE_L_SPECIAL=10
+val SCE_L_CMDOPT=11
+val SCE_L_ERROR=12
 # Lexical states for SCLEX_LUA
 lex Lua=SCLEX_LUA SCE_LUA_
 val SCE_LUA_DEFAULT=0
@@ -2757,6 +2797,7 @@ val SCE_LUA_WORD5=16
 val SCE_LUA_WORD6=17
 val SCE_LUA_WORD7=18
 val SCE_LUA_WORD8=19
+val SCE_LUA_LABEL=20
 # Lexical states for SCLEX_ERRORLIST
 lex ErrorList=SCLEX_ERRORLIST SCE_ERR_
 val SCE_ERR_DEFAULT=0
