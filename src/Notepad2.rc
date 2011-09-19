@@ -1551,6 +1551,7 @@ BEGIN
     IDT_FILE_OPENFAV        "Favorites"
     IDT_FILE_ADDTOFAV       "Add to Favorites"
     IDT_VIEW_TOGGLEFOLDS    "Toggle All Folds"
+    IDT_FILE_LAUNCH         "Execute Document"
 END
 
 STRINGTABLE

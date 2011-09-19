@@ -376,6 +376,7 @@
 #define IDT_FILE_OPENFAV                40721
 #define IDT_FILE_ADDTOFAV               40722
 #define IDT_VIEW_TOGGLEFOLDS            40723
+#define IDT_FILE_LAUNCH                 40724
 #define SC_SAVEPOS                      40800
 #define SC_RESETPOS                     40801
 #define IDS_ERR_LOADFILE                50000

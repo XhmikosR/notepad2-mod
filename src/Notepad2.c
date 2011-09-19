@@ -55,7 +55,7 @@ HWND      hwndMain;
 HWND      hwndNextCBChain = NULL;
 HWND      hDlgFindReplace = NULL;
 
-#define NUMTOOLBITMAPS  24
+#define NUMTOOLBITMAPS  25
 #define NUMINITIALTOOLS 24
 #define MARGIN_FOLD_INDEX 2
 
@@ -89,7 +89,8 @@ TBBUTTON  tbbMainWnd[] = { {0,IDT_FILE_NEW,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0},
                            {20,IDT_FILE_PRINT,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0},
                            {21,IDT_FILE_OPENFAV,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0},
                            {22,IDT_FILE_ADDTOFAV,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0},
-                           {23,IDT_VIEW_TOGGLEFOLDS,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0} };
+                           {23,IDT_VIEW_TOGGLEFOLDS,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0},
+                           {24,IDT_FILE_LAUNCH,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0} };
 
 WCHAR      szIniFile[MAX_PATH] = L"";
 WCHAR      szIniFile2[MAX_PATH] = L"";
@@ -5027,6 +5028,13 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
         MessageBeep(0);
       break;
 
+    case IDT_FILE_LAUNCH:
+      if (IsCmdEnabled(hwnd,IDM_FILE_LAUNCH))
+        SendMessage(hwnd,WM_COMMAND,MAKELONG(IDM_FILE_LAUNCH,1),0);
+      else
+        MessageBeep(0);
+      break;
+
   }
 
   return(0);
@@ -6570,6 +6578,7 @@ void UpdateToolbar()
   EnableTool(IDT_EDIT_CLEAR,i /*&& !bReadOnly*/);
 
   EnableTool(IDT_VIEW_TOGGLEFOLDS,i && bShowCodeFolding);
+  EnableTool(IDT_FILE_LAUNCH,i);
 
   CheckTool(IDT_VIEW_WORDWRAP,fWordWrap);
 
