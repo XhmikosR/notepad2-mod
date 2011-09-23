@@ -423,6 +423,7 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
 #define SCI_SHOWLINES 2226
 #define SCI_HIDELINES 2227
 #define SCI_GETLINEVISIBLE 2228
+#define SCI_GETALLLINESVISIBLE 2236
 #define SCI_SETFOLDEXPANDED 2229
 #define SCI_GETFOLDEXPANDED 2230
 #define SCI_TOGGLEFOLD 2231

@@ -1065,6 +1065,9 @@ fun void HideLines=2227(int lineStart, int lineEnd)
 # Is a line visible?
 get bool GetLineVisible=2228(int line,)
 
+# Are all lines visible?
+get bool GetAllLinesVisible=2236(,)
+
 # Show the children of a header line.
 set void SetFoldExpanded=2229(int line, bool expanded)
 
@@ -2472,6 +2475,7 @@ val SCE_C_COMMENTDOCKEYWORDERROR=18
 val SCE_C_GLOBALCLASS=19
 val SCE_C_STRINGRAW=20
 val SCE_C_TRIPLEVERBATIM=21
+val SCE_C_HASHQUOTEDSTRING=22
 # Lexical states for SCLEX_D
 lex D=SCLEX_D SCE_D_
 val SCE_D_DEFAULT=0

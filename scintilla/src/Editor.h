@@ -226,6 +226,7 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	enum { notPainting, painting, paintAbandoned } paintState;
 	PRectangle rcPaint;
 	bool paintingAllText;
+	bool willRedrawAll;
 	StyleNeeded styleNeeded;
 
 	int modEventMask;

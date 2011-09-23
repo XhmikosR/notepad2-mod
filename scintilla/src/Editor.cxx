@@ -193,6 +193,7 @@ Editor::Editor() {
 	theEdge = 0;
 
 	paintState = notPainting;
+	willRedrawAll = false;
 
 	modEventMask = SC_MODEVENTMASKALL;
 
@@ -984,6 +985,8 @@ void Editor::ScrollTo(int line, bool moveThumb) {
 		// Try to optimise small scrolls
 #ifndef UNDER_CE
 		int linesToMove = topLine - topLineNew;
+		bool performBlit = (abs(linesToMove) <= 10) && (paintState == notPainting);
+		willRedrawAll = !performBlit;
 #endif
 		SetTopLine(topLineNew);
 		// Optimize by styling the view as this will invalidate any needed area
@@ -991,11 +994,12 @@ void Editor::ScrollTo(int line, bool moveThumb) {
 		StyleToPositionInView(PositionAfterArea(GetClientRectangle()));
 #ifndef UNDER_CE
 		// Perform redraw rather than scroll if many lines would be redrawn anyway.
-		if ((abs(linesToMove) <= 10) && (paintState == notPainting)) {
+		if (performBlit) {
 			ScrollText(linesToMove);
 		} else {
 			Redraw();
 		}
+		willRedrawAll = false;
 #else
 		Redraw();
 #endif
@@ -4649,7 +4653,7 @@ void Editor::NotifyModified(Document *, DocModification mh, void *) {
 	}
 
 	if ((mh.modificationType & SC_MOD_CHANGEMARKER) || (mh.modificationType & SC_MOD_CHANGEMARGIN)) {
-		if ((paintState == notPainting) || !PaintContainsMargin()) {
+		if ((!willRedrawAll) && ((paintState == notPainting) || !PaintContainsMargin())) {
 			if (mh.modificationType & SC_MOD_CHANGEFOLD) {
 				// Fold changes can affect the drawing of following lines so redraw whole margin
 				RedrawSelMargin(mh.line-1, true);
@@ -8275,6 +8279,9 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 
 	case SCI_GETLINEVISIBLE:
 		return cs.GetVisible(wParam);
+
+	case SCI_GETALLLINESVISIBLE:
+		return cs.HiddenLines() ? 0 : 1;
 
 	case SCI_SETFOLDEXPANDED:
 		if (cs.SetExpanded(wParam, lParam != 0)) {
