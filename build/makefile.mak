@@ -56,9 +56,9 @@ INCLUDEDIRS   = /I "$(SCI_INC)" /I "$(SCI_LEX)" /I "$(SCI_LIB)" /I "$(SCI_SRC)" 
 CXXFLAGS      = /nologo /c /W3 /WX /EHsc /MD /O2 /GL /MP $(DEFINES) $(INCLUDEDIRS)
 LDFLAGS       = /NOLOGO /WX /INCREMENTAL:NO /RELEASE /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF \
                 /MERGE:.rdata=.text /DYNAMICBASE /NXCOMPAT /LTCG
-LIBS          = kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib shlwapi.lib \
-                comdlg32.lib comctl32.lib winspool.lib imm32.lib ole32.lib oleaut32.lib \
-                psapi.lib ntstc_msvcrt.lib
+LIBS          = advapi32.lib comctl32.lib comdlg32.lib gdi32.lib imm32.lib kernel32.lib \
+                ole32.lib oleaut32.lib psapi.lib shell32.lib shlwapi.lib user32.lib \
+                winspool.lib ntstc_msvcrt.lib
 RFLAGS        = /l 0x0409 /d "_UNICODE" /d "UNICODE" /d "BOOKMARK_EDITION"
 SCI_CXXFLAGS  = $(CXXFLAGS) /D "STATIC_BUILD" /D "SCI_LEXER"
 
