@@ -182,6 +182,17 @@ int LineMarkers::MarkValue(int line) {
 		return 0;
 }
 
+int LineMarkers::MarkerNext(int lineStart, int mask) const {
+	int length = markers.Length();
+	for (int iLine = lineStart; iLine < length; iLine++) {
+		MarkerHandleSet *onLine = markers[iLine];
+		if (onLine && ((onLine->MarkValue() & mask) != 0))
+		//if ((pdoc->GetMark(iLine) & lParam) != 0)
+			return iLine;
+	}
+	return -1;
+}
+
 int LineMarkers::AddMark(int line, int markerNum, int lines) {
 	handleCurrent++;
 	if (!markers.Length()) {

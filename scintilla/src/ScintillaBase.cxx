@@ -65,11 +65,6 @@ void ScintillaBase::Finalise() {
 	popup.Destroy();
 }
 
-void ScintillaBase::RefreshColourPalette(Palette &pal, bool want) {
-	Editor::RefreshColourPalette(pal, want);
-	ct.RefreshColourPalette(pal, want);
-}
-
 void ScintillaBase::AddCharUTF(char *s, unsigned int len, bool treatAsDBCS) {
 	bool isFillUp = ac.Active() && ac.IsFillUpChar(*s);
 	if (!isFillUp) {
@@ -222,7 +217,7 @@ void ScintillaBase::AutoCompleteStart(int lenEntered, const char *list) {
 		}
 	}
 	ac.Start(wMain, idAutoComplete, sel.MainCaret(), PointMainCaret(),
-				lenEntered, vs.lineHeight, IsUnicodeMode());
+				lenEntered, vs.lineHeight, IsUnicodeMode(), technology);
 
 	PRectangle rcClient = GetClientRectangle();
 	Point pt = LocationFromPosition(sel.MainCaret() - lenEntered);
@@ -419,6 +414,7 @@ void ScintillaBase::CallTipShow(Point pt, const char *defn) {
 		vs.styles[ctStyle].sizeZoomed,
 		CodePage(),
 		vs.styles[ctStyle].characterSet,
+		vs.technology,
 		wMain);
 	// If the call-tip window would be out of the client
 	// space, adjust so it displays above the text.

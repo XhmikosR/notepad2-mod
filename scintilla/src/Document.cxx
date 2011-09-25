@@ -185,6 +185,10 @@ int Document::GetMark(int line) {
 	return static_cast<LineMarkers *>(perLineData[ldMarkers])->MarkValue(line);
 }
 
+int Document::MarkerNext(int lineStart, int mask) const {
+	return static_cast<LineMarkers *>(perLineData[ldMarkers])->MarkerNext(lineStart, mask);
+}
+
 int Document::AddMark(int line, int markerNum) {
 	if (line >= 0 && line <= LinesTotal()) {
 		int prev = static_cast<LineMarkers *>(perLineData[ldMarkers])->

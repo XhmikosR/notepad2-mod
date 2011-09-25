@@ -332,6 +332,7 @@ update_version.bat
     <ClInclude Include="..\scintilla\src\UniConversion.h" />
     <ClInclude Include="..\scintilla\src\ViewStyle.h" />
     <ClInclude Include="..\scintilla\src\XPM.h" />
+    <ClInclude Include="..\scintilla\win32\PlatWin.h" />
     <ClInclude Include="Dialogs.h" />
     <ClInclude Include="Dlapi.h" />
     <ClInclude Include="Edit.h" />

@@ -41,19 +41,16 @@ public:
 	Window wDraw;
 	bool inCallTipMode;
 	int posStartCallTip;
-	ColourPair colourBG;
-	ColourPair colourUnSel;
-	ColourPair colourSel;
-	ColourPair colourShade;
-	ColourPair colourLight;
+	ColourDesired colourBG;
+	ColourDesired colourUnSel;
+	ColourDesired colourSel;
+	ColourDesired colourShade;
+	ColourDesired colourLight;
 	int codePage;
 	int clickPlace;
 
 	CallTip();
 	~CallTip();
-
-	/// Claim or accept palette entries for the colours required to paint a calltip.
-	void RefreshColourPalette(Palette &pal, bool want);
 
 	void PaintCT(Surface *surfaceWindow);
 
@@ -62,7 +59,7 @@ public:
 	/// Setup the calltip and return a rectangle of the area required.
 	PRectangle CallTipStart(int pos, Point pt, const char *defn,
 		const char *faceName, int size, int codePage_,
-		int characterSet, Window &wParent);
+		int characterSet, int technology, Window &wParent);
 
 	void CallTipCancel();
 
@@ -77,7 +74,7 @@ public:
 	bool UseStyleCallTip() const { return useStyleCallTip;}
 
 	// Modify foreground and background colours
-	void SetForeBack(const ColourPair &fore, const ColourPair &back);
+	void SetForeBack(const ColourDesired &fore, const ColourDesired &back);
 };
 
 #ifdef SCI_NAMESPACE
