@@ -54,8 +54,8 @@ DEFINES       = /D "BOOKMARK_EDITION" /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D
 INCLUDEDIRS   = /I "$(SCI_INC)" /I "$(SCI_LEX)" /I "$(SCI_LIB)" /I "$(SCI_SRC)" \
                 /I "$(SCI_WIN)"
 CXXFLAGS      = /nologo /c /W3 /WX /EHsc /MD /O2 /GL /MP $(DEFINES) $(INCLUDEDIRS)
-LDFLAGS       = /NOLOGO /WX /INCREMENTAL:NO /RELEASE /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF \
-                /MERGE:.rdata=.text /DYNAMICBASE /NXCOMPAT /LTCG
+LDFLAGS       = /NOLOGO /WX /INCREMENTAL:NO /RELEASE /OPT:REF /OPT:ICF /MERGE:.rdata=.text \
+                /DYNAMICBASE /NXCOMPAT /LTCG
 LIBS          = advapi32.lib comctl32.lib comdlg32.lib gdi32.lib imm32.lib kernel32.lib \
                 ole32.lib oleaut32.lib psapi.lib shell32.lib shlwapi.lib user32.lib \
                 winspool.lib ntstc_msvcrt.lib
@@ -65,13 +65,13 @@ SCI_CXXFLAGS  = $(CXXFLAGS) /D "STATIC_BUILD" /D "SCI_LEXER"
 
 !IFDEF x64
 DEFINES       = $(DEFINES) /D "_WIN64" /D "_WIN32_WINNT=0x0502"
-LDFLAGS       = $(LDFLAGS) /MACHINE:X64
+LDFLAGS       = $(LDFLAGS) /SUBSYSTEM:WINDOWS,5.02 /MACHINE:X64
 LIBS          = $(LIBS) msvcrt_win2003.obj
 RFLAGS        = $(RFLAGS) /d "_WIN64"
 SCI_CXXFLAGS  = $(SCI_CXXFLAGS)
 !ELSE
 DEFINES       = $(DEFINES) /D "WIN32" /D "_WIN32_WINNT=0x0501"
-LDFLAGS       = $(LDFLAGS) /LARGEADDRESSAWARE /MACHINE:X86
+LDFLAGS       = $(LDFLAGS) /LARGEADDRESSAWARE /SUBSYSTEM:WINDOWS,5.01 /MACHINE:X86
 LIBS          = $(LIBS) msvcrt_winxp.obj
 RFLAGS        = $(RFLAGS) /d "WIN32"
 !ENDIF
