@@ -25,6 +25,7 @@ class CallTip {
 	int offsetMain;         // The alignment point of the call tip
 	int tabSize;            // Tab size in pixels, <=0 no TAB expand
 	bool useStyleCallTip;   // if true, STYLE_CALLTIP should be used
+	bool above;		// if true, display calltip above text
 
 	// Private so CallTip objects can not be copied
 	CallTip(const CallTip &);
@@ -57,7 +58,7 @@ public:
 	void MouseClick(Point pt);
 
 	/// Setup the calltip and return a rectangle of the area required.
-	PRectangle CallTipStart(int pos, Point pt, const char *defn,
+	PRectangle CallTipStart(int pos, Point pt, int textHeight, const char *defn,
 		const char *faceName, int size, int codePage_,
 		int characterSet, int technology, Window &wParent);
 
@@ -69,6 +70,9 @@ public:
 
 	/// Set the tab size in pixels for the call tip. 0 or -ve means no tab expand.
 	void SetTabSize(int tabSz);
+
+	/// Set calltip position.
+	void SetPosition(bool aboveText);
 
 	/// Used to determine which STYLE_xxxx to use for call tip information
 	bool UseStyleCallTip() const { return useStyleCallTip;}

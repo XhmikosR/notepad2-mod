@@ -33,6 +33,7 @@ CallTip::CallTip() {
 	startHighlight = 0;
 	endHighlight = 0;
 	tabSize = 0;
+	above = false;
 	useStyleCallTip = false;    // for backwards compatibility
 
 #ifdef __APPLE__
@@ -245,7 +246,7 @@ void CallTip::MouseClick(Point pt) {
 		clickPlace = 2;
 }
 
-PRectangle CallTip::CallTipStart(int pos, Point pt, const char *defn,
+PRectangle CallTip::CallTipStart(int pos, Point pt, int textHeight, const char *defn,
                                  const char *faceName, int size,
                                  int codePage_, int characterSet,
 								 int technology, Window &wParent) {
@@ -288,7 +289,11 @@ PRectangle CallTip::CallTipStart(int pos, Point pt, const char *defn,
 	// the tip text, else to the tip text left edge.
 	int height = lineHeight * numLines - surfaceMeasure->InternalLeading(font) + 2 + 2;
 	delete surfaceMeasure;
-	return PRectangle(pt.x - offsetMain, pt.y + 1, pt.x + width - offsetMain, pt.y + 1 + height);
+	if (above) {
+		return PRectangle(pt.x - offsetMain, pt.y - 1 - height, pt.x + width - offsetMain, pt.y - 1);
+	} else {
+		return PRectangle(pt.x - offsetMain, pt.y + 1 + textHeight, pt.x + width - offsetMain, pt.y + 1 + textHeight + height);
+	}
 }
 
 void CallTip::CallTipCancel() {
@@ -314,6 +319,12 @@ void CallTip::SetHighlight(int start, int end) {
 void CallTip::SetTabSize(int tabSz) {
 	tabSize = tabSz;
 	useStyleCallTip = true;
+}
+
+// Set the calltip position, below the text by default or if above is false
+// else above the text.
+void CallTip::SetPosition(bool aboveText) {
+	above = aboveText;
 }
 
 // It might be better to have two access functions for this and to use

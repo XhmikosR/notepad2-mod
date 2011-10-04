@@ -1039,6 +1039,9 @@ set void CallTipSetForeHlt=2207(colour fore,)
 # Enable use of STYLE_CALLTIP and set call tip tab size in pixels.
 set void CallTipUseStyle=2212(int tabSize,)
 
+# Set position of calltip, above or below text.
+set void CallTipSetPosition=2213(bool above,)
+
 # Find the display line of a document line taking hidden lines into account.
 fun int VisibleFromDocLine=2220(int line,)
 

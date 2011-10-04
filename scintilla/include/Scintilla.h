@@ -415,6 +415,7 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
 #define SCI_CALLTIPSETFORE 2206
 #define SCI_CALLTIPSETFOREHLT 2207
 #define SCI_CALLTIPUSESTYLE 2212
+#define SCI_CALLTIPSETPOSITION 2213
 #define SCI_VISIBLEFROMDOCLINE 2220
 #define SCI_DOCLINEFROMVISIBLE 2221
 #define SCI_WRAPCOUNT 2235
