@@ -4513,14 +4513,12 @@ void Editor::NotifySavePoint(Document *, void *, bool atSavePoint) {
 void Editor::CheckModificationForWrap(DocModification mh) {
 	if (mh.modificationType & (SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT)) {
 		llc.Invalidate(LineLayout::llCheckTextAndStyle);
+		int lineDoc = pdoc->LineFromPosition(mh.position);
+		int lines = Platform::Maximum(0, mh.linesAdded);
 		if (wrapState != eWrapNone) {
-			int lineDoc = pdoc->LineFromPosition(mh.position);
-			int lines = Platform::Maximum(0, mh.linesAdded);
 			NeedWrapping(lineDoc, lineDoc + lines + 1);
 		}
 		// Fix up annotation heights
-		int lineDoc = pdoc->LineFromPosition(mh.position);
-		int lines = Platform::Maximum(0, mh.linesAdded);
 		SetAnnotationHeights(lineDoc, lineDoc + lines + 2);
 	}
 }
@@ -6741,8 +6739,22 @@ void Editor::SetBraceHighlight(Position pos0, Position pos1, int matchStyle) {
 
 void Editor::SetAnnotationHeights(int start, int end) {
 	if (vs.annotationVisible) {
+		bool changedHeight = false;
 		for (int line=start; line<end; line++) {
-			cs.SetHeight(line, pdoc->AnnotationLines(line) + 1);
+			int linesWrapped = 1;
+			if (wrapState != eWrapNone) {
+				AutoSurface surface(this);
+				AutoLineLayout ll(llc, RetrieveLineLayout(line));
+				if (surface && ll) {
+					LayoutLine(line, surface, vs, ll, wrapWidth);
+					linesWrapped = ll->lines;
+				}
+			}
+			if (cs.SetHeight(line, pdoc->AnnotationLines(line) + linesWrapped))
+				changedHeight = true;
+		}
+		if (changedHeight) {
+			Redraw();
 		}
 	}
 }
