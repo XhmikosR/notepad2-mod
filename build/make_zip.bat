@@ -17,11 +17,11 @@ SETLOCAL ENABLEEXTENSIONS
 CD /D %~dp0
 
 rem Check for the help switches
-IF /I "%~1"=="help"   GOTO SHOWHELP
-IF /I "%~1"=="/help"  GOTO SHOWHELP
-IF /I "%~1"=="-help"  GOTO SHOWHELP
-IF /I "%~1"=="--help" GOTO SHOWHELP
-IF /I "%~1"=="/?"     GOTO SHOWHELP
+IF /I "%~1" == "help"   GOTO SHOWHELP
+IF /I "%~1" == "/help"  GOTO SHOWHELP
+IF /I "%~1" == "-help"  GOTO SHOWHELP
+IF /I "%~1" == "--help" GOTO SHOWHELP
+IF /I "%~1" == "/?"     GOTO SHOWHELP
 
 
 rem Check for the first switch
@@ -235,7 +235,7 @@ EXIT /B
 ECHO. & ECHO ______________________________
 ECHO [%~1] %~2
 ECHO ______________________________ & ECHO.
-IF /I "%~1"=="ERROR" (
+IF /I "%~1" == "ERROR" (
   PAUSE
   EXIT
 ) ELSE (

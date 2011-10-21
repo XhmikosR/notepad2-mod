@@ -21,11 +21,11 @@ IF NOT DEFINED VS100COMNTOOLS    CALL :SUBMSG "ERROR" "Visual Studio 2010 wasn't
 IF NOT DEFINED ICPP_COMPOSER2011 CALL :SUBMSG "ERROR" "Intel C++ Composer 2011 wasn't found!"
 
 rem Check for the help switches
-IF /I "%~1"=="help"   GOTO SHOWHELP
-IF /I "%~1"=="/help"  GOTO SHOWHELP
-IF /I "%~1"=="-help"  GOTO SHOWHELP
-IF /I "%~1"=="--help" GOTO SHOWHELP
-IF /I "%~1"=="/?"     GOTO SHOWHELP
+IF /I "%~1" == "help"   GOTO SHOWHELP
+IF /I "%~1" == "/help"  GOTO SHOWHELP
+IF /I "%~1" == "-help"  GOTO SHOWHELP
+IF /I "%~1" == "--help" GOTO SHOWHELP
+IF /I "%~1" == "/?"     GOTO SHOWHELP
 
 
 rem Check for the first switch
@@ -103,11 +103,12 @@ IF "%~3" == "" (
 
 
 :START
-CALL "%VS100COMNTOOLS%vsvars32.bat" >NUL
+IF "%ARCH%" == "x64" GOTO x64
+IF "%ARCH%" == "x86" GOTO x86
 
 
 :x86
-IF "%ARCH%" == "x64" GOTO x64
+CALL "%VS100COMNTOOLS%..\..\VC\vcvarsall.bat" x86
 
 IF "%BUILDTYPE%" == "Build" IF "%CONFIG%" == "Release" CALL :SUBMSVC %BUILDTYPE% Release Win32
 IF "%BUILDTYPE%" == "Build" IF "%CONFIG%" == "Debug"   CALL :SUBMSVC %BUILDTYPE% Debug Win32
@@ -122,12 +123,12 @@ IF "%BUILDTYPE%" == "Clean" IF "%CONFIG%" == "Debug"   CALL :SUBMSVC %BUILDTYPE%
 IF "%BUILDTYPE%" == "Clean" IF "%CONFIG%" == "all"     CALL :SUBMSVC %BUILDTYPE% Release Win32 && CALL :SUBMSVC %BUILDTYPE% Debug Win32
 
 IF "%ARCH%" == "x86" GOTO END
-IF "%ARCH%" == "x64" GOTO x64
-IF "%ARCH%" == "all" GOTO x64
 
 
 :x64
-IF "%ARCH%" == "x86" GOTO END
+IF DEFINED PROGRAMFILES(x86) (SET build_type=amd64) ELSE (SET build_type=x86_amd64)
+
+CALL "%VS100COMNTOOLS%..\..\VC\vcvarsall.bat" %build_type%
 
 IF "%BUILDTYPE%" == "Build" IF "%CONFIG%" == "Release" CALL :SUBMSVC %BUILDTYPE% Release x64
 IF "%BUILDTYPE%" == "Build" IF "%CONFIG%" == "Debug"   CALL :SUBMSVC %BUILDTYPE% Debug x64
@@ -181,7 +182,7 @@ EXIT /B
 ECHO. & ECHO ______________________________
 ECHO [%~1] %~2
 ECHO ______________________________ & ECHO.
-IF /I "%~1"=="ERROR" (
+IF /I "%~1" == "ERROR" (
   PAUSE
   EXIT
 ) ELSE (

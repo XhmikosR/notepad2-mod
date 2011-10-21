@@ -22,11 +22,11 @@ rem IF NOT EXIST "%PERL_PATH%"    CALL :SUBMSG "INFO" "The Perl directory wasn't
 IF NOT DEFINED VS100COMNTOOLS CALL :SUBMSG "ERROR" "Visual Studio 2010 wasn't found; the installer won't be built"
 
 rem Check for the help switches
-IF /I "%~1"=="help"   GOTO SHOWHELP
-IF /I "%~1"=="/help"  GOTO SHOWHELP
-IF /I "%~1"=="-help"  GOTO SHOWHELP
-IF /I "%~1"=="--help" GOTO SHOWHELP
-IF /I "%~1"=="/?"     GOTO SHOWHELP
+IF /I "%~1" == "help"   GOTO SHOWHELP
+IF /I "%~1" == "/help"  GOTO SHOWHELP
+IF /I "%~1" == "-help"  GOTO SHOWHELP
+IF /I "%~1" == "--help" GOTO SHOWHELP
+IF /I "%~1" == "/?"     GOTO SHOWHELP
 
 
 rem Check for the first switch
@@ -131,11 +131,11 @@ EXIT /B
 
 
 :SubInstaller
-IF "%2"=="x86" (
+IF "%2" == "x86" (
   SET "ARCH=Win32"
   SET "BINDIR=x86-32"
 )
-IF "%2"=="x64" (
+IF "%2" == "x64" (
   SET "ARCH=x64"
   SET "BINDIR=x86-64"
 )
@@ -263,7 +263,7 @@ EXIT /B
 ECHO. & ECHO ______________________________
 ECHO [%~1] %~2
 ECHO ______________________________ & ECHO.
-IF /I "%~1"=="ERROR" (
+IF /I "%~1" == "ERROR" (
   PAUSE
   EXIT
 ) ELSE (
