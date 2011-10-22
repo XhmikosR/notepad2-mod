@@ -15,13 +15,13 @@ DelReg=Notepad2.DelReg
 1="Notepad2"
 
 [SourceDisksFiles]
-license.txt=1
-notepad2.exe=1
-notepad2.inf=1
-notepad2.ini=1
-notepad2.txt=1
-readme.txt=1
-readme-mod.txt=1
+License.txt=1
+Notepad2.exe=1
+Notepad2.inf=1
+Notepad2.ini=1
+Notepad2.txt=1
+Readme.txt=1
+Readme-mod.txt=1
 notepad2.redir.ini=1
 
 [DestinationDirs]

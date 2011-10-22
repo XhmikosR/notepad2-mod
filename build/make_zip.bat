@@ -16,6 +16,7 @@ rem ****************************************************************************
 SETLOCAL ENABLEEXTENSIONS
 CD /D %~dp0
 
+
 rem Check for the help switches
 IF /I "%~1" == "help"   GOTO SHOWHELP
 IF /I "%~1" == "/help"  GOTO SHOWHELP
