@@ -183,6 +183,8 @@ int LineMarkers::MarkValue(int line) {
 }
 
 int LineMarkers::MarkerNext(int lineStart, int mask) const {
+	if (lineStart < 0)
+		lineStart = 0;
 	int length = markers.Length();
 	for (int iLine = lineStart; iLine < length; iLine++) {
 		MarkerHandleSet *onLine = markers[iLine];
