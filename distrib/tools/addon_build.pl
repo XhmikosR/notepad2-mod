@@ -54,7 +54,7 @@ $ENTRIES_TEMPLATE .= $CRLF;
 sub get_version_string # in( @source_path ), out( $version_string )
 {
 	my(@source_path) = @_;
-	my(@version) = (4,1,24,0); # default 4.1.24.0
+	my(@version) = (4,2,25,0); # default 4.2.25.0
 	my(@key) = qw(VERSION_MAJOR VERSION_MINOR VERSION_BUILD VERSION_REV);
 
 	my @contents = ();
@@ -142,5 +142,5 @@ foreach my $arch (@ARCHS)
 	print $handle $entries_data;
 	close($handle);
 
-	system("addon_7z.cmd $source_dir");
+	system("addon_7z.bat $source_dir");
 }

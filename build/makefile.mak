@@ -50,28 +50,28 @@ NP2_RES         = ..\res
 
 
 DEFINES       = /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE" \
-                /D "_STL70_" /D "_STATIC_CPPLIB" /D "WDK_BUILD"
+                /D "_CRT_SECURE_NO_WARNINGS" /D "_STL70_" /D "_STATIC_CPPLIB" /D "WDK_BUILD"
 INCLUDEDIRS   = /I "$(SCI_INC)" /I "$(SCI_LEX)" /I "$(SCI_LIB)" /I "$(SCI_SRC)" \
                 /I "$(SCI_WIN)"
 CXXFLAGS      = /nologo /c /W3 /WX /EHsc /MD /O1 /GL /MP $(DEFINES) $(INCLUDEDIRS)
-LDFLAGS       = /NOLOGO /WX /INCREMENTAL:NO /RELEASE /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF \
-                /MERGE:.rdata=.text /DYNAMICBASE /NXCOMPAT /LTCG
-LIBS          = kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib shlwapi.lib \
-                comdlg32.lib comctl32.lib winspool.lib imm32.lib ole32.lib oleaut32.lib \
-                psapi.lib ntstc_msvcrt.lib
+LDFLAGS       = /NOLOGO /WX /INCREMENTAL:NO /RELEASE /OPT:REF /OPT:ICF /MERGE:.rdata=.text \
+                /DYNAMICBASE /NXCOMPAT /LTCG
+LIBS          = advapi32.lib comctl32.lib comdlg32.lib gdi32.lib imm32.lib kernel32.lib \
+                ole32.lib oleaut32.lib psapi.lib shell32.lib shlwapi.lib user32.lib \
+                winspool.lib ntstc_msvcrt.lib
 RFLAGS        = /l 0x0409 /d "_UNICODE" /d "UNICODE"
 SCI_CXXFLAGS  = $(CXXFLAGS) /D "STATIC_BUILD" /D "SCI_LEXER"
 
 
 !IFDEF x64
 DEFINES       = $(DEFINES) /D "_WIN64" /D "_WIN32_WINNT=0x0502"
-LDFLAGS       = $(LDFLAGS) /MACHINE:X64
+LDFLAGS       = $(LDFLAGS) /SUBSYSTEM:WINDOWS,5.02 /MACHINE:X64
 LIBS          = $(LIBS) msvcrt_win2003.obj
 RFLAGS        = $(RFLAGS) /d "_WIN64"
 SCI_CXXFLAGS  = $(SCI_CXXFLAGS)
 !ELSE
 DEFINES       = $(DEFINES) /D "WIN32" /D "_WIN32_WINNT=0x0501"
-LDFLAGS       = $(LDFLAGS) /LARGEADDRESSAWARE /MACHINE:X86
+LDFLAGS       = $(LDFLAGS) /LARGEADDRESSAWARE /SUBSYSTEM:WINDOWS,5.0 /MACHINE:X86
 LIBS          = $(LIBS) msvcrt_win2000.obj
 RFLAGS        = $(RFLAGS) /d "WIN32"
 !ENDIF

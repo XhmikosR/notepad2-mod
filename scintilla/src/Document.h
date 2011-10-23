@@ -323,6 +323,7 @@ public:
 		cb.GetStyleRange(buffer, position, lengthRetrieve);
 	}
 	int GetMark(int line);
+	int MarkerNext(int lineStart, int mask) const;
 	int AddMark(int line, int markerNum);
 	void AddMarkSet(int line, int valueSet);
 	void DeleteMark(int line, int markerNum);

@@ -373,7 +373,8 @@ $(SCI_WIN_OBJDIR)\ScintillaWin.obj: \
     $(SCI_SRC)\Editor.h \
     $(SCI_SRC)\ScintillaBase.h \
     $(SCI_SRC)\Selection.h \
-    $(SCI_SRC)\UniConversion.h
+    $(SCI_SRC)\UniConversion.h \
+    $(SCI_WIN)\PlatWin.h
 
 
 ###########
