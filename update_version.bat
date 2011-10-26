@@ -9,12 +9,6 @@ IF %ERRORLEVEL% NEQ 0 GOTO NoSubWCRev
 "%SUBWCREV%" . "res\Notepad2.exe.manifest.conf" "res\Notepad2.exe.manifest" -f >NUL
 IF %ERRORLEVEL% NEQ 0 GOTO NoSubWCRev
 
-"%SUBWCREV%" . "distrib\res\full\setup.manifest.conf" "distrib\res\full\setup.manifest" -f >NUL
-IF %ERRORLEVEL% NEQ 0 GOTO NoSubWCRev
-
-"%SUBWCREV%" . "distrib\res\lite\setup.manifest.conf" "distrib\res\lite\setup.manifest" -f >NUL
-IF %ERRORLEVEL% NEQ 0 GOTO NoSubWCRev
-
 ENDLOCAL
 EXIT /B
 
@@ -26,8 +20,6 @@ ECHO I'll use VERSION_REV=0 for now.
 
 COPY /V /Y "src\Version_rev.h.template"               "src\Version_rev.h" >NUL
 COPY /V /Y "res\Notepad2.exe.manifest.template"       "res\Notepad2.exe.manifest" >NUL
-COPY /V /Y "distrib\res\full\setup.manifest.template" "distrib\res\full\setup.manifest" >NUL
-COPY /V /Y "distrib\res\lite\setup.manifest.template" "distrib\res\lite\setup.manifest" >NUL
 
 ENDLOCAL
 EXIT /B
