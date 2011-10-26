@@ -27,12 +27,12 @@
   #error You can't define ICL12 and at the same time
 #endif
 
-#if defined(WDK) && (defined(ICL12) || defined(VS2010))
-  #error You can't use two defines at the same time
+#if defined(VS2010) && ( defined(ICL12) || defined(WDK))
+  #error You can't define WDK and at the same time
 #endif
 
-#if defined(VS2010) && (defined(VS2010) || defined(ICL12))
-  #error You can't define WDK and at the same time
+#if defined(WDK) && (defined(ICL12) || defined(VS2010))
+  #error You can't use two defines at the same time
 #endif
 
 
@@ -58,7 +58,7 @@
 #endif
 
 
-#define app_name       "Notepad2"
+#define app_name "Notepad2"
 
 #define VerMajor
 #define VerMinor
@@ -104,7 +104,7 @@ VersionInfoProductVersion={#app_version}
 VersionInfoProductTextVersion={#app_version}
 UninstallDisplayIcon={app}\Notepad2.exe
 DefaultDirName={pf}\{#app_name}
-LicenseFile=..\License.txt
+LicenseFile=license.txt
 OutputDir=.
 SetupIconFile=..\res\Notepad2.ico
 WizardSmallImageFile=WizardSmallImageFile.bmp
@@ -153,12 +153,13 @@ Name: remove_default;     Description: {cm:tsk_RemoveDefault};     GroupDescript
 
 
 [Files]
-Source: psvince.dll;            DestDir: {app};                       Flags: ignoreversion
-Source: ..\License.txt;         DestDir: {app};                       Flags: ignoreversion
-Source: {#bindir}\Notepad2.exe; DestDir: {app};                       Flags: ignoreversion
-Source: Notepad2.ini;           DestDir: {userappdata}\Notepad2;      Flags: onlyifdoesntexist uninsneveruninstall
-Source: ..\Notepad2.txt;        DestDir: {app};                       Flags: ignoreversion
-Source: ..\Readme-mod.txt;      DestDir: {app}; DestName: Readme.txt; Flags: ignoreversion
+Source: psvince.dll;            DestDir: {app};                  Flags: ignoreversion
+Source: ..\License.txt;         DestDir: {app};                  Flags: ignoreversion
+Source: {#bindir}\Notepad2.exe; DestDir: {app};                  Flags: ignoreversion
+Source: Notepad2.ini;           DestDir: {userappdata}\Notepad2; Flags: onlyifdoesntexist uninsneveruninstall
+Source: ..\Notepad2.txt;        DestDir: {app};                  Flags: ignoreversion
+Source: ..\Readme.txt;          DestDir: {app};                  Flags: ignoreversion
+Source: ..\Readme-mod.txt;      DestDir: {app};                  Flags: ignoreversion
 
 
 [Icons]

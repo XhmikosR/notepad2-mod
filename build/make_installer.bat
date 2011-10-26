@@ -101,7 +101,7 @@ PUSHD "..\distrib"
 
 TITLE Building %1 %2 installer...
 CALL :SUBMSG "INFO" "Building %1 %2 installer..."
-"%InnoSetupPath%\iscc.exe" /Q "notepad2_setup.iss" /D%1 /D%2
+"%InnoSetupPath%\iscc.exe" /Q /O"..\build\packages" "notepad2_setup.iss" /D%1 /D%2
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
 POPD
