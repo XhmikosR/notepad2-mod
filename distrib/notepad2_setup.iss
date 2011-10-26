@@ -193,8 +193,9 @@ Type: dirifempty; Name: {app}
 // Include custom installer code
 #include 'notepad2_setup_custom_code.iss'
 
+// Global variables/constants and general functions
+const installer_mutex_name = 'notepad2_setup_mutex';
 
-// General functions
 function IsModuleLoaded(modulename: AnsiString): Boolean;
 external 'IsModuleLoaded@files:psvince.dll stdcall setuponly';
 
@@ -225,16 +226,19 @@ end;
 
 procedure CurStepChanged(CurStep: TSetupStep);
 begin
+
   if CurStep = ssInstall then begin
     if IsOldBuildInstalled() then begin
       UninstallOldVersion();
     end;
   end;
+
   if CurStep = ssPostInstall then begin
     if IsTaskSelected('reset_settings') then begin
       CleanUpSettings();
     end;
   end;
+
 end;
 
 
@@ -253,26 +257,37 @@ end;
 
 function InitializeSetup(): Boolean;
 begin
-  if IsModuleLoaded('Notepad2.exe') then begin
-    MsgBox(ExpandConstant('{cm:msg_AppIsRunning}'), mbError, MB_OK );
+  // Create a mutex for the installer and if it's already running then show a message and stop installation
+  if CheckForMutexes(installer_mutex_name) AND NOT WizardSilent() then begin
+    SuppressibleMsgBox(ExpandConstant('{cm:msg_SetupIsRunningWarning}'), mbError, MB_OK, MB_OK);
     Result := False;
   end
   else begin
     Result := True;
+
+    if IsModuleLoaded('Notepad2.exe') then begin
+      SuppressibleMsgBox(ExpandConstant('{cm:msg_AppIsRunning}'), mbError, MB_OK, MB_OK);
+      Result := False;
+    end else
+      CreateMutex(installer_mutex_name);
   end;
 end;
 
 
 function InitializeUninstall(): Boolean;
 begin
-  // Check if app is running during uninstallation
-  if IsModuleLoadedU('Notepad2.exe') then begin
-    MsgBox(ExpandConstant('{cm:msg_AppIsRunning}'), mbError, MB_OK );
+  if CheckForMutexes(installer_mutex_name) then begin
+    SuppressibleMsgBox(ExpandConstant('{cm:msg_SetupIsRunningWarning}'), mbError, MB_OK, MB_OK);
     Result := False;
-  end
-  else begin
-    // Unload the psvince.dll in order to be uninstalled
-    UnloadDLL(ExpandConstant('{app}\psvince.dll'));
+  end else
     Result := True;
-  end;
+
+    // Check if app is running during uninstallation
+    if IsModuleLoadedU('Notepad2.exe') then begin
+      SuppressibleMsgBox(ExpandConstant('{cm:msg_AppIsRunning}'), mbError, MB_OK, MB_OK);
+      Result := False;
+    end else
+      CreateMutex(installer_mutex_name);
+      // Unload the psvince.dll in order to be uninstalled
+      UnloadDLL(ExpandConstant('{app}\psvince.dll'));
 end;
