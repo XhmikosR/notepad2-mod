@@ -831,6 +831,7 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
 #define SC_TECHNOLOGY_DIRECTWRITE 1
 #define SCI_SETTECHNOLOGY 2630
 #define SCI_GETTECHNOLOGY 2631
+#define SCI_CREATELOADER 2632
 #define SCI_STARTRECORD 3001
 #define SCI_STOPRECORD 3002
 #define SCI_SETLEXER 4001

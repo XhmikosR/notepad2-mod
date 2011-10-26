@@ -2202,6 +2202,9 @@ set void SetTechnology=2630(int technology,)
 # Get the tech.
 get int GetTechnology=2631(,)
 
+# Create an ILoader*.
+fun int CreateLoader=2632(int bytes,)
+
 # Start notifying the container of all key presses and commands.
 fun void StartRecord=3001(,)
 

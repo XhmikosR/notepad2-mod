@@ -8725,6 +8725,16 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 		(reinterpret_cast<Document *>(lParam))->Release();
 		break;
 
+	case SCI_CREATELOADER: {
+			Document *doc = new Document();
+			if (doc) {
+				doc->AddRef();
+				doc->Allocate(wParam);
+				doc->SetUndoCollection(false);
+			}
+			return reinterpret_cast<sptr_t>(static_cast<ILoader *>(doc));
+		}
+
 	case SCI_SETMODEVENTMASK:
 		modEventMask = wParam;
 		return 0;

@@ -169,7 +169,7 @@ int Document::AddRef() {
 
 // Decrease reference count and return its previous value.
 // Delete the document if reference count reaches zero.
-int Document::Release() {
+int SCI_METHOD Document::Release() {
 	int curRefCount = --refCount;
 	if (curRefCount == 0)
 		delete this;
@@ -823,6 +823,22 @@ bool Document::InsertString(int position, const char *s, int insertLength) {
 		enteredModification--;
 	}
 	return !cb.IsReadOnly();
+}
+
+int SCI_METHOD Document::AddData(char *data, int length) {
+	try {
+		int position = Length();
+		InsertString(position,data, length);
+	} catch (std::bad_alloc &) {
+		return SC_STATUS_BADALLOC;
+	} catch (...) {
+		return SC_STATUS_FAILURE;
+	}
+	return 0;
+}
+
+void * SCI_METHOD Document::ConvertToDocument() {
+	return this;
 }
 
 int Document::Undo() {

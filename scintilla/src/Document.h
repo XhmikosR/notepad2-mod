@@ -193,7 +193,7 @@ public:
 
 /**
  */
-class Document : PerLine, public IDocument {
+class Document : PerLine, public IDocument, public ILoader {
 
 public:
 	/** Used to pair watcher pointer with user data. */
@@ -252,7 +252,7 @@ public:
 	virtual ~Document();
 
 	int AddRef();
-	int Release();
+	int SCI_METHOD Release();
 
 	virtual void Init();
 	virtual void InsertLine(int line);
@@ -281,6 +281,8 @@ public:
 	void CheckReadOnly();
 	bool DeleteChars(int pos, int len);
 	bool InsertString(int position, const char *s, int insertLength);
+	int SCI_METHOD AddData(char *data, int length);
+	void * SCI_METHOD ConvertToDocument();
 	int Undo();
 	int Redo();
 	bool CanUndo() { return cb.CanUndo(); }
