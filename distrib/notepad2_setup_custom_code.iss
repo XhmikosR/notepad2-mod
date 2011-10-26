@@ -61,7 +61,7 @@ begin
 end;
 
 
-function UnInstallOldVersion(): Integer;
+function UninstallOldVersion(): Integer;
 var
   sUnInstPath: String;
   sUnInstallString: String;

@@ -17,11 +17,15 @@
 ;#define WDK
 ;#define is64bit
 
-; Various build checks
+; Various preprocessor checks
+#if VER < 0x05040200
+  #error Update your Inno Setup version
+#endif
+
+
 #if !defined(ICL12) && !defined(VS2010) && !defined(WDK)
   #error You need to define ICL12 or VS2010 or WDK first
 #endif
-
 
 #if defined(ICL12) && (defined(VS2010) || defined(WDK))
   #error You can't define ICL12 and at the same time
@@ -36,58 +40,49 @@
 #endif
 
 
-
-#if defined(ICL12)
-  #if defined(is64bit)
-    #define bindir '..\bin\ICL12\Release_x64'
-  #else
-    #define bindir '..\bin\ICL12\Release_x86'
-  #endif
-#elif defined(VS2010)
-  #if defined(is64bit)
-    #define bindir '..\bin\VS2010\Release_x64'
-  #else
-    #define bindir '..\bin\VS2010\Release_x86'
-  #endif
-#elif defined (WDK)
-  #if defined(is64bit)
-    #define bindir '..\bin\WDK\Release_x64'
-  #else
-    #define bindir '..\bin\WDK\Release_x86'
-  #endif
+#if defined(is64bit)
+  #define ARCH "x64"
+#else
+  #define ARCH "x86"
 #endif
 
 
-#define app_name "Notepad2"
+#if defined(ICL12)
+  #define COMPILER "ICL12"
+#elif defined(VS2010)
+  #define COMPILER "VS2010"
+#elif defined(WDK)
+  #define COMPILER "WDK"
+#endif
+
+
+#define bindir   "..\bin\" + COMPILER + "\Release_" + ARCH
+#define app_name "Notepad2-mod"
 
 #define VerMajor
 #define VerMinor
 #define VerBuild
 #define VerRevision
 
-#if VER < 0x05040200
-  #error Update your Inno Setup version
-#endif
-
-#expr ParseVersion("..\bin\WDK\Release_x86\Notepad2.exe", VerMajor, VerMinor, VerBuild, VerRevision)
-#define app_version    str(VerMajor) + "." + str(VerMinor) + "." + str(VerBuild) + "." + str(VerRevision)
+#expr ParseVersion(bindir + "\Notepad2.exe", VerMajor, VerMinor, VerBuild, VerRevision)
+#define app_version str(VerMajor) + "." + str(VerMinor) + "." + str(VerBuild) + "." + str(VerRevision)
 
 
 [Setup]
-#if defined is64bit
-UninstallDisplayName={#app_name} v{#app_version} x64
-OutputBaseFilename={#app_name}_{#app_version}.x64
+#if defined(is64bit)
+UninstallDisplayName={#app_name} {#app_version} (x64)
+OutputBaseFilename={#app_name}.{#app_version}_x64_{#COMPILER}
 ArchitecturesAllowed=x64
 ArchitecturesInstallIn64BitMode=x64
 #else
-UninstallDisplayName={#app_name} v{#app_version}
-OutputBaseFilename={#app_name}_{#app_version}.x86
+UninstallDisplayName={#app_name} {#app_version}
+OutputBaseFilename={#app_name}.{#app_version}_x86_{#COMPILER}
 ArchitecturesAllowed=x86
 #endif
 AppId={#app_name}
 AppName={#app_name}
 AppVersion={#app_version}
-AppVerName={#app_name} v{#app_version}
+AppVerName={#app_name} {#app_version}
 AppPublisher=XhmikosR
 AppPublisherURL=http://code.google.com/p/notepad2-mod/
 AppSupportURL=http://code.google.com/p/notepad2-mod/
@@ -96,7 +91,7 @@ AppContact=http://code.google.com/p/notepad2-mod/
 AppCopyright=Copyright © 2004-2011, Florian Balmer et all
 VersionInfoCompany=XhmikosR
 VersionInfoCopyright=Copyright © 2004-2011, Florian Balmer et all
-VersionInfoDescription={#app_name} v{#app_version} Setup
+VersionInfoDescription={#app_name} {#app_version} Setup
 VersionInfoTextVersion={#app_version}
 VersionInfoVersion={#app_version}
 VersionInfoProductName={#app_name}
@@ -127,7 +122,7 @@ Name: en; MessagesFile: compiler:Default.isl
 
 
 [Messages]
-BeveledLabel={#app_name} v{#app_version}
+BeveledLabel={#app_name} {#ARCH} {#app_version} {#COMPILER}
 
 
 [CustomMessages]
@@ -163,9 +158,9 @@ Source: ..\Readme-mod.txt;      DestDir: {app};                  Flags: ignoreve
 
 
 [Icons]
-Name: {commondesktop}\{#app_name}; Filename: {app}\Notepad2.exe; Tasks: desktopicon\common; Comment: {#app_name} v{#app_version}; WorkingDir: {app}; AppUserModelID: Notepad2; IconFilename: {app}\Notepad2.exe; IconIndex: 0
-Name: {userdesktop}\{#app_name};   Filename: {app}\Notepad2.exe; Tasks: desktopicon\user;   Comment: {#app_name} v{#app_version}; WorkingDir: {app}; AppUserModelID: Notepad2; IconFilename: {app}\Notepad2.exe; IconIndex: 0
-Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\{#app_name}; Filename: {app}\Notepad2.exe; Tasks: quicklaunchicon; Comment: {#app_name} v{#app_version}; WorkingDir: {app}; IconFilename: {app}\Notepad2.exe; IconIndex: 0
+Name: {commondesktop}\{#app_name}; Filename: {app}\Notepad2.exe; Tasks: desktopicon\common; Comment: {#app_name} {#app_version}; WorkingDir: {app}; AppUserModelID: Notepad2; IconFilename: {app}\Notepad2.exe; IconIndex: 0
+Name: {userdesktop}\{#app_name};   Filename: {app}\Notepad2.exe; Tasks: desktopicon\user;   Comment: {#app_name} {#app_version}; WorkingDir: {app}; AppUserModelID: Notepad2; IconFilename: {app}\Notepad2.exe; IconIndex: 0
+Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\{#app_name}; Filename: {app}\Notepad2.exe; Tasks: quicklaunchicon; Comment: {#app_name} {#app_version}; WorkingDir: {app}; IconFilename: {app}\Notepad2.exe; IconIndex: 0
 
 
 [Registry]
@@ -190,6 +185,7 @@ Type: files; Name: {app}\Notepad2.ini;              Check: IsUpgrade()
 
 
 [UninstallDelete]
+Type: files;      Name: {app}\Notepad2.ini
 Type: dirifempty; Name: {app}
 
 
@@ -231,7 +227,7 @@ procedure CurStepChanged(CurStep: TSetupStep);
 begin
   if CurStep = ssInstall then begin
     if IsOldBuildInstalled() then begin
-      UnInstallOldVersion();
+      UninstallOldVersion();
     end;
   end;
   if CurStep = ssPostInstall then begin
