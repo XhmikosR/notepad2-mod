@@ -49,6 +49,7 @@
 
 #if defined(ICL12)
   #define COMPILER "ICL12"
+  #define sse2_required
 #elif defined(VS2010)
   #define COMPILER "VS2010"
 #elif defined(WDK)
@@ -114,7 +115,7 @@ DisableProgramGroupPage=yes
 DisableReadyPage=yes
 DisableWelcomePage=yes
 AllowCancelDuringInstall=no
-MinVersion=0,5.0
+MinVersion=0,5.1.2600sp3
 
 
 [Languages]
@@ -123,12 +124,19 @@ Name: en; MessagesFile: compiler:Default.isl
 
 [Messages]
 BeveledLabel={#app_name} {#ARCH} {#app_version} {#COMPILER}
+#if defined(ICL12) || defined(VS2010)
+en.WinVersionTooLowError=[name] requires Windows XP Service Pack 3 or newer to run.
+#endif
 
 
 [CustomMessages]
 en.msg_AppIsRunning          = Notepad2 is running! Please close it and run again setup.
 en.msg_DeleteSettings        = Do you also want to delete Notepad2's settings?%n%nIf you plan on installing Notepad2 again then you do not have to delete them.
 en.msg_SetupIsRunningWarning = Notepad2 setup is already running!
+#if defined(sse_required) || defined(sse2_required)
+en.msg_simd_sse              = This build of Notepad2 requires a CPU with SSE extension support.%n%nYour CPU does not have those capabilities.
+en.msg_simd_sse2             = This build of Notepad2 requires a CPU with SSE2 extension support.%n%nYour CPU does not have those capabilities.
+#endif
 en.tsk_AllUsers              = For all users
 en.tsk_CurrentUser           = For the current user only
 en.tsk_Other                 = Other tasks:
@@ -148,6 +156,10 @@ Name: remove_default;     Description: {cm:tsk_RemoveDefault};     GroupDescript
 
 
 [Files]
+; For CPU detection
+#if defined(sse_required) || defined(sse2_required)
+Source: WinCPUID.dll;           DestDir: {tmp};                  Flags: dontcopy noencryption
+#endif
 Source: psvince.dll;            DestDir: {app};                  Flags: ignoreversion
 Source: ..\License.txt;         DestDir: {app};                  Flags: ignoreversion
 Source: {#bindir}\Notepad2.exe; DestDir: {app};                  Flags: ignoreversion
@@ -164,10 +176,10 @@ Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\{#app_name}; Filena
 
 
 [Registry]
-Root: HKLM; Subkey: SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe; ValueType: string; ValueName: Debugger; ValueData: """{app}\Notepad2.exe"" /z"; Tasks: set_default
+Root: HKLM; Subkey: SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe; ValueName: Debugger; ValueType: string; ValueData: """{app}\Notepad2.exe"" /z"; Tasks: set_default
 Root: HKLM; Subkey: SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe; ValueName: Debugger; Flags: deletevalue; Tasks: remove_default
 Root: HKLM; Subkey: SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe; ValueName: Debugger; Flags: uninsdeletevalue uninsdeletekeyifempty
-;Root: HKCR; Subkey: Applications\notepad2.exe\shell\open\command; ValueData: """{app}\Notepad2.exe"" %1"; Flags: uninsdeletevalue uninsdeletekeyifempty; Tasks: set_default
+;Root: HKCR; Subkey: Applications\notepad2.exe\shell\open\command;                                          ValueData: """{app}\Notepad2.exe"" %1"; Flags: uninsdeletevalue uninsdeletekeyifempty; Tasks: set_default
 
 
 [INI]
@@ -192,6 +204,10 @@ Type: dirifempty; Name: {app}
 [Code]
 // Include custom installer code
 #include 'notepad2_setup_custom_code.iss'
+// CPU detection functions
+#if defined(sse_required) || defined(sse2_required)
+#include "cpu_detection.iss"
+#endif
 
 // Global variables/constants and general functions
 const installer_mutex_name = 'notepad2_setup_mutex';
@@ -270,6 +286,25 @@ begin
       Result := False;
     end else
       CreateMutex(installer_mutex_name);
+
+#if defined(sse_required) || defined(sse2_required)
+      // Acquire CPU information
+      CPUCheck();
+
+#if defined(sse2_required)
+      if Result AND NOT Is_SSE2_Supported() then begin
+        SuppressibleMsgBox(CustomMessage('msg_simd_sse2'), mbError, MB_OK, MB_OK);
+        Result := False;
+      end;
+#elif defined(sse_required)
+      if Result AND NOT Is_SSE_Supported() then begin
+        SuppressibleMsgBox(CustomMessage('msg_simd_sse'), mbError, MB_OK, MB_OK);
+        Result := False;
+      end;
+#endif
+
+#endif
+
   end;
 end;
 
