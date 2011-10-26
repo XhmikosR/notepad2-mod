@@ -216,10 +216,18 @@ Type: dirifempty; Name: {app}
 const installer_mutex_name = '{#app_name}' + '_setup_mutex';
 
 function IsModuleLoaded(modulename: AnsiString): Boolean;
+#if defined(is64bit)
+external 'IsModuleLoaded2@files:psvince.dll stdcall setuponly';
+#else
 external 'IsModuleLoaded@files:psvince.dll stdcall setuponly';
+#endif
 
 function IsModuleLoadedU(modulename: AnsiString): Boolean;
+#if defined(is64bit)
+external 'IsModuleLoaded2@{app}\psvince.dll stdcall uninstallonly';
+#else
 external 'IsModuleLoaded@{app}\psvince.dll stdcall uninstallonly';
+#endif
 
 
 function ShouldSkipPage(PageID: Integer): Boolean;
