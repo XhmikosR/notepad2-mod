@@ -15,6 +15,7 @@
 ;#define ICL12
 ;#define VS2010
 ;#define WDK
+;#define is64bit
 
 ; Various build checks
 #if !defined(ICL12) && !defined(VS2010) && !defined(WDK)
@@ -182,9 +183,9 @@ Filename: {app}\Notepad2.exe; Description: {cm:LaunchProgram,{#app_name}}; Worki
 
 
 [InstallDelete]
-Type: files; Name: {userdesktop}\{#app_name}.lnk;   Check: NOT IsTaskSelected('desktopicon\user')   AND IsUpdate()
-Type: files; Name: {commondesktop}\{#app_name}.lnk; Check: NOT IsTaskSelected('desktopicon\common') AND IsUpdate()
-Type: files; Name: {app}\Notepad2.ini;              Check: IsUpdate()
+Type: files; Name: {userdesktop}\{#app_name}.lnk;   Check: NOT IsTaskSelected('desktopicon\user')   AND IsUpgrade()
+Type: files; Name: {commondesktop}\{#app_name}.lnk; Check: NOT IsTaskSelected('desktopicon\common') AND IsUpgrade()
+Type: files; Name: {app}\Notepad2.ini;              Check: IsUpgrade()
 
 
 [UninstallDelete]
@@ -197,23 +198,21 @@ Type: dirifempty; Name: {app}
 
 
 // General functions
-function IsModuleLoaded(modulename: AnsiString ):  Boolean;
+function IsModuleLoaded(modulename: AnsiString): Boolean;
 external 'IsModuleLoaded@files:psvince.dll stdcall setuponly';
 
-
-function IsModuleLoadedU(modulename: AnsiString ):  Boolean;
+function IsModuleLoadedU(modulename: AnsiString): Boolean;
 external 'IsModuleLoaded@{app}\psvince.dll stdcall uninstallonly';
 
 
 function ShouldSkipPage(PageID: Integer): Boolean;
 begin
-  if IsUpdate then begin
-    Case PageID of
-      // Hide the license page
-      wpLicense: Result := True;
-    else
-      Result := False;
-    end;
+  // Hide the license page
+  if IsUpgrade() AND (PageID = wpLicense) then begin
+    Result := True;
+  end
+  else begin
+    Result := False;
   end;
 end;
 
@@ -230,13 +229,13 @@ end;
 procedure CurStepChanged(CurStep: TSetupStep);
 begin
   if CurStep = ssInstall then begin
-    if IsOldBuildInstalled then begin
-      UnInstallOldVersion;
+    if IsOldBuildInstalled() then begin
+      UnInstallOldVersion();
     end;
   end;
   if CurStep = ssPostInstall then begin
     if IsTaskSelected('reset_settings') then begin
-      CleanUpSettings;
+      CleanUpSettings();
     end;
   end;
 end;
@@ -248,7 +247,7 @@ begin
   if CurUninstallStep = usUninstall then begin
     if SettingsExistCheck() then begin
       if MsgBox(ExpandConstant('{cm:msg_DeleteSettings}'), mbConfirmation, MB_YESNO or MB_DEFBUTTON2) = IDYES then begin
-        CleanUpSettings;
+        CleanUpSettings();
       end;
     end;
   end;
@@ -257,12 +256,11 @@ end;
 
 function InitializeSetup(): Boolean;
 begin
-  if IsModuleLoaded( 'Notepad2.exe' ) then begin
+  if IsModuleLoaded('Notepad2.exe') then begin
     MsgBox(ExpandConstant('{cm:msg_AppIsRunning}'), mbError, MB_OK );
     Result := False;
   end
   else begin
-    is_update := RegKeyExists(HKLM, 'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{#app_name}_is1');
     Result := True;
   end;
 end;
@@ -271,7 +269,7 @@ end;
 function InitializeUninstall(): Boolean;
 begin
   // Check if app is running during uninstallation
-  if IsModuleLoadedU( 'Notepad2.exe' ) then begin
+  if IsModuleLoadedU('Notepad2.exe') then begin
     MsgBox(ExpandConstant('{cm:msg_AppIsRunning}'), mbError, MB_OK );
     Result := False;
   end

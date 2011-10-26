@@ -13,14 +13,6 @@
 
 [Code]
 ////////////////////////////////////////
-//   Global variables and constants   //
-////////////////////////////////////////
-
-var
-  is_update: Boolean;
-
-
-////////////////////////////////////////
 //  Custom functions and procedures   //
 ////////////////////////////////////////
 
@@ -43,16 +35,19 @@ end;
 function IsOldBuildInstalled(): Boolean;
 begin
   if RegKeyExists(HKLM, 'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Notepad2') AND
-   FileExists(ExpandConstant('{pf}\Notepad2\Notepad2.inf')) then begin
+  FileExists(ExpandConstant('{pf}\Notepad2\Notepad2.inf')) then begin
     Result := True;
   end else
     Result := False;
 end;
 
 
-function IsUpdate(): Boolean;
+function IsUpgrade(): Boolean;
+var
+  sPrevPath: String;
 begin
-  Result := is_update;
+  sPrevPath := WizardForm.PrevAppDir;
+  Result := (sPrevPath <> '');
 end;
 
 
