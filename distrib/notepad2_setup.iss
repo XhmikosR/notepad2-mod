@@ -99,13 +99,12 @@ VersionInfoProductName={#app_name}
 VersionInfoProductVersion={#app_version}
 VersionInfoProductTextVersion={#app_version}
 UninstallDisplayIcon={app}\Notepad2.exe
-DefaultDirName={pf}\{#app_name}
+DefaultDirName={pf}\Notepad2
 LicenseFile=license.txt
 OutputDir=.
-SetupIconFile=..\res\Notepad2.ico
+SetupIconFile=Setup.ico
 WizardSmallImageFile=WizardSmallImageFile.bmp
 Compression=lzma2/ultra
-InternalCompressLevel=ultra
 SolidCompression=yes
 EnableDirDoesntExistWarning=no
 AllowNoIcons=yes
@@ -133,8 +132,10 @@ en.WinVersionTooLowError=[name] requires Windows XP Service Pack 3 or newer to r
 en.msg_AppIsRunning          = Notepad2 is running! Please close it and run again setup.
 en.msg_DeleteSettings        = Do you also want to delete Notepad2's settings?%n%nIf you plan on installing Notepad2 again then you do not have to delete them.
 en.msg_SetupIsRunningWarning = Notepad2 setup is already running!
-#if defined(sse_required) || defined(sse2_required)
+#if defined(sse_required)
 en.msg_simd_sse              = This build of Notepad2 requires a CPU with SSE extension support.%n%nYour CPU does not have those capabilities.
+#endif
+#if defined(sse2_required)
 en.msg_simd_sse2             = This build of Notepad2 requires a CPU with SSE2 extension support.%n%nYour CPU does not have those capabilities.
 #endif
 en.tsk_AllUsers              = For all users
@@ -151,16 +152,15 @@ Name: desktopicon\user;   Description: {cm:tsk_CurrentUser};       GroupDescript
 Name: desktopicon\common; Description: {cm:tsk_AllUsers};          GroupDescription: {cm:AdditionalIcons}; Flags: unchecked exclusive
 Name: quicklaunchicon;    Description: {cm:CreateQuickLaunchIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked;             OnlyBelowVersion: 0,6.01
 Name: reset_settings;     Description: {cm:tsk_ResetSettings};     GroupDescription: {cm:tsk_Other};       Flags: checkedonce unchecked; Check: SettingsExistCheck()
-Name: set_default;        Description: {cm:tsk_SetDefault};        GroupDescription: {cm:tsk_Other};                                     Check: DefaulNotepadCheck()
-Name: remove_default;     Description: {cm:tsk_RemoveDefault};     GroupDescription: {cm:tsk_Other};       Flags: checkedonce unchecked; Check: NOT DefaulNotepadCheck()
+Name: set_default;        Description: {cm:tsk_SetDefault};        GroupDescription: {cm:tsk_Other};                                     Check: NOT DefaulNotepadCheck()
+Name: remove_default;     Description: {cm:tsk_RemoveDefault};     GroupDescription: {cm:tsk_Other};       Flags: checkedonce unchecked; Check: DefaulNotepadCheck()
 
 
 [Files]
-; For CPU detection
+Source: psvince.dll;            DestDir: {app};                  Flags: ignoreversion
 #if defined(sse_required) || defined(sse2_required)
 Source: WinCPUID.dll;           DestDir: {tmp};                  Flags: dontcopy noencryption
 #endif
-Source: psvince.dll;            DestDir: {app};                  Flags: ignoreversion
 Source: ..\License.txt;         DestDir: {app};                  Flags: ignoreversion
 Source: {#bindir}\Notepad2.exe; DestDir: {app};                  Flags: ignoreversion
 Source: Notepad2.ini;           DestDir: {userappdata}\Notepad2; Flags: onlyifdoesntexist uninsneveruninstall
@@ -176,10 +176,12 @@ Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\{#app_name}; Filena
 
 
 [Registry]
-Root: HKLM; Subkey: SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe; ValueName: Debugger; ValueType: string; ValueData: """{app}\Notepad2.exe"" /z"; Tasks: set_default
+Root: HKLM; Subkey: SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe; ValueName: Debugger;       ValueType: string; ValueData: """{app}\Notepad2.exe"" /z"; Tasks: set_default
 Root: HKLM; Subkey: SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe; ValueName: Debugger; Flags: deletevalue; Tasks: remove_default
 Root: HKLM; Subkey: SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe; ValueName: Debugger; Flags: uninsdeletevalue uninsdeletekeyifempty
-;Root: HKCR; Subkey: Applications\notepad2.exe\shell\open\command;                                          ValueData: """{app}\Notepad2.exe"" %1"; Flags: uninsdeletevalue uninsdeletekeyifempty; Tasks: set_default
+Root: HKCR; Subkey: Applications\notepad2.exe;                                                             Valuename: AppUserModelID; ValueType: string; ValueData: Notepad2; Flags: uninsdeletevalue uninsdeletekeyifempty; Tasks: set_default
+Root: HKCR; Subkey: Applications\notepad2.exe\shell\open\command;                                                                     ValueType: string; ValueData: """{app}\Notepad2.exe"" %1"; Flags: uninsdeletevalue uninsdeletekeyifempty; Tasks: set_default
+Root: HKCR; Subkey: *\OpenWithList\notepad2.exe;                                                                                                         ValueData: "";       Flags: uninsdeletevalue uninsdeletekeyifempty; Tasks: set_default
 
 
 [INI]
@@ -203,14 +205,15 @@ Type: dirifempty; Name: {app}
 
 [Code]
 // Include custom installer code
-#include 'notepad2_setup_custom_code.iss'
+#include "notepad2_setup_custom_code.iss"
+
 // CPU detection functions
 #if defined(sse_required) || defined(sse2_required)
 #include "cpu_detection.iss"
 #endif
 
 // Global variables/constants and general functions
-const installer_mutex_name = 'notepad2_setup_mutex';
+const installer_mutex_name = '{#app_name}' + '_setup_mutex';
 
 function IsModuleLoaded(modulename: AnsiString): Boolean;
 external 'IsModuleLoaded@files:psvince.dll stdcall setuponly';
@@ -280,12 +283,12 @@ begin
   end
   else begin
     Result := True;
+    CreateMutex(installer_mutex_name);
 
     if IsModuleLoaded('Notepad2.exe') then begin
       SuppressibleMsgBox(ExpandConstant('{cm:msg_AppIsRunning}'), mbError, MB_OK, MB_OK);
       Result := False;
-    end else
-      CreateMutex(installer_mutex_name);
+    end;
 
 #if defined(sse_required) || defined(sse2_required)
       // Acquire CPU information
