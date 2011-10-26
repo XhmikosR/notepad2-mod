@@ -16,16 +16,20 @@ rem ****************************************************************************
 SETLOCAL ENABLEEXTENSIONS
 CD /D %~dp0
 
-rem Check the building environment
-CALL :SubDetectInnoSetup
-
-
 rem Check for the help switches
 IF /I "%~1" == "help"   GOTO SHOWHELP
 IF /I "%~1" == "/help"  GOTO SHOWHELP
 IF /I "%~1" == "-help"  GOTO SHOWHELP
 IF /I "%~1" == "--help" GOTO SHOWHELP
 IF /I "%~1" == "/?"     GOTO SHOWHELP
+
+
+REM You can set here the Inno Setup path if for example you have Inno Setup Unicode
+REM installed and you want to use the ANSI Inno Setup which is in another location
+SET "InnoSetupPath=H:\progs\thirdparty\isetup"
+
+rem Check the building environment
+CALL :SubDetectInnoSetup
 
 
 rem Check for the first switch
@@ -78,9 +82,9 @@ IF "%~2" == "" (
 
 
 :START
-IF /I "%ARCH%" == "x86" CALL :SubInstaller %BUILDTYPE% & GOTO END
-IF /I "%ARCH%" == "x64" CALL :SubInstaller %BUILDTYPE% is64bit & GOTO END
-IF /I "%ARCH%" == "all" (
+IF "%ARCH%" == "x86" CALL :SubInstaller %BUILDTYPE% & GOTO END
+IF "%ARCH%" == "x64" CALL :SubInstaller %BUILDTYPE% is64bit & GOTO END
+IF "%ARCH%" == "all" (
   CALL :SubInstaller %BUILDTYPE%
   CALL :SubInstaller %BUILDTYPE% is64bit
 )
@@ -107,12 +111,16 @@ EXIT /B
 :SHOWHELP
 TITLE "%~nx0 %1"
 ECHO. & ECHO.
-ECHO Usage:   %~nx0 [ICL12^|VS2010^|WDK]
+ECHO Usage:  %~nx0 [ICL12^|VS2010^|WDK] [x86^|x64^|all]
 ECHO.
-ECHO Notes:   You can also prefix the commands with "-", "--" or "/".
-ECHO          The arguments are not case sensitive.
+ECHO Notes:  You can also prefix the commands with "-", "--" or "/".
+ECHO         The arguments are not case sensitive.
 ECHO. & ECHO.
-ECHO Executing "%~nx0" will use the defaults: "%~nx0 WDK"
+ECHO Executing "%~nx0" will use the defaults: "%~nx0 WDK all"
+ECHO.
+ECHO If you skip the second argument the default one will be used.
+ECHO.
+ECHO WARNING: "%~nx0 x86" won't work.
 ECHO.
 ENDLOCAL
 EXIT /B
@@ -127,9 +135,13 @@ IF "%PROGRAMFILES(x86)%zzz"=="zzz" (
   SET "U_=HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall"
 )
 
-FOR /F "delims=" %%a IN (
-  'REG QUERY "%U_%\Inno Setup 5_is1" /v "Inno Setup: App Path"2^>Nul^|FIND "REG_"') DO (
-  SET "InnoSetupPath=%%a" & CALL :SubInnoSetup %%InnoSetupPath:*Z=%%)
+IF NOT DEFINED InnoSetupPath (
+  FOR /F "delims=" %%a IN (
+    'REG QUERY "%U_%\Inno Setup 5_is1" /v "Inno Setup: App Path"2^>Nul^|FIND "REG_"') DO (
+    SET "InnoSetupPath=%%a" & CALL :SubInnoSetupPath %%InnoSetupPath:*Z=%%)
+)
+
+IF NOT EXIST "%InnoSetupPath%" CALL :SUBMSG "ERROR" "Inno Setup wasn't found!"
 EXIT /B
 
 

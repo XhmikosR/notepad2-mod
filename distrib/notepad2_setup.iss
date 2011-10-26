@@ -132,7 +132,7 @@ BeveledLabel={#app_name} v{#app_version}
 
 [CustomMessages]
 en.msg_AppIsRunning          = Notepad2 is running! Please close it and run again setup.
-en.msg_DeleteSettings        = Do you also want to delete Notepad2's settings? %n%nIf you plan on installing Notepad2 again then you do not have to delete them.
+en.msg_DeleteSettings        = Do you also want to delete Notepad2's settings?%n%nIf you plan on installing Notepad2 again then you do not have to delete them.
 en.msg_SetupIsRunningWarning = Notepad2 setup is already running!
 en.tsk_AllUsers              = For all users
 en.tsk_CurrentUser           = For the current user only
@@ -246,7 +246,7 @@ begin
   // When uninstalling, ask the user to delete Notepad2's settings and logs
   if CurUninstallStep = usUninstall then begin
     if SettingsExistCheck() then begin
-      if MsgBox(ExpandConstant('{cm:msg_DeleteSettings}'), mbConfirmation, MB_YESNO or MB_DEFBUTTON2) = IDYES then begin
+      if MsgBox(ExpandConstant('{cm:msg_DeleteSettings}'), mbConfirmation, MB_YESNO OR MB_DEFBUTTON2) = IDYES then begin
         CleanUpSettings();
       end;
     end;
