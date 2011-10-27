@@ -73,10 +73,10 @@ SCI_CXXFLAGS  = $(SCI_CXXFLAGS)
 DEFINES       = $(DEFINES) /D "WIN32" /D "_WIN32_WINNT=0x0501"
 LDFLAGS       = $(LDFLAGS) /LARGEADDRESSAWARE /MACHINE:X86
 !IF "$(USE_MSVC2010)"=="true"
-LIBS          = $(LIBS) msvcrt_win2000.obj
+LIBS          = $(LIBS) msvcrt_winxp.obj
 LDFLAGS       = $(LDFLAGS) /SUBSYSTEM:WINDOWS,5.01
 !ELSE
-LIBS          = $(LIBS) msvcrt_winxp.obj
+LIBS          = $(LIBS) msvcrt_win2000.obj
 LDFLAGS       = $(LDFLAGS) /SUBSYSTEM:WINDOWS,5.0
 !ENDIF
 RFLAGS        = $(RFLAGS) /d "WIN32"
