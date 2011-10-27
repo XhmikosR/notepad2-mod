@@ -129,10 +129,10 @@ EXIT /B
 :SubDetectInnoSetup
 REM Detect if we are running on 64bit WIN and use Wow6432Node, and set the path
 REM of Inno Setup accordingly
-IF "%PROGRAMFILES(x86)%zzz"=="zzz" (
-  SET "U_=HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall"
-) ELSE (
+IF DEFINED PROGRAMFILES(x86) (
   SET "U_=HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall"
+) ELSE (
+  SET "U_=HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall"
 )
 
 IF NOT DEFINED InnoSetupPath (
@@ -145,7 +145,7 @@ IF NOT EXIST "%InnoSetupPath%" CALL :SUBMSG "ERROR" "Inno Setup wasn't found!"
 EXIT /B
 
 
-:SubInnoSetup
+:SubInnoSetupPath
 SET InnoSetupPath=%*
 EXIT /B
 
