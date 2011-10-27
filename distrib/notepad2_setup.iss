@@ -68,6 +68,8 @@
 #expr ParseVersion(bindir + "\Notepad2.exe", VerMajor, VerMinor, VerBuild, VerRevision)
 #define app_version str(VerMajor) + "." + str(VerMinor) + "." + str(VerBuild) + "." + str(VerRevision)
 
+#define IFEO "SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe"
+
 
 [Setup]
 #if defined(is64bit)
@@ -147,8 +149,8 @@ en.tsk_AllUsers              = For all users
 en.tsk_CurrentUser           = For the current user only
 en.tsk_Other                 = Other tasks:
 en.tsk_ResetSettings         = Reset Notepad2's settings
-en.tsk_RemoveDefault         = Restore Windows notepad
-en.tsk_SetDefault            = Replace Windows notepad with Notepad2
+;en.tsk_RemoveDefault         = Restore Windows notepad
+;en.tsk_SetDefault            = Replace Windows notepad with Notepad2
 
 
 [Tasks]
@@ -157,8 +159,8 @@ Name: desktopicon\user;   Description: {cm:tsk_CurrentUser};       GroupDescript
 Name: desktopicon\common; Description: {cm:tsk_AllUsers};          GroupDescription: {cm:AdditionalIcons}; Flags: unchecked exclusive
 Name: quicklaunchicon;    Description: {cm:CreateQuickLaunchIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked;             OnlyBelowVersion: 0,6.01
 Name: reset_settings;     Description: {cm:tsk_ResetSettings};     GroupDescription: {cm:tsk_Other};       Flags: checkedonce unchecked; Check: SettingsExistCheck()
-Name: set_default;        Description: {cm:tsk_SetDefault};        GroupDescription: {cm:tsk_Other};                                     Check: NOT DefaulNotepadCheck()
-Name: remove_default;     Description: {cm:tsk_RemoveDefault};     GroupDescription: {cm:tsk_Other};       Flags: checkedonce unchecked; Check: DefaulNotepadCheck()
+;Name: set_default;        Description: {cm:tsk_SetDefault};        GroupDescription: {cm:tsk_Other};       Flags: checkedonce;           Check: NOT DefaulNotepadCheck()
+;Name: remove_default;     Description: {cm:tsk_RemoveDefault};     GroupDescription: {cm:tsk_Other};       Flags: checkedonce unchecked; Check: DefaulNotepadCheck()
 
 
 [Files]
@@ -181,12 +183,12 @@ Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\{#app_name}; Filena
 
 
 [Registry]
-Root: HKLM; Subkey: SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe; ValueName: Debugger;       ValueType: string; ValueData: """{app}\Notepad2.exe"" /z"; Tasks: set_default
-Root: HKLM; Subkey: SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe; ValueName: Debugger; Flags: deletevalue; Tasks: remove_default
-Root: HKLM; Subkey: SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe; ValueName: Debugger; Flags: uninsdeletevalue uninsdeletekeyifempty
-Root: HKCR; Subkey: Applications\notepad2.exe;                                                             Valuename: AppUserModelID; ValueType: string; ValueData: Notepad2; Flags: uninsdeletevalue uninsdeletekeyifempty; Tasks: set_default
-Root: HKCR; Subkey: Applications\notepad2.exe\shell\open\command;                                                                     ValueType: string; ValueData: """{app}\Notepad2.exe"" %1"; Flags: uninsdeletevalue uninsdeletekeyifempty; Tasks: set_default
-Root: HKCR; Subkey: *\OpenWithList\notepad2.exe;                                                                                                         ValueData: "";       Flags: uninsdeletevalue uninsdeletekeyifempty; Tasks: set_default
+Root: HKLM; Subkey: {#IFEO};                   ValueName: Debugger;       ValueType: string; ValueData: """{app}\Notepad2.exe"" /z"; Flags: uninsdeletevalue uninsdeletekeyifempty
+;Root: HKLM; Subkey: {#IFEO};                   ValueName: Debugger;       Flags: deletevalue; Tasks: remove_default
+;Root: HKLM; Subkey: {#IFEO};                   ValueName: Debugger;       Flags: uninsdeletevalue uninsdeletekeyifempty
+Root: HKCR; Subkey: Applications\notepad2.exe; Valuename: AppUserModelID; ValueType: string; ValueData: Notepad2; Flags: uninsdeletekey
+Root: HKCR; Subkey: Applications\notepad2.exe\shell\open\command;         ValueType: string; ValueData: """{app}\Notepad2.exe"" %1"
+Root: HKCR; Subkey: *\OpenWithList\notepad2.exe;                                             ValueData: ""; Flags: uninsdeletevalue uninsdeletekeyifempty
 
 
 [INI]

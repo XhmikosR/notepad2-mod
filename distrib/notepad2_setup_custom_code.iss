@@ -21,7 +21,7 @@ function DefaulNotepadCheck(): Boolean;
 var
   svalue: String;
 begin
-  if RegQueryStringValue(HKLM, 'SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad2.exe', 'Debugger', svalue) then begin
+  if RegQueryStringValue(HKLM, 'SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe', 'Debugger', svalue) then begin
     if svalue = (ExpandConstant('"{pf}\Notepad2\Notepad2.exe" /z')) then begin
       Log('Custom Code: Notepad2 is set as the default notepad');
       Result := True;
