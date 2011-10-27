@@ -58,7 +58,7 @@
 
 
 #define bindir   "..\bin\" + COMPILER + "\Release_" + ARCH
-#define app_name "Notepad2-mod"
+
 
 #define VerMajor
 #define VerMinor
@@ -67,8 +67,8 @@
 
 #expr ParseVersion(bindir + "\Notepad2.exe", VerMajor, VerMinor, VerBuild, VerRevision)
 #define app_version str(VerMajor) + "." + str(VerMinor) + "." + str(VerBuild) + "." + str(VerRevision)
-
-#define IFEO "SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe"
+#define app_name    "Notepad2-mod"
+#define IFEO        "SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe"
 
 
 [Setup]
@@ -281,7 +281,7 @@ begin
   // When uninstalling, ask the user to delete Notepad2's settings and logs
   if CurUninstallStep = usUninstall then begin
     if SettingsExistCheck() then begin
-      if MsgBox(ExpandConstant('{cm:msg_DeleteSettings}'), mbConfirmation, MB_YESNO OR MB_DEFBUTTON2) = IDYES then begin
+      if SuppressibleMsgBox(ExpandConstant('{cm:msg_DeleteSettings}'), mbConfirmation, MB_YESNO OR MB_DEFBUTTON2, IDNO) = IDYES then begin
         CleanUpSettings();
       end;
     end;
