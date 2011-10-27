@@ -2,8 +2,7 @@
 Signature="$Windows NT$"
 
 [DefaultInstall]
-CopyFiles=Notepad2Install.Files
-CopyFiles=Notepad2Profile.Files
+CopyFiles=Notepad2Install.Files, Notepad2Profile.Files
 AddReg=Notepad2.AddReg
 
 [DefaultUninstall]
