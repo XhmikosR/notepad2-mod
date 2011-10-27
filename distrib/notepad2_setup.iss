@@ -71,12 +71,12 @@
 
 [Setup]
 #if defined(is64bit)
-UninstallDisplayName={#app_name} {#app_version} (x64)
+UninstallDisplayName={#app_name} {#app_version} (x64, {#COMPILER})
 OutputBaseFilename={#app_name}.{#app_version}_x64_{#COMPILER}
 ArchitecturesAllowed=x64
 ArchitecturesInstallIn64BitMode=x64
 #else
-UninstallDisplayName={#app_name} {#app_version}
+UninstallDisplayName={#app_name} {#app_version} ({#COMPILER})
 OutputBaseFilename={#app_name}.{#app_version}_x86_{#COMPILER}
 ArchitecturesAllowed=x86
 #endif
@@ -114,7 +114,11 @@ DisableProgramGroupPage=yes
 DisableReadyPage=yes
 DisableWelcomePage=yes
 AllowCancelDuringInstall=no
+#if defined(ICL12) || defined(VS2010) || defined(USE_MSVC2010)
 MinVersion=0,5.1.2600sp3
+#else
+MinVersion=0,5.0
+#endif
 
 
 [Languages]
@@ -122,8 +126,9 @@ Name: en; MessagesFile: compiler:Default.isl
 
 
 [Messages]
-BeveledLabel={#app_name} {#ARCH} {#app_version} {#COMPILER}
-#if defined(ICL12) || defined(VS2010)
+BeveledLabel={#app_name} {#ARCH} {#app_version}  -  Compiled with {#COMPILER}
+SetupWindowTitle=Setup - {#app_name} {#app_version}
+#if defined(ICL12) || defined(VS2010) || defined(USE_MSVC2010)
 en.WinVersionTooLowError=[name] requires Windows XP Service Pack 3 or newer to run.
 #endif
 
@@ -279,6 +284,14 @@ begin
       end;
     end;
   end;
+end;
+
+
+procedure InitializeWizard();
+begin
+  WizardForm.SelectTasksLabel.Hide;
+  WizardForm.TasksList.Top    := 0;
+  WizardForm.TasksList.Height := PageFromID(wpSelectTasks).SurfaceHeight;
 end;
 
 
