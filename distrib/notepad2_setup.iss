@@ -15,7 +15,6 @@
 ;#define ICL12
 ;#define VS2010
 ;#define WDK
-;#define is64bit
 
 ; Various preprocessor checks
 #if VER < 0x05040200
@@ -40,12 +39,6 @@
 #endif
 
 
-#if defined(is64bit)
-  #define ARCH "x64"
-#else
-  #define ARCH "x86"
-#endif
-
 
 #if defined(ICL12)
   #define COMPILER "ICL12"
@@ -57,7 +50,7 @@
 #endif
 
 
-#define bindir   "..\bin\" + COMPILER + "\Release_" + ARCH
+#define bindir   "..\bin\" + COMPILER
 
 
 #define VerMajor
@@ -65,23 +58,13 @@
 #define VerBuild
 #define VerRevision
 
-#expr ParseVersion(bindir + "\Notepad2.exe", VerMajor, VerMinor, VerBuild, VerRevision)
+#expr ParseVersion(bindir + "\Release_x86\Notepad2.exe", VerMajor, VerMinor, VerBuild, VerRevision)
 #define app_version str(VerMajor) + "." + str(VerMinor) + "." + str(VerBuild) + "." + str(VerRevision)
 #define app_name    "Notepad2-mod"
 #define IFEO        "SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe"
 
 
 [Setup]
-#if defined(is64bit)
-UninstallDisplayName={#app_name} {#app_version} (x64, {#COMPILER})
-OutputBaseFilename={#app_name}.{#app_version}_x64_{#COMPILER}
-ArchitecturesAllowed=x64
-ArchitecturesInstallIn64BitMode=x64
-#else
-UninstallDisplayName={#app_name} {#app_version} ({#COMPILER})
-OutputBaseFilename={#app_name}.{#app_version}_x86_{#COMPILER}
-ArchitecturesAllowed=x86
-#endif
 AppId={#app_name}
 AppName={#app_name}
 AppVersion={#app_version}
@@ -101,12 +84,13 @@ VersionInfoProductName={#app_name}
 VersionInfoProductVersion={#app_version}
 VersionInfoProductTextVersion={#app_version}
 UninstallDisplayIcon={app}\Notepad2.exe
+UninstallDisplayName={#app_name} {#app_version} ({#COMPILER})
 DefaultDirName={pf}\Notepad2
 LicenseFile=license.txt
 OutputDir=.
+OutputBaseFilename={#app_name}.{#app_version}_{#COMPILER}
 SetupIconFile=Setup.ico
 WizardSmallImageFile=WizardSmallImageFile.bmp
-Compression=lzma2/ultra
 SolidCompression=yes
 EnableDirDoesntExistWarning=no
 AllowNoIcons=yes
@@ -121,6 +105,8 @@ MinVersion=0,5.1.2600sp3
 #else
 MinVersion=0,5.0
 #endif
+ArchitecturesAllowed=x86 x64
+ArchitecturesInstallIn64BitMode=x64
 
 
 [Languages]
@@ -128,7 +114,7 @@ Name: en; MessagesFile: compiler:Default.isl
 
 
 [Messages]
-BeveledLabel={#app_name} {#ARCH} {#app_version}  -  Compiled with {#COMPILER}
+BeveledLabel={#app_name} {#app_version}  -  Compiled with {#COMPILER}
 SetupWindowTitle=Setup - {#app_name} {#app_version}
 #if defined(ICL12) || defined(VS2010) || defined(USE_MSVC2010)
 en.WinVersionTooLowError=[name] requires Windows XP Service Pack 3 or newer to run.
@@ -164,16 +150,17 @@ Name: reset_settings;     Description: {cm:tsk_ResetSettings};     GroupDescript
 
 
 [Files]
-Source: psvince.dll;            DestDir: {app};                  Flags: ignoreversion
+Source: psvince.dll;                        DestDir: {app};                  Flags: ignoreversion
 #if defined(sse_required) || defined(sse2_required)
-Source: WinCPUID.dll;           DestDir: {tmp};                  Flags: dontcopy noencryption
+Source: WinCPUID.dll;                       DestDir: {tmp};                  Flags: dontcopy noencryption
 #endif
-Source: ..\License.txt;         DestDir: {app};                  Flags: ignoreversion
-Source: {#bindir}\Notepad2.exe; DestDir: {app};                  Flags: ignoreversion
-Source: Notepad2.ini;           DestDir: {userappdata}\Notepad2; Flags: onlyifdoesntexist uninsneveruninstall
-Source: ..\Notepad2.txt;        DestDir: {app};                  Flags: ignoreversion
-Source: ..\Readme.txt;          DestDir: {app};                  Flags: ignoreversion
-Source: ..\Readme-mod.txt;      DestDir: {app};                  Flags: ignoreversion
+Source: ..\License.txt;                     DestDir: {app};                  Flags: ignoreversion
+Source: {#bindir}\Release_x64\Notepad2.exe; DestDir: {app};                  Flags: ignoreversion; Check: Is64BitInstallMode()
+Source: {#bindir}\Release_x86\Notepad2.exe; DestDir: {app};                  Flags: ignoreversion; Check: NOT Is64BitInstallMode()
+Source: Notepad2.ini;                       DestDir: {userappdata}\Notepad2; Flags: onlyifdoesntexist uninsneveruninstall
+Source: ..\Notepad2.txt;                    DestDir: {app};                  Flags: ignoreversion
+Source: ..\Readme.txt;                      DestDir: {app};                  Flags: ignoreversion
+Source: ..\Readme-mod.txt;                  DestDir: {app};                  Flags: ignoreversion
 
 
 [Icons]
@@ -223,18 +210,10 @@ Type: dirifempty; Name: {app}
 const installer_mutex_name = '{#app_name}' + '_setup_mutex';
 
 function IsModuleLoaded(modulename: AnsiString): Boolean;
-#if defined(is64bit)
 external 'IsModuleLoaded2@files:psvince.dll stdcall setuponly';
-#else
-external 'IsModuleLoaded@files:psvince.dll stdcall setuponly';
-#endif
 
 function IsModuleLoadedU(modulename: AnsiString): Boolean;
-#if defined(is64bit)
 external 'IsModuleLoaded2@{app}\psvince.dll stdcall uninstallonly';
-#else
-external 'IsModuleLoaded@{app}\psvince.dll stdcall uninstallonly';
-#endif
 
 
 function ShouldSkipPage(PageID: Integer): Boolean;
