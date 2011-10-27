@@ -399,6 +399,76 @@
       </li>
     </ul>
     <h3>
+       <a href="http://prdownloads.sourceforge.net/scintilla/scite300.zip?download">Release 3.0.0</a>
+    </h3>
+    <ul>
+	<li>
+	Released 1 November 2011.
+	</li>
+	<li>
+	Carbon platform support removed. OS X applications should switch to Cocoa.
+	</li>
+	<li>
+	On Windows Vista or newer, drawing may be performed with Direct2D and DirectWrite instead of GDI.
+	</li>
+	<li>
+	Cairo is now used for all drawing on GTK+. GDK drawing was removed. 
+	</li>
+	<li>
+	Paletted display support removed.
+	</li>
+	<li>
+	Fractional font sizes can be specified.
+	</li>
+	<li>
+	Different weights of text supported on some platforms instead of just normal and bold.
+	</li>
+	<li>
+	Sub-pixel character positioning supported.
+	</li>
+	<li>
+	SciTE loads files in the background without blocking the user interface.
+	</li>
+	<li>
+	SciTE can display diagnostic messages interleaved with the text of files immediately after the
+	line referred to by the diagnostic.
+	</li>
+	<li>
+	New API to see if all lines are visible which can be used to optimize processing fold structure notifications.
+	</li>
+	<li>
+	Scrolling optimized by avoiding invalidation of fold margin when redrawing whole window.
+	</li>
+	<li>
+	Optimized SCI_MARKERNEXT.
+	</li>
+	<li>
+	C++ lexer supports Pike hash quoted strings when turned on with lexer.cpp.hashquoted.strings.
+	</li>
+	<li>
+	Fixed incorrect line height with annotations in wrapped mode when there are multiple views.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3388159&group_id=2439">Bug #3388159.</a>
+	</li>
+	<li>
+	Calltips may be displayed above the text as well as below.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3410830&group_id=2439">Bug #3410830.</a>
+	</li>
+	<li>
+	For huge files SciTE only examines the first megabyte for newline discovery.
+	</li>
+	<li>
+	SciTE on GTK+ removes the fileselector.show.hidden property and check box as this was buggy and GTK+ now
+	supports an equivalent feature.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3413630&group_id=2439">Bug #3413630.</a>
+	</li>
+	<li>
+	SciTE on GTK+ supports mnemonics in dynamic menus.
+	</li>
+	<li>
+	SciTE on GTK+ displays the user's home directory as '~' in menus to make them shorter.
+	</li>
+    </ul>
+    <h3>
        <a href="http://prdownloads.sourceforge.net/scintilla/scite229.zip?download">Release 2.29</a>
     </h3>
     <ul>

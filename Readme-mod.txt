@@ -22,6 +22,6 @@ More information:
 * Kai Liu's website:          http://code.kliu.org/misc/notepad2/
 * Bookmark Edition website:   http://www.rlvision.com/notepad2/about.asp
 
-Notepad2-mod 4.2.25 has been created with Scintilla 2.29.  The unused lexers
+Notepad2-mod 4.2.25 has been created with Scintilla 3.0.0.  The unused lexers
 are commented out in "scintilla/src/Catalogue.cxx".  You can use WDK 7.1,
 MSVC 2010 or Intel Parallel Composer 2011 Update 5 to build Notepad2-mod.
