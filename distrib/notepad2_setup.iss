@@ -122,7 +122,7 @@ en.WinVersionTooLowError=[name] requires Windows XP Service Pack 3 or newer to r
 
 
 [CustomMessages]
-en.msg_AppIsRunning          = Notepad2 is running! Please close it and run again setup.
+en.msg_AppIsRunning          = Setup has detected that Notepad2 is currently running.%n%nPlease close all instances of it now, then click OK to continue, or Cancel to exit.
 en.msg_DeleteSettings        = Do you also want to delete Notepad2's settings?%n%nIf you plan on installing Notepad2 again then you do not have to delete them.
 en.msg_SetupIsRunningWarning = Notepad2 setup is already running!
 #if defined(sse_required)
@@ -376,6 +376,8 @@ end;
 
 
 function InitializeSetup(): Boolean;
+var
+  nMsgBoxResult: Integer;
 begin
   // Create a mutex for the installer and if it's already running then show a message and stop installation
   if CheckForMutexes(installer_mutex_name) AND NOT WizardSilent() then begin
@@ -386,8 +388,11 @@ begin
     Result := True;
     CreateMutex(installer_mutex_name);
 
-    if Notepad2IsRunningCheck() then begin
-      SuppressibleMsgBox(ExpandConstant('{cm:msg_AppIsRunning}'), mbError, MB_OK, MB_OK);
+    while Notepad2IsRunningCheck() AND (nMsgBoxResult <> IDCANCEL) DO begin
+      nMsgBoxResult := SuppressibleMsgBox(ExpandConstant('{cm:msg_AppIsRunning}'), mbError, MB_OKCANCEL, IDCANCEL);
+    end;
+
+    if nMsgBoxResult = IDCANCEL then begin
       Result := False;
     end;
 
@@ -414,6 +419,8 @@ end;
 
 
 function InitializeUninstall(): Boolean;
+var
+  nMsgBoxResult: Integer;
 begin
   if CheckForMutexes(installer_mutex_name) then begin
     SuppressibleMsgBox(ExpandConstant('{cm:msg_SetupIsRunningWarning}'), mbError, MB_OK, MB_OK);
@@ -422,9 +429,13 @@ begin
     Result := True;
 
     // Check if app is running during uninstallation
-    if Notepad2IsRunningCheck() then begin
-      SuppressibleMsgBox(ExpandConstant('{cm:msg_AppIsRunning}'), mbError, MB_OK, MB_OK);
+    while Notepad2IsRunningCheck() AND (nMsgBoxResult <> IDCANCEL) DO begin
+      nMsgBoxResult := SuppressibleMsgBox(ExpandConstant('{cm:msg_AppIsRunning}'), mbError, MB_OKCANCEL, IDCANCEL);
+    end;
+
+    if nMsgBoxResult = IDCANCEL then begin
       Result := False;
-    end else
-      CreateMutex(installer_mutex_name);
+    end;
+
+    CreateMutex(installer_mutex_name);
 end;

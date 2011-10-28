@@ -1,5 +1,4 @@
-1) Use a while loop for the AppIsRunning MsgBoxes
-2) Implement a mutex in Notepad2 and use that to check if it's running
+1) Implement a mutex in Notepad2 and use that to check if it's running
    (a working patch would be really welcome)
-3) Get rid of the [Registry] section and do everything related via the [Code] section
-4) Add a make Notepad2 the default Windows notepad task
+2) Get rid of the [Registry] section and do everything related via the [Code] section
+3) Add a make Notepad2 the default Windows notepad task
