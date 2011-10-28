@@ -122,21 +122,22 @@ en.WinVersionTooLowError=[name] requires Windows XP Service Pack 3 or newer to r
 
 
 [CustomMessages]
-en.msg_AppIsRunning          = Setup has detected that Notepad2 is currently running.%n%nPlease close all instances of it now, then click OK to continue, or Cancel to exit.
-en.msg_DeleteSettings        = Do you also want to delete Notepad2's settings?%n%nIf you plan on installing Notepad2 again then you do not have to delete them.
-en.msg_SetupIsRunningWarning = Notepad2 setup is already running!
+en.msg_AppIsRunning          =Setup has detected that Notepad2 is currently running.%n%nPlease close all instances of it now, then click OK to continue, or Cancel to exit.
+en.msg_AppIsRunningUninstall =Uninstall has detected that Notepad2 is currently running.%n%nPlease close all instances of it now, then click OK to continue, or Cancel to exit.
+en.msg_DeleteSettings        =Do you also want to delete Notepad2's settings?%n%nIf you plan on installing Notepad2 again then you do not have to delete them.
+en.msg_SetupIsRunningWarning =Notepad2 setup is already running!
 #if defined(sse_required)
-en.msg_simd_sse              = This build of Notepad2 requires a CPU with SSE extension support.%n%nYour CPU does not have those capabilities.
+en.msg_simd_sse              =This build of Notepad2 requires a CPU with SSE extension support.%n%nYour CPU does not have those capabilities.
 #endif
 #if defined(sse2_required)
-en.msg_simd_sse2             = This build of Notepad2 requires a CPU with SSE2 extension support.%n%nYour CPU does not have those capabilities.
+en.msg_simd_sse2             =This build of Notepad2 requires a CPU with SSE2 extension support.%n%nYour CPU does not have those capabilities.
 #endif
-en.tsk_AllUsers              = For all users
-en.tsk_CurrentUser           = For the current user only
-en.tsk_Other                 = Other tasks:
-en.tsk_ResetSettings         = Reset Notepad2's settings
-;en.tsk_RemoveDefault         = Restore Windows notepad
-;en.tsk_SetDefault            = Replace Windows notepad with Notepad2
+en.tsk_AllUsers              =For all users
+en.tsk_CurrentUser           =For the current user only
+en.tsk_Other                 =Other tasks:
+en.tsk_ResetSettings         =Reset Notepad2's settings
+;en.tsk_RemoveDefault         =Restore Windows notepad
+;en.tsk_SetDefault            =Replace Windows notepad with Notepad2
 
 
 [Tasks]
@@ -430,7 +431,7 @@ begin
 
     // Check if app is running during uninstallation
     while Notepad2IsRunningCheck() AND (nMsgBoxResult <> IDCANCEL) DO begin
-      nMsgBoxResult := SuppressibleMsgBox(ExpandConstant('{cm:msg_AppIsRunning}'), mbError, MB_OKCANCEL, IDCANCEL);
+      nMsgBoxResult := SuppressibleMsgBox(ExpandConstant('{cm:msg_AppIsRunningUninstall}'), mbError, MB_OKCANCEL, IDCANCEL);
     end;
 
     if nMsgBoxResult = IDCANCEL then begin
