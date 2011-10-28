@@ -60,7 +60,7 @@
 
 #expr ParseVersion(bindir + "\Release_x86\Notepad2.exe", VerMajor, VerMinor, VerBuild, VerRevision)
 #define app_version str(VerMajor) + "." + str(VerMinor) + "." + str(VerBuild) + "." + str(VerRevision)
-#define app_name    "Notepad2-mod"
+#define app_name    "Notepad2"
 #define IFEO        "SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe"
 
 
@@ -85,7 +85,7 @@ VersionInfoProductVersion={#app_version}
 VersionInfoProductTextVersion={#app_version}
 UninstallDisplayIcon={app}\Notepad2.exe
 UninstallDisplayName={#app_name} {#app_version} ({#COMPILER})
-DefaultDirName={pf}\Notepad2
+DefaultDirName={pf}\{#app_name}
 LicenseFile=license.txt
 OutputDir=.
 OutputBaseFilename={#app_name}.{#app_version}_{#COMPILER}
@@ -122,22 +122,22 @@ en.WinVersionTooLowError=[name] requires Windows XP Service Pack 3 or newer to r
 
 
 [CustomMessages]
-en.msg_AppIsRunning          =Setup has detected that Notepad2 is currently running.%n%nPlease close all instances of it now, then click OK to continue, or Cancel to exit.
-en.msg_AppIsRunningUninstall =Uninstall has detected that Notepad2 is currently running.%n%nPlease close all instances of it now, then click OK to continue, or Cancel to exit.
-en.msg_DeleteSettings        =Do you also want to delete Notepad2's settings?%n%nIf you plan on installing Notepad2 again then you do not have to delete them.
-en.msg_SetupIsRunningWarning =Notepad2 setup is already running!
+en.msg_AppIsRunning          =Setup has detected that {#app_name} is currently running.%n%nPlease close all instances of it now, then click OK to continue, or Cancel to exit.
+en.msg_AppIsRunningUninstall =Uninstall has detected that {#app_name} is currently running.%n%nPlease close all instances of it now, then click OK to continue, or Cancel to exit.
+en.msg_DeleteSettings        =Do you also want to delete {#app_name}'s settings?%n%nIf you plan on installing {#app_name} again then you do not have to delete them.
+en.msg_SetupIsRunningWarning ={#app_name} setup is already running!
 #if defined(sse_required)
-en.msg_simd_sse              =This build of Notepad2 requires a CPU with SSE extension support.%n%nYour CPU does not have those capabilities.
+en.msg_simd_sse              =This build of {#app_name} requires a CPU with SSE extension support.%n%nYour CPU does not have those capabilities.
 #endif
 #if defined(sse2_required)
-en.msg_simd_sse2             =This build of Notepad2 requires a CPU with SSE2 extension support.%n%nYour CPU does not have those capabilities.
+en.msg_simd_sse2             =This build of {#app_name} requires a CPU with SSE2 extension support.%n%nYour CPU does not have those capabilities.
 #endif
 en.tsk_AllUsers              =For all users
 en.tsk_CurrentUser           =For the current user only
 en.tsk_Other                 =Other tasks:
-en.tsk_ResetSettings         =Reset Notepad2's settings
-;en.tsk_RemoveDefault         =Restore Windows notepad
-;en.tsk_SetDefault            =Replace Windows notepad with Notepad2
+en.tsk_ResetSettings         =Reset {#app_name}'s settings
+en.tsk_RemoveDefault         =Restore Windows notepad
+en.tsk_SetDefault            =Replace Windows notepad with {#app_name}
 
 
 [Tasks]
@@ -146,8 +146,8 @@ Name: desktopicon\user;   Description: {cm:tsk_CurrentUser};       GroupDescript
 Name: desktopicon\common; Description: {cm:tsk_AllUsers};          GroupDescription: {cm:AdditionalIcons}; Flags: unchecked exclusive
 Name: quicklaunchicon;    Description: {cm:CreateQuickLaunchIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked;             OnlyBelowVersion: 0,6.01
 Name: reset_settings;     Description: {cm:tsk_ResetSettings};     GroupDescription: {cm:tsk_Other};       Flags: checkedonce unchecked; Check: SettingsExistCheck()
-;Name: set_default;        Description: {cm:tsk_SetDefault};        GroupDescription: {cm:tsk_Other};       Flags: checkedonce;           Check: NOT DefaulNotepadCheck()
-;Name: remove_default;     Description: {cm:tsk_RemoveDefault};     GroupDescription: {cm:tsk_Other};       Flags: checkedonce unchecked; Check: DefaulNotepadCheck()
+Name: set_default;        Description: {cm:tsk_SetDefault};        GroupDescription: {cm:tsk_Other};                                     Check: NOT DefaulNotepadCheck()
+Name: remove_default;     Description: {cm:tsk_RemoveDefault};     GroupDescription: {cm:tsk_Other};       Flags: checkedonce unchecked; Check: DefaulNotepadCheck()
 
 
 [Files]
@@ -167,15 +167,6 @@ Source: ..\Readme-mod.txt;                  DestDir: {app};                  Fla
 Name: {commondesktop}\{#app_name}; Filename: {app}\Notepad2.exe; Tasks: desktopicon\common; Comment: {#app_name} {#app_version}; WorkingDir: {app}; AppUserModelID: Notepad2; IconFilename: {app}\Notepad2.exe; IconIndex: 0
 Name: {userdesktop}\{#app_name};   Filename: {app}\Notepad2.exe; Tasks: desktopicon\user;   Comment: {#app_name} {#app_version}; WorkingDir: {app}; AppUserModelID: Notepad2; IconFilename: {app}\Notepad2.exe; IconIndex: 0
 Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\{#app_name}; Filename: {app}\Notepad2.exe; Tasks: quicklaunchicon; Comment: {#app_name} {#app_version}; WorkingDir: {app}; IconFilename: {app}\Notepad2.exe; IconIndex: 0
-
-
-[Registry]
-Root: HKLM; Subkey: {#IFEO};                   ValueName: Debugger;       ValueType: string; ValueData: """{app}\Notepad2.exe"" /z"; Flags: uninsdeletevalue uninsdeletekeyifempty
-;Root: HKLM; Subkey: {#IFEO};                   ValueName: Debugger;       Flags: deletevalue; Tasks: remove_default
-;Root: HKLM; Subkey: {#IFEO};                   ValueName: Debugger;       Flags: uninsdeletevalue uninsdeletekeyifempty
-Root: HKCR; Subkey: Applications\notepad2.exe; Valuename: AppUserModelID; ValueType: string; ValueData: Notepad2; Flags: uninsdeletekey
-Root: HKCR; Subkey: Applications\notepad2.exe\shell\open\command;         ValueType: string; ValueData: """{app}\Notepad2.exe"" %1"
-Root: HKCR; Subkey: *\OpenWithList\notepad2.exe;                                             ValueData: ""; Flags: uninsdeletevalue uninsdeletekeyifempty
 
 
 [INI]
@@ -213,35 +204,18 @@ const installer_mutex_name = '{#app_name}' + '_setup_mutex';
 ////////////////////////////////////////
 
 
-// Check if Notepad2 is running by using its window's class name
-function Notepad2IsRunningCheck(): Boolean;
-var
-  Wnd: HWND;
-begin
-  Wnd := FindWindowByClassName('Notepad2U');
-  if Wnd <> 0 then begin
-    Log('Custom Code: Found Notepad2`s window class name; Notepad2 is running');
-    Result := True;
-  end
-  else begin
-    Log('Custom Code: Notepad2 is NOT running');
-    Result := False;
-  end;
-end;
-
-
 // Check if Notepad2 has replaced Windows Notepad
 function DefaulNotepadCheck(): Boolean;
 var
-  svalue: String;
+  sDebugger: String;
 begin
-  if RegQueryStringValue(HKLM, '{#IFEO}', 'Debugger', svalue) then begin
-    if svalue = (ExpandConstant('"{pf}\Notepad2\Notepad2.exe" /z')) then begin
-      Log('Custom Code: Notepad2 is set as the default notepad');
+  if RegQueryStringValue(HKLM, '{#IFEO}', 'Debugger', sDebugger) then begin
+    if sDebugger = (ExpandConstant('"{pf}\{#app_name}\Notepad2.exe" /z')) then begin
+      Log('Custom Code: {#app_name} is set as the default notepad');
       Result := True;
     end
     else begin
-      Log('Custom Code: Notepad2 is NOT set as the default notepad');
+      Log('Custom Code: {#app_name} is NOT set as the default notepad');
       Result := False;
     end;
   end;
@@ -271,6 +245,23 @@ begin
 end;
 
 
+// Check if Notepad2 is running by using its window's class name
+function Notepad2IsRunningCheck(): Boolean;
+var
+  Wnd: HWND;
+begin
+  Wnd := FindWindowByClassName('Notepad2U');
+  if Wnd <> 0 then begin
+    Log('Custom Code: Found {#app_name}`s window class name; {#app_name} is running');
+    Result := True;
+  end
+  else begin
+    Log('Custom Code: {#app_name} is NOT running');
+    Result := False;
+  end;
+end;
+
+
 // Check if Notepad2's settings exist
 function SettingsExistCheck(): Boolean;
 begin
@@ -297,7 +288,7 @@ begin
   // default return value
   Log('Custom Code: Will try to uninstall the old build');
   Result := 0;
-    if Exec('rundll32.exe', 'advpack.dll,LaunchINFSectionEx "C:\Program Files\Notepad2\Uninstall.inf",DefaultUninstall,,8,N', '', SW_HIDE, ewWaitUntilTerminated, iResultCode) then begin
+    if Exec('rundll32.exe', ExpandConstant('advpack.dll,LaunchINFSectionEx "{pf}\Notepad2\Uninstall.inf",DefaultUninstall,,8,N'), '', SW_HIDE, ewWaitUntilTerminated, iResultCode) then begin
       Result := 2;
       Sleep(500);
       Log('Custom Code: The old build was successfully uninstalled');
@@ -306,13 +297,6 @@ begin
       Result := 1;
       Log('Custom Code: Something went wrong when uninstalling the old build');
     end;
-end;
-
-
-procedure CleanUpSettings();
-begin
-  DeleteFile(ExpandConstant('{userappdata}\Notepad2\Notepad2.ini'));
-  RemoveDir(ExpandConstant('{userappdata}\Notepad2'));
 end;
 
 
@@ -325,6 +309,28 @@ begin
   else begin
     Result := False;
   end;
+end;
+
+
+procedure AddReg();
+begin
+  RegWriteStringValue(HKCR, 'Applications\notepad2.exe', 'AppUserModelID', 'Notepad2');
+  RegWriteStringValue(HKCR, 'Applications\notepad2.exe\shell\open\command', '', ExpandConstant('"{app}\Notepad2.exe" %1'));
+  RegWriteStringValue(HKCR, '*\OpenWithList\notepad2.exe', '', '');
+end;
+
+
+procedure RemoveReg();
+begin
+  RegDeleteKeyIncludingSubkeys(HKCR, 'Applications\notepad2.exe');
+  RegDeleteKeyIncludingSubkeys(HKCR, '*\OpenWithList\notepad2.exe');
+end;
+
+
+procedure CleanUpSettings();
+begin
+  DeleteFile(ExpandConstant('{userappdata}\Notepad2\Notepad2.ini'));
+  RemoveDir(ExpandConstant('{userappdata}\Notepad2'));
 end;
 
 
@@ -343,6 +349,12 @@ begin
   if CurStep = ssInstall then begin
     if IsOldBuildInstalled() then begin
       UninstallOldVersion();
+      // This is the case where the old build is installed so the DefaulNotepadCheck() returns true
+      // but after uninstalling the old build then we end up with the following regkey removed
+      if NOT IsTaskSelected('remove_default') then begin
+        RegWriteStringValue(HKLM, '{#IFEO}', 'Debugger', ExpandConstant('"{app}\Notepad2.exe" /z'));
+      end;
+
     end;
   end;
 
@@ -350,6 +362,18 @@ begin
     if IsTaskSelected('reset_settings') then begin
       CleanUpSettings();
     end;
+
+    if IsTaskSelected('set_default') then begin
+      RegWriteStringValue(HKLM, '{#IFEO}', 'Debugger', ExpandConstant('"{app}\Notepad2.exe" /z'));
+    end;
+
+    if IsTaskSelected('remove_default') then begin
+      RegDeleteValue(HKLM, '{#IFEO}', 'Debugger');
+      RegDeleteKeyIfEmpty(HKLM, '{#IFEO}');
+    end;
+
+    // Always add Notepad2's AppUserModelID and the rest registry values
+    AddReg();
   end;
 
 end;
@@ -364,6 +388,10 @@ begin
         CleanUpSettings();
       end;
     end;
+
+    RegDeleteValue(HKLM, '{#IFEO}', 'Debugger');
+    RegDeleteKeyIfEmpty(HKLM, '{#IFEO}');
+    RemoveReg();
   end;
 end;
 
