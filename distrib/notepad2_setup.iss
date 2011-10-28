@@ -427,6 +427,4 @@ begin
       Result := False;
     end else
       CreateMutex(installer_mutex_name);
-      // Unload the psvince.dll in order to be uninstalled
-      UnloadDLL(ExpandConstant('{app}\psvince.dll'));
 end;
