@@ -150,7 +150,6 @@ Name: reset_settings;     Description: {cm:tsk_ResetSettings};     GroupDescript
 
 
 [Files]
-Source: psvince.dll;                        DestDir: {app};                  Flags: ignoreversion
 #if defined(sse_required) || defined(sse2_required)
 Source: WinCPUID.dll;                       DestDir: {tmp};                  Flags: dontcopy noencryption
 #endif
@@ -190,6 +189,7 @@ Filename: {app}\Notepad2.exe; Description: {cm:LaunchProgram,{#app_name}}; Worki
 Type: files; Name: {userdesktop}\{#app_name}.lnk;   Check: NOT IsTaskSelected('desktopicon\user')   AND IsUpgrade()
 Type: files; Name: {commondesktop}\{#app_name}.lnk; Check: NOT IsTaskSelected('desktopicon\common') AND IsUpgrade()
 Type: files; Name: {app}\Notepad2.ini;              Check: IsUpgrade()
+Type: files; Name: {app}\psvince.dll;               Check: IsUpgrade()
 
 
 [UninstallDelete]
@@ -206,16 +206,28 @@ Type: dirifempty; Name: {app}
 // Global variables/constants and general functions
 const installer_mutex_name = '{#app_name}' + '_setup_mutex';
 
-function IsModuleLoaded(modulename: AnsiString): Boolean;
-external 'IsModuleLoaded2@files:psvince.dll stdcall setuponly';
-
-function IsModuleLoadedU(modulename: AnsiString): Boolean;
-external 'IsModuleLoaded2@{app}\psvince.dll stdcall uninstallonly';
-
 
 ////////////////////////////////////////
 //  Custom functions and procedures   //
 ////////////////////////////////////////
+
+
+// Check if Notepad2 is running by using its window's class name
+function Notepad2IsRunningCheck(): Boolean;
+var
+  Wnd: HWND;
+begin
+  Wnd := FindWindowByClassName('Notepad2U');
+  if Wnd <> 0 then begin
+    Log('Custom Code: Found Notepad2`s window class name; Notepad2 is running');
+    Result := True;
+  end
+  else begin
+    Log('Custom Code: Notepad2 is NOT running');
+    Result := False;
+  end;
+end;
+
 
 // Check if Notepad2 has replaced Windows Notepad
 function DefaulNotepadCheck(): Boolean;
@@ -374,7 +386,7 @@ begin
     Result := True;
     CreateMutex(installer_mutex_name);
 
-    if IsModuleLoaded('Notepad2.exe') then begin
+    if Notepad2IsRunningCheck() then begin
       SuppressibleMsgBox(ExpandConstant('{cm:msg_AppIsRunning}'), mbError, MB_OK, MB_OK);
       Result := False;
     end;
@@ -410,7 +422,7 @@ begin
     Result := True;
 
     // Check if app is running during uninstallation
-    if IsModuleLoadedU('Notepad2.exe') then begin
+    if Notepad2IsRunningCheck() then begin
       SuppressibleMsgBox(ExpandConstant('{cm:msg_AppIsRunning}'), mbError, MB_OK, MB_OK);
       Result := False;
     end else
