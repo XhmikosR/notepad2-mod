@@ -1,4 +1,4 @@
-;* Notepad2 - Installer script
+;* Notepad2-mod - Installer script
 ;*
 ;* Copyright (C) 2010-2011 XhmikosR
 ;*
@@ -60,8 +60,9 @@
 
 #expr ParseVersion(bindir + "\Release_x86\Notepad2.exe", VerMajor, VerMinor, VerBuild, VerRevision)
 #define app_version str(VerMajor) + "." + str(VerMinor) + "." + str(VerBuild) + "." + str(VerRevision)
-#define app_name    "Notepad2"
-#define IFEO        "SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe"
+#define app_name     "Notepad2-mod"
+#define quick_launch "{userappdata}\Microsoft\Internet Explorer\Quick Launch"
+#define IFEO         "SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe"
 
 
 [Setup]
@@ -85,11 +86,12 @@ VersionInfoProductVersion={#app_version}
 VersionInfoProductTextVersion={#app_version}
 UninstallDisplayIcon={app}\Notepad2.exe
 UninstallDisplayName={#app_name} {#app_version} ({#COMPILER})
-DefaultDirName={pf}\{#app_name}
+DefaultDirName={pf}\Notepad2
 LicenseFile=license.txt
 OutputDir=.
 OutputBaseFilename={#app_name}.{#app_version}_{#COMPILER}
 SetupIconFile=Setup.ico
+WizardImageFile=compiler:WizModernImage-IS.bmp
 WizardSmallImageFile=WizardSmallImageFile.bmp
 SolidCompression=yes
 EnableDirDoesntExistWarning=no
@@ -114,8 +116,9 @@ Name: en; MessagesFile: compiler:Default.isl
 
 
 [Messages]
-BeveledLabel={#app_name} {#app_version}  -  Compiled with {#COMPILER}
-SetupWindowTitle=Setup - {#app_name} {#app_version}
+BeveledLabel     ={#app_name} {#app_version}  -  Compiled with {#COMPILER}
+SetupAppTitle    =Setup - {#app_name}
+SetupWindowTitle =Setup - {#app_name}
 #if defined(ICL12) || defined(VS2010) || defined(USE_MSVC2010)
 en.WinVersionTooLowError=[name] requires Windows XP Service Pack 3 or newer to run.
 #endif
@@ -146,7 +149,7 @@ Name: desktopicon\user;   Description: {cm:tsk_CurrentUser};       GroupDescript
 Name: desktopicon\common; Description: {cm:tsk_AllUsers};          GroupDescription: {cm:AdditionalIcons}; Flags: unchecked exclusive
 Name: quicklaunchicon;    Description: {cm:CreateQuickLaunchIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked;             OnlyBelowVersion: 0,6.01
 Name: reset_settings;     Description: {cm:tsk_ResetSettings};     GroupDescription: {cm:tsk_Other};       Flags: checkedonce unchecked; Check: SettingsExistCheck()
-Name: set_default;        Description: {cm:tsk_SetDefault};        GroupDescription: {cm:tsk_Other};                                     Check: NOT DefaulNotepadCheck()
+Name: set_default;        Description: {cm:tsk_SetDefault};        GroupDescription: {cm:tsk_Other};                                     Check: not DefaulNotepadCheck()
 Name: remove_default;     Description: {cm:tsk_RemoveDefault};     GroupDescription: {cm:tsk_Other};       Flags: checkedonce unchecked; Check: DefaulNotepadCheck()
 
 
@@ -156,7 +159,7 @@ Source: WinCPUID.dll;                       DestDir: {tmp};                  Fla
 #endif
 Source: ..\License.txt;                     DestDir: {app};                  Flags: ignoreversion
 Source: {#bindir}\Release_x64\Notepad2.exe; DestDir: {app};                  Flags: ignoreversion; Check: Is64BitInstallMode()
-Source: {#bindir}\Release_x86\Notepad2.exe; DestDir: {app};                  Flags: ignoreversion; Check: NOT Is64BitInstallMode()
+Source: {#bindir}\Release_x86\Notepad2.exe; DestDir: {app};                  Flags: ignoreversion; Check: not Is64BitInstallMode()
 Source: Notepad2.ini;                       DestDir: {userappdata}\Notepad2; Flags: onlyifdoesntexist uninsneveruninstall
 Source: ..\Notepad2.txt;                    DestDir: {app};                  Flags: ignoreversion
 Source: ..\Readme.txt;                      DestDir: {app};                  Flags: ignoreversion
@@ -166,7 +169,7 @@ Source: ..\Readme-mod.txt;                  DestDir: {app};                  Fla
 [Icons]
 Name: {commondesktop}\{#app_name}; Filename: {app}\Notepad2.exe; Tasks: desktopicon\common; Comment: {#app_name} {#app_version}; WorkingDir: {app}; AppUserModelID: Notepad2; IconFilename: {app}\Notepad2.exe; IconIndex: 0
 Name: {userdesktop}\{#app_name};   Filename: {app}\Notepad2.exe; Tasks: desktopicon\user;   Comment: {#app_name} {#app_version}; WorkingDir: {app}; AppUserModelID: Notepad2; IconFilename: {app}\Notepad2.exe; IconIndex: 0
-Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\{#app_name}; Filename: {app}\Notepad2.exe; Tasks: quicklaunchicon; Comment: {#app_name} {#app_version}; WorkingDir: {app}; IconFilename: {app}\Notepad2.exe; IconIndex: 0
+Name: {#quick_launch}\{#app_name}; Filename: {app}\Notepad2.exe; Tasks: quicklaunchicon;    Comment: {#app_name} {#app_version}; WorkingDir: {app};                           IconFilename: {app}\Notepad2.exe; IconIndex: 0
 
 
 [INI]
@@ -178,8 +181,9 @@ Filename: {app}\Notepad2.exe; Description: {cm:LaunchProgram,{#app_name}}; Worki
 
 
 [InstallDelete]
-Type: files; Name: {userdesktop}\{#app_name}.lnk;   Check: NOT IsTaskSelected('desktopicon\user')   AND IsUpgrade()
-Type: files; Name: {commondesktop}\{#app_name}.lnk; Check: NOT IsTaskSelected('desktopicon\common') AND IsUpgrade()
+Type: files; Name: {userdesktop}\{#app_name}.lnk;   Check: not IsTaskSelected('desktopicon\user')   and IsUpgrade()
+Type: files; Name: {commondesktop}\{#app_name}.lnk; Check: not IsTaskSelected('desktopicon\common') and IsUpgrade()
+Type: files; Name: {#quick_launch}\{#app_name}.lnk; Check: not IsTaskSelected('quicklaunchicon')    and IsUpgrade(); OnlyBelowVersion: 0,6.01
 Type: files; Name: {app}\Notepad2.ini;              Check: IsUpgrade()
 Type: files; Name: {app}\psvince.dll;               Check: IsUpgrade()
 
@@ -210,7 +214,7 @@ var
   sDebugger: String;
 begin
   if RegQueryStringValue(HKLM, '{#IFEO}', 'Debugger', sDebugger) then begin
-    if sDebugger = (ExpandConstant('"{pf}\{#app_name}\Notepad2.exe" /z')) then begin
+    if sDebugger = (ExpandConstant('"{app}\Notepad2.exe" /z')) then begin
       Log('Custom Code: {#app_name} is set as the default notepad');
       Result := True;
     end
@@ -224,7 +228,7 @@ end;
 
 function IsOldBuildInstalled(): Boolean;
 begin
-  if RegKeyExists(HKLM, 'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Notepad2') AND
+  if RegKeyExists(HKLM, 'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Notepad2') and
   FileExists(ExpandConstant('{pf}\Notepad2\Uninstall.inf')) then begin
     Log('Custom Code: The old build is installed');
     Result := True;
@@ -303,7 +307,7 @@ end;
 function ShouldSkipPage(PageID: Integer): Boolean;
 begin
   // Hide the license page
-  if IsUpgrade() AND (PageID = wpLicense) then begin
+  if IsUpgrade() and (PageID = wpLicense) then begin
     Result := True;
   end
   else begin
@@ -351,7 +355,7 @@ begin
       UninstallOldVersion();
       // This is the case where the old build is installed so the DefaulNotepadCheck() returns true
       // but after uninstalling the old build then we end up with the following regkey removed
-      if NOT IsTaskSelected('remove_default') then begin
+      if not IsTaskSelected('remove_default') then begin
         RegWriteStringValue(HKLM, '{#IFEO}', 'Debugger', ExpandConstant('"{app}\Notepad2.exe" /z'));
       end;
 
@@ -384,7 +388,7 @@ begin
   // When uninstalling, ask the user to delete Notepad2's settings and logs
   if CurUninstallStep = usUninstall then begin
     if SettingsExistCheck() then begin
-      if SuppressibleMsgBox(ExpandConstant('{cm:msg_DeleteSettings}'), mbConfirmation, MB_YESNO OR MB_DEFBUTTON2, IDNO) = IDYES then begin
+      if SuppressibleMsgBox(ExpandConstant('{cm:msg_DeleteSettings}'), mbConfirmation, MB_YESNO or MB_DEFBUTTON2, IDNO) = IDYES then begin
         CleanUpSettings();
       end;
     end;
@@ -409,7 +413,7 @@ var
   nMsgBoxResult: Integer;
 begin
   // Create a mutex for the installer and if it's already running then show a message and stop installation
-  if CheckForMutexes(installer_mutex_name) AND NOT WizardSilent() then begin
+  if CheckForMutexes(installer_mutex_name) and not WizardSilent() then begin
     SuppressibleMsgBox(ExpandConstant('{cm:msg_SetupIsRunningWarning}'), mbError, MB_OK, MB_OK);
     Result := False;
   end
@@ -417,26 +421,26 @@ begin
     Result := True;
     CreateMutex(installer_mutex_name);
 
-    while Notepad2IsRunningCheck() AND (nMsgBoxResult <> IDCANCEL) DO begin
+    while Notepad2IsRunningCheck() and (nMsgBoxResult <> IDCANCEL) do begin
       nMsgBoxResult := SuppressibleMsgBox(ExpandConstant('{cm:msg_AppIsRunning}'), mbError, MB_OKCANCEL, IDCANCEL);
     end;
 
     if nMsgBoxResult = IDCANCEL then begin
       Result := False;
-    end;
+    end else
 
 #if defined(sse_required) || defined(sse2_required)
       // Acquire CPU information
       CPUCheck();
 
 #if defined(sse2_required)
-      if Result AND NOT Is_SSE2_Supported() then begin
-        SuppressibleMsgBox(CustomMessage('msg_simd_sse2'), mbError, MB_OK, MB_OK);
+      if not Is_SSE2_Supported() then begin
+        SuppressibleMsgBox(CustomMessage('msg_simd_sse2'), mbCriticalError, MB_OK, MB_OK);
         Result := False;
       end;
 #elif defined(sse_required)
-      if Result AND NOT Is_SSE_Supported() then begin
-        SuppressibleMsgBox(CustomMessage('msg_simd_sse'), mbError, MB_OK, MB_OK);
+      if not Is_SSE_Supported() then begin
+        SuppressibleMsgBox(CustomMessage('msg_simd_sse'), mbCriticalError, MB_OK, MB_OK);
         Result := False;
       end;
 #endif
@@ -454,17 +458,18 @@ begin
   if CheckForMutexes(installer_mutex_name) then begin
     SuppressibleMsgBox(ExpandConstant('{cm:msg_SetupIsRunningWarning}'), mbError, MB_OK, MB_OK);
     Result := False;
-  end else
+  end
+  else begin
     Result := True;
+    CreateMutex(installer_mutex_name);
 
     // Check if app is running during uninstallation
-    while Notepad2IsRunningCheck() AND (nMsgBoxResult <> IDCANCEL) DO begin
+    while Notepad2IsRunningCheck() and (nMsgBoxResult <> IDCANCEL) do begin
       nMsgBoxResult := SuppressibleMsgBox(ExpandConstant('{cm:msg_AppIsRunningUninstall}'), mbError, MB_OKCANCEL, IDCANCEL);
     end;
 
     if nMsgBoxResult = IDCANCEL then begin
       Result := False;
     end;
-
-    CreateMutex(installer_mutex_name);
+  end;
 end;
