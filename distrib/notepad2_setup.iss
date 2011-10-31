@@ -377,7 +377,7 @@ begin
   // When uninstalling, ask the user to delete Notepad2's settings and logs
   if CurUninstallStep = usUninstall then begin
     if SettingsExistCheck() then begin
-      if SuppressibleMsgBox(ExpandConstant('{cm:msg_DeleteSettings}'), mbConfirmation, MB_YESNO or MB_DEFBUTTON2, IDNO) = IDYES then begin
+      if SuppressibleMsgBox(CustomMessage('msg_DeleteSettings'), mbConfirmation, MB_YESNO or MB_DEFBUTTON2, IDNO) = IDYES then begin
         CleanUpSettings();
       end;
     end;
@@ -403,7 +403,7 @@ var
 begin
   // Create a mutex for the installer and if it's already running then show a message and stop installation
   if CheckForMutexes(installer_mutex_name) and not WizardSilent() then begin
-    SuppressibleMsgBox(ExpandConstant('{cm:msg_SetupIsRunningWarning}'), mbError, MB_OK, MB_OK);
+    SuppressibleMsgBox(CustomMessage('msg_SetupIsRunningWarning'), mbError, MB_OK, MB_OK);
     Result := False;
   end
   else begin
@@ -411,7 +411,7 @@ begin
     CreateMutex(installer_mutex_name);
 
     while IsModuleLoaded('Notepad2.exe') and (nMsgBoxResult <> IDCANCEL) do begin
-      nMsgBoxResult := SuppressibleMsgBox(ExpandConstant('{cm:msg_AppIsRunning}'), mbError, MB_OKCANCEL, IDCANCEL);
+      nMsgBoxResult := SuppressibleMsgBox(CustomMessage('msg_AppIsRunning'), mbError, MB_OKCANCEL, IDCANCEL);
     end;
 
     if nMsgBoxResult = IDCANCEL then begin
@@ -445,7 +445,7 @@ var
   nMsgBoxResult: Integer;
 begin
   if CheckForMutexes(installer_mutex_name) then begin
-    SuppressibleMsgBox(ExpandConstant('{cm:msg_SetupIsRunningWarning}'), mbError, MB_OK, MB_OK);
+    SuppressibleMsgBox(CustomMessage('msg_SetupIsRunningWarning'), mbError, MB_OK, MB_OK);
     Result := False;
   end
   else begin
@@ -454,7 +454,7 @@ begin
 
     // Check if app is running during uninstallation
     while IsModuleLoadedU('Notepad2.exe') and (nMsgBoxResult <> IDCANCEL) do begin
-      nMsgBoxResult := SuppressibleMsgBox(ExpandConstant('{cm:msg_AppIsRunningUninstall}'), mbError, MB_OKCANCEL, IDCANCEL);
+      nMsgBoxResult := SuppressibleMsgBox(CustomMessage('msg_AppIsRunningUninstall'), mbError, MB_OKCANCEL, IDCANCEL);
     end;
 
     if nMsgBoxResult = IDCANCEL then begin
