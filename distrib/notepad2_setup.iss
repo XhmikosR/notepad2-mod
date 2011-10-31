@@ -154,6 +154,7 @@ Name: remove_default;     Description: {cm:tsk_RemoveDefault};     GroupDescript
 
 
 [Files]
+Source: psvince.dll;                        DestDir: {app};                  Flags: ignoreversion
 #if defined(sse_required) || defined(sse2_required)
 Source: WinCPUID.dll;                       DestDir: {tmp};                  Flags: dontcopy noencryption
 #endif
@@ -185,7 +186,6 @@ Type: files; Name: {userdesktop}\{#app_name}.lnk;   Check: not IsTaskSelected('d
 Type: files; Name: {commondesktop}\{#app_name}.lnk; Check: not IsTaskSelected('desktopicon\common') and IsUpgrade()
 Type: files; Name: {#quick_launch}\{#app_name}.lnk; Check: not IsTaskSelected('quicklaunchicon')    and IsUpgrade(); OnlyBelowVersion: 0,6.01
 Type: files; Name: {app}\Notepad2.ini;              Check: IsUpgrade()
-Type: files; Name: {app}\psvince.dll;               Check: IsUpgrade()
 
 
 [UninstallDelete]
@@ -201,6 +201,12 @@ Type: dirifempty; Name: {app}
 
 // Global variables/constants and general functions
 const installer_mutex_name = '{#app_name}' + '_setup_mutex';
+
+function IsModuleLoaded(modulename: AnsiString): Boolean;
+external 'IsModuleLoaded2@files:psvince.dll stdcall setuponly';
+
+function IsModuleLoadedU(modulename: AnsiString): Boolean;
+external 'IsModuleLoaded2@{app}\psvince.dll stdcall uninstallonly';
 
 
 ////////////////////////////////////////
@@ -246,23 +252,6 @@ var
 begin
   sPrevPath := WizardForm.PrevAppDir;
   Result := (sPrevPath <> '');
-end;
-
-
-// Check if Notepad2 is running by using its window's class name
-function Notepad2IsRunningCheck(): Boolean;
-var
-  Wnd: HWND;
-begin
-  Wnd := FindWindowByClassName('Notepad2U');
-  if Wnd <> 0 then begin
-    Log('Custom Code: Found {#app_name}`s window class name; {#app_name} is running');
-    Result := True;
-  end
-  else begin
-    Log('Custom Code: {#app_name} is NOT running');
-    Result := False;
-  end;
 end;
 
 
@@ -421,13 +410,13 @@ begin
     Result := True;
     CreateMutex(installer_mutex_name);
 
-    while Notepad2IsRunningCheck() and (nMsgBoxResult <> IDCANCEL) do begin
+    while IsModuleLoaded('Notepad2.exe') and (nMsgBoxResult <> IDCANCEL) do begin
       nMsgBoxResult := SuppressibleMsgBox(ExpandConstant('{cm:msg_AppIsRunning}'), mbError, MB_OKCANCEL, IDCANCEL);
     end;
 
     if nMsgBoxResult = IDCANCEL then begin
       Result := False;
-    end else
+    end;
 
 #if defined(sse_required) || defined(sse2_required)
       // Acquire CPU information
@@ -464,12 +453,15 @@ begin
     CreateMutex(installer_mutex_name);
 
     // Check if app is running during uninstallation
-    while Notepad2IsRunningCheck() and (nMsgBoxResult <> IDCANCEL) do begin
+    while IsModuleLoadedU('Notepad2.exe') and (nMsgBoxResult <> IDCANCEL) do begin
       nMsgBoxResult := SuppressibleMsgBox(ExpandConstant('{cm:msg_AppIsRunningUninstall}'), mbError, MB_OKCANCEL, IDCANCEL);
     end;
 
     if nMsgBoxResult = IDCANCEL then begin
       Result := False;
     end;
+
+    // Unload the psvince.dll in order to be uninstalled
+    UnloadDLL(ExpandConstant('{app}\psvince.dll'));
   end;
 end;
