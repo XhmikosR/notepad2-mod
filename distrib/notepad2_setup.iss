@@ -131,7 +131,7 @@ en.msg_DeleteSettings        =Do you also want to delete {#app_name}'s settings?
 en.msg_SetupIsRunningWarning ={#app_name} setup is already running!
 #if defined(sse_required)
 en.msg_simd_sse              =This build of {#app_name} requires a CPU with SSE extension support.%n%nYour CPU does not have those capabilities.
-#elif defined(sse_required)
+#elif defined(sse2_required)
 en.msg_simd_sse2             =This build of {#app_name} requires a CPU with SSE2 extension support.%n%nYour CPU does not have those capabilities.
 #endif
 en.tsk_AllUsers              =For all users
