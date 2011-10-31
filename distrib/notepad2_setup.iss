@@ -131,8 +131,7 @@ en.msg_DeleteSettings        =Do you also want to delete {#app_name}'s settings?
 en.msg_SetupIsRunningWarning ={#app_name} setup is already running!
 #if defined(sse_required)
 en.msg_simd_sse              =This build of {#app_name} requires a CPU with SSE extension support.%n%nYour CPU does not have those capabilities.
-#endif
-#if defined(sse2_required)
+#elif defined(sse_required)
 en.msg_simd_sse2             =This build of {#app_name} requires a CPU with SSE2 extension support.%n%nYour CPU does not have those capabilities.
 #endif
 en.tsk_AllUsers              =For all users
@@ -155,9 +154,6 @@ Name: remove_default;     Description: {cm:tsk_RemoveDefault};     GroupDescript
 
 [Files]
 Source: psvince.dll;                        DestDir: {app};                  Flags: ignoreversion
-#if defined(sse_required) || defined(sse2_required)
-Source: WinCPUID.dll;                       DestDir: {tmp};                  Flags: dontcopy noencryption
-#endif
 Source: ..\License.txt;                     DestDir: {app};                  Flags: ignoreversion
 Source: {#bindir}\Release_x64\Notepad2.exe; DestDir: {app};                  Flags: ignoreversion; Check: Is64BitInstallMode()
 Source: {#bindir}\Release_x86\Notepad2.exe; DestDir: {app};                  Flags: ignoreversion; Check: not Is64BitInstallMode()
@@ -194,11 +190,6 @@ Type: dirifempty; Name: {app}
 
 
 [Code]
-// CPU detection functions
-#if defined(sse_required) || defined(sse2_required)
-#include "cpu_detection.iss"
-#endif
-
 // Global variables/constants and general functions
 const installer_mutex_name = '{#app_name}' + '_setup_mutex';
 
@@ -207,6 +198,9 @@ external 'IsModuleLoaded2@files:psvince.dll stdcall setuponly';
 
 function IsModuleLoadedU(modulename: AnsiString): Boolean;
 external 'IsModuleLoaded2@{app}\psvince.dll stdcall uninstallonly';
+
+function IsProcessorFeaturePresent(Feature: Integer): Boolean;
+external 'IsProcessorFeaturePresent@kernel32.dll stdcall';
 
 
 ////////////////////////////////////////
@@ -229,6 +223,20 @@ begin
       Result := False;
     end;
   end;
+end;
+
+
+function Is_SSE_Supported(): Boolean;
+begin
+  // PF_XMMI_INSTRUCTIONS_AVAILABLE
+  Result := IsProcessorFeaturePresent(6);
+end;
+
+
+function Is_SSE2_Supported(): Boolean;
+begin
+  // PF_XMMI64_INSTRUCTIONS_AVAILABLE
+  Result := IsProcessorFeaturePresent(10);
 end;
 
 
@@ -418,22 +426,16 @@ begin
       Result := False;
     end;
 
-#if defined(sse_required) || defined(sse2_required)
-      // Acquire CPU information
-      CPUCheck();
-
 #if defined(sse2_required)
-      if not Is_SSE2_Supported() then begin
-        SuppressibleMsgBox(CustomMessage('msg_simd_sse2'), mbCriticalError, MB_OK, MB_OK);
-        Result := False;
-      end;
+    if not Is_SSE2_Supported() then begin
+      SuppressibleMsgBox(CustomMessage('msg_simd_sse2'), mbCriticalError, MB_OK, MB_OK);
+      Result := False;
+    end;
 #elif defined(sse_required)
-      if not Is_SSE_Supported() then begin
-        SuppressibleMsgBox(CustomMessage('msg_simd_sse'), mbCriticalError, MB_OK, MB_OK);
-        Result := False;
-      end;
-#endif
-
+    if not Is_SSE_Supported() then begin
+      SuppressibleMsgBox(CustomMessage('msg_simd_sse'), mbCriticalError, MB_OK, MB_OK);
+      Result := False;
+    end;
 #endif
 
   end;
