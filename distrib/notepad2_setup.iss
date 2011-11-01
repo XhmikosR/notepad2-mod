@@ -199,8 +199,10 @@ external 'IsModuleLoaded2@files:psvince.dll stdcall setuponly';
 function IsModuleLoadedU(modulename: AnsiString): Boolean;
 external 'IsModuleLoaded2@{app}\psvince.dll stdcall uninstallonly';
 
+#if defined(sse_required) || defined(sse2_required)
 function IsProcessorFeaturePresent(Feature: Integer): Boolean;
 external 'IsProcessorFeaturePresent@kernel32.dll stdcall';
+#endif
 
 
 ////////////////////////////////////////
@@ -226,18 +228,22 @@ begin
 end;
 
 
+#if defined(sse_required)
 function Is_SSE_Supported(): Boolean;
 begin
   // PF_XMMI_INSTRUCTIONS_AVAILABLE
   Result := IsProcessorFeaturePresent(6);
 end;
 
+#elif defined(sse2_required)
 
 function Is_SSE2_Supported(): Boolean;
 begin
   // PF_XMMI64_INSTRUCTIONS_AVAILABLE
   Result := IsProcessorFeaturePresent(10);
 end;
+
+#endif
 
 
 function IsOldBuildInstalled(): Boolean;
