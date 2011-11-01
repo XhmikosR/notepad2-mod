@@ -410,7 +410,7 @@ end;
 
 function InitializeSetup(): Boolean;
 var
-  nMsgBoxResult: Integer;
+  iMsgBoxResult: Integer;
 begin
   // Create a mutex for the installer and if it's already running then show a message and stop installation
   if CheckForMutexes(installer_mutex_name) and not WizardSilent() then begin
@@ -421,11 +421,11 @@ begin
     Result := True;
     CreateMutex(installer_mutex_name);
 
-    while IsModuleLoaded('Notepad2.exe') and (nMsgBoxResult <> IDCANCEL) do begin
-      nMsgBoxResult := SuppressibleMsgBox(CustomMessage('msg_AppIsRunning'), mbError, MB_OKCANCEL, IDCANCEL);
+    while IsModuleLoaded('Notepad2.exe') and (iMsgBoxResult <> IDCANCEL) do begin
+      iMsgBoxResult := SuppressibleMsgBox(CustomMessage('msg_AppIsRunning'), mbError, MB_OKCANCEL, IDCANCEL);
     end;
 
-    if nMsgBoxResult = IDCANCEL then begin
+    if iMsgBoxResult = IDCANCEL then begin
       Result := False;
     end;
 
@@ -447,7 +447,7 @@ end;
 
 function InitializeUninstall(): Boolean;
 var
-  nMsgBoxResult: Integer;
+  iMsgBoxResult: Integer;
 begin
   if CheckForMutexes(installer_mutex_name) then begin
     SuppressibleMsgBox(CustomMessage('msg_SetupIsRunningWarning'), mbError, MB_OK, MB_OK);
@@ -458,11 +458,11 @@ begin
     CreateMutex(installer_mutex_name);
 
     // Check if app is running during uninstallation
-    while IsModuleLoadedU('Notepad2.exe') and (nMsgBoxResult <> IDCANCEL) do begin
-      nMsgBoxResult := SuppressibleMsgBox(CustomMessage('msg_AppIsRunningUninstall'), mbError, MB_OKCANCEL, IDCANCEL);
+    while IsModuleLoadedU('Notepad2.exe') and (iMsgBoxResult <> IDCANCEL) do begin
+      iMsgBoxResult := SuppressibleMsgBox(CustomMessage('msg_AppIsRunningUninstall'), mbError, MB_OKCANCEL, IDCANCEL);
     end;
 
-    if nMsgBoxResult = IDCANCEL then begin
+    if iMsgBoxResult = IDCANCEL then begin
       Result := False;
     end;
 
