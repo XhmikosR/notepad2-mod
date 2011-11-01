@@ -16,7 +16,7 @@
 ;#define VS2010
 ;#define WDK
 
-; Various preprocessor checks
+; Preprocessor related stuff
 #if VER < 0x05040200
   #error Update your Inno Setup version
 #endif
@@ -41,17 +41,16 @@
 
 
 #if defined(ICL12)
-  #define COMPILER "ICL12"
+  #define compiler "ICL12"
   #define sse2_required
 #elif defined(VS2010)
-  #define COMPILER "VS2010"
+  #define compiler "VS2010"
 #elif defined(WDK)
-  #define COMPILER "WDK"
+  #define compiler "WDK"
 #endif
 
 
-#define bindir   "..\bin\" + COMPILER
-
+#define bindir     "..\bin\" + compiler
 
 #define VerMajor
 #define VerMinor
@@ -59,7 +58,7 @@
 #define VerRevision
 
 #expr ParseVersion(bindir + "\Release_x86\Notepad2.exe", VerMajor, VerMinor, VerBuild, VerRevision)
-#define app_version str(VerMajor) + "." + str(VerMinor) + "." + str(VerBuild) + "." + str(VerRevision)
+#define app_version  str(VerMajor) + "." + str(VerMinor) + "." + str(VerBuild) + "." + str(VerRevision)
 #define app_name     "Notepad2-mod"
 #define quick_launch "{userappdata}\Microsoft\Internet Explorer\Quick Launch"
 #define IFEO         "SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe"
@@ -85,11 +84,11 @@ VersionInfoProductName={#app_name}
 VersionInfoProductVersion={#app_version}
 VersionInfoProductTextVersion={#app_version}
 UninstallDisplayIcon={app}\Notepad2.exe
-UninstallDisplayName={#app_name} {#app_version} ({#COMPILER})
+UninstallDisplayName={#app_name} {#app_version} ({#compiler})
 DefaultDirName={pf}\Notepad2
 LicenseFile=license.txt
 OutputDir=.
-OutputBaseFilename={#app_name}.{#app_version}_{#COMPILER}
+OutputBaseFilename={#app_name}.{#app_version}_{#compiler}
 SetupIconFile=Setup.ico
 WizardImageFile=compiler:WizModernImage-IS.bmp
 WizardSmallImageFile=WizardSmallImageFile.bmp
@@ -116,12 +115,9 @@ Name: en; MessagesFile: compiler:Default.isl
 
 
 [Messages]
-BeveledLabel     ={#app_name} {#app_version}  -  Compiled with {#COMPILER}
+BeveledLabel     ={#app_name} {#app_version}  -  Compiled with {#compiler}
 SetupAppTitle    =Setup - {#app_name}
 SetupWindowTitle =Setup - {#app_name}
-#if defined(ICL12) || defined(VS2010) || defined(USE_MSVC2010)
-en.WinVersionTooLowError=[name] requires Windows XP Service Pack 3 or newer to run.
-#endif
 
 
 [CustomMessages]
@@ -155,8 +151,8 @@ Name: remove_default;     Description: {cm:tsk_RemoveDefault};     GroupDescript
 [Files]
 Source: psvince.dll;                        DestDir: {app};                  Flags: ignoreversion
 Source: ..\License.txt;                     DestDir: {app};                  Flags: ignoreversion
-Source: {#bindir}\Release_x64\Notepad2.exe; DestDir: {app};                  Flags: ignoreversion; Check: Is64BitInstallMode()
-Source: {#bindir}\Release_x86\Notepad2.exe; DestDir: {app};                  Flags: ignoreversion; Check: not Is64BitInstallMode()
+Source: {#bindir}\Release_x64\Notepad2.exe; DestDir: {app};                  Flags: ignoreversion;                         Check: Is64BitInstallMode()
+Source: {#bindir}\Release_x86\Notepad2.exe; DestDir: {app};                  Flags: ignoreversion;                         Check: not Is64BitInstallMode()
 Source: Notepad2.ini;                       DestDir: {userappdata}\Notepad2; Flags: onlyifdoesntexist uninsneveruninstall
 Source: ..\Notepad2.txt;                    DestDir: {app};                  Flags: ignoreversion
 Source: ..\Readme.txt;                      DestDir: {app};                  Flags: ignoreversion
@@ -178,10 +174,10 @@ Filename: {app}\Notepad2.exe; Description: {cm:LaunchProgram,{#app_name}}; Worki
 
 
 [InstallDelete]
-Type: files; Name: {userdesktop}\{#app_name}.lnk;   Check: not IsTaskSelected('desktopicon\user')   and IsUpgrade()
-Type: files; Name: {commondesktop}\{#app_name}.lnk; Check: not IsTaskSelected('desktopicon\common') and IsUpgrade()
-Type: files; Name: {#quick_launch}\{#app_name}.lnk; Check: not IsTaskSelected('quicklaunchicon')    and IsUpgrade(); OnlyBelowVersion: 0,6.01
-Type: files; Name: {app}\Notepad2.ini;              Check: IsUpgrade()
+Type: files;      Name: {userdesktop}\{#app_name}.lnk;   Check: not IsTaskSelected('desktopicon\user')   and IsUpgrade()
+Type: files;      Name: {commondesktop}\{#app_name}.lnk; Check: not IsTaskSelected('desktopicon\common') and IsUpgrade()
+Type: files;      Name: {#quick_launch}\{#app_name}.lnk; Check: not IsTaskSelected('quicklaunchicon')    and IsUpgrade(); OnlyBelowVersion: 0,6.01
+Type: files;      Name: {app}\Notepad2.ini;              Check: IsUpgrade()
 
 
 [UninstallDelete]
@@ -356,8 +352,8 @@ begin
   if CurStep = ssInstall then begin
     if IsOldBuildInstalled() then begin
       UninstallOldVersion();
-      // This is the case where the old build is installed so the DefaulNotepadCheck() returns true
-      // but after uninstalling the old build then we end up with the following regkey removed
+      // This is the case where the old build is installed; the DefaulNotepadCheck() returns true
+      // and the set_default task isn't selected
       if not IsTaskSelected('remove_default') then begin
         RegWriteStringValue(HKLM, '{#IFEO}', 'Debugger', ExpandConstant('"{app}\Notepad2.exe" /z'));
       end;
@@ -399,6 +395,7 @@ begin
     RegDeleteValue(HKLM, '{#IFEO}', 'Debugger');
     RegDeleteKeyIfEmpty(HKLM, '{#IFEO}');
     RemoveReg();
+
   end;
 end;
 
