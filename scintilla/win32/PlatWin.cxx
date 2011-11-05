@@ -690,7 +690,12 @@ void SurfaceGDI::LineTo(int x_, int y_) {
 void SurfaceGDI::Polygon(Point *pts, int npts, ColourDesired fore, ColourDesired back) {
 	PenColour(fore);
 	BrushColor(back);
-	::Polygon(hdc, reinterpret_cast<POINT *>(pts), npts);
+	std::vector<POINT> outline;
+	for (int i=0;i<npts;i++) {
+		POINT pt = {pts[i].x, pts[i].y};
+		outline.push_back(pt);
+	}
+	::Polygon(hdc, &outline[0], npts);
 }
 
 void SurfaceGDI::RectangleDraw(PRectangle rc, ColourDesired fore, ColourDesired back) {
