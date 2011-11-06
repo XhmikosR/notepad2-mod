@@ -50,7 +50,15 @@
 #endif
 
 
-#define bindir     "..\bin\" + compiler
+#define bindir       "..\bin\" + compiler
+
+#ifnexist SourcePath + bindir + "\Release_x86\Notepad2.exe"
+  #error Compile Notepad2 x86 first
+#endif
+
+#ifnexist SourcePath + bindir + "\Release_x64\Notepad2.exe"
+  #error Compile Notepad2 x64 first
+#endif
 
 #define VerMajor
 #define VerMinor
