@@ -203,7 +203,7 @@ HFONT FormatAndMetrics::HFont() {
 	memset(&lf, 0, sizeof(lf));
 #if defined(USE_D2D)
 	if (technology == SCWIN_TECH_GDI) {
-		if (0 == ::GetObject(hfont, sizeof(lf), &lf)) {
+		if (0 == ::GetObjectW(hfont, sizeof(lf), &lf)) {
 			return 0;
 		}
 	} else {
@@ -216,7 +216,7 @@ HFONT FormatAndMetrics::HFont() {
 		lf.lfHeight = -static_cast<int>(pTextFormat->GetFontSize());
 	}
 #else
-	if (0 == ::GetObject(hfont, sizeof(lf), &lf)) {
+	if (0 == ::GetObjectW(hfont, sizeof(lf), &lf)) {
 		return 0;
 	}
 #endif
