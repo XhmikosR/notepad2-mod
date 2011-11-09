@@ -90,7 +90,7 @@ static bool followsReturnKeyword(StyleContext &sc, LexAccessor &styler) {
 static std::string GetRestOfLine(LexAccessor &styler, int start, bool allowSpace) {
 	std::string restOfLine;
 	int i =0;
-	char ch = styler.SafeGetCharAt(start + i, '\n');
+	char ch = styler.SafeGetCharAt(start, '\n');
 	while ((ch != '\r') && (ch != '\n')) {
 		if (allowSpace || (ch != ' '))
 			restOfLine += ch;
