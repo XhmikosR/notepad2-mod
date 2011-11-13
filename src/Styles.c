@@ -823,7 +823,7 @@ EDITLEXER lexSQL = { SCLEX_SQL, 63018, L"SQL Query", L"sql", L"", &KeyWords_SQL,
 KEYWORDLIST KeyWords_PY = {
 "and as assert break class continue def del elif else except "
 "exec False finally for from global if import in is lambda None "
-"not or pass print raise return True try with while yield",
+"nonlocal not or pass print raise return True try while with yield",
 "", "", "", "", "", "", "", "" };
 
 
