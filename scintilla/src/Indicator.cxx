@@ -8,10 +8,6 @@
 #include <vector>
 #include <map>
 
-#ifdef _MSC_VER
-#pragma warning(disable: 4786)
-#endif
-
 #include "Platform.h"
 
 #include "Scintilla.h"

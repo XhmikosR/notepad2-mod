@@ -8,10 +8,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-#ifdef _MSC_VER
-#pragma warning(disable: 4786)
-#endif
-
 #include <vector>
 #include <map>
 

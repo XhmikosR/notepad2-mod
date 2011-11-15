@@ -30,7 +30,7 @@
 
 /* notepad2-mod custom code
    D2D files are not included in WDK 7.1 */
-#if defined(_MSC_VER) && !defined(WDK_BUILD)
+#if defined(_MSC_VER) && (_MSC_VER > 1200) && !defined(WDK_BUILD)
 #define USE_D2D 1
 #endif
 
