@@ -392,7 +392,7 @@ end;
 
 procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
 begin
-  // When uninstalling, ask the user to delete Notepad2's settings and logs
+  // When uninstalling, ask the user to delete Notepad2's settings
   if CurUninstallStep = usUninstall then begin
     if SettingsExistCheck() then begin
       if SuppressibleMsgBox(CustomMessage('msg_DeleteSettings'), mbConfirmation, MB_YESNO or MB_DEFBUTTON2, IDNO) = IDYES then begin
