@@ -9276,6 +9276,9 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 	case SCI_GETTECHNOLOGY:
 		return technology;
 
+	case SCI_COUNTCHARACTERS:
+		return pdoc->CountCharacters(wParam, lParam);
+
 	default:
 		return DefWndProc(iMessage, wParam, lParam);
 	}
