@@ -763,9 +763,11 @@ get position GetLineIndentPosition=2128(int line,)
 # Retrieve the column number of a position, taking tab width into account.
 get int GetColumn=2129(position pos,)
 
+# Count characters between two positions.
+fun int CountCharacters=2633(int startPos, int endPos)
+
 # Show or hide the horizontal scroll bar.
 set void SetHScrollBar=2130(bool show,)
-
 # Is the horizontal scroll bar visible?
 get bool GetHScrollBar=2131(,)
 

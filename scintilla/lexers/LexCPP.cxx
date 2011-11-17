@@ -13,10 +13,6 @@
 #include <stdarg.h>
 #include <assert.h>
 
-#ifdef _MSC_VER
-#pragma warning(disable: 4786)
-#endif
-
 #include <string>
 #include <vector>
 #include <map>
@@ -1054,7 +1050,7 @@ void LexerCPP::EvaluateTokens(std::vector<std::string> &tokens) {
 			if (tokens[i+2] == ")") {
 				// defined()
 				tokens.erase(tokens.begin() + i + 1, tokens.begin() + i + 3);
-			} else if (((i+2)<tokens.size()) && (tokens[i+3] == ")")) {
+			} else if (((i+3)<tokens.size()) && (tokens[i+3] == ")")) {
 				// defined(<int>)
 				tokens.erase(tokens.begin() + i + 1, tokens.begin() + i + 4);
 				val = "1";

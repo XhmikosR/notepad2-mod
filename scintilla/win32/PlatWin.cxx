@@ -12,10 +12,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <limits.h>
-
-#ifdef _MSC_VER
-#pragma warning(disable: 4786)
-#endif
+#include <math.h>
 
 #include <vector>
 #include <map>
@@ -32,7 +29,7 @@
 
 /* notepad2-mod custom code
    D2D files are not included in WDK 7.1 */
-#if defined(_MSC_VER) && !defined(WDK_BUILD)
+#if defined(_MSC_VER) && (_MSC_VER > 1200) && !defined(WDK_BUILD)
 #define USE_D2D 1
 #endif
 
