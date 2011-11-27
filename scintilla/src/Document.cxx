@@ -1461,7 +1461,7 @@ long Document::FindText(int minPos, int maxPos, const char *search,
 		const int endPos = MovePositionOutsideChar(maxPos, increment, false);
 
 		// Compute actual search ranges needed
-		const int lengthFind = (*length == -1) ? static_cast<int>(strlen(search)) : *length;
+		const int lengthFind = *length;
 
 		//Platform::DebugPrintf("Find %d %d %s %d\n", startPos, endPos, ft->lpstrText, lengthFind);
 		const int limitPos = Platform::Maximum(startPos, endPos);
