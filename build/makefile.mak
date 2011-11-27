@@ -94,9 +94,7 @@ PREBUILD:
 	IF NOT EXIST "$(SCI_SRC_OBJDIR)"    MD "$(SCI_SRC_OBJDIR)"
 	IF NOT EXIST "$(SCI_WIN_OBJDIR)"    MD "$(SCI_WIN_OBJDIR)"
 	IF NOT EXIST "$(NP2_SRC_OBJDIR)"    MD "$(NP2_SRC_OBJDIR)"
-	CD ..
-	CALL "update_version.bat"
-	CD "build"
+	CALL "..\update_rev.bat"
 	ECHO.
 
 CLEAN:
