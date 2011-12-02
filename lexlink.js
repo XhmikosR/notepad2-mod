@@ -4,7 +4,7 @@
 */
 
   var lex = new Array(
-    "lmAhk",
+    "lmAHK",
     "lmAsm",
     "lmAU3",
     "lmBash",

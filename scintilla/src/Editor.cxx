@@ -1761,6 +1761,12 @@ void Editor::PaintSelMargin(Surface *surfWindow, PRectangle &rc) {
 		surface = surfWindow;
 	}
 
+	// Clip vertically to paint area to avoid drawing line numbers
+	if (rcMargin.bottom > rc.bottom)
+		rcMargin.bottom = rc.bottom;
+	if (rcMargin.top < rc.top)
+		rcMargin.top = rc.top;
+
 	PRectangle rcSelMargin = rcMargin;
 	rcSelMargin.right = rcMargin.left;
 
@@ -1793,8 +1799,9 @@ void Editor::PaintSelMargin(Surface *surfWindow, PRectangle &rc) {
 				surface->FillRectangle(rcSelMargin, vs.styles[STYLE_LINENUMBER].back);
 			}
 
-			int visibleLine = topLine;
-			int yposScreen = 0;
+			const int lineStartPaint = rcMargin.top / vs.lineHeight;
+			int visibleLine = topLine + lineStartPaint;
+			int yposScreen = lineStartPaint * vs.lineHeight;
 			// Work out whether the top line is whitespace located after a
 			// lessening of fold level which implies a 'fold tail' but which should not
 			// be displayed until the last of a sequence of whitespace.
@@ -4309,7 +4316,7 @@ void Editor::DelCharBack(bool allowLineStartDeletion) {
 	UndoGroup ug(pdoc, (sel.Count() > 1) || !sel.Empty());
 	if (sel.Empty()) {
 		for (size_t r=0; r<sel.Count(); r++) {
-			if (!RangeContainsProtected(sel.Range(r).caret.Position(), sel.Range(r).caret.Position() + 1)) {
+			if (!RangeContainsProtected(sel.Range(r).caret.Position() - 1, sel.Range(r).caret.Position())) {
 				if (sel.Range(r).caret.VirtualSpace()) {
 					sel.Range(r).caret.SetVirtualSpace(sel.Range(r).caret.VirtualSpace() - 1);
 					sel.Range(r).anchor.SetVirtualSpace(sel.Range(r).caret.VirtualSpace());
