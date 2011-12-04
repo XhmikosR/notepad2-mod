@@ -1807,9 +1807,9 @@ void Editor::PaintSelMargin(Surface *surfWindow, PRectangle &rc) {
 			// be displayed until the last of a sequence of whitespace.
 			bool needWhiteClosure = false;
 			if (vs.ms[margin].mask & SC_MASK_FOLDERS) {
-				int level = pdoc->GetLevel(cs.DocFromDisplay(topLine));
+				int level = pdoc->GetLevel(cs.DocFromDisplay(visibleLine));
 				if (level & SC_FOLDLEVELWHITEFLAG) {
-					int lineBack = cs.DocFromDisplay(topLine);
+					int lineBack = cs.DocFromDisplay(visibleLine);
 					int levelPrev = level;
 					while ((lineBack > 0) && (levelPrev & SC_FOLDLEVELWHITEFLAG)) {
 						lineBack--;
@@ -2017,7 +2017,7 @@ void Editor::PaintSelMargin(Surface *surfWindow, PRectangle &rc) {
 	surface->FillRectangle(rcBlankMargin, vs.styles[STYLE_DEFAULT].back);
 
 	if (bufferedDraw) {
-		surfWindow->Copy(rcMargin, Point(), *pixmapSelMargin);
+		surfWindow->Copy(rcMargin, Point(rcMargin.left, rcMargin.top), *pixmapSelMargin);
 	}
 }
 
