@@ -79,7 +79,7 @@
 
     <h1>Scintilla Documentation</h1>
 
-    <p>Last edited 1/August/2011 NH</p>
+    <p>Last edited 4/December/2011 NH</p>
 
     <p>There is <a class="jump" href="Design.html">an overview of the internal design of
     Scintilla</a>.<br />
@@ -291,37 +291,41 @@
         </tr>
 
         <tr>
+          <td>o <a class="toc" href="#BackgroundLoadSave">Background loading and saving</a></td>
+
           <td>o <a class="toc" href="#Folding">Folding</a></td>
 
           <td>o <a class="toc" href="#LineWrapping">Line wrapping</a></td>
-
-          <td>o <a class="toc" href="#Zooming">Zooming</a></td>
         </tr>
 
         <tr>
+          <td>o <a class="toc" href="#Zooming">Zooming</a></td>
+
           <td>o <a class="toc" href="#LongLines">Long lines</a></td>
 
           <td>o <a class="toc" href="#Lexer">Lexer</a></td>
-
-          <td>o <a class="toc" href="#LexerObjects">Lexer objects</a></td>
         </tr>
 
         <tr>
+          <td>o <a class="toc" href="#LexerObjects">Lexer objects</a></td>
+
           <td>o <a class="toc" href="#Notifications">Notifications</a></td>
 
           <td>o <a class="toc" href="#Images">Images</a></td>
-
-          <td>o <a class="toc" href="#GTK">GTK+</a></td>
         </tr>
 
         <tr>
+          <td>o <a class="toc" href="#GTK">GTK+</a></td>
+
           <td>o <a class="toc" href="#DeprecatedMessages">Deprecated messages</a></td>
 	  
           <td>o <a class="toc" href="#EditMessagesNeverSupportedByScintilla">Edit messages never
           supported by Scintilla</a></td>
 	  
-          <td>o <a class="toc" href="#BuildingScintilla">Building Scintilla</a></td>
+        </tr>
 
+        <tr>
+          <td>o <a class="toc" href="#BuildingScintilla">Building Scintilla</a></td>
         </tr>
       </tbody>
     </table>
@@ -1113,6 +1117,7 @@ struct Sci_TextToFind {
     onlyWordCharacters)</a><br />
      <a class="message" href="#SCI_POSITIONBEFORE">SCI_POSITIONBEFORE(int position)</a><br />
      <a class="message" href="#SCI_POSITIONAFTER">SCI_POSITIONAFTER(int position)</a><br />
+     <a class="message" href="#SCI_COUNTCHARACTERS">SCI_COUNTCHARACTERS(int startPos, int endPos)</a><br />
      <a class="message" href="#SCI_TEXTWIDTH">SCI_TEXTWIDTH(int styleNumber, const char *text)</a><br />
      <a class="message" href="#SCI_TEXTHEIGHT">SCI_TEXTHEIGHT(int line)</a><br />
      <a class="message" href="#SCI_CHOOSECARETX">SCI_CHOOSECARETX</a><br />
@@ -1413,6 +1418,9 @@ struct Sci_TextToFind {
      position returned is 0 and the maximum is the last position in the document.
      If called with a position within a multi byte character will return the position
      of the start/end of that character.</p>
+
+    <p><b id="SCI_COUNTCHARACTERS">SCI_COUNTCHARACTERS(int startPos, int endPos)</b><br />
+     Returns the number of whole characters between two positions..</p>
 
     <p><b id="SCI_TEXTWIDTH">SCI_TEXTWIDTH(int styleNumber, const char *text)</b><br />
      This returns the pixel width of a string drawn in the given <code>styleNumber</code> which can
@@ -4566,10 +4574,17 @@ struct Sci_TextToFind {
 
     <h2 id="Printing">Printing</h2>
 
-    <p>On Windows <code>SCI_FORMATRANGE</code> can be used to draw the text onto a display context
-    which can include a printer display context. Printed output shows text styling as on the
+    <p><code>SCI_FORMATRANGE</code> can be used to draw the text onto a display surface
+    which can include a printer display surface. Printed output shows text styling as on the
     screen, but it hides all margins except a line number margin. All special marker effects are
     removed and the selection and caret are hidden.</p>
+
+    <p>Different platforms use different display surface ID types to print on. On Windows, these are
+    <code>HDC</code>s., on GTK+ 3.x <code>cairo_t *</code>,
+    and on Cocoa <code>CGContextRef</code> is used.</p>
+
+    <p><code>SCI_FORMATRANGE</code> is not supported on GTK+ 2.x.</p>
+
     <code><a class="message" href="#SCI_FORMATRANGE">SCI_FORMATRANGE(bool bDraw, Sci_RangeToFormat
     *pfr)</a><br />
      <a class="message" href="#SCI_SETPRINTMAGNIFICATION">SCI_SETPRINTMAGNIFICATION(int
@@ -4582,7 +4597,7 @@ struct Sci_TextToFind {
     </code>
 
     <p><b id="SCI_FORMATRANGE">SCI_FORMATRANGE(bool bDraw, Sci_RangeToFormat *pfr)</b><br />
-     This call allows Windows users to render a range of text into a device context. If you use
+     This call renders a range of text into a device context. If you use
     this for printing, you will probably want to arrange a page header and footer; Scintilla does
     not do this for you. See <code>SciTEWin::Print()</code> in <code>SciTEWinDlg.cxx</code> for an
     example. Each use of this message renders a range of text into a rectangular area and returns
@@ -4595,15 +4610,15 @@ struct Sci_TextToFind {
 struct Sci_Rectangle { int left; int top; int right; int bottom; };
 
 struct Sci_RangeToFormat {
-    Sci_SurfaceID hdc;        // The HDC (device context) we print to
-    Sci_SurfaceID hdcTarget;  // The HDC we use for measuring (may be same as hdc)
+    Sci_SurfaceID hdc;        // The Surface ID we print to
+    Sci_SurfaceID hdcTarget;  // The Surface ID we use for measuring (may be same as hdc)
     Sci_Rectangle rc;         // Rectangle in which to print
     Sci_Rectangle rcPage;     // Physically printable page size
     Sci_CharacterRange chrg;  // Range of characters to print
 };
 </pre>
 
-    <p><code>hdc</code> and <code>hdcTarget</code> should both be set to the device context handle
+    <p>On Windows, <code>hdc</code> and <code>hdcTarget</code> should both be set to the device context handle
     of the output device (usually a printer). If you print to a metafile these will not be the same
     as Windows metafiles (unlike extended metafiles) do not implement the full API for returning
     information. In this case, set <code>hdcTarget</code> to the screen DC.<br />
@@ -4611,6 +4626,17 @@ struct Sci_RangeToFormat {
     and <code>maxY+1</code> are the number of physically printable pixels in x and y.<br />
      <code>rc</code> is the rectangle to render the text in (which will, of course, fit within the
     rectangle defined by rcPage).<br />
+     <code>chrg.cpMin</code> and <code>chrg.cpMax</code> define the start position and maximum
+    position of characters to output. All of each line within this character range is drawn.</p>
+
+    <p>On Cocoa, the surface IDs for printing (<code>bDraw=1</code>) should be the graphics port of the current context
+    (<code>(CGContextRef) [[NSGraphicsContext currentContext] graphicsPort]</code>) when the view's drawRect method is called.
+    The Surface IDs are not really used for measurement (<code>bDraw=0</code>) but can be set
+    to a bitmap context (created with <code>CGBitmapContextCreate</code>) to avoid runtime warnings.</p>
+
+    <p>On GTK+, the surface IDs to use can be found from the printing context with 
+    <code>gtk_print_context_get_cairo_context(context)</code>.</p>
+
      <code>chrg.cpMin</code> and <code>chrg.cpMax</code> define the start position and maximum
     position of characters to output. All of each line within this character range is drawn.</p>
 
@@ -4835,6 +4861,59 @@ sptr_t CallScintilla(unsigned int iMessage, uptr_t wParam, sptr_t lParam){
     count of 1 that is still attached to a Scintilla window, bad things will happen. To keep the
     world spinning in its orbit you must balance each call to <code>SCI_CREATEDOCUMENT</code> or
     <code>SCI_ADDREFDOCUMENT</code> with a call to <code>SCI_RELEASEDOCUMENT</code>.</p>
+
+    <h2 id="BackgroundLoadSave">Background loading and saving</h2>
+
+    <p>To ensure a responsive user interface, applications may decide to load and save documents using a separate thread
+    from the user interface.</p>
+
+    <h3 id="BackgroundLoad">Loading in the background</h2>
+
+    <p>An application can load all of a file into a buffer it allocates on a background thread and then add the data in that buffer
+    into a Scintilla document on the user interface thread. That technique uses extra memory to store a complete copy of the
+    file and also means that the time that Scintilla takes to perform initial line end discovery blocks the user interface.</p>
+
+    <p>To avoid these issues, a loader object may be created and used to load the file. The loader object supports the ILoader interface.</p>
+
+    <p><b id="SCI_CREATELOADER">SCI_CREATELOADER(int bytes)</b><br />
+     Create an object that supports the <code>ILoader</code> interface which can be used to load data and then
+     be turned into a Scintilla document object for attachment to a view object.
+     The <code>bytes</code> argument determines the initial memory allocation for the document as it is more efficient
+     to allocate once rather than rely on the buffer growing as data is added.
+     If <code>SCI_CREATELOADER</code> fails then 0 is returned.</p>
+
+<h4>ILoader</h4>
+
+<div class="highlighted">
+<span class="S5">class</span><span class="S0"> </span>ILoader<span class="S0"> </span><span class="S10">{</span><br />
+<span class="S5">public</span><span class="S10">:</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">virtual</span><span class="S0"> </span><span class="S5">int</span><span class="S0"> </span>SCI_METHOD<span class="S0"> </span>Release<span class="S10">()</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S4">0</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S2">// Returns a status code from SC_STATUS_*</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">virtual</span><span class="S0"> </span><span class="S5">int</span><span class="S0"> </span>SCI_METHOD<span class="S0"> </span>AddData<span class="S10">(</span><span class="S5">char</span><span class="S0"> </span><span class="S10">*</span>data<span class="S10">,</span><span class="S0"> </span><span class="S5">int</span><span class="S0"> </span>length<span class="S10">)</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S4">0</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">virtual</span><span class="S0"> </span><span class="S5">void</span><span class="S0"> </span><span class="S10">*</span><span class="S0"> </span>SCI_METHOD<span class="S0"> </span>ConvertToDocument<span class="S10">()</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S4">0</span><span class="S10">;</span><br />
+<span class="S10">};</span><br />
+</div>
+
+    <p>The application should call the <code>AddData</code> method with each block of data read from the file.
+    <code>AddData</code> will return SC_STATUS_OK unless a failure, such as memory exhaustion occurs.
+    If a failure occurs in <code>AddData</code> or in a file reading call then loading can be abandoned and the loader released with
+    the <code>Release</code> call.
+    When the whole file has been read, the <code>ConvertToDocument</code> method should be called to produce a Scintilla
+    document pointer which can be used in the same way as a document pointer returned from
+    <a class="message" href="#SCI_CREATEDOCUMENT">SCI_CREATEDOCUMENT</a>.
+    There is no need to call <code>Release</code> after <code>ConvertToDocument</code>.</p>
+
+    <h3 id="BackgroundSave">Saving in the background</h2>
+
+    <p>An application that wants to save in the background should lock the document with <code>SCI_SETREADONLY(1)</code>
+    to prevent modifications and retrieve a pointer to the unified document contents with
+    <a class="message" href="#SCI_GETCHARACTERPOINTER">SCI_GETCHARACTERPOINTER</a></code>.
+    The buffer of a locked document will not move so the pointer is valid until the application calls <code>SCI_SETREADONLY(0)</code>.</p>
+
+    <p>If the user tries to performs a modification while the document is locked then a <code><a class="message"
+    href="#SCN_MODIFYATTEMPTRO">SCN_MODIFYATTEMPTRO</a></code> notification is sent to the application.
+    The application may then decide to ignore the modification or to terminate the background saving thread and reenable
+    modification before returning from the notification.</p>
 
     <h2 id="Folding">Folding</h2>
 
