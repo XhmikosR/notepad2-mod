@@ -109,10 +109,10 @@ DisableProgramGroupPage=yes
 DisableReadyPage=yes
 DisableWelcomePage=yes
 AllowCancelDuringInstall=no
-#if defined(ICL12) || defined(VS2010) || defined(USE_MSVC2010)
-MinVersion=0,5.1.2600sp3
-#else
+#if defined(WDK) && !defined(USE_MSVC2010)
 MinVersion=0,5.0
+#else
+MinVersion=0,5.1.2600sp3
 #endif
 ArchitecturesAllowed=x86 x64
 ArchitecturesInstallIn64BitMode=x64
@@ -314,12 +314,10 @@ end;
 function ShouldSkipPage(PageID: Integer): Boolean;
 begin
   // Hide the license page
-  if IsUpgrade() and (PageID = wpLicense) then begin
-    Result := True;
-  end
-  else begin
+  if IsUpgrade() and (PageID = wpLicense) then
+    Result := True
+  else
     Result := False;
-  end;
 end;
 
 
@@ -350,7 +348,7 @@ begin
   if CurPageID = wpSelectTasks then
     WizardForm.NextButton.Caption := SetupMessage(msgButtonInstall)
   else if CurPageID = wpFinished then
-    WizardForm.NextButton.Caption := SetupMessage(msgButtonFinish)
+    WizardForm.NextButton.Caption := SetupMessage(msgButtonFinish);
 end;
 
 
@@ -362,21 +360,17 @@ begin
       UninstallOldVersion();
       // This is the case where the old build is installed; the DefaulNotepadCheck() returns true
       // and the set_default task isn't selected
-      if not IsTaskSelected('remove_default') then begin
+      if not IsTaskSelected('remove_default') then
         RegWriteStringValue(HKLM, '{#IFEO}', 'Debugger', ExpandConstant('"{app}\Notepad2.exe" /z'));
-      end;
-
     end;
   end;
 
   if CurStep = ssPostInstall then begin
-    if IsTaskSelected('reset_settings') then begin
+    if IsTaskSelected('reset_settings') then
       CleanUpSettings();
-    end;
 
-    if IsTaskSelected('set_default') then begin
+    if IsTaskSelected('set_default') then
       RegWriteStringValue(HKLM, '{#IFEO}', 'Debugger', ExpandConstant('"{app}\Notepad2.exe" /z'));
-    end;
 
     if IsTaskSelected('remove_default') then begin
       RegDeleteValue(HKLM, '{#IFEO}', 'Debugger');
@@ -433,9 +427,8 @@ begin
       iMsgBoxResult := SuppressibleMsgBox(CustomMessage('msg_AppIsRunning'), mbError, MB_OKCANCEL, IDCANCEL);
     end;
 
-    if iMsgBoxResult = IDCANCEL then begin
+    if iMsgBoxResult = IDCANCEL then
       Result := False;
-    end;
 
 #if defined(sse2_required)
     if not Is_SSE2_Supported() then begin
@@ -470,9 +463,8 @@ begin
       iMsgBoxResult := SuppressibleMsgBox(CustomMessage('msg_AppIsRunningUninstall'), mbError, MB_OKCANCEL, IDCANCEL);
     end;
 
-    if iMsgBoxResult = IDCANCEL then begin
+    if iMsgBoxResult = IDCANCEL then
       Result := False;
-    end;
 
     // Unload the psvince.dll in order to be uninstalled
     UnloadDLL(ExpandConstant('{app}\psvince.dll'));
