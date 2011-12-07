@@ -394,7 +394,8 @@ begin
       end;
     end;
 
-    RegDeleteValue(HKLM, '{#IFEO}', 'Debugger');
+    if DefaulNotepadCheck() then
+      RegDeleteValue(HKLM, '{#IFEO}', 'Debugger');
     RegDeleteKeyIfEmpty(HKLM, '{#IFEO}');
     RemoveReg();
 
