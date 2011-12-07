@@ -301,7 +301,7 @@ begin
   Result := 0;
     if Exec('rundll32.exe', ExpandConstant('advpack.dll,LaunchINFSectionEx "{pf}\Notepad2\Uninstall.inf",DefaultUninstall,,8,N'), '', SW_HIDE, ewWaitUntilTerminated, iResultCode) then begin
       Result := 2;
-      Sleep(500);
+      Sleep(200);
       Log('Custom Code: The old build was successfully uninstalled');
     end
     else begin
@@ -423,9 +423,8 @@ begin
     Result := True;
     CreateMutex(installer_mutex_name);
 
-    while IsModuleLoaded('Notepad2.exe') and (iMsgBoxResult <> IDCANCEL) do begin
+    while IsModuleLoaded('Notepad2.exe') and (iMsgBoxResult <> IDCANCEL) do
       iMsgBoxResult := SuppressibleMsgBox(CustomMessage('msg_AppIsRunning'), mbError, MB_OKCANCEL, IDCANCEL);
-    end;
 
     if iMsgBoxResult = IDCANCEL then
       Result := False;
@@ -459,14 +458,13 @@ begin
     CreateMutex(installer_mutex_name);
 
     // Check if app is running during uninstallation
-    while IsModuleLoadedU('Notepad2.exe') and (iMsgBoxResult <> IDCANCEL) do begin
+    while IsModuleLoadedU('Notepad2.exe') and (iMsgBoxResult <> IDCANCEL) do
       iMsgBoxResult := SuppressibleMsgBox(CustomMessage('msg_AppIsRunningUninstall'), mbError, MB_OKCANCEL, IDCANCEL);
-    end;
 
     if iMsgBoxResult = IDCANCEL then
       Result := False;
 
-    // Unload the psvince.dll in order to be uninstalled
+    // Unload psvince.dll in order to be uninstalled
     UnloadDLL(ExpandConstant('{app}\psvince.dll'));
   end;
 end;
