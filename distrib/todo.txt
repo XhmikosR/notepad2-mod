@@ -1,0 +1,3 @@
+1) Implement a mutex in Notepad2 and use that to check if it's running
+   (a working patch would be really welcome)
+2) Add more log entries

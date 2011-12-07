@@ -35,22 +35,5 @@
 #define VERSION_EMAILDISPLAY         L"florian.balmer@gmail.com"
 //#define VERSION_COMPANYNAME          L"Florian Balmer et all"
 #define VERSION_MODPAGEDISPLAY       L"http://code.google.com/p/notepad2-mod"
-#if defined(_WIN64)
-#define MY_ARCH " x64"
-#else
-#define MY_ARCH ""
-#endif
-
-// Setup specific
-#if defined(_WIN64)
-  #define SETUP_TITLE_STR            "Notepad2-mod x64 Setup"
-  #define SETUP_VERSION_LABEL        STRINGIFY(VERSION_MAJOR)"."STRINGIFY(VERSION_MINOR)"."STRINGIFY(VERSION_BUILD)" x64 (modified; rev."STRINGIFY(VERSION_REV)")"
-#else
-  #define SETUP_TITLE_STR            "Notepad2-mod Setup"
-  #define SETUP_VERSION_LABEL        STRINGIFY(VERSION_MAJOR)"."STRINGIFY(VERSION_MINOR)"."STRINGIFY(VERSION_BUILD)" (modified; rev."STRINGIFY(VERSION_REV)")"
-#endif // _WIN64
-#define SETUP_AUTHOR_STR             "XhmikosR"
-
 
 #endif // NOTEPAD2_VERSION_H
-

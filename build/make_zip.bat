@@ -124,13 +124,13 @@ IF EXIST "Notepad2-mod.zip" DEL "Notepad2-mod.zip"
 IF EXIST "%TEMP_NAME%"      RD /S /Q "%TEMP_NAME%"
 IF NOT EXIST "%TEMP_NAME%"  MD "%TEMP_NAME%"
 
-IF EXIST "Notepad2-mod.%NP2_VER%_r%VerRev%*.7z"  COPY /Y /V "Notepad2-mod.%NP2_VER%_r%VerRev%*.7z"  "%TEMP_NAME%\" >NUL
-IF EXIST "Notepad2-mod.%NP2_VER%_r%VerRev%*.exe" COPY /Y /V "Notepad2-mod.%NP2_VER%_r%VerRev%*.exe" "%TEMP_NAME%\" >NUL
-IF EXIST "Notepad2-mod.%NP2_VER%_r%VerRev%*.zip" COPY /Y /V "Notepad2-mod.%NP2_VER%_r%VerRev%*.zip" "%TEMP_NAME%\" >NUL
+IF EXIST "Notepad2-mod.%NP2_VER%*.7z"  COPY /Y /V "Notepad2-mod.%NP2_VER%*.7z"  "%TEMP_NAME%\" >NUL
+IF EXIST "Notepad2-mod.%NP2_VER%*.exe" COPY /Y /V "Notepad2-mod.%NP2_VER%*.exe" "%TEMP_NAME%\" >NUL
+IF EXIST "Notepad2-mod.%NP2_VER%*.zip" COPY /Y /V "Notepad2-mod.%NP2_VER%*.zip" "%TEMP_NAME%\" >NUL
 
 PUSHD "%TEMP_NAME%"
 
-START "" /B /WAIT "..\..\..\distrib\tools\7za.exe" a -tzip -mx=9 Notepad2-mod.zip * >NUL
+START "" /B /WAIT "..\..\..\distrib\7za.exe" a -tzip -mx=9 Notepad2-mod.zip * >NUL
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
 CALL :SUBMSG "INFO" "Notepad2-mod.zip created successfully!"
@@ -158,22 +158,22 @@ IF EXIST "%TEMP_NAME%"     RD /S /Q "%TEMP_NAME%"
 IF NOT EXIST "%TEMP_NAME%" MD "%TEMP_NAME%"
 IF NOT EXIST "packages"    MD "packages"
 
-COPY /Y /V "..\License.txt"                      "%TEMP_NAME%\"
-COPY /Y /V "..\%1\Notepad2.exe"                  "%TEMP_NAME%\"
-COPY /Y /V "..\distrib\res\cabinet\notepad2.ini" "%TEMP_NAME%\Notepad2.ini"
-COPY /Y /V "..\Notepad2.txt"                     "%TEMP_NAME%\"
-COPY /Y /V "..\Readme.txt"                       "%TEMP_NAME%\"
-COPY /Y /V "..\Readme-mod.txt"                   "%TEMP_NAME%\"
+COPY /Y /V "..\License.txt"          "%TEMP_NAME%\"
+COPY /Y /V "..\%1\Notepad2.exe"      "%TEMP_NAME%\"
+COPY /Y /V "..\distrib\Notepad2.ini" "%TEMP_NAME%\"
+COPY /Y /V "..\Notepad2.txt"         "%TEMP_NAME%\"
+COPY /Y /V "..\Readme.txt"           "%TEMP_NAME%\"
+COPY /Y /V "..\Readme-mod.txt"       "%TEMP_NAME%\"
 
 PUSHD "%TEMP_NAME%"
-START "" /B /WAIT "..\..\distrib\tools\7za.exe" a -tzip -mx=9^
- "Notepad2-mod.%NP2_VER%_r%VerRev%_%2%SUFFIX%.zip" "License.txt" "Notepad2.exe"^
+START "" /B /WAIT "..\..\distrib\7za.exe" a -tzip -mx=9^
+ "Notepad2-mod.%NP2_VER%_%2%SUFFIX%.zip" "License.txt" "Notepad2.exe"^
  "Notepad2.ini" "Notepad2.txt" "Readme.txt" "Readme-mod.txt" >NUL
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
-CALL :SUBMSG "INFO" "Notepad2-mod.%NP2_VER%_r%VerRev%_%2%SUFFIX%.zip created successfully!"
+CALL :SUBMSG "INFO" "Notepad2-mod.%NP2_VER%_%2%SUFFIX%.zip created successfully!"
 
-MOVE /Y "Notepad2-mod.%NP2_VER%_r%VerRev%_%2%SUFFIX%.zip" "..\packages" >NUL
+MOVE /Y "Notepad2-mod.%NP2_VER%_%2%SUFFIX%.zip" "..\packages" >NUL
 POPD
 IF EXIST "%TEMP_NAME%" RD /S /Q "%TEMP_NAME%"
 EXIT /B
@@ -194,7 +194,7 @@ FOR /F "tokens=3,4 delims= " %%N IN (
   'FINDSTR /I /L /C:"define VERSION_REV" "..\src\Version_rev.h"') DO (
   SET "VerRev=%%N" & Call :SubVerRev %%VerRev:*Z=%%)
 
-SET NP2_VER=%VerMajor%.%VerMinor%.%VerBuild%
+SET NP2_VER=%VerMajor%.%VerMinor%.%VerBuild%.%VerRev%
 EXIT /B
 
 

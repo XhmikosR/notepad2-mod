@@ -8,7 +8,9 @@ Notable changes:
 * Syntax highlighting support for AutoHotkey, AutoIt3, Bash, CMake,
   Inno Setup, LaTeX, Lua, NSIS, Ruby, and Tcl scripts
 
-Supported Operating Systems: Windows XP, Vista, 7 both 32-bit and 64-bit
+Supported Operating Systems:
+* Windows 2000 (when compiled with WDK)
+* XP, Vista, 7 both 32-bit and 64-bit
 
 Contributors:
 * Kai Liu
