@@ -21,8 +21,8 @@ ECHO. & ECHO SubWCRev, which is part of TortoiseSVN, wasn't found!
 ECHO You should (re)install TortoiseSVN.
 ECHO I'll use VERSION_REV=0 for now.
 
-COPY /V /Y "src\Version_rev.h.template"               "src\Version_rev.h" >NUL
-COPY /V /Y "res\Notepad2.exe.manifest.template"       "res\Notepad2.exe.manifest" >NUL
+COPY /V /Y "src\Version_rev.h.template"         "src\Version_rev.h" >NUL
+COPY /V /Y "res\Notepad2.exe.manifest.template" "res\Notepad2.exe.manifest" >NUL
 
 POPD
 ENDLOCAL
