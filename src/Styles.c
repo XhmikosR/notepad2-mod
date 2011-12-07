@@ -44,7 +44,7 @@ KEYWORDLIST KeyWords_NULL = {
 
 
 EDITLEXER lexDefault = { SCLEX_NULL, 63000, L"Default Text", L"txt; text; wtx; log; asc; doc; diz; nfo", L"", &KeyWords_NULL, {
-                /*  0 */ { STYLE_DEFAULT, 63100, L"Default Style", L"font:Lucida Console; size:10", L"" },
+                /*  0 */ { STYLE_DEFAULT, 63100, L"Default Style", L"font:Default; size:10", L"" },
                 /*  1 */ { STYLE_LINENUMBER, 63101, L"Margins and Line Numbers", L"size:-2; fore:#FF0000", L"" },
                 /*  2 */ { STYLE_BRACELIGHT, 63102, L"Matching Braces", L"size:+1; bold; fore:#FF0000", L"" },
                 /*  3 */ { STYLE_BRACEBAD, 63103, L"Matching Braces Error", L"size:+1; bold; fore:#000080", L"" },
@@ -816,7 +816,7 @@ EDITLEXER lexSQL = { SCLEX_SQL, 63018, L"SQL Query", L"sql", L"", &KeyWords_SQL,
 KEYWORDLIST KeyWords_PY = {
 "and as assert break class continue def del elif else except "
 "exec False finally for from global if import in is lambda None "
-"not or pass print raise return True try with while yield",
+"nonlocal not or pass print raise return True try while with yield",
 "", "", "", "", "", "", "", "" };
 
 
@@ -1996,7 +1996,19 @@ BOOL Style_StrGetFont(LPCWSTR lpszStyle,LPWSTR lpszFont,int cchFont)
     if (p = StrChr(tch,L';'))
       *p = L'\0';
     TrimString(tch);
-    lstrcpyn(lpszFont,tch,cchFont);
+
+    if (lstrcmpi(tch,L"Default") == 0)
+    {
+      if (fIsConsolasAvailable)
+        lstrcpyn(lpszFont,L"Consolas",cchFont);
+      else
+        lstrcpyn(lpszFont,L"Lucida Console",cchFont);
+    }
+    else
+    {
+      lstrcpyn(lpszFont,tch,cchFont);
+    }
+
     return TRUE;
   }
   return FALSE;
@@ -2465,9 +2477,8 @@ void Style_SetStyles(HWND hwnd,int iStyle,LPCWSTR lpszStyle)
 
   // Font
   if (Style_StrGetFont(lpszStyle,tch,COUNTOF(tch))) {
-    char mch[256] = "Lucida Console";
-    if (fIsConsolasAvailable || lstrcmpi(tch,L"Consolas"))
-      WideCharToMultiByte(CP_ACP,0,tch,-1,mch,COUNTOF(mch),NULL,NULL);
+    char mch[256];
+    WideCharToMultiByte(CP_ACP,0,tch,-1,mch,COUNTOF(mch),NULL,NULL);
     SendMessage(hwnd,SCI_STYLESETFONT,iStyle,(LPARAM)mch);
   }
 

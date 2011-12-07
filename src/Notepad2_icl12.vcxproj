@@ -87,8 +87,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <PreBuildEvent>
       <Message>Generating SVN revision...</Message>
-      <Command>cd ..
-update_version.bat
+      <Command>..\update_rev.bat
 </Command>
     </PreBuildEvent>
     <ClCompile>
@@ -116,8 +115,7 @@ update_version.bat
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <PreBuildEvent>
       <Message>Generating SVN revision...</Message>
-      <Command>cd ..
-update_version.bat
+      <Command>..\update_rev.bat
 </Command>
     </PreBuildEvent>
     <ClCompile>
@@ -145,8 +143,7 @@ update_version.bat
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <PreBuildEvent>
       <Message>Generating SVN revision...</Message>
-      <Command>cd ..
-update_version.bat
+      <Command>..\update_rev.bat
 </Command>
     </PreBuildEvent>
     <ClCompile>
@@ -187,8 +184,7 @@ update_version.bat
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <PreBuildEvent>
       <Message>Generating SVN revision...</Message>
-      <Command>cd ..
-update_version.bat
+      <Command>..\update_rev.bat
 </Command>
     </PreBuildEvent>
     <ClCompile>

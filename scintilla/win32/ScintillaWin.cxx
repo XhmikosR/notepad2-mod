@@ -30,7 +30,7 @@
 
 /* notepad2-mod custom code
    D2D files are not included in WDK 7.1 */
-#if defined(_MSC_VER) && !defined(WDK_BUILD)
+#if defined(_MSC_VER) && (_MSC_VER > 1200) && !defined(WDK_BUILD)
 #define USE_D2D 1
 #endif
 
@@ -210,6 +210,7 @@ class ScintillaWin :
 
 #if defined(USE_D2D)
 	ID2D1HwndRenderTarget *pRenderTarget;
+	bool renderTargetValid;
 #endif
 
 	ScintillaWin(HWND hwnd);
@@ -368,6 +369,7 @@ ScintillaWin::ScintillaWin(HWND hwnd) {
 
 #if defined(USE_D2D)
 	pRenderTarget = 0;
+	renderTargetValid = true;
 #endif
 
 	keysAlwaysUnicode = false;
@@ -413,6 +415,10 @@ void ScintillaWin::Finalise() {
 
 void ScintillaWin::EnsureRenderTarget() {
 #if defined(USE_D2D)
+	if (!renderTargetValid) {
+		DropRenderTarget();
+		renderTargetValid = true;
+	}
 	if (pD2DFactory && !pRenderTarget) {
 		RECT rc;
 		HWND hw = MainHWND();
@@ -751,7 +757,13 @@ sptr_t ScintillaWin::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam
 			break;
 
 		case WM_SIZE: {
-				DropRenderTarget();
+#if defined(USE_D2D)
+				if (paintState == notPainting) {
+					DropRenderTarget();
+				} else {
+					renderTargetValid = false;
+				}
+#endif
 				//Platform::DebugPrintf("Scintilla WM_SIZE %d %d\n", LoWord(lParam), HiWord(lParam));
 				ChangeSize();
 			}
@@ -892,16 +904,17 @@ sptr_t ScintillaWin::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam
 				} else {
 					// Display regular (drag) cursor over selection
 					POINT pt;
-					::GetCursorPos(&pt);
-					::ScreenToClient(MainHWND(), &pt);
-					if (PointInSelMargin(Point(pt.x, pt.y))) {
-						DisplayCursor(GetMarginCursor(Point(pt.x, pt.y)));
-					} else if (PointInSelection(Point(pt.x, pt.y)) && !SelectionEmpty()) {
-						DisplayCursor(Window::cursorArrow);
-					} else if (PointIsHotspot(Point(pt.x, pt.y))) {
-						DisplayCursor(Window::cursorHand);
-					} else {
-						DisplayCursor(Window::cursorText);
+					if (0 != ::GetCursorPos(&pt)) {
+						::ScreenToClient(MainHWND(), &pt);
+						if (PointInSelMargin(Point(pt.x, pt.y))) {
+							DisplayCursor(GetMarginCursor(Point(pt.x, pt.y)));
+						} else if (PointInSelection(Point(pt.x, pt.y)) && !SelectionEmpty()) {
+							DisplayCursor(Window::cursorArrow);
+						} else if (PointIsHotspot(Point(pt.x, pt.y))) {
+							DisplayCursor(Window::cursorHand);
+						} else {
+							DisplayCursor(Window::cursorText);
+						}
 					}
 				}
 				return TRUE;
@@ -2179,7 +2192,7 @@ void ScintillaWin::ImeStartComposition() {
 				deviceHeight = (sizeZoomed * surface->LogPixelsY()) / 72;
 			}
 			// The negative is to allow for leading
-			lf.lfHeight = -(abs(deviceHeight));
+			lf.lfHeight = -(abs(deviceHeight / SC_FONT_SIZE_MULTIPLIER));
 			lf.lfWeight = vs.styles[styleHere].weight;
 			lf.lfItalic = static_cast<BYTE>(vs.styles[styleHere].italic ? 1 : 0);
 			lf.lfCharSet = DEFAULT_CHARSET;

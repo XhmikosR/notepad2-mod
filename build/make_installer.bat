@@ -174,6 +174,13 @@ CALL "tools\BatchSubstitute.bat" "1111" "%sizeout%" "%TEMP_NAME%\%BINDIR%\Notepa
 COPY /Y /V "%TEMP_NAME%\%BINDIR%\Notepad2.inf" "notepad2.inf.orig" >NUL
 MOVE /Y "notepad2.inf.tmp" "%TEMP_NAME%\%BINDIR%\Notepad2.inf" >NUL
 
+rem Add the "x64" word to the uninstall display name for the x64 builds
+IF "%ARCH%" == "x64" (
+CALL "tools\BatchSubstitute.bat" "Notepad2 (Notepad Replacement)" "Notepad2 x64 (Notepad Replacement)" "%TEMP_NAME%\%BINDIR%\Notepad2.inf" >notepad2.inf.tmp
+COPY /Y /V "%TEMP_NAME%\%BINDIR%\Notepad2.inf" "notepad2.inf.orig" >NUL
+MOVE /Y "notepad2.inf.tmp" "%TEMP_NAME%\%BINDIR%\Notepad2.inf" >NUL
+)
+
 rem Create the cab file
 "tools\cabutcd.exe" "%TEMP_NAME%\%BINDIR%" "res\cabinet.%BINDIR%.cab"
 IF EXIST "notepad2.inf.orig"    DEL "notepad2.inf.orig"

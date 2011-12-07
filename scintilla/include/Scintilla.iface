@@ -763,9 +763,11 @@ get position GetLineIndentPosition=2128(int line,)
 # Retrieve the column number of a position, taking tab width into account.
 get int GetColumn=2129(position pos,)
 
+# Count characters between two positions.
+fun int CountCharacters=2633(int startPos, int endPos)
+
 # Show or hide the horizontal scroll bar.
 set void SetHScrollBar=2130(bool show,)
-
 # Is the horizontal scroll bar visible?
 get bool GetHScrollBar=2131(,)
 
@@ -2202,6 +2204,9 @@ set void SetTechnology=2630(int technology,)
 # Get the tech.
 get int GetTechnology=2631(,)
 
+# Create an ILoader*.
+fun int CreateLoader=2632(int bytes,)
+
 # Start notifying the container of all key presses and commands.
 fun void StartRecord=3001(,)
 
@@ -2448,6 +2453,7 @@ val SCLEX_MARKDOWN=98
 val SCLEX_TXT2TAGS=99
 val SCLEX_A68K=100
 val SCLEX_MODULA=101
+val SCLEX_COFFEESCRIPT=102
 
 # When a lexer specifies its language as SCLEX_AUTOMATIC it receives a
 # value assigned in sequence from SCLEX_AUTOMATIC+1.
@@ -3996,6 +4002,34 @@ val SCE_MODULA_PRAGMA=14
 val SCE_MODULA_PRGKEY=15
 val SCE_MODULA_OPERATOR=16
 val SCE_MODULA_BADSTR=17
+# Lexical states for SCLEX_COFFEESCRIPT
+lex CoffeeScript=SCLEX_COFFEESCRIPT SCE_COFFEESCRIPT_
+val SCE_COFFEESCRIPT_DEFAULT=0
+val SCE_COFFEESCRIPT_COMMENT=1
+val SCE_COFFEESCRIPT_COMMENTLINE=2
+val SCE_COFFEESCRIPT_COMMENTDOC=3
+val SCE_COFFEESCRIPT_NUMBER=4
+val SCE_COFFEESCRIPT_WORD=5
+val SCE_COFFEESCRIPT_STRING=6
+val SCE_COFFEESCRIPT_CHARACTER=7
+val SCE_COFFEESCRIPT_UUID=8
+val SCE_COFFEESCRIPT_PREPROCESSOR=9
+val SCE_COFFEESCRIPT_OPERATOR=10
+val SCE_COFFEESCRIPT_IDENTIFIER=11
+val SCE_COFFEESCRIPT_STRINGEOL=12
+val SCE_COFFEESCRIPT_VERBATIM=13
+val SCE_COFFEESCRIPT_REGEX=14
+val SCE_COFFEESCRIPT_COMMENTLINEDOC=15
+val SCE_COFFEESCRIPT_WORD2=16
+val SCE_COFFEESCRIPT_COMMENTDOCKEYWORD=17
+val SCE_COFFEESCRIPT_COMMENTDOCKEYWORDERROR=18
+val SCE_COFFEESCRIPT_GLOBALCLASS=19
+val SCE_COFFEESCRIPT_STRINGRAW=20
+val SCE_COFFEESCRIPT_TRIPLEVERBATIM=21
+val SCE_COFFEESCRIPT_HASHQUOTEDSTRING=22
+val SCE_COFFEESCRIPT_COMMENTBLOCK=22
+val SCE_COFFEESCRIPT_VERBOSE_REGEX=23
+val SCE_COFFEESCRIPT_VERBOSE_REGEX_COMMENT=24
 
 # Events
 

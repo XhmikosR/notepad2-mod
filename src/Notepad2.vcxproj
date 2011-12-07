@@ -94,8 +94,7 @@
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <PreBuildEvent>
-      <Command>cd ..
-update_version.bat</Command>
+      <Command>..\update_rev.bat</Command>
       <Message>Generating SVN revision...</Message>
     </PreBuildEvent>
     <ResourceCompile>
@@ -120,8 +119,7 @@ update_version.bat</Command>
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <PreBuildEvent>
-      <Command>cd ..
-update_version.bat</Command>
+      <Command>..\update_rev.bat</Command>
       <Message>Generating SVN revision...</Message>
     </PreBuildEvent>
     <ResourceCompile>
@@ -149,8 +147,7 @@ update_version.bat</Command>
       <SetChecksum>true</SetChecksum>
     </Link>
     <PreBuildEvent>
-      <Command>cd ..
-update_version.bat</Command>
+      <Command>..\update_rev.bat</Command>
       <Message>Generating SVN revision...</Message>
     </PreBuildEvent>
     <ResourceCompile>
@@ -177,8 +174,7 @@ update_version.bat</Command>
       <SetChecksum>true</SetChecksum>
     </Link>
     <PreBuildEvent>
-      <Command>cd ..
-update_version.bat</Command>
+      <Command>..\update_rev.bat</Command>
       <Message>Generating SVN revision...</Message>
     </PreBuildEvent>
     <ResourceCompile>
