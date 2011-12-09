@@ -138,6 +138,7 @@ BOOL      bShowLineNumbers;
 int       iMarkOccurrences;
 BOOL      bMarkOccurrencesMatchCase;
 BOOL      bMarkOccurrencesMatchWords;
+BOOL      bAutoCompleteWords;
 BOOL      bShowCodeFolding;
 BOOL      bViewWhiteSpace;
 BOOL      bViewEOLs;
@@ -2211,6 +2212,9 @@ void MsgInitMenu(HWND hwnd,WPARAM wParam,LPARAM lParam)
   CheckCmd(hmenu,IDM_VIEW_LINENUMBERS,bShowLineNumbers);
   CheckCmd(hmenu,IDM_VIEW_MARGIN,bShowSelectionMargin);
 
+  EnableCmd(hmenu,IDM_EDIT_COMPLETEWORD,i);
+  CheckCmd(hmenu,IDM_VIEW_AUTOCOMPLETEWORDS,bAutoCompleteWords);
+
   switch (iMarkOccurrences)
   {
     case 0: i = IDM_VIEW_MARKOCCURRENCES_OFF;break;
@@ -3746,6 +3750,10 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
       }
       break;
 
+    case IDM_EDIT_COMPLETEWORD:
+        CompleteWord(hwndEdit, TRUE);
+        break;
+
 
     case IDM_EDIT_REPLACE:
       if (!IsWindow(hDlgFindReplace))
@@ -3947,6 +3955,10 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
         }
 #endif
 
+      break;
+
+    case IDM_VIEW_AUTOCOMPLETEWORDS:
+      bAutoCompleteWords = bAutoCompleteWords ? FALSE : TRUE;
       break;
 
     case IDM_VIEW_MARKOCCURRENCES_OFF:
@@ -4319,6 +4331,9 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
 
 
     case CMD_ESCAPE:
+      //close the autocomplete box
+      SendMessage(hwndEdit,SCI_AUTOCCANCEL,0, 0);
+
       if (iEscFunction == 1)
         SendMessage(hwnd,WM_SYSCOMMAND,SC_MINIMIZE,0);
       else if (iEscFunction == 2)
@@ -5268,6 +5283,8 @@ LRESULT MsgNotify(HWND hwnd,WPARAM wParam,LPARAM lParam)
                 }
               }
             }
+          } else if (bAutoCompleteWords && !SendMessage(hwndEdit, SCI_AUTOCACTIVE, 0, 0)) {
+            CompleteWord(hwndEdit, FALSE);
           }
           break;
 
@@ -5513,6 +5530,9 @@ void LoadSettings()
 
   bAutoIndent = IniSectionGetInt(pIniSection,L"AutoIndent",1);
   if (bAutoIndent) bAutoIndent = 1;
+
+  bAutoCompleteWords = IniSectionGetInt(pIniSection,L"AutoCompleteWords",0);
+  if (bAutoCompleteWords) bAutoCompleteWords = 1;
 
   bShowIndentGuides = IniSectionGetInt(pIniSection,L"ShowIndentGuides",0);
   if (bShowIndentGuides) bShowIndentGuides = 1;
@@ -5798,6 +5818,7 @@ void SaveSettings(BOOL bSaveSettingsNow)
   IniSectionSetInt(pIniSection,L"AutoCloseTags",bAutoCloseTags);
   IniSectionSetInt(pIniSection,L"HighlightCurrentLine",bHiliteCurrentLine);
   IniSectionSetInt(pIniSection,L"AutoIndent",bAutoIndent);
+  IniSectionSetInt(pIniSection,L"AutoCompleteWords",bAutoCompleteWords);
   IniSectionSetInt(pIniSection,L"ShowIndentGuides",bShowIndentGuides);
   IniSectionSetInt(pIniSection,L"TabsAsSpaces",bTabsAsSpacesG);
   IniSectionSetInt(pIniSection,L"TabIndents",bTabIndentsG);

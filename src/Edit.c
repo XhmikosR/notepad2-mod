@@ -5658,6 +5658,142 @@ BOOL EditReplace(HWND hwnd,LPCEDITFINDREPLACE lpefr)
 
 //=============================================================================
 //
+//  CompleteWord()
+//  Auto-complete words (by Aleksandar Lekov)
+//
+typedef struct WLIST{
+  char* word;
+  struct WLIST* next;
+};
+
+void CompleteWord(HWND hwnd, BOOL autoInsert) {
+  const char* NON_WORD = " \t\r\n@#$%^&*~-=+()[]{}\\/.,:;'\"!?<>`|";
+  int iCurrentPos = (int)SendMessage(hwnd, SCI_GETCURRENTPOS, 0, 0);
+  int iLine = (int)SendMessage(hwnd, SCI_LINEFROMPOSITION, iCurrentPos, 0);
+  int iCurrentLinePos = iCurrentPos - (int)SendMessage(hwnd, SCI_POSITIONFROMLINE, (WPARAM)iLine, 0);
+  int iStartWordPos = iCurrentLinePos;
+  char *pLine;
+  char *pRoot;
+  char *pWord;
+  int iNumWords = 0;
+  int iRootLen = 0;
+  int iDocLen;
+  int iPosFind;
+  struct TextRange tr = { { 0, -1 }, NULL };
+  struct Sci_TextToFind ft = {{0, 0}, 0, {0, 0}};
+  BOOL bWordAllNumbers = TRUE;
+  struct WLIST* lListHead = NULL;
+  int iWListSize = 0;
+
+  pLine = LocalAlloc(LPTR, (int)SendMessage(hwnd, SCI_GETLINE, (WPARAM)iLine, 0) + 1);
+  SendMessage(hwnd, SCI_GETLINE, (WPARAM)iLine, (LPARAM)pLine);
+
+  while (iStartWordPos > 0 && !StrChrIA(NON_WORD, pLine[iStartWordPos - 1])) {
+    iStartWordPos--;
+    if (pLine[iStartWordPos] < '0' || pLine[iStartWordPos] > '9') {
+      bWordAllNumbers = FALSE;
+    }
+  }
+
+  if (iStartWordPos == iCurrentLinePos || bWordAllNumbers || iCurrentLinePos - iStartWordPos < 2) {
+    LocalFree(pLine);
+    return;
+  }
+
+  pRoot = LocalAlloc(LPTR, iCurrentLinePos - iStartWordPos + 2);
+  lstrcpynA(pRoot, pLine + iStartWordPos, iCurrentLinePos - iStartWordPos + 1);
+  LocalFree(pLine);
+  iRootLen = lstrlenA(pRoot);
+
+  iDocLen = (int)SendMessage(hwnd, SCI_GETLENGTH, 0, 0);
+
+  ft.lpstrText = pRoot;
+  ft.chrg.cpMax = iDocLen;
+
+  iPosFind = (int)SendMessage(hwnd, SCI_FINDTEXT, SCFIND_WORDSTART, (LPARAM)&ft);
+
+  while (iPosFind >= 0 && iPosFind < iDocLen) {
+    int wordLength;
+    int wordEnd = iPosFind + iRootLen;
+
+    if (iPosFind != iCurrentPos - iRootLen) {
+      while (wordEnd < iDocLen && !StrChrIA(NON_WORD, (char)SendMessage(hwnd, SCI_GETCHARAT, (WPARAM)wordEnd, 0)))
+        wordEnd++;
+
+      wordLength = wordEnd - iPosFind;
+      if (wordLength > iRootLen) {
+        struct WLIST* p = lListHead;
+        struct WLIST* t = NULL;
+        int lastCmp = 0;
+        BOOL found = FALSE;
+
+        pWord = LocalAlloc(LPTR, wordEnd - iPosFind + 2);
+
+        tr.lpstrText = pWord;
+        tr.chrg.cpMin = iPosFind;
+        tr.chrg.cpMax = wordEnd;
+        SendMessage(hwnd, SCI_GETTEXTRANGE, 0, (LPARAM)&tr);
+
+        while(p) {
+          int cmp = lstrcmpA(pWord, p->word);
+          if (!cmp) {
+            found = TRUE;
+            break;
+          } else if (cmp < 0) {
+            break;
+          }
+          t = p;
+          p = p->next;
+        }
+        if (!found) {
+          struct WLIST* el = (struct WLIST*)LocalAlloc(LPTR, sizeof(struct WLIST));
+          el->word = LocalAlloc(LPTR, wordEnd - iPosFind + 2);
+          lstrcpyA(el->word, pWord);
+          el->next = p;
+          if (t) {
+            t->next = el;
+          } else {
+            lListHead = el;
+          }
+
+          iNumWords++;
+          iWListSize += lstrlenA(pWord) + 1;
+        }
+        LocalFree(pWord);
+      }
+    }
+    ft.chrg.cpMin = wordEnd;
+    iPosFind = (int)SendMessage(hwnd, SCI_FINDTEXT, SCFIND_WORDSTART, (LPARAM)&ft);
+  }
+
+  if (iNumWords > 0) {
+    char *pList;
+    struct WLIST* p = lListHead;
+    struct WLIST* t;
+
+    pList = LocalAlloc(LPTR, iWListSize + 1);
+    while (p) {
+      lstrcatA(pList, " ");
+      lstrcatA(pList, p->word);
+      LocalFree(p->word);
+      t = p;
+      p = p->next;
+      LocalFree(t);
+    }
+
+    SendMessage(hwnd, SCI_AUTOCSETIGNORECASE, 1, 0);
+    SendMessage(hwnd, SCI_AUTOCSETSEPARATOR, ' ', 0);
+    SendMessage(hwnd, SCI_AUTOCSETFILLUPS, 0, (LPARAM)" \t\n\r");
+    SendMessage(hwnd, SCI_AUTOCSETCHOOSESINGLE, autoInsert, 0);
+    SendMessage(hwnd, SCI_AUTOCSHOW, iRootLen, (LPARAM)(pList + 1));
+    LocalFree(pList);
+  }
+
+  LocalFree(pRoot);
+}
+
+//=============================================================================
+//
 //  EditMarkAll()
 //  Mark all occurrences of the text currently selected (by Aleksandar Lekov)
 //

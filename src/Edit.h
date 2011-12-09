@@ -132,6 +132,7 @@ BOOL  EditPrint(HWND,LPCWSTR,LPCWSTR);
 void  EditPrintSetup(HWND);
 void  EditPrintInit();
 void  EditMarkAll(HWND,int,BOOL,BOOL);
+void  CompleteWord(HWND, BOOL);
 
 extern int g_DOSEncoding;
 
