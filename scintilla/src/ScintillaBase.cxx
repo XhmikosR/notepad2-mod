@@ -134,10 +134,10 @@ int ScintillaBase::KeyCommand(unsigned int iMessage) {
 			AutoCompleteMove(-1);
 			return 0;
 		case SCI_PAGEDOWN:
-			AutoCompleteMove(5);
+			AutoCompleteMove(ac.lb->GetVisibleRows());
 			return 0;
 		case SCI_PAGEUP:
-			AutoCompleteMove(-5);
+			AutoCompleteMove(-ac.lb->GetVisibleRows());
 			return 0;
 		case SCI_VCHOME:
 			AutoCompleteMove(-5000);
