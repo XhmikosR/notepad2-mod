@@ -5,6 +5,7 @@ Notable changes:
 * Code folding
 * Support for bookmarks
 * Option to mark all occurrences of a word
+* Word auto-completion
 * Syntax highlighting support for AutoHotkey, AutoIt3, Bash, CMake,
   Inno Setup, LaTeX, Lua, NSIS, Ruby, and Tcl scripts
 

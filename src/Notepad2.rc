@@ -239,8 +239,7 @@ BEGIN
             MENUITEM "Select To Ne&xt\tCtrl+Alt+F2",         IDM_EDIT_SELTONEXT
             MENUITEM "Select To Pre&vious\tCtrl+Alt+Shift+F2", IDM_EDIT_SELTOPREV
             MENUITEM SEPARATOR
-            MENUITEM "Complete Word\tCtrl+Enter",         IDM_EDIT_COMPLETEWORD
-
+            MENUITEM "Complete Word\tCtrl+Enter",   IDM_EDIT_COMPLETEWORD
         END
 #ifdef BOOKMARK_EDITION
         POPUP "Bookmarks"
