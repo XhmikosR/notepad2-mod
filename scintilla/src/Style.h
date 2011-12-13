@@ -48,7 +48,7 @@ struct FontMeasurements {
 	unsigned int descent;
 	unsigned int externalLeading;
 	unsigned int aveCharWidth;
-	unsigned int spaceWidth;
+	XYPOSITION spaceWidth;
 	int sizeZoomed;
 	FontMeasurements();
 	void Clear();
