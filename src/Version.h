@@ -33,7 +33,7 @@
 #define VERSION_AUTHORNAME           L"Florian Balmer"
 #define VERSION_WEBPAGEDISPLAY       L"flo's freeware - http://www.flos-freeware.ch"
 #define VERSION_EMAILDISPLAY         L"florian.balmer@gmail.com"
-//#define VERSION_COMPANYNAME          L"Florian Balmer et all"
+#define VERSION_COMPANYNAME          L"Florian Balmer et al."
 #define VERSION_MODPAGEDISPLAY       L"http://code.google.com/p/notepad2-mod"
 
 #endif // NOTEPAD2_VERSION_H
