@@ -72,8 +72,10 @@ PUSHD "..\distrib"
 
 TITLE Building %1 installer...
 CALL :SUBMSG "INFO" "Building %1 installer..."
-"%InnoSetupPath%\iscc.exe" /Q /O"..\build\packages" "notepad2_setup.iss" /D%1
-rem  /DUSE_MSVC2010
+
+IF "%USE_MSVC2010%" == "true" (SET ISDEFS=/D%1 /DUSE_MSVC2010) ELSE (SET ISDEFS=/D%1)
+
+"%InnoSetupPath%\iscc.exe" /Q /O"..\build\packages" "notepad2_setup.iss" %ISDEFS%
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
 POPD

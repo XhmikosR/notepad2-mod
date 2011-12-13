@@ -15,6 +15,7 @@
 ;#define ICL12
 ;#define VS2010
 ;#define WDK
+;#define USE_MSVC2010
 
 ; Preprocessor related stuff
 #if VER < 0x05040200
