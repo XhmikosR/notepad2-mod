@@ -25,6 +25,6 @@ CALL "make_zip.bat" icl12
 :END
 TITLE Finished!
 ECHO.
-ENDLOCAL
 PAUSE
+ENDLOCAL
 EXIT /B

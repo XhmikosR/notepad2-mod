@@ -25,6 +25,6 @@ CALL "make_zip.bat" vs2010
 :END
 TITLE Finished!
 ECHO.
-ENDLOCAL
 PAUSE
+ENDLOCAL
 EXIT /B
