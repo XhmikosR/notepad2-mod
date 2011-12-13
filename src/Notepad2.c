@@ -2217,10 +2217,10 @@ void MsgInitMenu(HWND hwnd,WPARAM wParam,LPARAM lParam)
 
   switch (iMarkOccurrences)
   {
-    case 0: i = IDM_VIEW_MARKOCCURRENCES_OFF;break;
-    case 3: i = IDM_VIEW_MARKOCCURRENCES_BLUE;break;
-    case 2: i = IDM_VIEW_MARKOCCURRENCES_GREEN;break;
-    case 1: i = IDM_VIEW_MARKOCCURRENCES_RED;break;
+    case 0: i = IDM_VIEW_MARKOCCURRENCES_OFF; break;
+    case 3: i = IDM_VIEW_MARKOCCURRENCES_BLUE; break;
+    case 2: i = IDM_VIEW_MARKOCCURRENCES_GREEN; break;
+    case 1: i = IDM_VIEW_MARKOCCURRENCES_RED; break;
   }
   CheckMenuRadioItem(hmenu,IDM_VIEW_MARKOCCURRENCES_OFF,IDM_VIEW_MARKOCCURRENCES_RED,i,MF_BYCOMMAND);
   CheckCmd(hmenu,IDM_VIEW_MARKOCCURRENCES_CASE,bMarkOccurrencesMatchCase);
@@ -5283,9 +5283,9 @@ LRESULT MsgNotify(HWND hwnd,WPARAM wParam,LPARAM lParam)
                 }
               }
             }
-          } else if (bAutoCompleteWords && !SendMessage(hwndEdit, SCI_AUTOCACTIVE, 0, 0)) {
-            CompleteWord(hwndEdit, FALSE);
           }
+          else if (bAutoCompleteWords && !SendMessage(hwndEdit, SCI_AUTOCACTIVE, 0, 0))
+            CompleteWord(hwndEdit, FALSE);
           break;
 
         case SCN_MODIFIED:

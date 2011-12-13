@@ -133,6 +133,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>MaxSpeed</Optimization>
     </ClCompile>
     <Link>
       <AdditionalDependencies>comctl32.lib;imm32.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -160,6 +161,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>MaxSpeed</Optimization>
     </ClCompile>
     <Link>
       <AdditionalDependencies>comctl32.lib;imm32.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
