@@ -13,6 +13,7 @@ rem *                                       http://code.google.com/p/notepad2-mo
 rem *
 rem ******************************************************************************
 
+SETLOCAL ENABLEEXTENSIONS
 CD /D %~dp0
 
 rem Set the WDK directory
@@ -129,6 +130,7 @@ CALL :SUBNMAKE "x64=1"
 
 :END
 TITLE Building Notepad2-mod with WDK - Finished!
+ENDLOCAL
 EXIT /B
 
 

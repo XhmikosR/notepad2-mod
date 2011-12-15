@@ -15,7 +15,6 @@
 ;#define ICL12
 ;#define VS2010
 ;#define WDK
-;#define USE_MSVC2010
 
 ; Preprocessor related stuff
 #if VER < 0x05040200
@@ -110,7 +109,7 @@ DisableProgramGroupPage=yes
 DisableReadyPage=yes
 DisableWelcomePage=yes
 AllowCancelDuringInstall=no
-#if defined(WDK) && !defined(USE_MSVC2010)
+#if defined(WDK)
 MinVersion=0,5.0
 #else
 MinVersion=0,5.1.2600sp3
