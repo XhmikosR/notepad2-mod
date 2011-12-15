@@ -25,6 +25,11 @@ More information:
 * Kai Liu's website:          http://code.kliu.org/misc/notepad2/
 * Bookmark Edition website:   http://www.rlvision.com/notepad2/about.asp
 
+Changed keyboard shortcuts compared to Notepad2:
+Ctrl+Alt+F2         Expand selection to next match.
+Ctrl+Alt+Shift+F2   Expand selection to previous match.
+Ctrl+Shift+Enter    New line with toggled auto indent option.
+
 Notepad2-mod 4.2.25 has been created with Scintilla 3.0.2.  The unused
 lexers are commented out in "scintilla/src/Catalogue.cxx" (see lexlink.js).
 You can use WDK 7.1, MSVC 2010 or Intel Parallel Composer 2011 Update 5
