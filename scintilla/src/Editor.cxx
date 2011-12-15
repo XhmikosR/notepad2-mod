@@ -1116,13 +1116,13 @@ void Editor::MoveCaretInsideView(bool ensureVisible) {
 	if (pt.y < rcClient.top) {
 		MovePositionTo(SPositionFromLocation(
 		            Point(lastXChosen - xOffset, rcClient.top),
-					false, false, (virtualSpaceOptions & SCVS_USERACCESSIBLE) != 0),
+					false, false, UserVirtualSpace()),
 					Selection::noSel, ensureVisible);
 	} else if ((pt.y + vs.lineHeight - 1) > rcClient.bottom) {
 		int yOfLastLineFullyDisplayed = rcClient.top + (LinesOnScreen() - 1) * vs.lineHeight;
 		MovePositionTo(SPositionFromLocation(
 		            Point(lastXChosen - xOffset, rcClient.top + yOfLastLineFullyDisplayed),
-					false, false, (virtualSpaceOptions & SCVS_USERACCESSIBLE) != 0),
+					false, false, UserVirtualSpace()),
 		        Selection::noSel, ensureVisible);
 	}
 }
