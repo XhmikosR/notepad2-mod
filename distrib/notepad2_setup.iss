@@ -264,6 +264,20 @@ begin
 end;
 
 
+function IsOfficialBuildInstalled(): Boolean;
+begin
+  if RegKeyExists(HKLM, 'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Notepad2') and
+  FileExists(ExpandConstant('{pf}\Notepad2\Notepad2.inf')) then begin
+    Log('Custom Code: The official Notepad2 build is installed');
+    Result := True;
+  end
+  else begin
+    Log('Custom Code: The official Notepad2 build is NOT installed');
+    Result := False;
+  end;
+end;
+
+
 function IsUpgrade(): Boolean;
 var
   sPrevPath: String;
@@ -307,6 +321,30 @@ begin
     else begin
       Result := 1;
       Log('Custom Code: Something went wrong when uninstalling the old build');
+    end;
+end;
+
+
+function UninstallOfficialVersion(): Integer;
+var
+  iResultCode: Integer;
+begin
+  // Return Values:
+  // 0 - no idea
+  // 1 - error executing the command
+  // 2 - successfully executed the command
+
+  // default return value
+  Log('Custom Code: Will try to uninstall the old build');
+  Result := 0;
+    if Exec('rundll32.exe', ExpandConstant('advpack.dll,LaunchINFSectionEx "{pf}\Notepad2\Notepad2.inf",DefaultUninstall,,8,N'), '', SW_HIDE, ewWaitUntilTerminated, iResultCode) then begin
+      Result := 2;
+      Sleep(200);
+      Log('Custom Code: The official Notepad2 build was successfully uninstalled');
+    end
+    else begin
+      Result := 1;
+      Log('Custom Code: Something went wrong when uninstalling the official Notepad2 build');
     end;
 end;
 
@@ -358,6 +396,13 @@ begin
   if CurStep = ssInstall then begin
     if IsOldBuildInstalled() then begin
       UninstallOldVersion();
+      // This is the case where the old build is installed; the DefaulNotepadCheck() returns true
+      // and the set_default task isn't selected
+      if not IsTaskSelected('remove_default') then
+        RegWriteStringValue(HKLM, '{#IFEO}', 'Debugger', ExpandConstant('"{app}\Notepad2.exe" /z'));
+    end;
+    if IsOfficialBuildInstalled() then begin
+      UninstallOfficialVersion();
       // This is the case where the old build is installed; the DefaulNotepadCheck() returns true
       // and the set_default task isn't selected
       if not IsTaskSelected('remove_default') then
