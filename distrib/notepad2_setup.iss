@@ -219,15 +219,14 @@ function DefaulNotepadCheck(): Boolean;
 var
   sDebugger: String;
 begin
-  if RegQueryStringValue(HKLM, '{#IFEO}', 'Debugger', sDebugger) then begin
-    if sDebugger = (ExpandConstant('"{app}\Notepad2.exe" /z')) then begin
-      Log('Custom Code: {#app_name} is set as the default notepad');
-      Result := True;
-    end
-    else begin
-      Log('Custom Code: {#app_name} is NOT set as the default notepad');
-      Result := False;
-    end;
+  if RegQueryStringValue(HKLM, '{#IFEO}', 'Debugger', sDebugger) and
+  (sDebugger = (ExpandConstant('"{app}\Notepad2.exe" /z'))) then begin
+    Log('Custom Code: {#app_name} is set as the default notepad');
+    Result := True;
+  end
+  else begin
+    Log('Custom Code: {#app_name} is NOT set as the default notepad');
+    Result := False;
   end;
 end;
 
@@ -250,31 +249,13 @@ end;
 #endif
 
 
-function IsOldBuildInstalled(): Boolean;
+function IsOldBuildInstalled(sInfFile: String): Boolean;
 begin
   if RegKeyExists(HKLM, 'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Notepad2') and
-  FileExists(ExpandConstant('{pf}\Notepad2\Uninstall.inf')) then begin
-    Log('Custom Code: The old build is installed');
-    Result := True;
-  end
-  else begin
-    Log('Custom Code: The old build is NOT installed');
+  FileExists(ExpandConstant('{pf}\Notepad2\' + sInfFile)) then
+    Result := True
+  else
     Result := False;
-  end;
-end;
-
-
-function IsOfficialBuildInstalled(): Boolean;
-begin
-  if RegKeyExists(HKLM, 'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Notepad2') and
-  FileExists(ExpandConstant('{pf}\Notepad2\Notepad2.inf')) then begin
-    Log('Custom Code: The official Notepad2 build is installed');
-    Result := True;
-  end
-  else begin
-    Log('Custom Code: The official Notepad2 build is NOT installed');
-    Result := False;
-  end;
 end;
 
 
@@ -301,7 +282,7 @@ begin
 end;
 
 
-function UninstallOldVersion(): Integer;
+function UninstallOldVersion(sInfFile: String): Integer;
 var
   iResultCode: Integer;
 begin
@@ -311,40 +292,14 @@ begin
   // 2 - successfully executed the command
 
   // default return value
-  Log('Custom Code: Will try to uninstall the old build');
   Result := 0;
-    if Exec('rundll32.exe', ExpandConstant('advpack.dll,LaunchINFSectionEx "{pf}\Notepad2\Uninstall.inf",DefaultUninstall,,8,N'), '', SW_HIDE, ewWaitUntilTerminated, iResultCode) then begin
-      Result := 2;
-      Sleep(200);
-      Log('Custom Code: The old build was successfully uninstalled');
+  // TODO: use RegQueryStringValue
+    if not Exec('rundll32.exe', ExpandConstant('advpack.dll,LaunchINFSectionEx ' + '"{pf}\Notepad2\' + sInfFile +'",DefaultUninstall,,8,N'), '', SW_HIDE, ewWaitUntilTerminated, iResultCode) then begin
+      Result := 1;
     end
     else begin
-      Result := 1;
-      Log('Custom Code: Something went wrong when uninstalling the old build');
-    end;
-end;
-
-
-function UninstallOfficialVersion(): Integer;
-var
-  iResultCode: Integer;
-begin
-  // Return Values:
-  // 0 - no idea
-  // 1 - error executing the command
-  // 2 - successfully executed the command
-
-  // default return value
-  Log('Custom Code: Will try to uninstall the old build');
-  Result := 0;
-    if Exec('rundll32.exe', ExpandConstant('advpack.dll,LaunchINFSectionEx "{pf}\Notepad2\Notepad2.inf",DefaultUninstall,,8,N'), '', SW_HIDE, ewWaitUntilTerminated, iResultCode) then begin
       Result := 2;
       Sleep(200);
-      Log('Custom Code: The official Notepad2 build was successfully uninstalled');
-    end
-    else begin
-      Result := 1;
-      Log('Custom Code: Something went wrong when uninstalling the official Notepad2 build');
     end;
 end;
 
@@ -394,20 +349,32 @@ procedure CurStepChanged(CurStep: TSetupStep);
 begin
 
   if CurStep = ssInstall then begin
-    if IsOldBuildInstalled() then begin
-      UninstallOldVersion();
+    if IsOldBuildInstalled('Uninstall.inf') or IsOldBuildInstalled('Notepad2.inf') then begin
+
+      if IsOldBuildInstalled('Uninstall.inf') then begin
+        Log('Custom Code: The old build is installed, will try to uninstall it');
+        if UninstallOldVersion('Uninstall.inf') = 2 then
+          Log('Custom Code: The old build was successfully uninstalled')
+        else
+          Log('Custom Code: Something went wrong when uninstalling the old build');
+      end;
+
+      if IsOldBuildInstalled('Notepad2.inf') then begin
+        Log('Custom Code: The official Notepad2 build is installed, will try to uninstall it');
+        if UninstallOldVersion('Notepad2.inf') = 2 then
+          Log('Custom Code: The official Notepad2 build was successfully uninstalled')
+        else
+          Log('Custom Code: Something went wrong when uninstalling the official Notepad2 build');
+      end;
+
       // This is the case where the old build is installed; the DefaulNotepadCheck() returns true
       // and the set_default task isn't selected
       if not IsTaskSelected('remove_default') then
         RegWriteStringValue(HKLM, '{#IFEO}', 'Debugger', ExpandConstant('"{app}\Notepad2.exe" /z'));
-    end;
-    if IsOfficialBuildInstalled() then begin
-      UninstallOfficialVersion();
-      // This is the case where the old build is installed; the DefaulNotepadCheck() returns true
-      // and the set_default task isn't selected
-      if not IsTaskSelected('remove_default') then
-        RegWriteStringValue(HKLM, '{#IFEO}', 'Debugger', ExpandConstant('"{app}\Notepad2.exe" /z'));
-    end;
+
+    end
+    else
+      Log('Custom Code: No other known build is currently installed');
   end;
 
   if CurStep = ssPostInstall then begin
