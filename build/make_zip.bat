@@ -124,7 +124,6 @@ IF EXIST "Notepad2-mod.zip" DEL "Notepad2-mod.zip"
 IF EXIST "%TEMP_NAME%"      RD /S /Q "%TEMP_NAME%"
 IF NOT EXIST "%TEMP_NAME%"  MD "%TEMP_NAME%"
 
-IF EXIST "Notepad2-mod.%NP2_VER%*.7z"  COPY /Y /V "Notepad2-mod.%NP2_VER%*.7z"  "%TEMP_NAME%\" >NUL
 IF EXIST "Notepad2-mod.%NP2_VER%*.exe" COPY /Y /V "Notepad2-mod.%NP2_VER%*.exe" "%TEMP_NAME%\" >NUL
 IF EXIST "Notepad2-mod.%NP2_VER%*.zip" COPY /Y /V "Notepad2-mod.%NP2_VER%*.zip" "%TEMP_NAME%\" >NUL
 
@@ -158,12 +157,9 @@ IF EXIST "%TEMP_NAME%"     RD /S /Q "%TEMP_NAME%"
 IF NOT EXIST "%TEMP_NAME%" MD "%TEMP_NAME%"
 IF NOT EXIST "packages"    MD "packages"
 
-COPY /Y /V "..\License.txt"          "%TEMP_NAME%\"
-COPY /Y /V "..\%1\Notepad2.exe"      "%TEMP_NAME%\"
-COPY /Y /V "..\distrib\Notepad2.ini" "%TEMP_NAME%\"
-COPY /Y /V "..\Notepad2.txt"         "%TEMP_NAME%\"
-COPY /Y /V "..\Readme.txt"           "%TEMP_NAME%\"
-COPY /Y /V "..\Readme-mod.txt"       "%TEMP_NAME%\"
+FOR %%A IN ("..\License.txt" "..\%1\Notepad2.exe" "..\distrib\Notepad2.ini" ^
+"..\Notepad2.txt" "..\Readme.txt" "..\Readme-mod.txt"
+) DO COPY /Y /V "%%A" "%TEMP_NAME%\"
 
 PUSHD "%TEMP_NAME%"
 START "" /B /WAIT "..\..\distrib\7za.exe" a -tzip -mx=9^

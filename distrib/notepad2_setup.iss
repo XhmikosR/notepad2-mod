@@ -66,10 +66,10 @@
 #define VerRevision
 
 #expr ParseVersion(bindir + "\Release_x86\Notepad2.exe", VerMajor, VerMinor, VerBuild, VerRevision)
-#define app_version  str(VerMajor) + "." + str(VerMinor) + "." + str(VerBuild) + "." + str(VerRevision)
-#define app_name     "Notepad2-mod"
-#define quick_launch "{userappdata}\Microsoft\Internet Explorer\Quick Launch"
-#define IFEO         "SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe"
+#define app_version   str(VerMajor) + "." + str(VerMinor) + "." + str(VerBuild) + "." + str(VerRevision)
+#define app_name      "Notepad2-mod"
+#define app_copyright "Copyright © 2004-2011, Florian Balmer et al."
+#define quick_launch  "{userappdata}\Microsoft\Internet Explorer\Quick Launch"
 
 
 [Setup]
@@ -82,9 +82,9 @@ AppPublisherURL=http://code.google.com/p/notepad2-mod/
 AppSupportURL=http://code.google.com/p/notepad2-mod/
 AppUpdatesURL=http://code.google.com/p/notepad2-mod/
 AppContact=http://code.google.com/p/notepad2-mod/
-AppCopyright=Copyright © 2004-2011, Florian Balmer et al.
+AppCopyright={#app_copyright}
 VersionInfoCompany=XhmikosR
-VersionInfoCopyright=Copyright © 2004-2011, Florian Balmer et al.
+VersionInfoCopyright={#app_copyright}
 VersionInfoDescription={#app_name} {#app_version} Setup
 VersionInfoTextVersion={#app_version}
 VersionInfoVersion={#app_version}
@@ -100,6 +100,8 @@ OutputBaseFilename={#app_name}.{#app_version}_{#compiler}
 SetupIconFile=Setup.ico
 WizardImageFile=compiler:WizModernImage-IS.bmp
 WizardSmallImageFile=WizardSmallImageFile.bmp
+Compression=lzma2/max
+InternalCompressLevel=max
 SolidCompression=yes
 EnableDirDoesntExistWarning=no
 AllowNoIcons=yes
@@ -194,8 +196,9 @@ Type: dirifempty; Name: {app}
 
 
 [Code]
-// Global variables/constants and general functions
-const installer_mutex_name = '{#app_name}' + '_setup_mutex';
+const
+  installer_mutex = '{#app_name}' + '_setup_mutex';
+  IFEO            = 'SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe';
 
 function IsModuleLoaded(modulename: AnsiString): Boolean;
 external 'IsModuleLoaded2@files:psvince.dll stdcall setuponly';
@@ -209,17 +212,12 @@ external 'IsProcessorFeaturePresent@kernel32.dll stdcall';
 #endif
 
 
-////////////////////////////////////////
-//  Custom functions and procedures   //
-////////////////////////////////////////
-
-
 // Check if Notepad2 has replaced Windows Notepad
 function DefaulNotepadCheck(): Boolean;
 var
   sDebugger: String;
 begin
-  if RegQueryStringValue(HKLM, '{#IFEO}', 'Debugger', sDebugger) and
+  if RegQueryStringValue(HKLM, IFEO, 'Debugger', sDebugger) and
   (sDebugger = (ExpandConstant('"{app}\Notepad2.exe" /z'))) then begin
     Log('Custom Code: {#app_name} is set as the default notepad');
     Result := True;
@@ -294,13 +292,13 @@ begin
   // default return value
   Result := 0;
   // TODO: use RegQueryStringValue
-    if not Exec('rundll32.exe', ExpandConstant('advpack.dll,LaunchINFSectionEx ' + '"{pf}\Notepad2\' + sInfFile +'",DefaultUninstall,,8,N'), '', SW_HIDE, ewWaitUntilTerminated, iResultCode) then begin
-      Result := 1;
-    end
-    else begin
-      Result := 2;
-      Sleep(200);
-    end;
+  if not Exec('rundll32.exe', ExpandConstant('advpack.dll,LaunchINFSectionEx ' + '"{pf}\Notepad2\' + sInfFile +'",DefaultUninstall,,8,N'), '', SW_HIDE, ewWaitUntilTerminated, iResultCode) then begin
+    Result := 1;
+  end
+  else begin
+    Result := 2;
+    Sleep(200);
+  end;
 end;
 
 
@@ -370,7 +368,7 @@ begin
       // This is the case where the old build is installed; the DefaulNotepadCheck() returns true
       // and the set_default task isn't selected
       if not IsTaskSelected('remove_default') then
-        RegWriteStringValue(HKLM, '{#IFEO}', 'Debugger', ExpandConstant('"{app}\Notepad2.exe" /z'));
+        RegWriteStringValue(HKLM, IFEO, 'Debugger', ExpandConstant('"{app}\Notepad2.exe" /z'));
 
     end
     else
@@ -382,11 +380,11 @@ begin
       CleanUpSettings();
 
     if IsTaskSelected('set_default') then
-      RegWriteStringValue(HKLM, '{#IFEO}', 'Debugger', ExpandConstant('"{app}\Notepad2.exe" /z'));
+      RegWriteStringValue(HKLM, IFEO, 'Debugger', ExpandConstant('"{app}\Notepad2.exe" /z'));
 
     if IsTaskSelected('remove_default') then begin
-      RegDeleteValue(HKLM, '{#IFEO}', 'Debugger');
-      RegDeleteKeyIfEmpty(HKLM, '{#IFEO}');
+      RegDeleteValue(HKLM, IFEO, 'Debugger');
+      RegDeleteKeyIfEmpty(HKLM, IFEO);
     end;
 
     // Always add Notepad2's AppUserModelID and the rest registry values
@@ -407,8 +405,8 @@ begin
     end;
 
     if DefaulNotepadCheck() then
-      RegDeleteValue(HKLM, '{#IFEO}', 'Debugger');
-    RegDeleteKeyIfEmpty(HKLM, '{#IFEO}');
+      RegDeleteValue(HKLM, IFEO, 'Debugger');
+    RegDeleteKeyIfEmpty(HKLM, IFEO);
     RemoveReg();
 
   end;
@@ -428,13 +426,13 @@ var
   iMsgBoxResult: Integer;
 begin
   // Create a mutex for the installer and if it's already running then show a message and stop installation
-  if CheckForMutexes(installer_mutex_name) and not WizardSilent() then begin
+  if CheckForMutexes(installer_mutex) and not WizardSilent() then begin
     SuppressibleMsgBox(CustomMessage('msg_SetupIsRunningWarning'), mbError, MB_OK, MB_OK);
     Result := False;
   end
   else begin
     Result := True;
-    CreateMutex(installer_mutex_name);
+    CreateMutex(installer_mutex);
 
     while IsModuleLoaded('Notepad2.exe') and (iMsgBoxResult <> IDCANCEL) do
       iMsgBoxResult := SuppressibleMsgBox(CustomMessage('msg_AppIsRunning'), mbError, MB_OKCANCEL, IDCANCEL);
@@ -462,13 +460,13 @@ function InitializeUninstall(): Boolean;
 var
   iMsgBoxResult: Integer;
 begin
-  if CheckForMutexes(installer_mutex_name) then begin
+  if CheckForMutexes(installer_mutex) then begin
     SuppressibleMsgBox(CustomMessage('msg_SetupIsRunningWarning'), mbError, MB_OK, MB_OK);
     Result := False;
   end
   else begin
     Result := True;
-    CreateMutex(installer_mutex_name);
+    CreateMutex(installer_mutex);
 
     // Check if app is running during uninstallation
     while IsModuleLoadedU('Notepad2.exe') and (iMsgBoxResult <> IDCANCEL) do
