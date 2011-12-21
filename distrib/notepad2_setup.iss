@@ -17,7 +17,7 @@
 ;#define WDK
 
 ; Preprocessor related stuff
-#if VER < 0x05040200
+#if VER < 0x05040300
   #error Update your Inno Setup version
 #endif
 
@@ -52,11 +52,11 @@
 
 #define bindir       "..\bin\" + compiler
 
-#ifnexist SourcePath + bindir + "\Release_x86\Notepad2.exe"
+#ifnexist bindir + "\Release_x86\Notepad2.exe"
   #error Compile Notepad2 x86 first
 #endif
 
-#ifnexist SourcePath + bindir + "\Release_x64\Notepad2.exe"
+#ifnexist bindir + "\Release_x64\Notepad2.exe"
   #error Compile Notepad2 x64 first
 #endif
 
