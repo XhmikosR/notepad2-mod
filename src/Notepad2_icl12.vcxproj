@@ -178,7 +178,8 @@
       <MergeSections>.rdata=.text</MergeSections>
       <LargeAddressAware>true</LargeAddressAware>
       <SetChecksum>true</SetChecksum>
-      <WPOObjectFile>$(IntDir)WPO.obj</WPOObjectFile>
+      <WPOAsmListLocation>$(IntDir)</WPOAsmListLocation>
+      <WPOObjectFile>$(IntDir)</WPOObjectFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -218,7 +219,8 @@
       <TargetMachine>MachineX64</TargetMachine>
       <MergeSections>.rdata=.text</MergeSections>
       <SetChecksum>true</SetChecksum>
-      <WPOObjectFile>$(IntDir)WPO.obj</WPOObjectFile>
+      <WPOAsmListLocation>$(IntDir)</WPOAsmListLocation>
+      <WPOObjectFile>$(IntDir)</WPOObjectFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

@@ -252,23 +252,23 @@ $(SCI_SRC_OBJDIR)\PerLine.obj: \
 
 $(SCI_SRC_OBJDIR)\PositionCache.obj: \
     $(SCI_SRC)\PositionCache.cxx \
-    $(SCI_INC)\Platform.h  \
+    $(SCI_INC)\Platform.h \
     $(SCI_INC)\Scintilla.h \
-    $(SCI_SRC)\SplitVector.h  \
-    $(SCI_SRC)\Partitioning.h  \
-    $(SCI_SRC)\RunStyles.h  \
-    $(SCI_SRC)\ContractionState.h  \
+    $(SCI_SRC)\SplitVector.h \
+    $(SCI_SRC)\Partitioning.h \
+    $(SCI_SRC)\RunStyles.h \
+    $(SCI_SRC)\ContractionState.h \
     $(SCI_SRC)\CellBuffer.h \
-    $(SCI_SRC)\KeyMap.h  \
-    $(SCI_SRC)\Indicator.h  \
-    $(SCI_SRC)\XPM.h  \
-    $(SCI_SRC)\LineMarker.h  \
+    $(SCI_SRC)\KeyMap.h \
+    $(SCI_SRC)\Indicator.h \
+    $(SCI_SRC)\XPM.h \
+    $(SCI_SRC)\LineMarker.h \
     $(SCI_SRC)\Style.h \
     $(SCI_SRC)\ViewStyle.h \
-    $(SCI_SRC)\CharClassify.h  \
-    $(SCI_SRC)\Decoration.h  \
-    $(SCI_INC)\ILexer.h  \
-    $(SCI_SRC)\Document.h  \
+    $(SCI_SRC)\CharClassify.h \
+    $(SCI_SRC)\Decoration.h \
+    $(SCI_INC)\ILexer.h \
+    $(SCI_SRC)\Document.h \
     $(SCI_SRC)\Selection.h \
     $(SCI_SRC)\PositionCache.h
 

@@ -55,7 +55,7 @@ INCLUDEDIRS   = /I "$(SCI_INC)" /I "$(SCI_LEX)" /I "$(SCI_LIB)" /I "$(SCI_SRC)" 
                 /I "$(SCI_WIN)"
 CXXFLAGS      = /nologo /c /W3 /WX /EHsc /MD /O2 /GL /MP $(DEFINES) $(INCLUDEDIRS)
 LDFLAGS       = /NOLOGO /WX /INCREMENTAL:NO /RELEASE /OPT:REF /OPT:ICF /MERGE:.rdata=.text \
-                /DYNAMICBASE /NXCOMPAT /LTCG
+                /DYNAMICBASE /NXCOMPAT /LTCG /DEBUG
 LIBS          = advapi32.lib comctl32.lib comdlg32.lib gdi32.lib imm32.lib kernel32.lib \
                 ole32.lib oleaut32.lib psapi.lib shell32.lib shlwapi.lib user32.lib \
                 winspool.lib ntstc_msvcrt.lib
@@ -93,13 +93,13 @@ PREBUILD:
 CLEAN:
 	ECHO Cleaning... & ECHO.
 	IF EXIST "$(EXE)"                           DEL "$(EXE)"
+	IF EXIST "$(BINDIR)\Notepad2.pdb"           DEL "$(BINDIR)\Notepad2.pdb"
 	IF EXIST "$(NP2_SRC_OBJDIR)\*.obj"          DEL "$(NP2_SRC_OBJDIR)\*.obj"
 	IF EXIST "$(SCI_LEX_OBJDIR)\*.obj"          DEL "$(SCI_LEX_OBJDIR)\*.obj"
 	IF EXIST "$(SCI_LIB_OBJDIR)\*.obj"          DEL "$(SCI_LIB_OBJDIR)\*.obj"
 	IF EXIST "$(SCI_SRC_OBJDIR)\*.obj"          DEL "$(SCI_SRC_OBJDIR)\*.obj"
 	IF EXIST "$(SCI_WIN_OBJDIR)\*.obj"          DEL "$(SCI_WIN_OBJDIR)\*.obj"
 	IF EXIST "$(NP2_SRC_OBJDIR)\Notepad2.res"   DEL "$(NP2_SRC_OBJDIR)\Notepad2.res"
-	IF EXIST "$(BINDIR)\Notepad2.pdb"           DEL "$(BINDIR)\Notepad2.pdb"
 	-IF EXIST "$(SCI_LEX_OBJDIR)"               RD /Q "$(SCI_LEX_OBJDIR)"
 	-IF EXIST "$(SCI_LIB_OBJDIR)"               RD /Q "$(SCI_LIB_OBJDIR)"
 	-IF EXIST "$(SCI_SRC_OBJDIR)"               RD /Q "$(SCI_SRC_OBJDIR)"
