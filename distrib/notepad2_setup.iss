@@ -7,7 +7,7 @@
 ;* See License.txt for details.
 
 ; Requirements:
-; Inno Setup v5.4.2(+): http://www.jrsoftware.org/isdl.php
+; Inno Setup v5.4.3(+): http://www.jrsoftware.org/isdl.php
 
 ; $Id$
 
@@ -17,28 +17,17 @@
 ;#define WDK
 
 ; Preprocessor related stuff
-#if VER < 0x05040300
-  #error Update your Inno Setup version
+#if VER < EncodeVer(5,4,3)
+  #error Update your Inno Setup version (5.4.3 or newer)
 #endif
-
 
 #if !defined(ICL12) && !defined(VS2010) && !defined(WDK)
   #error You need to define ICL12 or VS2010 or WDK first
 #endif
 
-#if defined(ICL12) && (defined(VS2010) || defined(WDK))
-  #error You can't define ICL12 and at the same time
-#endif
-
-#if defined(VS2010) && ( defined(ICL12) || defined(WDK))
-  #error You can't define WDK and at the same time
-#endif
-
-#if defined(WDK) && (defined(ICL12) || defined(VS2010))
+#if defined(ICL12) && (defined(VS2010) || defined(WDK)) || defined(VS2010) && defined(WDK)
   #error You can't use two defines at the same time
 #endif
-
-
 
 #if defined(ICL12)
   #define compiler "ICL12"
@@ -49,8 +38,7 @@
   #define compiler "WDK"
 #endif
 
-
-#define bindir       "..\bin\" + compiler
+#define bindir "..\bin\" + compiler
 
 #ifnexist bindir + "\Release_x86\Notepad2.exe"
   #error Compile Notepad2 x86 first
@@ -304,7 +292,7 @@ end;
 
 function ShouldSkipPage(PageID: Integer): Boolean;
 begin
-  // Hide the license page
+  // Hide the license page if IsUpgrade()
   if IsUpgrade() and (PageID = wpLicense) then
     Result := True
   else
@@ -468,7 +456,7 @@ begin
     Result := True;
     CreateMutex(installer_mutex);
 
-    // Check if app is running during uninstallation
+    // Check if Notepad2 is running during uninstallation
     while IsModuleLoadedU('Notepad2.exe') and (iMsgBoxResult <> IDCANCEL) do
       iMsgBoxResult := SuppressibleMsgBox(CustomMessage('msg_AppIsRunningUninstall'), mbError, MB_OKCANCEL, IDCANCEL);
 
