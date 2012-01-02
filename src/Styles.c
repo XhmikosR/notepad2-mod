@@ -1065,7 +1065,7 @@ KEYWORDLIST KeyWords_INNO = {
 "changesenvironment compression compressionthreads copyrightfontname copyrightfontsize createappdir "
 "createuninstallregkey defaultdirname defaultgroupname defaultuserinfoname defaultuserinfoorg defaultuserinfoserial "
 "dialogfontname dialogfontsize direxistswarning disabledirpage disablefinishedpage disableprogramgrouppage disablereadymemo "
-"disablereadypage disablestartupprompt diskclustersize diskslicesize diskspanning enabledirdoesntexistwarning "
+"disablereadypage disablestartupprompt disablewelcomepage diskclustersize diskslicesize diskspanning enabledirdoesntexistwarning "
 "encryption extradiskspacerequired flatcomponentslist infoafterfile infobeforefile internalcompresslevel "
 "languagedetectionmethod languagecodepage languageid languagename licensefile lzmaalgorithm lzmablocksize "
 "lzmadictionarysize lzmamatchfinder lzmanumblockthreads lzmanumfastbytes lzmauseseparateprocess mergeduplicatefiles "
