@@ -8,7 +8,7 @@ rem *   Batch file for creating the zip packages
 rem *
 rem * See License.txt for details about distribution and modification.
 rem *
-rem *                                       (c) XhmikosR 2010-2011
+rem *                                       (c) XhmikosR 2010-2012
 rem *                                       http://code.google.com/p/notepad2-mod/
 rem *
 rem ******************************************************************************
@@ -113,6 +113,9 @@ IF "%~1" == "" (
 
 :START
 SET "TEMP_NAME=temp_zip%SUFFIX%"
+
+IF NOT EXIST "..\%INPUTDIRx86%\Notepad2.exe" CALL :SUBMSG "ERROR" "Compile Notepad2 x86 first!"
+IF NOT EXIST "..\%INPUTDIRx64%\Notepad2.exe" CALL :SUBMSG "ERROR" "Compile Notepad2 x64 first!"
 
 CALL :SubGetVersion
 CALL :SubZipFiles %INPUTDIRx86% x86-32

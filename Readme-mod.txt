@@ -32,5 +32,5 @@ Ctrl+Shift+Enter    New line with toggled auto indent option.
 
 Notepad2-mod 4.2.25 has been created with Scintilla 3.0.2.  The unused
 lexers are commented out in "scintilla/src/Catalogue.cxx" (see lexlink.js).
-You can use WDK 7.1, MSVC 2010 or Intel Parallel Composer 2011 Update 5
+You can use WDK 7.1, MSVC 2010 or Intel Parallel Composer 2011 SP1 Update 8
 to build Notepad2-mod.
