@@ -8,7 +8,7 @@ rem *   Batch file used to build Notepad2 with MSVC2010
 rem *
 rem * See License.txt for details about distribution and modification.
 rem *
-rem *                                       (c) XhmikosR 2010-2011
+rem *                                       (c) XhmikosR 2010-2012
 rem *                                       http://code.google.com/p/notepad2-mod/
 rem *
 rem ******************************************************************************
@@ -17,7 +17,7 @@ SETLOCAL ENABLEEXTENSIONS
 CD /D %~dp0
 
 rem Check the building environment
-IF NOT DEFINED VS100COMNTOOLS CALL :SUBMSG "ERROR" "Visual Studio 2010 NOT FOUND!"
+IF NOT DEFINED VS100COMNTOOLS CALL :SUBMSG "ERROR" "Visual Studio 2010 wasn't found!"
 
 
 rem Check for the help switches
@@ -138,14 +138,14 @@ EXIT /B
 
 
 :SHOWHELP
-TITLE "%~nx0 %1"
+TITLE %~nx0 %1
 ECHO. & ECHO.
-ECHO Usage:  %~nx0 [Clean^|Build^|Rebuild] [x86^|x64^|all] [Debug^|Release^|all]
+ECHO Usage: %~nx0 [Clean^|Build^|Rebuild] [x86^|x64^|all] [Debug^|Release^|all]
 ECHO.
-ECHO Notes:  You can also prefix the commands with "-", "--" or "/".
-ECHO         The arguments are not case sensitive.
+ECHO Notes: You can also prefix the commands with "-", "--" or "/".
+ECHO        The arguments are not case sensitive.
 ECHO. & ECHO.
-ECHO Executing "%~nx0" will use the defaults: "%~nx0 build all release"
+ECHO Executing %~nx0 without any arguments is equivalent to "%~nx0 build all release"
 ECHO.
 ECHO If you skip the second argument the default one will be used.
 ECHO The same goes for the third argument. Examples:
