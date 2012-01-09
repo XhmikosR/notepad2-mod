@@ -293,6 +293,20 @@ private:
 		}
 	}
 
+	bool IsCommentLine (int line, LexAccessor &styler) {
+		int pos = styler.LineStart(line);
+		int eol_pos = styler.LineStart(line + 1) - 1;
+		for (int i = pos; i + 1 < eol_pos; i++) {
+			int style = styler.StyleAt(i);
+			// MySQL needs -- comments to be followed by space or control char
+			if (style == SCE_SQL_COMMENTLINE && styler.Match(i, "--"))
+				return true;
+			else if (!IsASpaceOrTab(styler[i]))
+				return false;
+		}
+		return false;
+	}
+
 	OptionsSQL options;
 	OptionSetSQL osSQL;
 	SQLStates sqlStates;
@@ -508,8 +522,14 @@ void SCI_METHOD LexerSQL::Fold(unsigned int startPos, int length, int initStyle,
 	int visibleChars = 0;
 	int lineCurrent = styler.GetLine(startPos);
 	int levelCurrent = SC_FOLDLEVELBASE;
+
 	if (lineCurrent > 0) {
-		levelCurrent = styler.LevelAt(lineCurrent - 1) >> 16;
+		// Backtrack to previous line in case need to fix its fold status for folding block of single-line comments (i.e. '--').
+		lineCurrent -= 1;
+		startPos = styler.LineStart(lineCurrent);
+
+		if (lineCurrent > 0)
+			levelCurrent = styler.LevelAt(lineCurrent - 1) >> 16;
 	}
 	int levelNext = levelCurrent;
 	char chNext = styler[startPos];
@@ -548,8 +568,6 @@ void SCI_METHOD LexerSQL::Fold(unsigned int startPos, int length, int initStyle,
 				levelNext--;
 			}
 		}
-		/* notepad2-mod custom code start */
-		/* Disable explicit folding; it can often cause problems with non-aware code
 		if (options.foldComment && (style == SCE_SQL_COMMENTLINE)) {
 			// MySQL needs -- comments to be followed by space or control char
 			if ((ch == '-') && (chNext == '-')) {
@@ -562,7 +580,13 @@ void SCI_METHOD LexerSQL::Fold(unsigned int startPos, int length, int initStyle,
 				}
 			}
 		}
-		*/ /* notepad2-mod custom code end */
+		// Fold block of single-line comments (i.e. '--').
+		if (options.foldComment && atEOL && IsCommentLine(lineCurrent, styler)) {
+			if (!IsCommentLine(lineCurrent - 1, styler) && IsCommentLine(lineCurrent + 1, styler))
+				levelNext++;
+			else if (IsCommentLine(lineCurrent - 1, styler) && !IsCommentLine(lineCurrent + 1, styler))
+				levelNext--;
+		}
 		if (style == SCE_SQL_OPERATOR) {
 			if (ch == '(') {
 				if (levelCurrent > levelNext)
