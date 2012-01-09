@@ -16,7 +16,7 @@
 #ifndef NOTEPAD2_VERSION_H
 #define NOTEPAD2_VERSION_H
 
-#include "Version_rev.h"
+#include "VersionRev.h"
 
 #define DO_STRINGIFY(x) #x
 #define STRINGIFY(x)    DO_STRINGIFY(x)

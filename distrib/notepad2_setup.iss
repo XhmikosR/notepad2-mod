@@ -22,11 +22,11 @@
 #endif
 
 #if !defined(ICL12) && !defined(VS2010) && !defined(WDK)
-  #error You need to define ICL12 or VS2010 or WDK first
+  #error You need to define the compiler used; ICL12, VS2010 or WDK
 #endif
 
 #if defined(ICL12) && (defined(VS2010) || defined(WDK)) || defined(VS2010) && defined(WDK)
-  #error You can't use two defines at the same time
+  #error You can't use two or more compiler defines at the same time
 #endif
 
 #if defined(ICL12)
@@ -84,7 +84,11 @@ UninstallDisplayName={#app_name} {#app_version} ({#compiler})
 DefaultDirName={pf}\Notepad2
 LicenseFile=license.txt
 OutputDir=.
+#if defined(WDK)
+OutputBaseFilename={#app_name}.{#app_version}
+#else
 OutputBaseFilename={#app_name}.{#app_version}_{#compiler}
+#endif
 SetupIconFile=Setup.ico
 WizardImageFile=compiler:WizModernImage-IS.bmp
 WizardSmallImageFile=WizardSmallImageFile.bmp
@@ -153,7 +157,6 @@ Source: {#bindir}\Release_x64\Notepad2.exe; DestDir: {app};                  Fla
 Source: {#bindir}\Release_x86\Notepad2.exe; DestDir: {app};                  Flags: ignoreversion;                         Check: not Is64BitInstallMode()
 Source: Notepad2.ini;                       DestDir: {userappdata}\Notepad2; Flags: onlyifdoesntexist uninsneveruninstall
 Source: ..\Notepad2.txt;                    DestDir: {app};                  Flags: ignoreversion
-Source: ..\Readme.txt;                      DestDir: {app};                  Flags: ignoreversion
 Source: ..\Readme-mod.txt;                  DestDir: {app};                  Flags: ignoreversion
 
 
@@ -175,7 +178,8 @@ Filename: {app}\Notepad2.exe; Description: {cm:LaunchProgram,{#app_name}}; Worki
 Type: files;      Name: {userdesktop}\{#app_name}.lnk;   Check: not IsTaskSelected('desktopicon\user')   and IsUpgrade()
 Type: files;      Name: {commondesktop}\{#app_name}.lnk; Check: not IsTaskSelected('desktopicon\common') and IsUpgrade()
 Type: files;      Name: {#quick_launch}\{#app_name}.lnk; Check: not IsTaskSelected('quicklaunchicon')    and IsUpgrade(); OnlyBelowVersion: 0,6.01
-Type: files;      Name: {app}\Notepad2.ini;              Check: IsUpgrade()
+Type: files;      Name: {app}\Notepad2.ini
+Type: files;      Name: {app}\Readme.txt
 
 
 [UninstallDelete]
@@ -218,7 +222,7 @@ end;
 
 
 #if defined(sse_required)
-function Is_SSE_Supported(): Boolean;
+function IsSSESupported(): Boolean;
 begin
   // PF_XMMI_INSTRUCTIONS_AVAILABLE
   Result := IsProcessorFeaturePresent(6);
@@ -226,7 +230,7 @@ end;
 
 #elif defined(sse2_required)
 
-function Is_SSE2_Supported(): Boolean;
+function IsSSE2Supported(): Boolean;
 begin
   // PF_XMMI64_INSTRUCTIONS_AVAILABLE
   Result := IsProcessorFeaturePresent(10);
@@ -294,9 +298,7 @@ function ShouldSkipPage(PageID: Integer): Boolean;
 begin
   // Hide the license page if IsUpgrade()
   if IsUpgrade() and (PageID = wpLicense) then
-    Result := True
-  else
-    Result := False;
+    Result := True;
 end;
 
 
@@ -308,17 +310,17 @@ begin
 end;
 
 
-procedure RemoveReg();
-begin
-  RegDeleteKeyIncludingSubkeys(HKCR, 'Applications\notepad2.exe');
-  RegDeleteKeyIncludingSubkeys(HKCR, '*\OpenWithList\notepad2.exe');
-end;
-
-
 procedure CleanUpSettings();
 begin
   DeleteFile(ExpandConstant('{userappdata}\Notepad2\Notepad2.ini'));
   RemoveDir(ExpandConstant('{userappdata}\Notepad2'));
+end;
+
+
+procedure RemoveReg();
+begin
+  RegDeleteKeyIncludingSubkeys(HKCR, 'Applications\notepad2.exe');
+  RegDeleteKeyIncludingSubkeys(HKCR, '*\OpenWithList\notepad2.exe');
 end;
 
 
@@ -333,13 +335,11 @@ end;
 
 procedure CurStepChanged(CurStep: TSetupStep);
 begin
-
   if CurStep = ssInstall then begin
     if IsTaskSelected('reset_settings') then
       CleanUpSettings();
 
     if IsOldBuildInstalled('Uninstall.inf') or IsOldBuildInstalled('Notepad2.inf') then begin
-
       if IsOldBuildInstalled('Uninstall.inf') then begin
         Log('Custom Code: The old build is installed, will try to uninstall it');
         if UninstallOldVersion('Uninstall.inf') = 2 then
@@ -361,20 +361,16 @@ begin
       if not IsTaskSelected('remove_default') then
         RegWriteStringValue(HKLM, IFEO, 'Debugger', ExpandConstant('"{app}\Notepad2.exe" /z'));
 
-    end
-    else
-      Log('Custom Code: No other known build is currently installed');
+    end;
   end;
 
   if CurStep = ssPostInstall then begin
     if IsTaskSelected('set_default') then
       RegWriteStringValue(HKLM, IFEO, 'Debugger', ExpandConstant('"{app}\Notepad2.exe" /z'));
-
     if IsTaskSelected('remove_default') then begin
       RegDeleteValue(HKLM, IFEO, 'Debugger');
       RegDeleteKeyIfEmpty(HKLM, IFEO);
     end;
-
     // Always add Notepad2's AppUserModelID and the rest registry values
     AddReg();
   end;
@@ -387,9 +383,8 @@ begin
   // When uninstalling, ask the user to delete Notepad2's settings
   if CurUninstallStep = usUninstall then begin
     if SettingsExistCheck() then begin
-      if SuppressibleMsgBox(CustomMessage('msg_DeleteSettings'), mbConfirmation, MB_YESNO or MB_DEFBUTTON2, IDNO) = IDYES then begin
+      if SuppressibleMsgBox(CustomMessage('msg_DeleteSettings'), mbConfirmation, MB_YESNO or MB_DEFBUTTON2, IDNO) = IDYES then
         CleanUpSettings();
-      end;
     end;
 
     if DefaulNotepadCheck() then
@@ -429,12 +424,12 @@ begin
       Result := False;
 
 #if defined(sse2_required)
-    if not Is_SSE2_Supported() then begin
+    if not IsSSE2Supported() then begin
       SuppressibleMsgBox(CustomMessage('msg_simd_sse2'), mbCriticalError, MB_OK, MB_OK);
       Result := False;
     end;
 #elif defined(sse_required)
-    if not Is_SSE_Supported() then begin
+    if not IsSSESupported() then begin
       SuppressibleMsgBox(CustomMessage('msg_simd_sse'), mbCriticalError, MB_OK, MB_OK);
       Result := False;
     end;

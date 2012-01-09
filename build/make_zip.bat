@@ -27,82 +27,20 @@ IF /I "%~1" == "/?"     GOTO SHOWHELP
 
 rem Check for the first switch
 IF "%~1" == "" (
-  SET INPUTDIRx86=bin\WDK\Release_x86
-  SET INPUTDIRx64=bin\WDK\Release_x64
-  SET SUFFIX=
+  SET "COMPILER=WDK"
 ) ELSE (
-  IF /I "%~1" == "WDK" (
-    SET INPUTDIRx86=bin\WDK\Release_x86
-    SET INPUTDIRx64=bin\WDK\Release_x64
-    SET SUFFIX=
-    GOTO START
-  )
-  IF /I "%~1" == "/WDK" (
-    SET INPUTDIRx86=bin\WDK\Release_x86
-    SET INPUTDIRx64=bin\WDK\Release_x64
-    SET SUFFIX=
-    GOTO START
-  )
-  IF /I "%~1" == "-WDK" (
-    SET INPUTDIRx86=bin\WDK\Release_x86
-    SET INPUTDIRx64=bin\WDK\Release_x64
-    SET SUFFIX=
-    GOTO START
-  )
-  IF /I "%~1" == "--WDK" (
-    SET INPUTDIRx86=bin\WDK\Release_x86
-    SET INPUTDIRx64=bin\WDK\Release_x64
-    SET SUFFIX=
-    GOTO START
-  )
-  IF /I "%~1" == "VS2010" (
-    SET INPUTDIRx86=bin\VS2010\Release_x86
-    SET INPUTDIRx64=bin\VS2010\Release_x64
-    SET SUFFIX=_vs2010
-    GOTO START
-  )
-  IF /I "%~1" == "/VS2010" (
-    SET INPUTDIRx86=bin\VS2010\Release_x86
-    SET INPUTDIRx64=bin\VS2010\Release_x64
-    SET SUFFIX=_vs2010
-    GOTO START
-  )
-  IF /I "%~1" == "-VS2010" (
-    SET INPUTDIRx86=bin\VS2010\Release_x86
-    SET INPUTDIRx64=bin\VS2010\Release_x64
-    SET SUFFIX=_vs2010
-    GOTO START
-  )
-  IF /I "%~1" == "--VS2010" (
-    SET INPUTDIRx86=bin\VS2010\Release_x86
-    SET INPUTDIRx64=bin\VS2010\Release_x64
-    SET SUFFIX=_vs2010
-    GOTO START
-  )
-  IF /I "%~1" == "ICL12" (
-    SET INPUTDIRx86=bin\ICL12\Release_x86
-    SET INPUTDIRx64=bin\ICL12\Release_x64
-    SET SUFFIX=_icl12
-    GOTO START
-  )
-  IF /I "%~1" == "/ICL12" (
-    SET INPUTDIRx86=bin\ICL12\Release_x86
-    SET INPUTDIRx64=bin\ICL12\Release_x64
-    SET SUFFIX=_icl12
-    GOTO START
-  )
-  IF /I "%~1" == "-ICL12" (
-    SET INPUTDIRx86=bin\ICL12\Release_x86
-    SET INPUTDIRx64=bin\ICL12\Release_x64
-    SET SUFFIX=_icl12
-    GOTO START
-  )
-  IF /I "%~1" == "--ICL12" (
-    SET INPUTDIRx86=bin\ICL12\Release_x86
-    SET INPUTDIRx64=bin\ICL12\Release_x64
-    SET SUFFIX=_icl12
-    GOTO START
-  )
+  IF /I "%~1" == "WDK"      (SET "COMPILER=WDK"    & GOTO START)
+  IF /I "%~1" == "/WDK"     (SET "COMPILER=WDK"    & GOTO START)
+  IF /I "%~1" == "-WDK"     (SET "COMPILER=WDK"    & GOTO START)
+  IF /I "%~1" == "--WDK"    (SET "COMPILER=WDK"    & GOTO START)
+  IF /I "%~1" == "VS2010"   (SET "COMPILER=VS2010" & GOTO START)
+  IF /I "%~1" == "/VS2010"  (SET "COMPILER=VS2010" & GOTO START)
+  IF /I "%~1" == "-VS2010"  (SET "COMPILER=VS2010" & GOTO START)
+  IF /I "%~1" == "--VS2010" (SET "COMPILER=VS2010" & GOTO START)
+  IF /I "%~1" == "ICL12"    (SET "COMPILER=ICL12"  & GOTO START)
+  IF /I "%~1" == "/ICL12"   (SET "COMPILER=ICL12"  & GOTO START)
+  IF /I "%~1" == "-ICL12"   (SET "COMPILER=ICL12"  & GOTO START)
+  IF /I "%~1" == "--ICL12"  (SET "COMPILER=ICL12"  & GOTO START)
 
   ECHO.
   ECHO Unsupported commandline switch!
@@ -112,14 +50,18 @@ IF "%~1" == "" (
 
 
 :START
+SET INPUTDIRx86=bin\%COMPILER%\Release_x86
+SET INPUTDIRx64=bin\%COMPILER%\Release_x64
+IF NOT "%COMPILER%" == "WDK" SET SUFFIX=_%COMPILER%
 SET "TEMP_NAME=temp_zip%SUFFIX%"
 
 IF NOT EXIST "..\%INPUTDIRx86%\Notepad2.exe" CALL :SUBMSG "ERROR" "Compile Notepad2 x86 first!"
 IF NOT EXIST "..\%INPUTDIRx64%\Notepad2.exe" CALL :SUBMSG "ERROR" "Compile Notepad2 x64 first!"
 
 CALL :SubGetVersion
-CALL :SubZipFiles %INPUTDIRx86% x86-32
-CALL :SubZipFiles %INPUTDIRx64% x86-64
+
+CALL :SubZipFiles %INPUTDIRx86% x86
+CALL :SubZipFiles %INPUTDIRx64% x64
 
 rem Compress everything into a single ZIP file
 PUSHD "packages"
@@ -153,26 +95,27 @@ EXIT /B
 
 
 :SubZipFiles
-TITLE Creating the %2 ZIP file...
-CALL :SUBMSG "INFO" "Creating the %2 ZIP file..."
+SET "ZIP_NAME=Notepad2-mod.%NP2_VER%_%2%SUFFIX%"
+TITLE Creating %ZIP_NAME%.zip...
+CALL :SUBMSG "INFO" "Creating %ZIP_NAME%.zip..."
 
 IF EXIST "%TEMP_NAME%"     RD /S /Q "%TEMP_NAME%"
 IF NOT EXIST "%TEMP_NAME%" MD "%TEMP_NAME%"
 IF NOT EXIST "packages"    MD "packages"
 
-FOR %%A IN ("..\License.txt" "..\%1\Notepad2.exe" "..\distrib\Notepad2.ini" ^
-"..\Notepad2.txt" "..\Readme.txt" "..\Readme-mod.txt"
+FOR %%A IN ("..\License.txt" "..\%1\Notepad2.exe"^
+ "..\distrib\Notepad2.ini" "..\Notepad2.txt" "..\Readme-mod.txt"
 ) DO COPY /Y /V "%%A" "%TEMP_NAME%\"
 
 PUSHD "%TEMP_NAME%"
 START "" /B /WAIT "..\..\distrib\7za.exe" a -tzip -mx=9^
- "Notepad2-mod.%NP2_VER%_%2%SUFFIX%.zip" "License.txt" "Notepad2.exe"^
- "Notepad2.ini" "Notepad2.txt" "Readme.txt" "Readme-mod.txt" >NUL
+ "%ZIP_NAME%.zip" "License.txt" "Notepad2.exe"^
+ "Notepad2.ini" "Notepad2.txt" "Readme-mod.txt" >NUL
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
-CALL :SUBMSG "INFO" "Notepad2-mod.%NP2_VER%_%2%SUFFIX%.zip created successfully!"
+CALL :SUBMSG "INFO" "%ZIP_NAME%.zip created successfully!"
 
-MOVE /Y "Notepad2-mod.%NP2_VER%_%2%SUFFIX%.zip" "..\packages" >NUL
+MOVE /Y "%ZIP_NAME%.zip" "..\packages" >NUL
 POPD
 IF EXIST "%TEMP_NAME%" RD /S /Q "%TEMP_NAME%"
 EXIT /B
@@ -181,51 +124,27 @@ EXIT /B
 :SubGetVersion
 rem Get the version
 FOR /F "tokens=3,4 delims= " %%K IN (
-  'FINDSTR /I /L /C:"define VERSION_MAJOR" "..\src\Version.h"') DO (
-  SET "VerMajor=%%K" & Call :SubVerMajor %%VerMajor:*Z=%%)
-FOR /F "tokens=3,4 delims= " %%L IN (
-  'FINDSTR /I /L /C:"define VERSION_MINOR" "..\src\Version.h"') DO (
-  SET "VerMinor=%%L" & Call :SubVerMinor %%VerMinor:*Z=%%)
-FOR /F "tokens=3,4 delims= " %%M IN (
-  'FINDSTR /I /L /C:"define VERSION_BUILD" "..\src\Version.h"') DO (
-  SET "VerBuild=%%M" & Call :SubVerBuild %%VerBuild:*Z=%%)
-FOR /F "tokens=3,4 delims= " %%N IN (
-  'FINDSTR /I /L /C:"define VERSION_REV" "..\src\Version_rev.h"') DO (
-  SET "VerRev=%%N" & Call :SubVerRev %%VerRev:*Z=%%)
+  'FINDSTR /I /L /C:"define VERSION_MAJOR" "..\src\Version.h"') DO (SET "VerMajor=%%K")
+FOR /F "tokens=3,4 delims= " %%K IN (
+  'FINDSTR /I /L /C:"define VERSION_MINOR" "..\src\Version.h"') DO (SET "VerMinor=%%K")
+FOR /F "tokens=3,4 delims= " %%K IN (
+  'FINDSTR /I /L /C:"define VERSION_BUILD" "..\src\Version.h"') DO (SET "VerBuild=%%K")
+FOR /F "tokens=3,4 delims= " %%K IN (
+  'FINDSTR /I /L /C:"define VERSION_REV" "..\src\VersionRev.h"') DO (SET "VerRev=%%K")
 
 SET NP2_VER=%VerMajor%.%VerMinor%.%VerBuild%.%VerRev%
 EXIT /B
 
 
-:SubVerMajor
-SET VerMajor=%*
-EXIT /B
-
-
-:SubVerMinor
-SET VerMinor=%*
-EXIT /B
-
-
-:SubVerBuild
-SET VerBuild=%*
-EXIT /B
-
-
-:SubVerRev
-SET VerRev=%*
-EXIT /B
-
-
 :SHOWHELP
-TITLE "%~nx0 %1"
+TITLE %~nx0 %1
 ECHO. & ECHO.
-ECHO Usage:   %~nx0 [ICL12^|VS2010^|WDK]
+ECHO Usage:  %~nx0 [ICL12^|VS2010^|WDK]
 ECHO.
-ECHO Notes:   You can also prefix the commands with "-", "--" or "/".
-ECHO          The arguments are not case sensitive.
+ECHO Notes:  You can also prefix the commands with "-", "--" or "/".
+ECHO         The arguments are not case sensitive.
 ECHO. & ECHO.
-ECHO Executing "%~nx0" will use the defaults: "%~nx0 WDK"
+ECHO Executing %~nx0 without any arguments is equivalent to "%~nx0 WDK"
 ECHO.
 ENDLOCAL
 EXIT /B

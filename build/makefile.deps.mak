@@ -7,7 +7,7 @@
 #*
 #* See License.txt for details about distribution and modification.
 #*
-#*                                       (c) XhmikosR 2010-2011
+#*                                       (c) XhmikosR 2010-2012
 #*                                       http://code.google.com/p/notepad2-mod/
 #*
 #*
@@ -398,7 +398,7 @@ $(NP2_SRC_OBJDIR)\Dialogs.obj: \
     $(NP2_SRC)\Dialogs.h \
     $(NP2_SRC)\resource.h \
     $(NP2_SRC)\Version.h \
-    $(NP2_SRC)\Version_rev.h
+    $(NP2_SRC)\VersionRev.h
 
 $(NP2_SRC_OBJDIR)\Dlapi.obj: \
     $(NP2_SRC)\Dlapi.c \
@@ -432,7 +432,7 @@ $(NP2_SRC_OBJDIR)\Notepad2.res: \
     $(NP2_SRC)\Notepad2.rc \
     $(NP2_SRC)\Notepad2.ver \
     $(NP2_SRC)\Version.h \
-    $(NP2_SRC)\Version_rev.h \
+    $(NP2_SRC)\VersionRev.h \
     $(NP2_RES)\Copy.cur \
     $(NP2_RES)\Encoding.bmp \
     $(NP2_RES)\Next.bmp \
