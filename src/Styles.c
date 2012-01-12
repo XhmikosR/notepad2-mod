@@ -661,8 +661,8 @@ EDITLEXER lexASM = { SCLEX_ASM, 63013, L"Assembly Script", L"asm", L"", &KeyWord
 
 KEYWORDLIST KeyWords_PL = {
 "__DATA__ __END__ __FILE__ __LINE__ __PACKAGE__ abs accept alarm and atan2 AUTOLOAD BEGIN "
-"bind binmode bless caller chdir CHECK chmod chomp chop chown chr chroot close closedir cmp "
-"connect continue CORE cos crypt dbmclose dbmopen default defined delete DESTROY die do "
+"bind binmode bless break caller chdir CHECK chmod chomp chop chown chr chroot close closedir "
+"cmp connect continue CORE cos crypt dbmclose dbmopen default defined delete DESTROY die do "
 "dump each else elsif END endgrent endhostent endnetent endprotoent endpwent endservent eof "
 "eq EQ eval exec exists exit exp fcntl fileno flock for foreach fork format formline ge GE "
 "getc getgrent getgrgid getgrnam gethostbyaddr gethostbyname gethostent getlogin "

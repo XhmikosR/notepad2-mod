@@ -8,7 +8,7 @@ rem *   Batch file "wrapper" for makefile.mak, used to build Notepad2 with WDK
 rem *
 rem * See License.txt for details about distribution and modification.
 rem *
-rem *                                       (c) XhmikosR 2010-2011
+rem *                                       (c) XhmikosR 2010-2012
 rem *                                       http://code.google.com/p/notepad2-mod/
 rem *
 rem ******************************************************************************
@@ -23,11 +23,11 @@ rem Check the building environment
 IF NOT EXIST "%WDKBASEDIR%" CALL :SUBMSG "ERROR" "Specify your WDK directory!"
 
 IF NOT DEFINED VS100COMNTOOLS (
-  CALL :SUBMSG "INFO" "Visual Studio 2010 wasn't found, will use WDK's compiler"
+  CALL :SUBMSG "INFO" "Visual Studio 2010 wasn't found, I will use WDK's compiler"
   SET USE_MSVC2010=
 ) ELSE (
-  rem Comment out the following line if you want to use MSVC 2010 compiler
-  rem instead of WDK's compiler
+  rem Comment out the following line or set USE_MSVC2010 to false if you want
+  rem to use WDK's compiler instead of MSVC 2010 compiler
   rem SET USE_MSVC2010=true
 )
 
@@ -141,17 +141,17 @@ EXIT /B
 
 
 :SHOWHELP
-TITLE "%~nx0 %1"
+TITLE %~nx0 %1
 ECHO. & ECHO.
-ECHO Usage:   %~nx0 [Clean^|Build^|Rebuild] [x86^|x64^|all]
+ECHO Usage: %~nx0 [Clean^|Build^|Rebuild] [x86^|x64^|all]
 ECHO.
-ECHO Notes:   You can also prefix the commands with "-", "--" or "/".
-ECHO          The arguments are not case sensitive.
+ECHO Notes: You can also prefix the commands with "-", "--" or "/".
+ECHO        The arguments are not case sensitive.
 ECHO. & ECHO.
-ECHO Edit "%~nx0" and set your WDK directory.
+ECHO Edit %~nx0 and set your WDK directory or define %%WDKBASEDIR%%.
 ECHO You shouldn't need to make any changes other than that.
 ECHO. & ECHO.
-ECHO Executing "%~nx0" will use the defaults: "%~nx0 build all"
+ECHO Executing %~nx0 without any arguments is equivalent to "%~nx0 build all"
 ECHO.
 ECHO If you skip the second argument the default one will be used. Example:
 ECHO "%~nx0 rebuild" is the same as "%~nx0 rebuild all"

@@ -27,25 +27,25 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>Intel Parallel Composer 2011</PlatformToolset>
+    <PlatformToolset>Intel C++ Compiler 12.1</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>Intel Parallel Composer 2011</PlatformToolset>
+    <PlatformToolset>Intel C++ Compiler 12.1</PlatformToolset>
     <InterproceduralOptimization>true</InterproceduralOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>Intel Parallel Composer 2011</PlatformToolset>
+    <PlatformToolset>Intel C++ Compiler 12.1</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>Intel Parallel Composer 2011</PlatformToolset>
+    <PlatformToolset>Intel C++ Compiler 12.1</PlatformToolset>
     <InterproceduralOptimization>true</InterproceduralOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -162,7 +162,7 @@
       <FloatingPointModel>Fast</FloatingPointModel>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
-      <InterproceduralOptimization>SingleFile</InterproceduralOptimization>
+      <InterproceduralOptimization>MultiFile</InterproceduralOptimization>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -178,7 +178,8 @@
       <MergeSections>.rdata=.text</MergeSections>
       <LargeAddressAware>true</LargeAddressAware>
       <SetChecksum>true</SetChecksum>
-      <WPOObjectFile>$(IntDir)WPO.obj</WPOObjectFile>
+      <WPOAsmListLocation>$(IntDir)</WPOAsmListLocation>
+      <WPOObjectFile>$(IntDir)</WPOObjectFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -203,7 +204,7 @@
       <FloatingPointModel>Fast</FloatingPointModel>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
-      <InterproceduralOptimization>SingleFile</InterproceduralOptimization>
+      <InterproceduralOptimization>MultiFile</InterproceduralOptimization>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_WIN64;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -218,7 +219,8 @@
       <TargetMachine>MachineX64</TargetMachine>
       <MergeSections>.rdata=.text</MergeSections>
       <SetChecksum>true</SetChecksum>
-      <WPOObjectFile>$(IntDir)WPO.obj</WPOObjectFile>
+      <WPOAsmListLocation>$(IntDir)</WPOAsmListLocation>
+      <WPOObjectFile>$(IntDir)</WPOObjectFile>
     </Link>
   </ItemDefinitionGroup>
  <ItemGroup>

@@ -7,7 +7,7 @@
 #*
 #* See License.txt for details about distribution and modification.
 #*
-#*                                       (c) XhmikosR 2010-2011
+#*                                       (c) XhmikosR 2010-2012
 #*                                       http://code.google.com/p/notepad2-mod/
 #*
 #* Use build_wdk.bat and set there your WDK directory.
@@ -49,13 +49,13 @@ NP2_SRC         = ..\src
 NP2_RES         = ..\res
 
 
-DEFINES       = /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE" \
-                /D "_CRT_SECURE_NO_WARNINGS" /D "_STL70_" /D "_STATIC_CPPLIB" /D "WDK_BUILD"
+DEFINES       = /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE" /D "_STL70_" \
+                /D "_STATIC_CPPLIB" /D "_CRT_SECURE_NO_WARNINGS" /D "WDK_BUILD"
 INCLUDEDIRS   = /I "$(SCI_INC)" /I "$(SCI_LEX)" /I "$(SCI_LIB)" /I "$(SCI_SRC)" \
                 /I "$(SCI_WIN)"
 CXXFLAGS      = /nologo /c /W3 /WX /EHsc /MD /O1 /GL /MP $(DEFINES) $(INCLUDEDIRS)
 LDFLAGS       = /NOLOGO /WX /INCREMENTAL:NO /RELEASE /OPT:REF /OPT:ICF /MERGE:.rdata=.text \
-                /DYNAMICBASE /NXCOMPAT /LTCG
+                /DYNAMICBASE /NXCOMPAT /LTCG /DEBUG
 LIBS          = advapi32.lib comctl32.lib comdlg32.lib gdi32.lib imm32.lib kernel32.lib \
                 ole32.lib oleaut32.lib psapi.lib shell32.lib shlwapi.lib user32.lib \
                 winspool.lib ntstc_msvcrt.lib
@@ -68,7 +68,6 @@ DEFINES       = $(DEFINES) /D "_WIN64" /D "_WIN32_WINNT=0x0502"
 LDFLAGS       = $(LDFLAGS) /SUBSYSTEM:WINDOWS,5.02 /MACHINE:X64
 LIBS          = $(LIBS) msvcrt_win2003.obj
 RFLAGS        = $(RFLAGS) /d "_WIN64"
-SCI_CXXFLAGS  = $(SCI_CXXFLAGS)
 !ELSE
 DEFINES       = $(DEFINES) /D "WIN32" /D "_WIN32_WINNT=0x0501"
 LDFLAGS       = $(LDFLAGS) /LARGEADDRESSAWARE /SUBSYSTEM:WINDOWS,5.0 /MACHINE:X86
@@ -94,13 +93,13 @@ PREBUILD:
 CLEAN:
 	ECHO Cleaning... & ECHO.
 	IF EXIST "$(EXE)"                           DEL "$(EXE)"
+	IF EXIST "$(BINDIR)\Notepad2.pdb"           DEL "$(BINDIR)\Notepad2.pdb"
 	IF EXIST "$(NP2_SRC_OBJDIR)\*.obj"          DEL "$(NP2_SRC_OBJDIR)\*.obj"
 	IF EXIST "$(SCI_LEX_OBJDIR)\*.obj"          DEL "$(SCI_LEX_OBJDIR)\*.obj"
 	IF EXIST "$(SCI_LIB_OBJDIR)\*.obj"          DEL "$(SCI_LIB_OBJDIR)\*.obj"
 	IF EXIST "$(SCI_SRC_OBJDIR)\*.obj"          DEL "$(SCI_SRC_OBJDIR)\*.obj"
 	IF EXIST "$(SCI_WIN_OBJDIR)\*.obj"          DEL "$(SCI_WIN_OBJDIR)\*.obj"
 	IF EXIST "$(NP2_SRC_OBJDIR)\Notepad2.res"   DEL "$(NP2_SRC_OBJDIR)\Notepad2.res"
-	IF EXIST "$(BINDIR)\Notepad2.pdb"           DEL "$(BINDIR)\Notepad2.pdb"
 	-IF EXIST "$(SCI_LEX_OBJDIR)"               RD /Q "$(SCI_LEX_OBJDIR)"
 	-IF EXIST "$(SCI_LIB_OBJDIR)"               RD /Q "$(SCI_LIB_OBJDIR)"
 	-IF EXIST "$(SCI_SRC_OBJDIR)"               RD /Q "$(SCI_SRC_OBJDIR)"
@@ -202,11 +201,11 @@ OBJECTS = \
 {$(SCI_WIN)}.cxx{$(SCI_WIN_OBJDIR)}.obj::
     $(CC) $(SCI_CXXFLAGS) /Fo"$(SCI_WIN_OBJDIR)/" /Tp $<
 
-{$(NP2_SRC)}.cpp{$(NP2_SRC_OBJDIR)}.obj::
-    $(CC) $(CXXFLAGS) /Fo"$(NP2_SRC_OBJDIR)/" /Tp $<
-
 {$(NP2_SRC)}.c{$(NP2_SRC_OBJDIR)}.obj::
     $(CC) $(CXXFLAGS) /Fo"$(NP2_SRC_OBJDIR)/" /Tc $<
+
+{$(NP2_SRC)}.cpp{$(NP2_SRC_OBJDIR)}.obj::
+    $(CC) $(CXXFLAGS) /Fo"$(NP2_SRC_OBJDIR)/" /Tp $<
 
 
 ################

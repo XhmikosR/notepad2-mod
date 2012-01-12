@@ -442,7 +442,7 @@ Point Editor::LocationFromPosition(SelectionPosition pos) {
 		}
 		pt.x += vs.fixedColumnWidth - xOffset;
 	}
-	pt.x += pos.VirtualSpace() * static_cast<int>(vs.styles[ll->EndLineStyle()].spaceWidth);
+	pt.x += pos.VirtualSpace() * vs.styles[ll->EndLineStyle()].spaceWidth;
 	return pt;
 }
 
@@ -526,7 +526,7 @@ SelectionPosition Editor::SPositionFromLocation(Point pt, bool canReturnInvalid,
 				i++;
 			}
 			if (virtualSpace) {
-				const int spaceWidth = static_cast<int>(vs.styles[ll->EndLineStyle()].spaceWidth);
+				const XYPOSITION spaceWidth = vs.styles[ll->EndLineStyle()].spaceWidth;
 				int spaceOffset = (pt.x + subLineStart - ll->positions[lineEnd] + spaceWidth / 2) /
 					spaceWidth;
 				return SelectionPosition(lineEnd + posLineStart, spaceOffset);
@@ -617,7 +617,7 @@ SelectionPosition Editor::SPositionFromLineX(int lineDoc, int x) {
 			}
 			i++;
 		}
-		const int spaceWidth = static_cast<int>(vs.styles[ll->EndLineStyle()].spaceWidth);
+		const XYPOSITION spaceWidth = vs.styles[ll->EndLineStyle()].spaceWidth;
 		int spaceOffset = (x + subLineStart - ll->positions[lineEnd] + spaceWidth / 2) / spaceWidth;
 		return SelectionPosition(lineEnd + posLineStart, spaceOffset);
 	}
@@ -1115,12 +1115,14 @@ void Editor::MoveCaretInsideView(bool ensureVisible) {
 	Point pt = PointMainCaret();
 	if (pt.y < rcClient.top) {
 		MovePositionTo(SPositionFromLocation(
-		            Point(lastXChosen - xOffset, rcClient.top)),
+		            Point(lastXChosen - xOffset, rcClient.top),
+					false, false, UserVirtualSpace()),
 					Selection::noSel, ensureVisible);
 	} else if ((pt.y + vs.lineHeight - 1) > rcClient.bottom) {
 		int yOfLastLineFullyDisplayed = rcClient.top + (LinesOnScreen() - 1) * vs.lineHeight;
 		MovePositionTo(SPositionFromLocation(
-		            Point(lastXChosen - xOffset, rcClient.top + yOfLastLineFullyDisplayed)),
+		            Point(lastXChosen - xOffset, rcClient.top + yOfLastLineFullyDisplayed),
+					false, false, UserVirtualSpace()),
 		        Selection::noSel, ensureVisible);
 	}
 }
@@ -2250,7 +2252,7 @@ void Editor::LayoutLine(int line, Surface *surface, ViewStyle &vstyle, LineLayou
 		int startseg = 0;	// Start of the current segment, in char. number
 		XYACCUMULATOR startsegx = 0;	// Start of the current segment, in pixels
 		ll->positions[0] = 0;
-		unsigned int tabWidth = vstyle.spaceWidth * pdoc->tabInChars;
+		XYPOSITION tabWidth = vstyle.spaceWidth * pdoc->tabInChars;
 		bool lastSegItalics = false;
 		Font &ctrlCharsFont = vstyle.styles[STYLE_CONTROLCHAR].font;
 
@@ -2269,8 +2271,8 @@ void Editor::LayoutLine(int line, Surface *surface, ViewStyle &vstyle, LineLayou
 				if (vstyle.styles[ll->styles[charInLine]].visible) {
 					if (isControl) {
 						if (ll->chars[charInLine] == '\t') {
-							ll->positions[charInLine + 1] = ((((static_cast<int>(startsegx) + 2) /
-							        tabWidth) + 1) * tabWidth) - startsegx;
+							ll->positions[charInLine + 1] = 
+								((static_cast<int>((startsegx + 2) / tabWidth) + 1) * tabWidth) - startsegx;
 						} else if (controlCharSymbol < 32) {
 							if (ctrlCharWidth[ll->chars[charInLine]] == 0) {
 								const char *ctrlChar = ControlCharacterString(ll->chars[charInLine]);
@@ -2515,7 +2517,7 @@ void DrawTextBlob(Surface *surface, ViewStyle &vsDraw, PRectangle rcSegment,
 }
 
 void Editor::DrawEOL(Surface *surface, ViewStyle &vsDraw, PRectangle rcLine, LineLayout *ll,
-        int line, int lineEnd, int xStart, int subLine, int subLineStart,
+        int line, int lineEnd, int xStart, int subLine, XYACCUMULATOR subLineStart,
         bool overrideBackground, ColourDesired background,
         bool drawWrapMarkEnd, ColourDesired wrapColour) {
 
@@ -2524,15 +2526,15 @@ void Editor::DrawEOL(Surface *surface, ViewStyle &vsDraw, PRectangle rcLine, Lin
 	PRectangle rcSegment = rcLine;
 
 	const bool lastSubLine = subLine == (ll->lines - 1);
-	int virtualSpace = 0;
+	XYPOSITION virtualSpace = 0;
 	if (lastSubLine) {
-		const int spaceWidth = static_cast<int>(vsDraw.styles[ll->EndLineStyle()].spaceWidth);
+		const XYPOSITION spaceWidth = vsDraw.styles[ll->EndLineStyle()].spaceWidth;
 		virtualSpace = sel.VirtualSpaceFor(pdoc->LineEnd(line)) * spaceWidth;
 	}
 
 	// Fill in a PRectangle representing the end of line characters
 
-	int xEol = ll->positions[lineEnd] - subLineStart;
+	XYPOSITION xEol = ll->positions[lineEnd] - subLineStart;
 
 	// Fill the virtual space and show selections within it
 	if (virtualSpace) {
@@ -2546,11 +2548,11 @@ void Editor::DrawEOL(Surface *surface, ViewStyle &vsDraw, PRectangle rcLine, Lin
 				if (alpha == SC_ALPHA_NOALPHA) {
 					SelectionSegment portion = sel.Range(r).Intersect(virtualSpaceRange);
 					if (!portion.Empty()) {
-						const int spaceWidth = static_cast<int>(vsDraw.styles[ll->EndLineStyle()].spaceWidth);
+						const XYPOSITION spaceWidth = vsDraw.styles[ll->EndLineStyle()].spaceWidth;
 						rcSegment.left = xStart + ll->positions[portion.start.Position() - posLineStart] - subLineStart + portion.start.VirtualSpace() * spaceWidth;
 						rcSegment.right = xStart + ll->positions[portion.end.Position() - posLineStart] - subLineStart + portion.end.VirtualSpace() * spaceWidth;
-						rcSegment.left = Platform::Maximum(rcSegment.left, rcLine.left);
-						rcSegment.right = Platform::Minimum(rcSegment.right, rcLine.right);
+						rcSegment.left = (rcSegment.left > rcLine.left) ? rcSegment.left : rcLine.left;
+						rcSegment.right = (rcSegment.right < rcLine.right) ? rcSegment.right : rcLine.right;
 						surface->FillRectangle(rcSegment, SelectionBackground(vsDraw, r == sel.Main()));
 					}
 				}
@@ -2845,7 +2847,7 @@ void Editor::DrawLine(Surface *surface, ViewStyle &vsDraw, int line, int lineVis
 	int posLineStart = pdoc->LineStart(line);
 
 	int startseg = ll->LineStart(subLine);
-	int subLineStart = ll->positions[startseg];
+	XYACCUMULATOR subLineStart = ll->positions[startseg];
 	if (subLine >= ll->lines) {
 		DrawAnnotation(surface, vsDraw, line, xStart, rcLine, ll, subLine);
 		return; // No further drawing
@@ -3229,11 +3231,11 @@ void Editor::DrawLine(Surface *surface, ViewStyle &vsDraw, int line, int lineVis
 			if (alpha != SC_ALPHA_NOALPHA) {
 				SelectionSegment portion = sel.Range(r).Intersect(virtualSpaceRange);
 				if (!portion.Empty()) {
-					const int spaceWidth = static_cast<int>(vsDraw.styles[ll->EndLineStyle()].spaceWidth);
+					const XYPOSITION spaceWidth = vsDraw.styles[ll->EndLineStyle()].spaceWidth;
 					rcSegment.left = xStart + ll->positions[portion.start.Position() - posLineStart] - subLineStart + portion.start.VirtualSpace() * spaceWidth;
 					rcSegment.right = xStart + ll->positions[portion.end.Position() - posLineStart] - subLineStart + portion.end.VirtualSpace() * spaceWidth;
-					rcSegment.left = Platform::Maximum(rcSegment.left, rcLine.left);
-					rcSegment.right = Platform::Minimum(rcSegment.right, rcLine.right);
+					rcSegment.left = (rcSegment.left > rcLine.left) ? rcSegment.left : rcLine.left;
+					rcSegment.right = (rcSegment.right < rcLine.right) ? rcSegment.right : rcLine.right;
 					SimpleAlphaRectangle(surface, rcSegment, SelectionBackground(vsDraw, r == sel.Main()), alpha);
 				}
 			}
@@ -3410,8 +3412,8 @@ void Editor::DrawCarets(Surface *surface, ViewStyle &vsDraw, int lineDoc, int xS
 		const bool mainCaret = r == sel.Main();
 		const SelectionPosition posCaret = (drawDrag ? posDrag : sel.Range(r).caret);
 		const int offset = posCaret.Position() - posLineStart;
-		const int spaceWidth = static_cast<int>(vsDraw.styles[ll->EndLineStyle()].spaceWidth);
-		const int virtualOffset = posCaret.VirtualSpace() * spaceWidth;
+		const XYPOSITION spaceWidth = vsDraw.styles[ll->EndLineStyle()].spaceWidth;
+		const XYPOSITION virtualOffset = posCaret.VirtualSpace() * spaceWidth;
 		if (ll->InLine(offset, subLine) && offset <= ll->numCharsBeforeEOL) {
 			XYPOSITION xposCaret = ll->positions[offset] + virtualOffset - ll->positions[ll->LineStart(subLine)];
 			if (ll->wrapIndent != 0) {

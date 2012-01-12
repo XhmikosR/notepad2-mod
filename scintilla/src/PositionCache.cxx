@@ -189,10 +189,10 @@ void LineLayout::RestoreBracesHighlight(Range rangeLine, Position braces[], bool
 	xHighlightGuide = 0;
 }
 
-int LineLayout::FindBefore(int x, int lower, int upper) const {
+int LineLayout::FindBefore(XYPOSITION x, int lower, int upper) const {
 	do {
 		int middle = (upper + lower + 1) / 2; 	// Round high
-		int posMiddle = positions[middle];
+		XYPOSITION posMiddle = positions[middle];
 		if (x < posMiddle) {
 			upper = middle - 1;
 		} else {

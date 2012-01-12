@@ -5,19 +5,26 @@ Notable changes:
 * Code folding
 * Support for bookmarks
 * Option to mark all occurrences of a word
+* Word auto-completion
 * Syntax highlighting support for AutoHotkey, AutoIt3, Bash, CMake,
   Inno Setup, LaTeX, Lua, NSIS, Ruby, and Tcl scripts
 
-Supported Operating Systems: Windows XP, Vista, 7 both 32-bit and 64-bit
+Supported Operating Systems:
+* Windows 2000 (when compiled with WDK)
+* XP, Vista, 7 both 32-bit and 64-bit
 
 More information:
 * Source code and binaries:   http://code.google.com/p/notepad2-mod/
-* Code folding usage guide:   http://code.google.com/p/notepad2-mod/wiki/CodeFoldingUsageNotes
 * Official Notepad2 website:  http://www.flos-freeware.ch/notepad2.html
+* Code folding usage guide:   http://code.google.com/p/notepad2-mod/wiki/CodeFoldingUsageNotes
 * Kai Liu's website:          http://code.kliu.org/misc/notepad2/
 * Bookmark Edition website:   http://www.rlvision.com/notepad2/about.asp
 
-Notepad2-mod 4.2.25 has been created with Scintilla 3.0.2.  The unused
-lexers are commented out in "scintilla/src/Catalogue.cxx" (see lexlink.js).
-You can use WDK 7.1, MSVC 2010 or Intel Parallel Composer 2011 Update 5
+Changed keyboard shortcuts compared to Notepad2:
+Ctrl+Alt+F2         Expand selection to next match.
+Ctrl+Alt+Shift+F2   Expand selection to previous match.
+Ctrl+Shift+Enter    New line with toggled auto indent option.
+
+Notepad2-mod 4.2.25 has been created with Scintilla 3.0.2.
+You can use WDK 7.1, MSVC 2010 or Intel C++ Compiler XE 2011 SP1 Update 8
 to build Notepad2-mod.

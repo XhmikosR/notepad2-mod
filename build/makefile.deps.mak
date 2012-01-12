@@ -7,7 +7,7 @@
 #*
 #* See License.txt for details about distribution and modification.
 #*
-#*                                       (c) XhmikosR 2010-2011
+#*                                       (c) XhmikosR 2010-2012
 #*                                       http://code.google.com/p/notepad2-mod/
 #*
 #*
@@ -243,23 +243,23 @@ $(SCI_SRC_OBJDIR)\PerLine.obj: \
 
 $(SCI_SRC_OBJDIR)\PositionCache.obj: \
     $(SCI_SRC)\PositionCache.cxx \
-    $(SCI_INC)\Platform.h  \
+    $(SCI_INC)\Platform.h \
     $(SCI_INC)\Scintilla.h \
-    $(SCI_SRC)\SplitVector.h  \
-    $(SCI_SRC)\Partitioning.h  \
-    $(SCI_SRC)\RunStyles.h  \
-    $(SCI_SRC)\ContractionState.h  \
+    $(SCI_SRC)\SplitVector.h \
+    $(SCI_SRC)\Partitioning.h \
+    $(SCI_SRC)\RunStyles.h \
+    $(SCI_SRC)\ContractionState.h \
     $(SCI_SRC)\CellBuffer.h \
-    $(SCI_SRC)\KeyMap.h  \
-    $(SCI_SRC)\Indicator.h  \
-    $(SCI_SRC)\XPM.h  \
-    $(SCI_SRC)\LineMarker.h  \
+    $(SCI_SRC)\KeyMap.h \
+    $(SCI_SRC)\Indicator.h \
+    $(SCI_SRC)\XPM.h \
+    $(SCI_SRC)\LineMarker.h \
     $(SCI_SRC)\Style.h \
     $(SCI_SRC)\ViewStyle.h \
-    $(SCI_SRC)\CharClassify.h  \
-    $(SCI_SRC)\Decoration.h  \
-    $(SCI_INC)\ILexer.h  \
-    $(SCI_SRC)\Document.h  \
+    $(SCI_SRC)\CharClassify.h \
+    $(SCI_SRC)\Decoration.h \
+    $(SCI_INC)\ILexer.h \
+    $(SCI_SRC)\Document.h \
     $(SCI_SRC)\Selection.h \
     $(SCI_SRC)\PositionCache.h
 
@@ -389,7 +389,7 @@ $(NP2_SRC_OBJDIR)\Dialogs.obj: \
     $(NP2_SRC)\Dialogs.h \
     $(NP2_SRC)\resource.h \
     $(NP2_SRC)\Version.h \
-    $(NP2_SRC)\Version_rev.h
+    $(NP2_SRC)\VersionRev.h
 
 $(NP2_SRC_OBJDIR)\Dlapi.obj: \
     $(NP2_SRC)\Dlapi.c \
@@ -421,7 +421,7 @@ $(NP2_SRC_OBJDIR)\Notepad2.res: \
     $(NP2_SRC)\Notepad2.rc \
     $(NP2_SRC)\Notepad2.ver \
     $(NP2_SRC)\Version.h \
-    $(NP2_SRC)\Version_rev.h \
+    $(NP2_SRC)\VersionRev.h \
     $(NP2_RES)\Copy.cur \
     $(NP2_RES)\Encoding.bmp \
     $(NP2_RES)\Next.bmp \
