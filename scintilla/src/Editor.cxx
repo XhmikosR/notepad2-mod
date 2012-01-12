@@ -2517,7 +2517,7 @@ void DrawTextBlob(Surface *surface, ViewStyle &vsDraw, PRectangle rcSegment,
 }
 
 void Editor::DrawEOL(Surface *surface, ViewStyle &vsDraw, PRectangle rcLine, LineLayout *ll,
-        int line, int lineEnd, int xStart, int subLine, int subLineStart,
+        int line, int lineEnd, int xStart, int subLine, XYACCUMULATOR subLineStart,
         bool overrideBackground, ColourDesired background,
         bool drawWrapMarkEnd, ColourDesired wrapColour) {
 
@@ -2847,7 +2847,7 @@ void Editor::DrawLine(Surface *surface, ViewStyle &vsDraw, int line, int lineVis
 	int posLineStart = pdoc->LineStart(line);
 
 	int startseg = ll->LineStart(subLine);
-	int subLineStart = ll->positions[startseg];
+	XYACCUMULATOR subLineStart = ll->positions[startseg];
 	if (subLine >= ll->lines) {
 		DrawAnnotation(surface, vsDraw, line, xStart, rcLine, ll, subLine);
 		return; // No further drawing

@@ -7,7 +7,7 @@
 #*
 #* See License.txt for details about distribution and modification.
 #*
-#*                                       (c) XhmikosR 2010-2011
+#*                                       (c) XhmikosR 2010-2012
 #*                                       http://code.google.com/p/notepad2-mod/
 #*
 #* Use build_wdk.bat and set there your WDK directory.
@@ -49,8 +49,9 @@ NP2_SRC         = ..\src
 NP2_RES         = ..\res
 
 
-DEFINES       = /D "BOOKMARK_EDITION" /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE" \
-                /D "_CRT_SECURE_NO_WARNINGS" /D "_STL70_" /D "_STATIC_CPPLIB" /D "WDK_BUILD"
+DEFINES       = /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE" /D "_STL70_" \
+                /D "_STATIC_CPPLIB" /D "_CRT_SECURE_NO_WARNINGS" /D "BOOKMARK_EDITION" \
+                /D "WDK_BUILD"
 INCLUDEDIRS   = /I "$(SCI_INC)" /I "$(SCI_LEX)" /I "$(SCI_LIB)" /I "$(SCI_SRC)" \
                 /I "$(SCI_WIN)"
 CXXFLAGS      = /nologo /c /W3 /WX /EHsc /MD /O2 /GL /MP $(DEFINES) $(INCLUDEDIRS)
@@ -210,11 +211,11 @@ OBJECTS = \
 {$(SCI_WIN)}.cxx{$(SCI_WIN_OBJDIR)}.obj::
     $(CC) $(SCI_CXXFLAGS) /Fo"$(SCI_WIN_OBJDIR)/" /Tp $<
 
-{$(NP2_SRC)}.cpp{$(NP2_SRC_OBJDIR)}.obj::
-    $(CC) $(CXXFLAGS) /Fo"$(NP2_SRC_OBJDIR)/" /Tp $<
-
 {$(NP2_SRC)}.c{$(NP2_SRC_OBJDIR)}.obj::
     $(CC) $(CXXFLAGS) /Fo"$(NP2_SRC_OBJDIR)/" /Tc $<
+
+{$(NP2_SRC)}.cpp{$(NP2_SRC_OBJDIR)}.obj::
+    $(CC) $(CXXFLAGS) /Fo"$(NP2_SRC_OBJDIR)/" /Tp $<
 
 
 ################
