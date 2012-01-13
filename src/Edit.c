@@ -5783,7 +5783,7 @@ void CompleteWord(HWND hwnd, BOOL autoInsert) {
 
     SendMessage(hwnd, SCI_AUTOCSETIGNORECASE, 1, 0);
     SendMessage(hwnd, SCI_AUTOCSETSEPARATOR, ' ', 0);
-    SendMessage(hwnd, SCI_AUTOCSETFILLUPS, 0, (LPARAM)" \t\n\r");
+    SendMessage(hwnd, SCI_AUTOCSETFILLUPS, 0, (LPARAM)"\t\n\r");
     SendMessage(hwnd, SCI_AUTOCSETCHOOSESINGLE, autoInsert, 0);
     SendMessage(hwnd, SCI_AUTOCSHOW, iRootLen, (LPARAM)(pList + 1));
     LocalFree(pList);
