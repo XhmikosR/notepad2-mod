@@ -133,7 +133,10 @@ EXIT /B
 :SUBMSVC
 ECHO.
 TITLE Building Notepad2-mod with ICL12 - %~1 "%~2|%~3"...
-devenv /nologo Notepad2_icl12.sln /%~1 "%~2|%~3"
+"%WINDIR%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" Notepad2_icl12.sln^
+ /t:%~1 /p:Configuration=%~2 /p:Platform=%~3 /maxcpucount^
+ /consoleloggerparameters:DisableMPLogging;Summary;Verbosity=minimal
+
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 EXIT /B
 
