@@ -65,7 +65,7 @@ static void ColouriseAvsDoc(
 	}
 
 	// Do not leak onto next line
-	if (initStyle == SCE_AVS_STRINGEOL || initStyle == SCE_AVS_COMMENTLINE) {
+	if (initStyle == SCE_AVS_COMMENTLINE) {
 		initStyle = SCE_AVS_DEFAULT;
 	}
 
@@ -82,11 +82,6 @@ static void ColouriseAvsDoc(
 				// Reset the line state
 				styler.SetLineState(currentLine, 0);
 			}
-		}
-
-		if (sc.atLineStart && (sc.state == SCE_AVS_STRING)) {
-			// Prevent SCE_AVS_STRINGEOL from leaking back to previous line
-			sc.SetState(SCE_AVS_STRING);
 		}
 
 		// Determine if the current state should terminate.
@@ -146,9 +141,6 @@ static void ColouriseAvsDoc(
 		} else if (sc.state == SCE_AVS_STRING) {
 			if (sc.ch == '\"') {
 				sc.ForwardSetState(SCE_AVS_DEFAULT);
-			} else if (sc.atLineEnd) {
-				sc.ChangeState(SCE_AVS_STRINGEOL);
-				sc.ForwardSetState(SCE_AVS_DEFAULT);
 			}
 		} else if (sc.state == SCE_AVS_TRIPLESTRING) {
 			if (sc.Match("\"\"\"")) {
@@ -156,14 +148,7 @@ static void ColouriseAvsDoc(
 				sc.Forward();
 				sc.ForwardSetState(SCE_AVS_DEFAULT);
 			}
-		} else if (sc.state == SCE_AVS_STRINGEOL) {
-			if (sc.ch == '\"') {
-				sc.ForwardSetState(SCE_AVS_DEFAULT);
-			} else if (sc.atLineEnd) {
-				sc.ForwardSetState(SCE_AVS_DEFAULT);
-			}
 		}
-
 
 		// Determine if a new state should be entered.
 		if (sc.state == SCE_AVS_DEFAULT) {

@@ -1651,7 +1651,7 @@ EDITLEXER lexAVS = { SCLEX_AVS, 63332, L"AviSynth Script", L"avs; avsi", L"", &K
                     //{ SCE_AVS_DEFAULT, L"Default", L"", L"" },
                     { MULTI_STYLE(SCE_AVS_COMMENTLINE,SCE_AVS_COMMENTBLOCK,SCE_AVS_COMMENTBLOCKN,0), 63127, L"Comment", L"fore:#008000", L"" },
                     { SCE_AVS_OPERATOR, 63132, L"Operator", L"", L"" },
-                    { MULTI_STYLE(SCE_AVS_STRING,SCE_AVS_TRIPLESTRING,SCE_AVS_STRINGEOL,0), 63131, L"String", L"fore:#7F007F", L"" },
+                    { MULTI_STYLE(SCE_AVS_STRING,SCE_AVS_TRIPLESTRING,0,0), 63131, L"String", L"fore:#7F007F", L"" },
                     { SCE_AVS_NUMBER, 63130, L"Number", L"fore:#007F7F", L"" },
                     { SCE_AVS_KEYWORD, 63334, L"Keywords", L"fore:#00007F; bold", L"" },
                     { SCE_AVS_FILTER, 63335, L"Filter", L"fore:#00007F; bold", L"" },
