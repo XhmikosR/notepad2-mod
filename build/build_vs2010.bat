@@ -133,8 +133,7 @@ EXIT /B
 ECHO.
 TITLE Building Notepad2-mod with MSVC2010 - %~1 "%~2|%~3"...
 "%WINDIR%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" Notepad2.sln^
- /t:%~1 /p:Configuration=%~2 /p:Platform=%~3 /maxcpucount^
- /consoleloggerparameters:DisableMPLogging;Summary;Verbosity=minimal
+ /t:%~1 /p:Configuration=%~2;Platform=%~3 /Verbosity:minimal
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 EXIT /B
 

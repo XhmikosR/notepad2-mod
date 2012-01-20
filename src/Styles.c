@@ -1646,6 +1646,7 @@ KEYWORDLIST KeyWords_AVS = {
 "isfieldbased isframebased isinterleaved isplanar isrgb isrgb24 isrgb32 isyuv isyuy2 isyv12 width",
 "", "", "", "" };
 
+
 EDITLEXER lexAVS = { SCLEX_AVS, 63332, L"AviSynth Script", L"avs; avsi", L"", &KeyWords_AVS, {
                     { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
                     //{ SCE_AVS_DEFAULT, L"Default", L"", L"" },
