@@ -63,6 +63,9 @@
     <ClCompile Include="..\scintilla\lexers\LexAU3.cxx">
       <Filter>Scintilla\lexers</Filter>
     </ClCompile>
+    <ClCompile Include="..\scintilla\lexers\LexAVS.cxx">
+      <Filter>Scintilla\lexers</Filter>
+    </ClCompile>
     <ClCompile Include="..\scintilla\lexers\LexBash.cxx">
       <Filter>Scintilla\lexers</Filter>
     </ClCompile>

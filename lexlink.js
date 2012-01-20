@@ -7,6 +7,7 @@
     "lmAHK",
     "lmAsm",
     "lmAU3",
+    "lmAVS",
     "lmBash",
     "lmBatch",
     "lmCmake",

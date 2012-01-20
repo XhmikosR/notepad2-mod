@@ -3405,6 +3405,7 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
         case SCLEX_RUBY:
         case SCLEX_POWERSHELL:
         case SCLEX_CMAKE:
+        case SCLEX_AVS:
           BeginWaitCursor();
           EditToggleLineComments(hwndEdit,L"#",TRUE);
           EndWaitCursor();
@@ -3467,6 +3468,7 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
         case SCLEX_CSS:
         case SCLEX_CPP:
         case SCLEX_NSIS:
+        case SCLEX_AVS:
           EditEncloseSelection(hwndEdit,L"/*",L"*/");
           break;
         case SCLEX_PASCAL:
@@ -6227,7 +6229,7 @@ void ParseCommandLine()
             LocalFree(lpSchemeArg);
             lpSchemeArg = NULL;
           }
-          iInitialLexer = 31;
+          iInitialLexer = 32;
           flagLexerSpecified = 1;
           break;
 
@@ -6236,7 +6238,7 @@ void ParseCommandLine()
             LocalFree(lpSchemeArg);
             lpSchemeArg = NULL;
           }
-          iInitialLexer = 32;
+          iInitialLexer = 33;
           flagLexerSpecified = 1;
           break;
 

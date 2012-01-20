@@ -55,7 +55,7 @@ typedef struct _editlexer
 
 
 // Number of Lexers in pLexArray
-#define NUMLEXERS 33
+#define NUMLEXERS 34
 
 
 void   Style_Load();

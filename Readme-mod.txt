@@ -6,8 +6,8 @@ Notable changes:
 * Support for bookmarks
 * Option to mark all occurrences of a word
 * Word auto-completion
-* Syntax highlighting support for AutoHotkey, AutoIt3, Bash, CMake,
-  Inno Setup, LaTeX, Lua, NSIS, Ruby, and Tcl scripts
+* Syntax highlighting support for AutoHotkey, AutoIt3, AviSynth, Bash,
+  CMake, Inno Setup, LaTeX, Lua, NSIS, Ruby, and Tcl scripts
 
 Supported Operating Systems:
 * Windows 2000 (when compiled with WDK)
@@ -17,6 +17,7 @@ Contributors:
 * Kai Liu
 * RL Vision
 * Aleksandar Lekov
+* Bruno Barbieri
 
 More information:
 * Source code and binaries:   http://code.google.com/p/notepad2-mod/
