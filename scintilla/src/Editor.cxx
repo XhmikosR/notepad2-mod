@@ -506,7 +506,7 @@ SelectionPosition Editor::SPositionFromLocation(Point pt, bool canReturnInvalid,
 		if (subLine < ll->lines) {
 			int lineStart = ll->LineStart(subLine);
 			int lineEnd = ll->LineLastVisible(subLine);
-			int subLineStart = ll->positions[lineStart];
+			XYPOSITION subLineStart = ll->positions[lineStart];
 
 			if (ll->wrapIndent != 0) {
 				if (lineStart != 0)	// Wrapped
@@ -552,43 +552,6 @@ int Editor::PositionFromLocation(Point pt, bool canReturnInvalid, bool charPosit
  * Find the document position corresponding to an x coordinate on a particular document line.
  * Ensure is between whole characters when document is in multi-byte or UTF-8 mode.
  */
-int Editor::PositionFromLineX(int lineDoc, int x) {
-	RefreshStyleData();
-	if (lineDoc >= pdoc->LinesTotal())
-		return pdoc->Length();
-	//Platform::DebugPrintf("Position of (%d,%d) line = %d top=%d\n", pt.x, pt.y, line, topLine);
-	AutoSurface surface(this);
-	AutoLineLayout ll(llc, RetrieveLineLayout(lineDoc));
-	int retVal = 0;
-	if (surface && ll) {
-		unsigned int posLineStart = pdoc->LineStart(lineDoc);
-		LayoutLine(lineDoc, surface, vs, ll, wrapWidth);
-		retVal = ll->numCharsBeforeEOL + posLineStart;
-		int subLine = 0;
-		int lineStart = ll->LineStart(subLine);
-		int lineEnd = ll->LineLastVisible(subLine);
-		int subLineStart = ll->positions[lineStart];
-
-		if (ll->wrapIndent != 0) {
-			if (lineStart != 0)	// Wrapped
-				x -= ll->wrapIndent;
-		}
-		int i = ll->FindBefore(x + subLineStart, lineStart, lineEnd);
-		while (i < lineEnd) {
-			if ((x + subLineStart) < ((ll->positions[i] + ll->positions[i + 1]) / 2)) {
-				retVal = pdoc->MovePositionOutsideChar(i + posLineStart, 1);
-				break;
-			}
-			i++;
-		}
-	}
-	return retVal;
-}
-
-/**
- * Find the document position corresponding to an x coordinate on a particular document line.
- * Ensure is between whole characters when document is in multi-byte or UTF-8 mode.
- */
 SelectionPosition Editor::SPositionFromLineX(int lineDoc, int x) {
 	RefreshStyleData();
 	if (lineDoc >= pdoc->LinesTotal())
@@ -603,25 +566,30 @@ SelectionPosition Editor::SPositionFromLineX(int lineDoc, int x) {
 		int subLine = 0;
 		int lineStart = ll->LineStart(subLine);
 		int lineEnd = ll->LineLastVisible(subLine);
-		int subLineStart = ll->positions[lineStart];
+		XYPOSITION subLineStart = ll->positions[lineStart];
+		XYPOSITION newX = x;
 
 		if (ll->wrapIndent != 0) {
 			if (lineStart != 0)	// Wrapped
-				x -= ll->wrapIndent;
+				newX -= ll->wrapIndent;
 		}
-		int i = ll->FindBefore(x + subLineStart, lineStart, lineEnd);
+		int i = ll->FindBefore(newX + subLineStart, lineStart, lineEnd);
 		while (i < lineEnd) {
-			if ((x + subLineStart) < ((ll->positions[i] + ll->positions[i + 1]) / 2)) {
+			if ((newX + subLineStart) < ((ll->positions[i] + ll->positions[i + 1]) / 2)) {
 				retVal = pdoc->MovePositionOutsideChar(i + posLineStart, 1);
 				return SelectionPosition(retVal);
 			}
 			i++;
 		}
 		const XYPOSITION spaceWidth = vs.styles[ll->EndLineStyle()].spaceWidth;
-		int spaceOffset = (x + subLineStart - ll->positions[lineEnd] + spaceWidth / 2) / spaceWidth;
+		int spaceOffset = (newX + subLineStart - ll->positions[lineEnd] + spaceWidth / 2) / spaceWidth;
 		return SelectionPosition(lineEnd + posLineStart, spaceOffset);
 	}
 	return SelectionPosition(retVal);
+}
+
+int Editor::PositionFromLineX(int lineDoc, int x) {
+	return SPositionFromLineX(lineDoc, x).Position();
 }
 
 /**
@@ -1387,7 +1355,7 @@ Editor::XYScrollPosition Editor::XYScrollToMakeVisible(const bool useMargin, con
 			newXY.xOffset = pt.x + xOffset - rcClient.right + 1;
 			if (vs.caretStyle == CARETSTYLE_BLOCK) {
 				// Ensure we can see a good portion of the block caret
-				newXY.xOffset += vs.aveCharWidth;
+				newXY.xOffset += static_cast<int>(vs.aveCharWidth);
 			}
 		}
 		if (newXY.xOffset < 0) {
@@ -2256,7 +2224,7 @@ void Editor::LayoutLine(int line, Surface *surface, ViewStyle &vstyle, LineLayou
 		bool lastSegItalics = false;
 		Font &ctrlCharsFont = vstyle.styles[STYLE_CONTROLCHAR].font;
 
-		int ctrlCharWidth[32] = {0};
+		XYPOSITION ctrlCharWidth[32] = {0};
 		bool isControlNext = IsControlCharacter(ll->chars[0]);
 		int trailBytes = 0;
 		bool isBadUTFNext = IsUnicodeMode() && BadUTF(ll->chars, numCharsInLine, trailBytes);
@@ -2337,7 +2305,7 @@ void Editor::LayoutLine(int line, Surface *surface, ViewStyle &vstyle, LineLayou
 			ll->lines = 1;
 		} else {
 			if (wrapVisualFlags & SC_WRAPVISUALFLAG_END) {
-				width -= vstyle.aveCharWidth; // take into account the space for end wrap mark
+				width -= static_cast<int>(vstyle.aveCharWidth); // take into account the space for end wrap mark
 			}
 			ll->wrapIndent = wrapAddIndent;
 			if (wrapIndentMode != SC_WRAPINDENT_FIXED)
@@ -2351,13 +2319,13 @@ void Editor::LayoutLine(int line, Surface *surface, ViewStyle &vstyle, LineLayou
 			if (ll->wrapIndent > width - static_cast<int>(vstyle.aveCharWidth) * 15)
 				ll->wrapIndent = wrapAddIndent;
 			// Check for wrapIndent minimum
-			if ((wrapVisualFlags & SC_WRAPVISUALFLAG_START) && (ll->wrapIndent < static_cast<int>(vstyle.aveCharWidth)))
+			if ((wrapVisualFlags & SC_WRAPVISUALFLAG_START) && (ll->wrapIndent < vstyle.aveCharWidth))
 				ll->wrapIndent = vstyle.aveCharWidth; // Indent to show start visual
 			ll->lines = 0;
 			// Calculate line start positions based upon width.
 			int lastGoodBreak = 0;
 			int lastLineStart = 0;
-			int startOffset = 0;
+			XYACCUMULATOR startOffset = 0;
 			int p = 0;
 			while (p < ll->numCharsInLine) {
 				if ((ll->positions[p + 1] - startOffset) >= width) {
@@ -2650,7 +2618,7 @@ void Editor::DrawEOL(Surface *surface, ViewStyle &vsDraw, PRectangle rcLine, Lin
 
 void Editor::DrawIndicator(int indicNum, int startPos, int endPos, Surface *surface, ViewStyle &vsDraw,
 		int xStart, PRectangle rcLine, LineLayout *ll, int subLine) {
-	const int subLineStart = ll->positions[ll->LineStart(subLine)];
+	const XYPOSITION subLineStart = ll->positions[ll->LineStart(subLine)];
 	PRectangle rcIndic(
 		ll->positions[startPos] + xStart - subLineStart,
 		rcLine.top + vsDraw.maxAscent,
@@ -2907,7 +2875,7 @@ void Editor::DrawLine(Surface *surface, ViewStyle &vsDraw, int line, int lineVis
 				DrawWrapMarker(surface, rcPlace, false, wrapColour);
 			}
 
-			xStart += ll->wrapIndent;
+			xStart += static_cast<int>(ll->wrapIndent);
 		}
 	}
 
@@ -2915,7 +2883,7 @@ void Editor::DrawLine(Surface *surface, ViewStyle &vsDraw, int line, int lineVis
 		((vsDraw.selAlpha == SC_ALPHA_NOALPHA) || (vsDraw.selAdditionalAlpha == SC_ALPHA_NOALPHA));
 
 	// Does not take margin into account but not significant
-	int xStartVisible = subLineStart - xStart;
+	int xStartVisible = static_cast<int>(subLineStart) - xStart;
 
 	ll->psel = &sel;
 
@@ -3112,7 +3080,7 @@ void Editor::DrawLine(Surface *surface, ViewStyle &vsDraw, int line, int lineVis
 								if (vsDraw.whitespaceForegroundSet)
 									textFore = vsDraw.whitespaceForeground;
 								if (!inIndentation || vsDraw.viewWhitespace == wsVisibleAlways) {
-									int xmid = (ll->positions[cpos + startseg] + ll->positions[cpos + startseg + 1]) / 2;
+									XYPOSITION xmid = (ll->positions[cpos + startseg] + ll->positions[cpos + startseg + 1]) / 2;
 									if (!twoPhaseDraw && drawWhitespaceBackground &&
 									        (!inIndentation || vsDraw.viewWhitespace == wsVisibleAlways)) {
 										textBack = vsDraw.whitespaceBackground;
@@ -3321,7 +3289,7 @@ void Editor::DrawBlockCaret(Surface *surface, ViewStyle &vsDraw, LineLayout *ll,
 
 	// Adjust caret position to take into account any word wrapping symbols.
 	if ((ll->wrapIndent != 0) && (lineStart != 0)) {
-		int wordWrapCharWidth = ll->wrapIndent;
+		XYPOSITION wordWrapCharWidth = ll->wrapIndent;
 		rcCaret.left += wordWrapCharWidth;
 		rcCaret.right += wordWrapCharWidth;
 	}
@@ -3428,7 +3396,7 @@ void Editor::DrawCarets(Surface *surface, ViewStyle &vsDraw, int lineDoc, int xS
 				bool caretAtEOF = false;
 				bool caretAtEOL = false;
 				bool drawBlockCaret = false;
-				int widthOverstrikeCaret;
+				XYPOSITION widthOverstrikeCaret;
 				int caretWidthOffset = 0;
 				PRectangle rcCaret = rcLine;
 
@@ -6750,7 +6718,7 @@ void Editor::SetBraceHighlight(Position pos0, Position pos1, int matchStyle) {
 void Editor::SetAnnotationHeights(int start, int end) {
 	if (vs.annotationVisible) {
 		bool changedHeight = false;
-		for (int line=start; line<end; line++) {
+		for (int line=start; line<end && line<pdoc->LinesTotal(); line++) {
 			int linesWrapped = 1;
 			if (wrapState != eWrapNone) {
 				AutoSurface surface(this);

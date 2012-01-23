@@ -2455,12 +2455,10 @@ val SCLEX_A68K=100
 val SCLEX_MODULA=101
 val SCLEX_COFFEESCRIPT=102
 val SCLEX_TCMD=103
+val SCLEX_AVS=104
 ## notepad2 custom code for the AHK lexer - start
 val SCLEX_AHK=200
 ## notepad2 custom code for the AHK lexer - end
-## notepad2 custom code for the AVS lexer - start
-val SCLEX_AVS=201
-## notepad2 custom code for the AVS lexer - end
 
 # When a lexer specifies its language as SCLEX_AUTOMATIC it receives a
 # value assigned in sequence from SCLEX_AUTOMATIC+1.
@@ -4007,25 +4005,6 @@ val SCE_AHK_WORD_UD=18
 val SCE_AHK_VARREFKW=19
 val SCE_AHK_ERROR=20
 ## notepad2 custom code for the AHK lexer - end
-## notepad2 custom code for the AVS lexer - start
-# Lexical states for SCLEX_AVS
-lex AVS=SCLEX_AVS SCE_AVS_
-val SCE_AVS_DEFAULT=0
-val SCE_AVS_COMMENTBLOCK=1
-val SCE_AVS_COMMENTBLOCKN=2
-val SCE_AVS_COMMENTLINE=3
-val SCE_AVS_NUMBER=4
-val SCE_AVS_OPERATOR=5
-val SCE_AVS_IDENTIFIER=6
-val SCE_AVS_STRING=7
-val SCE_AVS_TRIPLESTRING=8
-val SCE_AVS_KEYWORD=9
-val SCE_AVS_FILTER=10
-val SCE_AVS_PLUGIN=11
-val SCE_AVS_FUNCTION=12
-val SCE_AVS_CLIPPROP=13
-val SCE_AVS_USERDFN=14
-## notepad2 custom code for the AVS lexer - end
 # Lexical states for SCLEX_A68K
 lex A68k=SCLEX_A68K SCE_A68K_
 val SCE_A68K_DEFAULT=0
@@ -4095,6 +4074,23 @@ val SCE_COFFEESCRIPT_HASHQUOTEDSTRING=22
 val SCE_COFFEESCRIPT_COMMENTBLOCK=22
 val SCE_COFFEESCRIPT_VERBOSE_REGEX=23
 val SCE_COFFEESCRIPT_VERBOSE_REGEX_COMMENT=24
+# Lexical states for SCLEX_AVS
+lex AVS=SCLEX_AVS SCE_AVS_
+val SCE_AVS_DEFAULT=0
+val SCE_AVS_COMMENTBLOCK=1
+val SCE_AVS_COMMENTBLOCKN=2
+val SCE_AVS_COMMENTLINE=3
+val SCE_AVS_NUMBER=4
+val SCE_AVS_OPERATOR=5
+val SCE_AVS_IDENTIFIER=6
+val SCE_AVS_STRING=7
+val SCE_AVS_TRIPLESTRING=8
+val SCE_AVS_KEYWORD=9
+val SCE_AVS_FILTER=10
+val SCE_AVS_PLUGIN=11
+val SCE_AVS_FUNCTION=12
+val SCE_AVS_CLIPPROP=13
+val SCE_AVS_USERDFN=14
 
 # Events
 
