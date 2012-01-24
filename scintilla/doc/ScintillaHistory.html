@@ -390,6 +390,8 @@
 	<td>Stefan Weil</td>
 	<td>Rex Conn</td>
 	<td>Ross McKay</td>
+      </tr><tr>
+	<td>Bruno Barbieri</td>
     </tr>
     </table>
     <p>
@@ -400,6 +402,122 @@
         <a href="http://sourceforge.net/projects/icon-collection/">
         Icons</a> Copyright(C) 1998 by Dean S. Jones<br />
       </li>
+    </ul>
+    <h3>
+       <a href="http://prdownloads.sourceforge.net/scintilla/scite303.zip?download">Release 3.0.3</a>
+    </h3>
+    <ul>
+	<li>
+	Released 30 January 2012.
+	</li>
+	<li>
+	Printing works on GTK+ version 2.x as well as 3.x.
+	</li>
+	<li>
+	Lexer added for the AviSynth language.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=352439&aid=3475611&group_id=2439">Feature #3475611.</a>
+	</li>
+	<li>
+	Lexer added for the Take Command / TCC scripting language.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=352439&aid=3462462&group_id=2439">Feature #3462462.</a>
+	</li>
+	<li>
+	CSS lexer gains support for SCSS.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=352439&aid=3268017&group_id=2439">Feature #3268017.</a>
+	</li>
+	<li>
+	CPP lexer fixes problems in the preprocessor structure caused by continuation lines.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3458508&group_id=2439">Bug #3458508.</a>
+	</li>
+	<li>
+	Errorlist lexer handles column numbers for GCC format diagnostics.
+	In SciTE, Next Message goes to column where this can be decoded from GCC format diagnostics.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=352439&aid=3453075&group_id=2439">Feature #3453075.</a>
+	</li>
+	<li>
+	HTML folder fixes spurious folds on some tags.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3459262&group_id=2439">Bug #3459262.</a>
+	</li>
+	<li>
+	Ruby lexer fixes bug where '=' at start of file caused whole file to appear as a comment.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3452488&group_id=2439">Bug #3452488.</a>
+	</li>
+	<li>
+	SQL folder folds blocks of single line comments.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=352439&aid=3467425&group_id=2439">Feature #3467425.</a>
+	</li>
+	<li>
+	On Windows using Direct2D, defer invalidation of render target until completion of painting to avoid failures.
+	</li>
+	<li>
+	Further support of fractional positioning. Spaces, tabs, and single character tokens can take fractional space
+	and wrapped lines are positioned taking fractional positions into account.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3471998&group_id=2439">Bug #3471998.</a>
+	</li>
+	<li>
+	On Windows using Direct2D, fix extra carets appearing.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3471998&group_id=2439">Bug #3471998.</a>
+	</li>
+	<li>
+	For autocompletion lists Page Up and Down move by the list height instead of by 5 lines.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3455493&group_id=2439">Bug #3455493.</a>
+	</li>
+	<li>
+	For SCI_LINESCROLLDOWN/UP don't select into virtual space.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3451681&group_id=2439">Bug #3451681.</a>
+	</li>
+	<li>
+	Fix fold highlight not being fully drawn.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3469936&group_id=2439">Bug #3469936.</a>
+	</li>
+	<li>
+	Fix selection margin appearing black when starting in wrap mode.
+	</li>
+	<li>
+	Fix crash when changing end of document after adding an annotation.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3476637&group_id=2439">Bug #3476637.</a>
+	</li>
+	<li>
+	Fix problems with building to make RPMs.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3476149&group_id=2439">Bug #3476149.</a>
+	</li>
+	<li>
+	Fix problem with building on GTK+ where recent distributions could not find gmodule.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3469056&group_id=2439">Bug #3469056.</a>
+	</li>
+	<li>
+	Fix problem with installing SciTE on GTK+ due to icon definition in .desktop file including an extension.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3476117&group_id=2439">Bug #3476117.</a>
+	</li>
+	<li>
+	Fix SciTE bug where new buffers inherited some properties from previously opened file.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3457060&group_id=2439">Bug #3457060.</a>
+	</li>
+	<li>
+	Fix focus when closing tab in SciTE with middle click. Focus moves to edit pane instead of staying on tab bar.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3440142&group_id=2439">Bug #3440142.</a>
+	</li>
+	<li>
+	For SciTE on Windows fix bug where Open Selected Filename for URL would append a file extension.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=352439&aid=3459185&group_id=2439">Feature #3459185.</a>
+	</li>
+	<li>
+	For SciTE on Windows fix key handling of control characters in Parameters dialog so normal editing (Ctrl+C, ...) works.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3459345&group_id=2439">Bug #3459345.</a>
+	</li>
+	<li>
+	Fix SciTE bug where files became read-only after saving. Drop the "*" dirty marker after save completes.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3467432&group_id=2439">Bug #3467432.</a>
+	</li>
+	<li>
+	For SciTE handling of diffs with "+++" and "---" lines, also handle case where not followed by tab.
+	Go to correct line for diff "+++" message.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3467143&group_id=2439">Bug #3467143.</a>
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3467178&group_id=2439">Bug #3467178.</a>
+	</li>
+	<li>
+	SciTE on GTK+ now performs threaded actions even on GTK+ versions before 2.12.
+	</li>
     </ul>
     <h3>
        <a href="http://prdownloads.sourceforge.net/scintilla/scite302.zip?download">Release 3.0.2</a>

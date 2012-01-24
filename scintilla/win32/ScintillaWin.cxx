@@ -441,6 +441,9 @@ void ScintillaWin::EnsureRenderTarget() {
 			D2D1::HwndRenderTargetProperties(hw, size),
 			&pRenderTarget);
 #endif
+		// Pixmaps were created to be compatible with previous render target so
+		// need to be recreated.
+		DropGraphics(false);
 	}
 #endif
 }
