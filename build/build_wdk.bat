@@ -150,6 +150,9 @@ ECHO        The arguments are not case sensitive.
 ECHO. & ECHO.
 ECHO Edit %~nx0 and set your WDK directory or define %%WDKBASEDIR%%.
 ECHO You shouldn't need to make any changes other than that.
+ECHO.
+ECHO If MSVC 2010 is installed, its compiler will be used.
+ECHO If you don't wish to use that then edit %~nx0 (see the first lines)
 ECHO. & ECHO.
 ECHO Executing %~nx0 without any arguments is equivalent to "%~nx0 build all"
 ECHO.
