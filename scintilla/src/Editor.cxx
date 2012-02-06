@@ -4496,6 +4496,7 @@ void Editor::CheckModificationForWrap(DocModification mh) {
 		if (wrapState != eWrapNone) {
 			NeedWrapping(lineDoc, lineDoc + lines + 1);
 		}
+		RefreshStyleData();
 		// Fix up annotation heights
 		SetAnnotationHeights(lineDoc, lineDoc + lines + 2);
 	}
@@ -5001,30 +5002,50 @@ void Editor::CursorUpOrDown(int direction, Selection::selTypes selt) {
 			caretToUse = sel.Rectangular().caret;
 		}
 	}
+
 	Point pt = LocationFromPosition(caretToUse);
-	int lineDoc = pdoc->LineFromPosition(caretToUse.Position());
-	Point ptStartLine = LocationFromPosition(pdoc->LineStart(lineDoc));
-	int subLine = (pt.y - ptStartLine.y) / vs.lineHeight;
-	int commentLines = vs.annotationVisible ? pdoc->AnnotationLines(lineDoc) : 0;
-	SelectionPosition posNew = SPositionFromLocation(
-	            Point(lastXChosen - xOffset, pt.y + direction * vs.lineHeight), false, false, UserVirtualSpace());
-	if ((direction > 0) && (subLine >= (cs.GetHeight(lineDoc) - 1 - commentLines))) {
-		posNew = SPositionFromLocation(
-	            Point(lastXChosen - xOffset, pt.y + (commentLines + 1) * vs.lineHeight), false, false, UserVirtualSpace());
+	int skipLines = 0;
+
+	if (vs.annotationVisible) {
+		int lineDoc = pdoc->LineFromPosition(caretToUse.Position());
+		Point ptStartLine = LocationFromPosition(pdoc->LineStart(lineDoc));
+		int subLine = (pt.y - ptStartLine.y) / vs.lineHeight;
+
+		if (direction < 0 && subLine == 0) {
+			int lineDisplay = cs.DisplayFromDoc(lineDoc);
+			if (lineDisplay > 0) {
+				skipLines = pdoc->AnnotationLines(cs.DocFromDisplay(lineDisplay - 1));
+			}
+		} else if (direction > 0 && subLine >= (cs.GetHeight(lineDoc) - 1 - pdoc->AnnotationLines(lineDoc))) {
+			skipLines = pdoc->AnnotationLines(lineDoc);
+		}
 	}
+
+	int newY = pt.y + (1 + skipLines) * direction * vs.lineHeight;
+	SelectionPosition posNew = SPositionFromLocation(
+	            Point(lastXChosen - xOffset, newY), false, false, UserVirtualSpace());
+
 	if (direction < 0) {
 		// Line wrapping may lead to a location on the same line, so
 		// seek back if that is the case.
-		// There is an equivalent case when moving down which skips
-		// over a line but as that does not trap the user it is fine.
 		Point ptNew = LocationFromPosition(posNew.Position());
 		while ((posNew.Position() > 0) && (pt.y == ptNew.y)) {
-			posNew.Add(- 1);
+			posNew.Add(-1);
+			posNew.SetVirtualSpace(0);
+			ptNew = LocationFromPosition(posNew.Position());
+		}
+	} else if (direction > 0 && posNew.Position() != pdoc->Length()) {
+		// There is an equivalent case when moving down which skips
+		// over a line.
+		Point ptNew = LocationFromPosition(posNew.Position());
+		while ((posNew.Position() > caretToUse.Position()) && (ptNew.y > newY)) {
+			posNew.Add(-1);
 			posNew.SetVirtualSpace(0);
 			ptNew = LocationFromPosition(posNew.Position());
 		}
 	}
-	MovePositionTo(posNew, selt);
+
+	MovePositionTo(MovePositionSoVisible(posNew, direction), selt);
 }
 
 void Editor::ParaUpOrDown(int direction, Selection::selTypes selt) {
