@@ -1062,14 +1062,15 @@ KEYWORDLIST KeyWords_INNO = {
 "appenddefaultdirname appenddefaultgroupname appid appmodifypath appmutex appname apppublisher apppublisherurl "
 "appreadmefile appsupportphone appsupporturl appupdatesurl appvername appversion architecturesallowed "
 "architecturesinstallin64bitmode backcolor backcolor2 backcolordirection backsolid beveledlabel changesassociations "
-"changesenvironment compression compressionthreads copyrightfontname copyrightfontsize createappdir "
-"createuninstallregkey defaultdirname defaultgroupname defaultuserinfoname defaultuserinfoorg defaultuserinfoserial "
-"dialogfontname dialogfontsize direxistswarning disabledirpage disablefinishedpage disableprogramgrouppage disablereadymemo "
-"disablereadypage disablestartupprompt disablewelcomepage diskclustersize diskslicesize diskspanning enabledirdoesntexistwarning "
-"encryption extradiskspacerequired flatcomponentslist infoafterfile infobeforefile internalcompresslevel "
-"languagedetectionmethod languagecodepage languageid languagename licensefile lzmaalgorithm lzmablocksize "
-"lzmadictionarysize lzmamatchfinder lzmanumblockthreads lzmanumfastbytes lzmauseseparateprocess mergeduplicatefiles "
-"minversion onlybelowversion outputbasefilename outputdir outputmanifestfile password privilegesrequired reservebytes "
+"changesenvironment closeapplications closeapplicationsfilter compression compressionthreads copyrightfontname "
+"copyrightfontsize createappdir createuninstallregkey defaultdirname defaultgroupname defaultuserinfoname "
+"defaultuserinfoorg defaultuserinfoserial dialogfontname dialogfontsize direxistswarning disabledirpage "
+"disablefinishedpage disableprogramgrouppage disablereadymemo disablereadypage disablestartupprompt "
+"disablewelcomepage diskclustersize diskslicesize diskspanning enabledirdoesntexistwarning encryption "
+"extradiskspacerequired flatcomponentslist infoafterfile infobeforefile internalcompresslevel languagedetectionmethod "
+"languagecodepage languageid languagename licensefile lzmaalgorithm lzmablocksize lzmadictionarysize lzmamatchfinder "
+"lzmanumblockthreads lzmanumfastbytes lzmauseseparateprocess mergeduplicatefiles minversion onlybelowversion "
+"outputbasefilename outputdir outputmanifestfile password privilegesrequired reservebytes restartapplications "
 "restartifneededbyrun righttoleft setupiconfile setuplogging showcomponentsizes showlanguagedialog showtaskstreelines "
 "showundisplayablelanguages signeduninstaller signeduninstallerdir signtool slicesperdisk solidcompression sourcedir "
 "strongassemblyname timestamprounding timestampsinutc titlefontname titlefontsize touchdate touchtime uninstallable "
@@ -1083,8 +1084,8 @@ KEYWORDLIST KeyWords_INNO = {
 "extradiskspacerequired filename flags fontinstall groupdescription hotkey infoafterfile infobeforefile iconfilename "
 "iconindex key languages licensefile messagesfile minversion name onlybelowversion parameters permissions root runonceid "
 "section source statusmsg string subkey tasks terminalservicesaware type types valuedata valuename valuetype workingdir",
-"append define dim else emit elif endif endsub error expr file for if "
-"ifdef ifexist ifndef ifnexist include insert pragma sub undef",
+"append define dim else emit elif endif endsub error expr file for if ifdef ifexist ifndef ifnexist include insert pragma "
+"sub undef",
 "and begin break case const continue do downto else end except finally for function "
 "if not of or procedure repeat then to try type until uses var while with",
 "", "", "", "" };
