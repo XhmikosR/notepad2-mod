@@ -1354,13 +1354,11 @@ bool ScintillaWin::ModifyScrollBars(int nMax, int nPage) {
 	GetScrollInfo(SB_VERT, &sci);
 	int vertEndPreferred = nMax;
 	if (!verticalScrollBarVisible)
-		vertEndPreferred = 0;
+		nPage = vertEndPreferred + 1;
 	if ((sci.nMin != 0) ||
 		(sci.nMax != vertEndPreferred) ||
 	        (sci.nPage != static_cast<unsigned int>(nPage)) ||
 	        (sci.nPos != 0)) {
-		//Platform::DebugPrintf("Scroll info changed %d %d %d %d %d\n",
-		//	sci.nMin, sci.nMax, sci.nPage, sci.nPos, sci.nTrackPos);
 		sci.fMask = SIF_PAGE | SIF_RANGE;
 		sci.nMin = 0;
 		sci.nMax = vertEndPreferred;
@@ -1375,9 +1373,9 @@ bool ScintillaWin::ModifyScrollBars(int nMax, int nPage) {
 	int horizEndPreferred = scrollWidth;
 	if (horizEndPreferred < 0)
 		horizEndPreferred = 0;
-	if (!horizontalScrollBarVisible || (wrapState != eWrapNone))
-		horizEndPreferred = 0;
 	unsigned int pageWidth = rcText.Width();
+	if (!horizontalScrollBarVisible || (wrapState != eWrapNone))
+		pageWidth = horizEndPreferred + 1;
 	sci.fMask = SIF_PAGE | SIF_RANGE;
 	GetScrollInfo(SB_HORZ, &sci);
 	if ((sci.nMin != 0) ||
