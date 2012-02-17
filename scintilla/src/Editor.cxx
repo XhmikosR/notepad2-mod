@@ -6201,15 +6201,21 @@ void Editor::ButtonDown(Point pt, unsigned int curTime, bool shift, bool ctrl, b
 	inDragDrop = ddNone;
 	sel.SetMoveExtends(false);
 
-	bool processed = NotifyMarginClick(pt, shift, ctrl, alt);
-	if (processed)
+	if (NotifyMarginClick(pt, shift, ctrl, alt))
 		return;
 
 	NotifyIndicatorClick(true, newPos.Position(), shift, ctrl, alt);
 
 	bool inSelMargin = PointInSelMargin(pt);
-	if (shift & !inSelMargin) {
-		SetSelection(newPos.Position());
+	// In margin ctrl+(double)click should always select everything
+	if (ctrl && inSelMargin) {
+		SelectAll();
+		lastClickTime = curTime;
+		lastClick = pt;
+		return;
+	}
+	if (shift && !inSelMargin) {
+		SetSelection(newPos);
 	}
 	if (((curTime - lastClickTime) < Platform::DoubleClickTime()) && Close(pt, lastClick)) {
 		//Platform::DebugPrintf("Double click %d %d = %d\n", curTime, lastClickTime, curTime - lastClickTime);
@@ -6218,20 +6224,24 @@ void Editor::ButtonDown(Point pt, unsigned int curTime, bool shift, bool ctrl, b
 		bool doubleClick = false;
 		// Stop mouse button bounce changing selection type
 		if (!Platform::MouseButtonBounce() || curTime != lastClickTime) {
-			if (selectionType == selChar) {
-				selectionType = selWord;
-				doubleClick = true;
-			} else if (selectionType == selWord) {
-				// Since we ended up here, we're inside a *triple* click, which should always select 
-				// whole line irregardless of word wrap being enabled or not.
-				selectionType = selWholeLine;
-			} else {
-				if (inSelMargin) {
-					// Selection type is either selSubLine or selWholeLine here and we're inside margin.
+			if (inSelMargin) {
+				// Inside margin selection type should be either selSubLine or selWholeLine.
+				if (selectionType == selSubLine) {
 					// If it is selSubLine, we're inside a *double* click and word wrap is enabled, 
 					// so we switch to selWholeLine in order to select whole line.
-					if (selectionType == selSubLine)
-						selectionType = selWholeLine;
+					selectionType = selWholeLine;
+				} else if (selectionType != selSubLine && selectionType != selWholeLine) {
+					// If it is neither, reset selection type to line selection.
+					selectionType = ((wrapState != eWrapNone) && (marginOptions & SC_MARGINOPTION_SUBLINESELECT)) ? selSubLine : selWholeLine;
+				}
+			} else {
+				if (selectionType == selChar) {
+					selectionType = selWord;
+					doubleClick = true;
+				} else if (selectionType == selWord) {
+					// Since we ended up here, we're inside a *triple* click, which should always select 
+					// whole line irregardless of word wrap being enabled or not.
+					selectionType = selWholeLine;
 				} else {
 					selectionType = selChar;
 					originalAnchorPos = sel.MainCaret();
@@ -6283,11 +6293,6 @@ void Editor::ButtonDown(Point pt, unsigned int curTime, bool shift, bool ctrl, b
 	} else {	// Single click
 		if (inSelMargin) {
 			sel.selType = Selection::selStream;
-			if (ctrl) {
-				SelectAll();
-				lastClickTime = curTime;
-				return;
-			}
 			if (!shift) {
 				// Single click in margin: select whole line or only subline if word wrap is enabled
 				lineAnchorPos = newPos.Position();
@@ -6303,7 +6308,7 @@ void Editor::ButtonDown(Point pt, unsigned int curTime, bool shift, bool ctrl, b
 				// This ensures that we don't end up stuck in previous selection mode, which is no longer valid.
 				// Otherwise, if there's a non empty selection, reset selection type only if it differs from selSubLine and selWholeLine.
 				// This ensures that we continue selecting in the same selection mode.
-				if (sel.Empty()	|| (selectionType != selSubLine && selectionType != selWholeLine))
+				if (sel.Empty() || (selectionType != selSubLine && selectionType != selWholeLine))
 					selectionType = ((wrapState != eWrapNone) && (marginOptions & SC_MARGINOPTION_SUBLINESELECT)) ? selSubLine : selWholeLine;
 				LineSelection(newPos.Position(), lineAnchorPos, selectionType == selWholeLine);
 			}
@@ -6352,6 +6357,7 @@ void Editor::ButtonDown(Point pt, unsigned int curTime, bool shift, bool ctrl, b
 		}
 	}
 	lastClickTime = curTime;
+	lastClick = pt;
 	lastXChosen = pt.x + xOffset;
 	ShowCaretAtCurrentPosition();
 }
@@ -6521,7 +6527,7 @@ void Editor::ButtonUp(Point pt, unsigned int curTime, bool ctrl) {
 	newPos = MovePositionOutsideChar(newPos, sel.MainCaret() - newPos.Position());
 	if (inDragDrop == ddInitial) {
 		inDragDrop = ddNone;
-		SetEmptySelection(newPos.Position());
+		SetEmptySelection(newPos);
 		selectionType = selChar;
 		originalAnchorPos = sel.MainCaret();
 	}
