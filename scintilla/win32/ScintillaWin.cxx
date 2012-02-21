@@ -842,8 +842,9 @@ sptr_t ScintillaWin::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam
 
 						DWORD dwCurrent = GetTickCount();
 						DWORD dwStart = wParam ? wParam : dwCurrent;
+						const DWORD maxWorkTime = 50;
 
-						if (dwCurrent >= dwStart && dwCurrent > 200 && dwCurrent - 200 < dwStart)
+						if (dwCurrent >= dwStart && dwCurrent > maxWorkTime && dwCurrent - maxWorkTime < dwStart)
 							PostMessage(MainHWND(), SC_WIN_IDLE, dwStart, 0);
 					} else {
 						SetIdle(false);

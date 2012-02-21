@@ -909,7 +909,12 @@ int Editor::MovePositionTo(SelectionPosition newPos, Selection::selTypes selt, b
 		SetEmptySelection(newPos);
 	}
 	ShowCaretAtCurrentPosition();
+
+	int currentLine = pdoc->LineFromPosition(newPos.Position());
 	if (ensureVisible) {
+		// In case in need of wrapping to ensure DisplayFromDoc works.
+		if (currentLine >= wrapStart)
+			WrapLines(true, -1);
 		XYScrollPosition newXY = XYScrollToMakeVisible(true, true, true);
 		if (simpleCaret && (newXY.xOffset == xOffset)) {
 			// simple vertical scroll then invalidate
@@ -919,8 +924,6 @@ int Editor::MovePositionTo(SelectionPosition newPos, Selection::selTypes selt, b
 			SetXYScroll(newXY);
 		}
 	}
-
-	int currentLine = pdoc->LineFromPosition(newPos.Position());
 
 	if (highlightDelimiter.NeedsDrawing(currentLine)) {
 		RedrawSelMargin();
@@ -6908,7 +6911,8 @@ int Editor::ContractedFoldNext(int lineStart) {
 void Editor::EnsureLineVisible(int lineDoc, bool enforcePolicy) {
 
 	// In case in need of wrapping to ensure DisplayFromDoc works.
-	WrapLines(true, -1);
+	if (lineDoc >= wrapStart)
+		WrapLines(true, -1);
 
 	if (!cs.GetVisible(lineDoc)) {
 		int lookLine = lineDoc;
