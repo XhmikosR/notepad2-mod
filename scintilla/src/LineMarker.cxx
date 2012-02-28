@@ -68,7 +68,7 @@ static void DrawMinus(Surface *surface, int centreX, int centreY, int armSize, C
 	surface->FillRectangle(rcH, fore);
 }
 
-void LineMarker::Draw(Surface *surface, PRectangle &rcWhole, Font &fontForCharacter, typeOfFold tFold) {
+void LineMarker::Draw(Surface *surface, PRectangle &rcWhole, Font &fontForCharacter, typeOfFold tFold, int marginStyle) {
 	ColourDesired head = back;
 	ColourDesired body = back;
 	ColourDesired tail = back;
@@ -112,8 +112,8 @@ void LineMarker::Draw(Surface *surface, PRectangle &rcWhole, Font &fontForCharac
 	int dimOn4 = minDim / 4;
 	int blobSize = dimOn2-1;
 	int armSize = dimOn2-2;
-	if (rc.Width() > (rc.Height() * 2)) {
-		// Wide column is line number so move to left to try to avoid overlapping number
+	if (marginStyle == SC_MARGIN_NUMBER || marginStyle == SC_MARGIN_TEXT || marginStyle == SC_MARGIN_RTEXT) {
+		// On textual margins move marker to the left to try to avoid overlapping the text
 		centreX = rc.left + dimOn2 + 1;
 	}
 	if (markType == SC_MARK_ROUNDRECT) {

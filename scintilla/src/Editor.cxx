@@ -639,6 +639,18 @@ void Editor::RedrawSelMargin(int line, bool allAfter) {
 			if (line != -1) {
 				int position = pdoc->LineStart(line);
 				PRectangle rcLine = RectangleFromRange(position, position);
+
+				// Inflate line rectangle if there are image markers with height larger than line height
+				if (vs.largestMarkerHeight > vs.lineHeight) {
+					int delta = (vs.largestMarkerHeight - vs.lineHeight + 1) / 2;
+					rcLine.top -= delta;
+					rcLine.bottom += delta;
+					if (rcLine.top < rcSelMargin.top)
+						rcLine.top = rcSelMargin.top;
+					if (rcLine.bottom > rcSelMargin.bottom)
+						rcLine.bottom = rcSelMargin.bottom;
+				}
+
 				rcSelMargin.top = rcLine.top;
 				if (!allAfter)
 					rcSelMargin.bottom = rcLine.bottom;
@@ -1979,7 +1991,7 @@ void Editor::PaintSelMargin(Surface *surfWindow, PRectangle &rc) {
 									tFold = LineMarker::tail;
 								}
 							}
-							vs.markers[markBit].Draw(surface, rcMarker, vs.styles[STYLE_LINENUMBER].font, tFold);
+							vs.markers[markBit].Draw(surface, rcMarker, vs.styles[STYLE_LINENUMBER].font, tFold, vs.ms[margin].style);
 						}
 						marks >>= 1;
 					}
@@ -8057,8 +8069,10 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 
 		// Marker definition and setting
 	case SCI_MARKERDEFINE:
-		if (wParam <= MARKER_MAX)
+		if (wParam <= MARKER_MAX) {
 			vs.markers[wParam].markType = lParam;
+			vs.CalcLargestMarkerHeight();
+		}
 		InvalidateStyleData();
 		RedrawSelMargin();
 		break;
@@ -8078,11 +8092,12 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 	case SCI_MARKERSETBACKSELECTED:
 		if (wParam <= MARKER_MAX)
 			vs.markers[wParam].backSelected = ColourDesired(lParam);
-		InvalidateStyleRedraw();
+		InvalidateStyleData();
+		RedrawSelMargin();
 		break;
 	case SCI_MARKERENABLEHIGHLIGHT:
 		highlightDelimiter.isEnabled = wParam == 1;
-		InvalidateStyleRedraw();
+		RedrawSelMargin();
 		break;
 	case SCI_MARKERSETBACK:
 		if (wParam <= MARKER_MAX)
@@ -8129,6 +8144,7 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 	case SCI_MARKERDEFINEPIXMAP:
 		if (wParam <= MARKER_MAX) {
 			vs.markers[wParam].SetXPM(CharPtrFromSPtr(lParam));
+			vs.CalcLargestMarkerHeight();
 		};
 		InvalidateStyleData();
 		RedrawSelMargin();
@@ -8145,6 +8161,7 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 	case SCI_MARKERDEFINERGBAIMAGE:
 		if (wParam <= MARKER_MAX) {
 			vs.markers[wParam].SetRGBAImage(sizeRGBAImage, reinterpret_cast<unsigned char *>(lParam));
+			vs.CalcLargestMarkerHeight();
 		};
 		InvalidateStyleData();
 		RedrawSelMargin();
