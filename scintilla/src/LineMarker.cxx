@@ -97,7 +97,13 @@ void LineMarker::Draw(Surface *surface, PRectangle &rcWhole, Font &fontForCharac
 		return;
 	}
 	if ((markType == SC_MARK_RGBAIMAGE) && (image)) {
-		surface->DrawRGBAImage(rcWhole, image->GetWidth(), image->GetHeight(), image->Pixels());
+		// Make rectangle just large enough to fit image centred on centre of rcWhole
+		PRectangle rcImage;
+		rcImage.top = static_cast<int>(((rcWhole.top + rcWhole.bottom) - image->GetHeight()) / 2);
+		rcImage.bottom = rcImage.top + image->GetHeight();
+		rcImage.left = static_cast<int>(((rcWhole.left + rcWhole.right) - image->GetWidth()) / 2);
+		rcImage.right = rcImage.left + image->GetWidth();
+		surface->DrawRGBAImage(rcImage, image->GetWidth(), image->GetHeight(), image->Pixels());
 		return;
 	}
 	// Restrict most shapes a bit
@@ -332,7 +338,7 @@ void LineMarker::Draw(Surface *surface, PRectangle &rcWhole, Font &fontForCharac
 	} else if (markType >= SC_MARK_CHARACTER) {
 		char character[1];
 		character[0] = static_cast<char>(markType - SC_MARK_CHARACTER);
-		int width = surface->WidthText(fontForCharacter, character, 1);
+		XYPOSITION width = surface->WidthText(fontForCharacter, character, 1);
 		rc.left += (rc.Width() - width) / 2;
 		rc.right = rc.left + width;
 		surface->DrawTextClipped(rc, fontForCharacter, rc.bottom - 2,

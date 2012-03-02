@@ -1947,8 +1947,8 @@ void Editor::PaintSelMargin(Surface *surfWindow, PRectangle &rc) {
 					}
 					PRectangle rcNumber = rcMarker;
 					// Right justify
-					int width = surface->WidthText(vs.styles[STYLE_LINENUMBER].font, number, istrlen(number));
-					int xpos = rcNumber.right - width - 3;
+					XYPOSITION width = surface->WidthText(vs.styles[STYLE_LINENUMBER].font, number, istrlen(number));
+					XYPOSITION xpos = rcNumber.right - width - 3;
 					rcNumber.left = xpos;
 					surface->DrawTextNoClip(rcNumber, vs.styles[STYLE_LINENUMBER].font,
 					        rcNumber.top + vs.maxAscent, number, istrlen(number),
@@ -3532,6 +3532,9 @@ void Editor::Paint(Surface *surfaceWindow, PRectangle rcArea) {
 	}
 	PLATFORM_ASSERT(pixmapSelPattern->Initialised());
 
+	if (!bufferedDraw)
+		surfaceWindow->SetClip(rcArea);
+
 	if (paintState != paintAbandoned) {
 		PaintSelMargin(surfaceWindow, rcArea);
 
@@ -3577,10 +3580,12 @@ void Editor::Paint(Surface *surfaceWindow, PRectangle rcArea) {
 
 		// Remove selection margin from drawing area so text will not be drawn
 		// on it in unbuffered mode.
-		PRectangle rcTextArea = rcClient;
-		rcTextArea.left = vs.fixedColumnWidth;
-		rcTextArea.right -= vs.rightMarginWidth;
-		surfaceWindow->SetClip(rcTextArea);
+		if (!bufferedDraw) {
+			PRectangle rcTextArea = rcClient;
+			rcTextArea.left = vs.fixedColumnWidth;
+			rcTextArea.right -= vs.rightMarginWidth;
+			surfaceWindow->SetClip(rcTextArea);
+		}
 
 		// Loop on visible lines
 		//double durLayout = 0.0;
@@ -3665,7 +3670,7 @@ void Editor::Paint(Surface *surfaceWindow, PRectangle rcArea) {
 				if (bufferedDraw) {
 					Point from(vs.fixedColumnWidth, 0);
 					PRectangle rcCopyArea(vs.fixedColumnWidth, yposScreen,
-					        rcClient.right, yposScreen + vs.lineHeight);
+					        rcClient.right - vs.rightMarginWidth, yposScreen + vs.lineHeight);
 					surfaceWindow->Copy(rcCopyArea, from, *pixmapLine);
 				}
 

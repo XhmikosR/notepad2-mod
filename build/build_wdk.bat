@@ -26,8 +26,8 @@ IF NOT DEFINED VS100COMNTOOLS (
   CALL :SUBMSG "INFO" "Visual Studio 2010 wasn't found, I will use WDK's compiler"
   SET USE_MSVC2010=
 ) ELSE (
-  rem Comment out the following line or set USE_MSVC2010 to false if you want
-  rem to use WDK's compiler instead of MSVC 2010 compiler
+  rem Comment out the following line or set USE_MSVC2010 to anything but true
+  rem if you want to use WDK's compiler instead of MSVC 2010 compiler
   SET USE_MSVC2010=true
 )
 
