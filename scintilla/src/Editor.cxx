@@ -4964,7 +4964,7 @@ void Editor::Duplicate(bool forLine) {
 	if (sel.Empty()) {
 		forLine = true;
 	}
-	UndoGroup ug(pdoc, sel.Count() > 1);
+	UndoGroup ug(pdoc);
 	const char *eol = "";
 	int eolLen = 0;
 	if (forLine) {

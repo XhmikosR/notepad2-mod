@@ -168,16 +168,17 @@ struct FormatAndMetrics {
 	int extraFontFlag;
 	FLOAT yAscent;
 	FLOAT yDescent;
+	FLOAT yInternalLeading;
 	FormatAndMetrics(HFONT hfont_, int extraFontFlag_) : 
 		technology(SCWIN_TECH_GDI), hfont(hfont_), 
 #if defined(USE_D2D)
 		pTextFormat(0),
 #endif
-		extraFontFlag(extraFontFlag_), yAscent(2), yDescent(1) {
+		extraFontFlag(extraFontFlag_), yAscent(2), yDescent(1), yInternalLeading(0) {
 	}
 #if defined(USE_D2D)
-	FormatAndMetrics(IDWriteTextFormat *pTextFormat_, int extraFontFlag_, FLOAT yAscent_, FLOAT yDescent_) : 
-		technology(SCWIN_TECH_DIRECTWRITE), hfont(0), pTextFormat(pTextFormat_), extraFontFlag(extraFontFlag_), yAscent(yAscent_), yDescent(yDescent_) {
+	FormatAndMetrics(IDWriteTextFormat *pTextFormat_, int extraFontFlag_, FLOAT yAscent_, FLOAT yDescent_, FLOAT yInternalLeading_) : 
+		technology(SCWIN_TECH_DIRECTWRITE), hfont(0), pTextFormat(pTextFormat_), extraFontFlag(extraFontFlag_), yAscent(yAscent_), yDescent(yDescent_), yInternalLeading(yInternalLeading_) {
 	}
 #endif
 	~FormatAndMetrics() {
@@ -191,6 +192,7 @@ struct FormatAndMetrics {
 		extraFontFlag = 0;
 		yAscent = 2;
 		yDescent = 1;
+		yInternalLeading = 0;
 	}
 	HFONT HFont();
 };
@@ -336,6 +338,7 @@ FontCached::FontCached(const FontParameters &fp) :
 			UINT32 lineCount = 0;
 			FLOAT yAscent = 1.0f;
 			FLOAT yDescent = 1.0f;
+			FLOAT yInternalLeading = 0.0f;
 			IDWriteTextLayout *pTextLayout = 0;
 			hr = pIDWriteFactory->CreateTextLayout(L"X", 1, pTextFormat,
 					100.0f, 100.0f, &pTextLayout);
@@ -344,10 +347,16 @@ FontCached::FontCached(const FontParameters &fp) :
 				if (SUCCEEDED(hr)) {
 					yAscent = lineMetrics[0].baseline;
 					yDescent = lineMetrics[0].height - lineMetrics[0].baseline;
+
+					FLOAT emHeight;
+					hr = pTextLayout->GetFontSize(0, &emHeight);
+					if (SUCCEEDED(hr)) {
+						yInternalLeading = lineMetrics[0].height - emHeight;
+					}
 				}
 				pTextLayout->Release();
 			}
-			fid = reinterpret_cast<void *>(new FormatAndMetrics(pTextFormat, fp.extraFontFlag, yAscent, yDescent));
+			fid = reinterpret_cast<void *>(new FormatAndMetrics(pTextFormat, fp.extraFontFlag, yAscent, yDescent, yInternalLeading));
 		}
 #endif
 	}
@@ -1132,6 +1141,7 @@ class SurfaceD2D : public Surface {
 	IDWriteTextFormat *pTextFormat;
 	FLOAT yAscent;
 	FLOAT yDescent;
+	FLOAT yInternalLeading;
 
 	ID2D1SolidColorBrush *pBrush;
 
@@ -1214,6 +1224,7 @@ SurfaceD2D::SurfaceD2D() :
 	pTextFormat = NULL;
 	yAscent = 2;
 	yDescent = 1;
+	yInternalLeading = 0;
 
 	pBrush = NULL;
 
@@ -1267,7 +1278,7 @@ void SurfaceD2D::Init(WindowID /* wid */) {
 void SurfaceD2D::Init(SurfaceID sid, WindowID) {
 	Release();
 	SetScale();
-	pRenderTarget = reinterpret_cast<ID2D1HwndRenderTarget *>(sid);
+	pRenderTarget = reinterpret_cast<ID2D1RenderTarget *>(sid);
 }
 
 void SurfaceD2D::InitPixMap(int width, int height, Surface *surface_, WindowID) {
@@ -1275,8 +1286,11 @@ void SurfaceD2D::InitPixMap(int width, int height, Surface *surface_, WindowID) 
 	SetScale();
 	SurfaceD2D *psurfOther = static_cast<SurfaceD2D *>(surface_);
 	ID2D1BitmapRenderTarget *pCompatibleRenderTarget = NULL;
+	D2D1_SIZE_F desiredSize = D2D1::SizeF(width, height);
+	D2D1_PIXEL_FORMAT desiredFormat = psurfOther->pRenderTarget->GetPixelFormat();
+	desiredFormat.alphaMode = D2D1_ALPHA_MODE_IGNORE;
 	HRESULT hr = psurfOther->pRenderTarget->CreateCompatibleRenderTarget(
-		D2D1::SizeF(width, height), &pCompatibleRenderTarget);
+		&desiredSize, NULL, &desiredFormat, D2D1_COMPATIBLE_RENDER_TARGET_OPTIONS_NONE, &pCompatibleRenderTarget);
 	if (SUCCEEDED(hr)) {
 		pRenderTarget = pCompatibleRenderTarget;
 		pRenderTarget->BeginDraw();
@@ -1313,6 +1327,7 @@ void SurfaceD2D::SetFont(Font &font_) {
 	pTextFormat = pfm->pTextFormat;
 	yAscent = pfm->yAscent;
 	yDescent = pfm->yDescent;
+	yInternalLeading = pfm->yInternalLeading;
 	if (pRenderTarget) {
 		pRenderTarget->SetTextAntialiasMode(DWriteMapFontQuality(pfm->extraFontFlag));
 	}
@@ -1744,11 +1759,13 @@ XYPOSITION SurfaceD2D::Descent(Font &font_) {
 	return ceil(yDescent);
 }
 
-XYPOSITION SurfaceD2D::InternalLeading(Font &) {
-	return 0;
+XYPOSITION SurfaceD2D::InternalLeading(Font &font_) {
+	SetFont(font_);
+	return floor(yInternalLeading);
 }
 
 XYPOSITION SurfaceD2D::ExternalLeading(Font &) {
+	// Not implemented, always return one
 	return 1;
 }
 
