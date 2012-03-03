@@ -10,8 +10,8 @@ Notable changes:
   CMake, Inno Setup, LaTeX, Lua, NSIS, Ruby, and Tcl scripts
 
 Supported Operating Systems:
-* Windows 2000 (when compiled with WDK)
-* XP, Vista, 7 both 32-bit and 64-bit
+* Windows 2000 (when compiled with WDK, which is the default build)
+* XP (SP3, SP2 might or might not work), Vista, 7 and 8 both 32-bit and 64-bit
 
 Contributors:
 * Kai Liu
