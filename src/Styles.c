@@ -793,7 +793,7 @@ KEYWORDLIST KeyWords_SQL = {
 "hour_second if ignore immediate in index infile initially inner inout insensitive insert instead int "
 "int1 int2 int3 int4 int8 integer intersect interval into is isnull iterate join key keys kill "
 "leading leave left like limit linear lines load localtime localtimestamp lock long longblob longtext "
-"loop low_priority master_ssl_verify_server_cert match mediumblob mediumint mediumtext middleint "
+"loop low_priority master_ssl_verify_server_cert match merge mediumblob mediumint mediumtext middleint "
 "minute_microsecond minute_second mod modifies natural no no_write_to_binlog not notnull null numeric "
 "of offset on optimize option optionally or order out outer outfile plan pragma precision primary "
 "procedure purge query raise range read read_only read_write reads real references regexp reindex "
