@@ -79,7 +79,7 @@
 
     <h1>Scintilla Documentation</h1>
 
-    <p>Last edited 6/March/2012 NH</p>
+    <p>Last edited 26/March/2012 NH</p>
 
     <p>There is <a class="jump" href="Design.html">an overview of the internal design of
     Scintilla</a>.<br />
@@ -664,7 +664,8 @@ struct Sci_TextRange {
           <td>Where <code>n</code> is 1 through 9 refers to the first through ninth tagged region
           when replacing. For example, if the search string was <code>Fred\([1-9]\)XXX</code> and
           the replace string was <code>Sam\1YYY</code>, when applied to <code>Fred2XXX</code> this
-          would generate <code>Sam2YYY</code>.</td>
+          would generate <code>Sam2YYY</code>.
+	  <code>\0</code> refers to all of the matching text.</td>
         </tr>
 
         <tr>
@@ -861,7 +862,7 @@ struct Sci_TextToFind {
     <code>text</code> is a zero terminated string, otherwise <code>length</code> is the number of
     characters to use. The replacement string is formed from the text string with any sequences of
     <code>\1</code> through <code>\9</code> replaced by tagged matches from the most recent regular
-    expression search.
+    expression search. <code>\0</code> is replaced with all the matched text from the most recent search.
            After replacement, the target range refers to the replacement text.
            The return value is the length of the replacement string.</p>
 

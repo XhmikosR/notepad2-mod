@@ -30,6 +30,7 @@
 #include "CharacterSet.h"
 #include "LexerModule.h"
 #include "OptionSet.h"
+#include "SparseState.h"
 
 #ifdef SCI_NAMESPACE
 using namespace Scintilla;
@@ -65,10 +66,7 @@ static inline bool IsANumberChar(int ch) {
 class SQLStates {
 public :
 	void Set(int lineNumber, unsigned short int sqlStatesLine) {
-		if (!sqlStatement.size() == 0 || !sqlStatesLine == 0) {
-			sqlStatement.resize(lineNumber + 1, 0);
-			sqlStatement[lineNumber] = sqlStatesLine;
-		}
+		sqlStatement.Set(lineNumber, sqlStatesLine);
 	}
 
 	unsigned short int IgnoreWhen (unsigned short int sqlStatesLine, bool enable) {
@@ -181,17 +179,13 @@ public :
 	}
 
 	unsigned short int ForLine(int lineNumber) {
-		if ((lineNumber > 0) && (sqlStatement.size() > static_cast<size_t>(lineNumber))) {
-			return sqlStatement[lineNumber];
-		} else {
-			return 0;
-		}
+		return sqlStatement.ValueAt(lineNumber);
 	}
 
 	SQLStates() {}
 
 private :
-	std::vector <unsigned short int> sqlStatement;
+	SparseState <unsigned short int> sqlStatement;
 	enum {
 		MASK_NESTED_CASES = 0x01FF,
 		MASK_INTO_SELECT_STATEMENT = 0x0200,
@@ -610,7 +604,6 @@ void SCI_METHOD LexerSQL::Fold(unsigned int startPos, int length, int initStyle,
 				if (!sqlStates.IsCaseMergeWithoutWhenFound(sqlStatesCurrentLine))
 					levelNext--;
 				sqlStatesCurrentLine = sqlStates.IntoMergeStatement(sqlStatesCurrentLine, false);
-				//sqlStatesCurrentLine = sqlStates.WhenThenFound(sqlStatesCurrentLine, false);
 				levelNext--;
 			}
 			if (sqlStates.IsIntoSelectStatement(sqlStatesCurrentLine))
@@ -722,7 +715,6 @@ void SCI_METHOD LexerSQL::Fold(unsigned int startPos, int length, int initStyle,
 						sqlStatesCurrentLine = sqlStates.EndCaseBlock(sqlStatesCurrentLine);
 						if (!sqlStates.IsCaseMergeWithoutWhenFound(sqlStatesCurrentLine))
 							levelNext--; //again for the "end case;" and block when
-						//sqlStatesCurrentLine = sqlStates.WhenThenFound(sqlStatesCurrentLine, false);
 					}
 				} else if (!options.foldOnlyBegin) {
 					if (strcmp(s, "case") == 0)

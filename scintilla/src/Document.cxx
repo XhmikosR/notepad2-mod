@@ -721,7 +721,12 @@ int Document::SafeSegment(const char *text, int length, int lengthSegment) {
 		lastEncodingAllowedBreak = j;
 
 		if (dbcsCodePage == SC_CP_UTF8) {
-			j += (ch < 0x80) ? 1 : BytesFromLead(ch);
+			if (ch < 0x80) {
+				j++;
+			} else {
+				int bytes = BytesFromLead(ch);
+				j += bytes ? bytes : 1;
+			}
 		} else if (dbcsCodePage) {
 			j += IsDBCSLeadByte(ch) ? 2 : 1;
 		} else {
@@ -2189,7 +2194,7 @@ const char *BuiltinRegex::SubstituteByPosition(Document *doc, const char *text, 
 	unsigned int lenResult = 0;
 	for (int i = 0; i < *length; i++) {
 		if (text[i] == '\\') {
-			if (text[i + 1] >= '1' && text[i + 1] <= '9') {
+			if (text[i + 1] >= '0' && text[i + 1] <= '9') {
 				unsigned int patNum = text[i + 1] - '0';
 				lenResult += search.eopat[patNum] - search.bopat[patNum];
 				i++;
@@ -2215,7 +2220,7 @@ const char *BuiltinRegex::SubstituteByPosition(Document *doc, const char *text, 
 	char *o = substituted;
 	for (int j = 0; j < *length; j++) {
 		if (text[j] == '\\') {
-			if (text[j + 1] >= '1' && text[j + 1] <= '9') {
+			if (text[j + 1] >= '0' && text[j + 1] <= '9') {
 				unsigned int patNum = text[j + 1] - '0';
 				unsigned int len = search.eopat[patNum] - search.bopat[patNum];
 				if (search.pat[patNum])	// Will be null if try for a match that did not occur
