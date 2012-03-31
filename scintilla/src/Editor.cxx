@@ -213,7 +213,6 @@ Editor::Editor() {
 	wrapVisualFlagsLocation = 0;
 	wrapVisualStartIndent = 0;
 	wrapIndentMode = SC_WRAPINDENT_FIXED;
-	wrapAddIndent = 0;
 
 	convertPastes = true;
 
@@ -296,15 +295,6 @@ void Editor::RefreshStyleData() {
 		AutoSurface surface(this);
 		if (surface) {
 			vs.Refresh(*surface);
-		}
-		if (wrapIndentMode == SC_WRAPINDENT_INDENT) {
-			wrapAddIndent = pdoc->IndentSize() * vs.spaceWidth;
-		} else if (wrapIndentMode == SC_WRAPINDENT_SAME) {
-			wrapAddIndent = 0;
-		} else { //SC_WRAPINDENT_FIXED
-			wrapAddIndent = wrapVisualStartIndent * vs.aveCharWidth;
-			if ((wrapVisualFlags & SC_WRAPVISUALFLAG_START) && (wrapAddIndent <= 0))
-				wrapAddIndent = vs.aveCharWidth; // must indent to show start visual
 		}
 		SetScrollBars();
 		SetRectangularRange();
@@ -2318,6 +2308,17 @@ void Editor::LayoutLine(int line, Surface *surface, ViewStyle &vstyle, LineLayou
 		width = 20;
 	}
 	if ((ll->validity == LineLayout::llPositions) || (ll->widthLine != width)) {
+		XYPOSITION wrapAddIndent = 0; // This will be added to initial indent of line
+		if (wrapIndentMode == SC_WRAPINDENT_INDENT) {
+			wrapAddIndent = pdoc->IndentSize() * vstyle.spaceWidth;
+		} else if (wrapIndentMode == SC_WRAPINDENT_SAME) {
+			wrapAddIndent = 0;
+		} else { //SC_WRAPINDENT_FIXED
+			wrapAddIndent = wrapVisualStartIndent * vstyle.aveCharWidth;
+			if ((wrapVisualFlags & SC_WRAPVISUALFLAG_START) && (wrapAddIndent <= 0))
+				wrapAddIndent = vstyle.aveCharWidth; // must indent to show start visual
+		}
+
 		ll->widthLine = width;
 		if (width == LineLayout::wrapWidthInfinite) {
 			ll->lines = 1;

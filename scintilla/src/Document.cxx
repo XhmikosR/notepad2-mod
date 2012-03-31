@@ -1773,12 +1773,14 @@ StyledText Document::AnnotationStyledText(int line) {
 }
 
 void Document::AnnotationSetText(int line, const char *text) {
-	const int linesBefore = AnnotationLines(line);
-	static_cast<LineAnnotation *>(perLineData[ldAnnotation])->SetText(line, text);
-	const int linesAfter = AnnotationLines(line);
-	DocModification mh(SC_MOD_CHANGEANNOTATION, LineStart(line), 0, 0, 0, line);
-	mh.annotationLinesAdded = linesAfter - linesBefore;
-	NotifyModified(mh);
+	if (line >= 0 && line < LinesTotal()) {
+		const int linesBefore = AnnotationLines(line);
+		static_cast<LineAnnotation *>(perLineData[ldAnnotation])->SetText(line, text);
+		const int linesAfter = AnnotationLines(line);
+		DocModification mh(SC_MOD_CHANGEANNOTATION, LineStart(line), 0, 0, 0, line);
+		mh.annotationLinesAdded = linesAfter - linesBefore;
+		NotifyModified(mh);
+	}
 }
 
 void Document::AnnotationSetStyle(int line, int style) {
@@ -1788,7 +1790,9 @@ void Document::AnnotationSetStyle(int line, int style) {
 }
 
 void Document::AnnotationSetStyles(int line, const unsigned char *styles) {
-	static_cast<LineAnnotation *>(perLineData[ldAnnotation])->SetStyles(line, styles);
+	if (line >= 0 && line < LinesTotal()) {
+		static_cast<LineAnnotation *>(perLineData[ldAnnotation])->SetStyles(line, styles);
+	}
 }
 
 int Document::AnnotationLength(int line) const {
