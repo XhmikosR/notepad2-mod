@@ -3953,6 +3953,7 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
         else
         {
             SendMessage( hwndEdit , SCI_MARKERSETBACK , 0 , 0xff << 8 );
+            SendMessage( hwndEdit , SCI_MARKERSETALPHA , 0 , 20);
             SendMessage( hwndEdit , SCI_MARKERDEFINE , 0 , SC_MARK_BACKGROUND );
         }
 #endif
