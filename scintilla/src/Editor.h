@@ -572,9 +572,9 @@ class AutoSurface {
 private:
 	Surface *surf;
 public:
-	AutoSurface(Editor *ed) : surf(0) {
+	AutoSurface(Editor *ed, int technology = -1) : surf(0) {
 		if (ed->wMain.GetID()) {
-			surf = Surface::Allocate(ed->technology);
+			surf = Surface::Allocate(technology != -1 ? technology : ed->technology);
 			if (surf) {
 				surf->Init(ed->wMain.GetID());
 				surf->SetUnicodeMode(SC_CP_UTF8 == ed->CodePage());
@@ -582,9 +582,9 @@ public:
 			}
 		}
 	}
-	AutoSurface(SurfaceID sid, Editor *ed) : surf(0) {
+	AutoSurface(SurfaceID sid, Editor *ed, int technology = -1) : surf(0) {
 		if (ed->wMain.GetID()) {
-			surf = Surface::Allocate(ed->technology);
+			surf = Surface::Allocate(technology != -1 ? technology : ed->technology);
 			if (surf) {
 				surf->Init(sid, ed->wMain.GetID());
 				surf->SetUnicodeMode(SC_CP_UTF8 == ed->CodePage());
