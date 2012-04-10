@@ -16,7 +16,7 @@
 
 
 # Remove the .SILENT directive in order to display all the commands
-.SILENT:
+#.SILENT:
 
 
 CC = cl.exe
@@ -70,6 +70,7 @@ LDFLAGS       = $(LDFLAGS) /SUBSYSTEM:WINDOWS,5.02 /MACHINE:X64
 LIBS          = $(LIBS) msvcrt_win2003.obj
 RFLAGS        = $(RFLAGS) /d "_WIN64"
 !ELSE
+CXXFLAGS      = $(CXXFLAGS) /Oy
 DEFINES       = $(DEFINES) /D "WIN32" /D "_WIN32_WINNT=0x0501"
 LDFLAGS       = $(LDFLAGS) /LARGEADDRESSAWARE /SUBSYSTEM:WINDOWS,5.0 /MACHINE:X86
 LIBS          = $(LIBS) msvcrt_win2000.obj
