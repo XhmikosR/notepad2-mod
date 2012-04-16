@@ -79,7 +79,7 @@
 
     <h1>Scintilla Documentation</h1>
 
-    <p>Last edited 26/March/2012 NH</p>
+    <p>Last edited 16/April/2012 NH</p>
 
     <p>There is <a class="jump" href="Design.html">an overview of the internal design of
     Scintilla</a>.<br />
@@ -3856,6 +3856,29 @@ struct Sci_TextToFind {
     Can be used to iterate through the document to discover all the indicator positions.
     </p>
 
+    <h3 id="FindIndicators">OS X Find Indicator</h3>
+
+    <p>On OS X search matches are highlighted with an animated gold rounded rectangle.
+    The indicator shows, then briefly grows 25% and shrinks to the original size to draw the user's attention.
+    While this feature is currently only implemented on OS X, it may be implemented on other platforms
+    in the future.</p>
+
+    <p><b id="SCI_FINDINDICATORSHOW">SCI_FINDINDICATORSHOW(int start, int end)</b><br />
+     <b id="SCI_FINDINDICATORFLASH">SCI_FINDINDICATORFLASH(int start, int end)</b><br />
+     These two messages show and animate the find indicator. The indicator remains visible with
+     <code>SCI_FINDINDICATORSHOW</code> and fades out after showing for half a second with 
+     <code>SCI_FINDINDICATORFLASH</code>.
+     <code>SCI_FINDINDICATORSHOW</code> behaves similarly to the OS X TextEdit and Safari applications
+     and is best suited to editing documentation where the search target is often a word.
+     <code>SCI_FINDINDICATORFLASH</code> is similar to Xcode and is suited to editing source code
+     where the match will often be located next to operators which would otherwise be hidden under the indicator's
+     padding.
+     </p>
+
+    <p><b id="SCI_FINDINDICATORHIDE">SCI_FINDINDICATORHIDE</b><br />
+     This message hides the find indicator.
+     </p>
+
     <h3 id="StyleByteIndicators">Style Byte Indicators (deprecated)</h3>
     <p>By default, Scintilla organizes the style byte associated with each text byte as 5 bits of
     style information (for 32 styles) and 3 bits of indicator information for 3 independent
@@ -3931,6 +3954,8 @@ struct Sci_TextToFind {
      <a class="message" href="#SCI_AUTOCSETIGNORECASE">SCI_AUTOCSETIGNORECASE(bool
     ignoreCase)</a><br />
      <a class="message" href="#SCI_AUTOCGETIGNORECASE">SCI_AUTOCGETIGNORECASE</a><br />
+     <a class="message" href="#SCI_AUTOCSETCASEINSENSITIVEBEHAVIOUR">SCI_AUTOCSETCASEINSENSITIVEBEHAVIOUR(int behaviour)</a><br>
+     <a class="message" href="#SCI_AUTOCGETCASEINSENSITIVEBEHAVIOUR">SCI_AUTOCGETCASEINSENSITIVEBEHAVIOUR</a><br>
      <a class="message" href="#SCI_AUTOCSETAUTOHIDE">SCI_AUTOCSETAUTOHIDE(bool autoHide)</a><br />
      <a class="message" href="#SCI_AUTOCGETAUTOHIDE">SCI_AUTOCGETAUTOHIDE</a><br />
      <a class="message" href="#SCI_AUTOCSETDROPRESTOFWORD">SCI_AUTOCSETDROPRESTOFWORD(bool
@@ -4035,6 +4060,13 @@ struct Sci_TextToFind {
      <b id="SCI_AUTOCGETIGNORECASE">SCI_AUTOCGETIGNORECASE</b><br />
      By default, matching of characters to list members is case sensitive. These messages let you
     set and get case sensitivity.</p>
+
+    <p><b id="SCI_AUTOCSETCASEINSENSITIVEBEHAVIOUR">SCI_AUTOCSETCASEINSENSITIVEBEHAVIOUR(int behaviour)</b><br>
+    <b id="SCI_AUTOCGETCASEINSENSITIVEBEHAVIOUR">SCI_AUTOCGETCASEINSENSITIVEBEHAVIOUR</b><br>
+    When autocompletion is set to ignore case (<code>SCI_AUTOCSETIGNORECASE</code>), by default it will
+    nonetheless select the first list member that matches in a case sensitive way to entered characters.
+    This corresponds to a behaviour property of <code>SC_CASEINSENSITIVEBEHAVIOUR_RESPECTCASE</code> (0).
+    If you want autocompletion to ignore case at all, choose <code>SC_CASEINSENSITIVEBEHAVIOUR_IGNORECASE</code> (1).</p>
 
     <p><b id="SCI_AUTOCSETAUTOHIDE">SCI_AUTOCSETAUTOHIDE(bool autoHide)</b><br />
      <b id="SCI_AUTOCGETAUTOHIDE">SCI_AUTOCGETAUTOHIDE</b><br />

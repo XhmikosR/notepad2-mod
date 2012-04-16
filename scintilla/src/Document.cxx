@@ -57,7 +57,6 @@ static inline bool IsUpperCase(char ch) {
 }
 
 void LexInterface::Colourise(int start, int end) {
-	ElapsedTime et;
 	if (pdoc && instance && !performingStyle) {
 		// Protect against reentrance, which may occur, for example, when
 		// fold points are discovered while performing styling and the folding
@@ -470,8 +469,8 @@ int Document::LenChar(int pos) {
 	}
 }
 
-static bool IsTrailByte(int ch) {
-	return (ch >= 0x80) && (ch < (0x80 + 0x40));
+static inline bool IsTrailByte(int ch) {
+	return (ch >= 0x80) && (ch < 0xc0);
 }
 
 static int BytesFromLead(int leadByte) {
@@ -687,7 +686,7 @@ bool SCI_METHOD Document::IsDBCSLeadByte(char ch) const {
 	return false;
 }
 
-inline bool IsSpaceOrTab(int ch) {
+static inline bool IsSpaceOrTab(int ch) {
 	return ch == ' ' || ch == '\t';
 }
 
@@ -1006,10 +1005,6 @@ void Document::DelCharBack(int pos) {
 	}
 }
 
-static bool isindentchar(char ch) {
-	return (ch == ' ') || (ch == '\t');
-}
-
 static int NextTab(int pos, int tabSize) {
 	return ((pos / tabSize) + 1) * tabSize;
 }
@@ -1069,7 +1064,7 @@ int Document::GetLineIndentPosition(int line) const {
 		return 0;
 	int pos = LineStart(line);
 	int length = Length();
-	while ((pos < length) && isindentchar(cb.CharAt(pos))) {
+	while ((pos < length) && IsSpaceOrTab(cb.CharAt(pos))) {
 		pos++;
 	}
 	return pos;
@@ -1121,6 +1116,8 @@ int Document::FindColumn(int line, int column) {
 			char ch = cb.CharAt(position);
 			if (ch == '\t') {
 				columnCurrent = NextTab(columnCurrent, tabInChars);
+				if (columnCurrent > column)
+					return position;
 				position++;
 			} else if (ch == '\r') {
 				return position;
@@ -1385,17 +1382,13 @@ static inline char MakeLowerCase(char ch) {
 		return static_cast<char>(ch - 'A' + 'a');
 }
 
-static bool GoodTrailByte(int v) {
-	return (v >= 0x80) && (v < 0xc0);
-}
-
 size_t Document::ExtractChar(int pos, char *bytes) {
 	unsigned char ch = static_cast<unsigned char>(cb.CharAt(pos));
 	size_t widthChar = UTF8CharLength(ch);
 	bytes[0] = ch;
 	for (size_t i=1; i<widthChar; i++) {
 		bytes[i] = cb.CharAt(static_cast<int>(pos+i));
-		if (!GoodTrailByte(static_cast<unsigned char>(bytes[i]))) { // Bad byte
+		if (!IsTrailByte(static_cast<unsigned char>(bytes[i]))) { // Bad byte
 			widthChar = 1;
 		}
 	}

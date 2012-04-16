@@ -469,9 +469,6 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	int KeyDownWithModifiers(int key, int modifiers, bool *consumed);
 	int KeyDown(int key, bool shift, bool ctrl, bool alt, bool *consumed=0);
 
-	int GetWhitespaceVisible();
-	void SetWhitespaceVisible(int view);
-
 	void Indent(bool forwards);
 
 	virtual CaseFolder *CaseFolderForEncoding();
