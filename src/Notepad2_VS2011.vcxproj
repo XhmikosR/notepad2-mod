@@ -164,7 +164,6 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <TargetMachine>MachineX86</TargetMachine>
       <MergeSections>.rdata=.text</MergeSections>
-      <LargeAddressAware>true</LargeAddressAware>
       <SetChecksum>true</SetChecksum>
     </Link>
     <PreBuildEvent>
