@@ -1057,10 +1057,10 @@ EDITLEXER lexNSIS = { SCLEX_NSIS, 63284, L"NSIS Script", L"nsi; nsh", L"", &KeyW
 KEYWORDLIST KeyWords_INNO = {
 "code components custommessages dirs files icons ini installdelete langoptions languages messages "
 "registry run setup types tasks uninstalldelete uninstallrun _istool",
-"allowcancelduringinstall allownoicons allowrootdirectory allowuncpath alwaysrestart alwaysshowcomponentslist "
-"alwaysshowdironreadypage alwaysshowgrouponreadypage alwaysusepersonalgroup appcomments appcontact appcopyright "
-"appenddefaultdirname appenddefaultgroupname appid appmodifypath appmutex appname apppublisher apppublisherurl "
-"appreadmefile appsupportphone appsupporturl appupdatesurl appvername appversion architecturesallowed "
+"allowcancelduringinstall allownetworkdrive allownoicons allowrootdirectory allowuncpath alwaysrestart "
+"alwaysshowcomponentslist alwaysshowdironreadypage alwaysshowgrouponreadypage alwaysusepersonalgroup appcomments "
+"appcontact appcopyright appenddefaultdirname appenddefaultgroupname appid appmodifypath appmutex appname apppublisher "
+"apppublisherurl appreadmefile appsupportphone appsupporturl appupdatesurl appvername appversion architecturesallowed "
 "architecturesinstallin64bitmode backcolor backcolor2 backcolordirection backsolid beveledlabel changesassociations "
 "changesenvironment closeapplications closeapplicationsfilter compression compressionthreads copyrightfontname "
 "copyrightfontsize createappdir createuninstallregkey defaultdirname defaultgroupname defaultuserinfoname "
