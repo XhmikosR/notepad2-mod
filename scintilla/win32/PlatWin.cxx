@@ -115,7 +115,8 @@ Point Point::FromLong(long lpoint) {
 }
 
 static RECT RectFromPRectangle(PRectangle prc) {
-	RECT rc = {prc.left, prc.top, prc.right, prc.bottom};
+	RECT rc = {static_cast<LONG>(prc.left), static_cast<LONG>(prc.top),
+		static_cast<LONG>(prc.right), static_cast<LONG>(prc.bottom)};
 	return rc;
 }
 
@@ -698,7 +699,7 @@ void SurfaceGDI::Polygon(Point *pts, int npts, ColourDesired fore, ColourDesired
 	BrushColor(back);
 	std::vector<POINT> outline;
 	for (int i=0;i<npts;i++) {
-		POINT pt = {pts[i].x, pts[i].y};
+		POINT pt = {static_cast<LONG>(pts[i].x), static_cast<LONG>(pts[i].y)};
 		outline.push_back(pt);
 	}
 	::Polygon(hdc, &outline[0], npts);
@@ -1859,7 +1860,7 @@ void Window::SetPositionRelative(PRectangle rc, Window w) {
 #ifdef MONITOR_DEFAULTTONULL
 		// We're using the stub functionality of MultiMon.h to decay gracefully on machines
 		// (ie, pre Win2000, Win95) that do not support the newer functions.
-		RECT rcMonitor = {rc.left, rc.top, rc.right, rc.bottom};
+		RECT rcMonitor = RectFromPRectangle(rc);
 		MONITORINFO mi = {0};
 		mi.cbSize = sizeof(mi);
 
@@ -1999,7 +2000,8 @@ PRectangle Window::GetMonitorRect(Point pt) {
 	// There could be conditional code and dynamic loading in a future version
 	// so this would work on those platforms where they are available.
 	PRectangle rcPosition = GetPosition();
-	POINT ptDesktop = {pt.x + rcPosition.left, pt.y + rcPosition.top};
+	POINT ptDesktop = {static_cast<LONG>(pt.x + rcPosition.left),
+		static_cast<LONG>(pt.y + rcPosition.top)};
 	HMONITOR hMonitor = ::MonitorFromPoint(ptDesktop, MONITOR_DEFAULTTONEAREST);
 	MONITORINFO mi = {0};
 	memset(&mi, 0, sizeof(mi));
@@ -2239,7 +2241,7 @@ void ListBoxX::Create(Window &parent_, int ctrlID_, Point location_, int lineHei
 		hinstanceParent,
 		this);
 
-	POINT locationw = {location.x, location.y};
+	POINT locationw = {static_cast<LONG>(location.x), static_cast<LONG>(location.y)};
 	::MapWindowPoints(hwndParent, NULL, &locationw, 1);
 	location = Point(locationw.x, locationw.y);
 }
@@ -2528,7 +2530,7 @@ void ListBoxX::SetList(const char *list, char separator, char typesep) {
 }
 
 void ListBoxX::AdjustWindowRect(PRectangle *rc) const {
-	RECT rcw = {rc->left, rc->top, rc->right, rc->bottom };
+	RECT rcw = RectFromPRectangle(*rc);
 	::AdjustWindowRectEx(&rcw, WS_THICKFRAME, false, WS_EX_WINDOWEDGE);
 	*rc = PRectangle(rcw.left, rcw.top, rcw.right, rcw.bottom);
 }
@@ -2549,7 +2551,7 @@ int ListBoxX::MinClientWidth() const {
 POINT ListBoxX::MinTrackSize() const {
 	PRectangle rc(0, 0, MinClientWidth(), ItemHeight());
 	AdjustWindowRect(&rc);
-	POINT ret = {rc.Width(), rc.Height()};
+	POINT ret = {static_cast<LONG>(rc.Width()), static_cast<LONG>(rc.Height())};
 	return ret;
 }
 
@@ -2559,7 +2561,7 @@ POINT ListBoxX::MaxTrackSize() const {
 		 TextOffset() + ::GetSystemMetrics(SM_CXVSCROLL),
 		ItemHeight() * lti.Count());
 	AdjustWindowRect(&rc);
-	POINT ret = {rc.Width(), rc.Height()};
+	POINT ret = {static_cast<LONG>(rc.Width()), static_cast<LONG>(rc.Height())};
 	return ret;
 }
 
@@ -2739,7 +2741,7 @@ void ListBoxX::Paint(HDC hDC) {
 	// The list background is mainly erased during painting, but can be a small
 	// unpainted area when at the end of a non-integrally sized list with a
 	// vertical scroll bar
-	RECT rc = { 0, 0, extent.x, extent.y };
+	RECT rc = { 0, 0, static_cast<LONG>(extent.x), static_cast<LONG>(extent.y) };
 	::FillRect(bitmapDC, &rc, reinterpret_cast<HBRUSH>(COLOR_WINDOW+1));
 	// Paint the entire client area and vertical scrollbar
 	::SendMessage(lb, WM_PRINT, reinterpret_cast<WPARAM>(bitmapDC), PRF_CLIENT|PRF_NONCLIENT);

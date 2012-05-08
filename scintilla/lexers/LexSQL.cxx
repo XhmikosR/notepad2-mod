@@ -267,6 +267,8 @@ class LexerSQL : public ILexer {
 public :
 	LexerSQL() {}
 
+	virtual ~LexerSQL() {}
+
 	int SCI_METHOD Version () const {
 		return lvOriginal;
 	}
