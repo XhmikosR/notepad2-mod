@@ -5865,7 +5865,7 @@ void EditMarkAll(HWND hwnd, int iMarkOccurrences, BOOL bMarkOccurrencesMatchCase
   while ((iPos = (int)SendMessage(hwnd, SCI_FINDTEXT,
       (bMarkOccurrencesMatchCase ? SCFIND_MATCHCASE : 0) | (bMarkOccurrencesMatchWords ? SCFIND_WHOLEWORD : 0),
       (LPARAM)&ttf)) != -1
-      && ++iMatchesCount < 1000)
+      && ++iMatchesCount < 2000)
   {
     // mark this match
     SendMessage(hwnd, SCI_INDICATORFILLRANGE, iPos, iSelCount);
