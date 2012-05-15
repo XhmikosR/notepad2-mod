@@ -61,7 +61,7 @@ LIBS          = advapi32.lib comctl32.lib comdlg32.lib gdi32.lib imm32.lib kerne
                 ole32.lib oleaut32.lib psapi.lib shell32.lib shlwapi.lib user32.lib \
                 winspool.lib ntstc_msvcrt.lib
 RFLAGS        = /l 0x0409 /d "_UNICODE" /d "UNICODE" /d "BOOKMARK_EDITION"
-SCI_CXXFLAGS  = $(CXXFLAGS) /D "STATIC_BUILD" /D "SCI_LEXER"
+SCI_CXXFLAGS  = $(CXXFLAGS:/WX=/WX-) /D "STATIC_BUILD" /D "SCI_LEXER"
 
 
 !IFDEF x64
