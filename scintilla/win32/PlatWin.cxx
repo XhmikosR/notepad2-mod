@@ -1019,6 +1019,8 @@ void SurfaceGDI::MeasureWidths(Font &font_, const char *s, int len, XYPOSITION *
 			} else if (fit < lenBlock) {
 				// For some reason, such as an incomplete DBCS character
 				// Not all the positions are filled in so make them equal to end.
+				if (fit == 0)
+					poses.buffer[fit++] = 0;
 				for (int i = fit;i<lenBlock;i++)
 					poses.buffer[i] = poses.buffer[fit-1];
 			}
@@ -1574,7 +1576,6 @@ void SurfaceD2D::Copy(PRectangle rc, Point from, Surface &surfaceSource) {
 
 void SurfaceD2D::DrawTextCommon(PRectangle rc, Font &font_, XYPOSITION ybase, const char *s, int len, UINT) {
 	SetFont(font_);
-	RECT rcw = RectFromPRectangle(rc);
 
 	// Use Unicode calls
 	const TextWide tbuf(s, len, unicodeMode, codePage);
@@ -1587,13 +1588,7 @@ void SurfaceD2D::DrawTextCommon(PRectangle rc, Font &font_, XYPOSITION ybase, co
 		if (SUCCEEDED(hr)) {
 			D2D1_POINT_2F origin = {rc.left, ybase-yAscent};
 			pRenderTarget->DrawTextLayout(origin, pTextLayout, pBrush, D2D1_DRAW_TEXT_OPTIONS_NONE);
-		} else {
-			D2D1_RECT_F layoutRect = D2D1::RectF(
-				static_cast<FLOAT>(rcw.left) / dpiScaleX,
-				static_cast<FLOAT>(ybase-yAscent) / dpiScaleY,
-				static_cast<FLOAT>(rcw.right + 1) / dpiScaleX,
-				static_cast<FLOAT>(rcw.bottom) / dpiScaleY);
-			pRenderTarget->DrawText(tbuf.buffer, tbuf.tlen, pTextFormat, layoutRect, pBrush, D2D1_DRAW_TEXT_OPTIONS_NONE);
+			pTextLayout->Release();
 		}
 	}
 }

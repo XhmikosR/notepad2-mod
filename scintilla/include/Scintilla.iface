@@ -101,6 +101,9 @@ fun void InsertText=2003(position pos, string text)
 # Delete all text in the document.
 fun void ClearAll=2004(,)
 
+# Delete a range of text in the document.
+fun void DeleteRange=2645(position pos, int deleteLength)
+
 # Set all style bytes to 0, remove all folding information.
 fun void ClearDocumentStyle=2005(,)
 
@@ -1923,6 +1926,15 @@ fun void CopyAllowLine=2519(,)
 # Compact the document buffer and return a read-only pointer to the
 # characters in the document.
 get int GetCharacterPointer=2520(,)
+
+# Return a read-only pointer to a range of characters in the document.
+# May move the gap so that the range is contiguous, but will only move up
+# to rangeLength bytes.
+get int GetRangePointer=2643(int position, int rangeLength)
+
+# Return a position which, to avoid performance costs, should not be within
+# the range of a call to GetRangePointer.
+get position GetGapPosition=2644(,)
 
 # Always interpret keyboard input as Unicode
 set void SetKeysUnicode=2521(bool keysUnicode,)

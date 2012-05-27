@@ -2134,7 +2134,8 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 		break;
 	default:
 		StateToPrint = statePrintForState(state, inScriptType);
-		styler.ColourTo(lengthDoc - 1, StateToPrint);
+		if (static_cast<int>(styler.GetStartSegment()) < lengthDoc)
+			styler.ColourTo(lengthDoc - 1, StateToPrint);
 		break;
 	}
 
