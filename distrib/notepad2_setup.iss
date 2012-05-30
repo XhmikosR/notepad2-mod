@@ -18,8 +18,8 @@
 ;#define WDK
 
 ; Preprocessor related stuff
-#if VER < EncodeVer(5,4,3)
-  #error Update your Inno Setup version (5.4.3 or newer)
+#if VER < EncodeVer(5,5,0)
+  #error Update your Inno Setup version (5.5.0 or newer)
 #endif
 
 #if !defined(ICL12) && !defined(VS2010) && !defined(VS2011) && !defined(WDK)
@@ -107,11 +107,11 @@ DisableReadyPage=yes
 DisableWelcomePage=yes
 AllowCancelDuringInstall=no
 #if defined(WDK)
-MinVersion=0,5.0
+MinVersion=5.0
 #elif defined(VS2011)
-MinVersion=0,6.0
+MinVersion=6.0
 #else
-MinVersion=0,5.1.2600sp3
+MinVersion=5.1.2600sp3
 #endif
 ArchitecturesAllowed=x86 x64
 ArchitecturesInstallIn64BitMode=x64
@@ -149,7 +149,7 @@ en.tsk_SetDefault            =Replace Windows notepad with {#app_name}
 Name: desktopicon;        Description: {cm:CreateDesktopIcon};     GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
 Name: desktopicon\user;   Description: {cm:tsk_CurrentUser};       GroupDescription: {cm:AdditionalIcons}; Flags: unchecked exclusive
 Name: desktopicon\common; Description: {cm:tsk_AllUsers};          GroupDescription: {cm:AdditionalIcons}; Flags: unchecked exclusive
-Name: quicklaunchicon;    Description: {cm:CreateQuickLaunchIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked;             OnlyBelowVersion: 0,6.01
+Name: quicklaunchicon;    Description: {cm:CreateQuickLaunchIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked;             OnlyBelowVersion: 6.01
 Name: reset_settings;     Description: {cm:tsk_ResetSettings};     GroupDescription: {cm:tsk_Other};       Flags: checkedonce unchecked; Check: SettingsExistCheck()
 Name: set_default;        Description: {cm:tsk_SetDefault};        GroupDescription: {cm:tsk_Other};                                     Check: not DefaulNotepadCheck()
 Name: remove_default;     Description: {cm:tsk_RemoveDefault};     GroupDescription: {cm:tsk_Other};       Flags: checkedonce unchecked; Check: DefaulNotepadCheck()
@@ -182,7 +182,7 @@ Filename: {app}\Notepad2.exe; Description: {cm:LaunchProgram,{#app_name}}; Worki
 [InstallDelete]
 Type: files;      Name: {userdesktop}\{#app_name}.lnk;   Check: not IsTaskSelected('desktopicon\user')   and IsUpgrade()
 Type: files;      Name: {commondesktop}\{#app_name}.lnk; Check: not IsTaskSelected('desktopicon\common') and IsUpgrade()
-Type: files;      Name: {#quick_launch}\{#app_name}.lnk; Check: not IsTaskSelected('quicklaunchicon')    and IsUpgrade(); OnlyBelowVersion: 0,6.01
+Type: files;      Name: {#quick_launch}\{#app_name}.lnk; Check: not IsTaskSelected('quicklaunchicon')    and IsUpgrade(); OnlyBelowVersion: 6.01
 Type: files;      Name: {app}\Notepad2.ini
 Type: files;      Name: {app}\Readme.txt
 
