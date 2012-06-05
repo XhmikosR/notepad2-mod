@@ -552,6 +552,10 @@ set void SetCaretPeriod=2076(int periodMilliseconds,)
 # First sets defaults like SetCharsDefault.
 set void SetWordChars=2077(, string characters)
 
+# Get the set of characters making up words for when moving or selecting by word.
+# Retuns the number of characters
+get int GetWordChars=2646(, stringresult characters)
+
 # Start a sequence of actions that is undone and redone as a unit.
 # May be nested.
 fun void BeginUndoAction=2078(,)
@@ -1799,6 +1803,16 @@ fun void WordRightEndExtend=2442(,)
 # Set the set of characters making up whitespace for when moving or selecting by word.
 # Should be called after SetWordChars.
 set void SetWhitespaceChars=2443(, string characters)
+
+# Get the set of characters making up whitespace for when moving or selecting by word.
+get int GetWhitespaceChars=2647(, stringresult characters)
+
+# Set the set of characters making up punctuation characters
+# Should be called after SetWordChars.
+set void SetPunctuationChars=2648(, string characters)
+
+# Get the set of characters making up punctuation characters
+get int GetPunctuationChars=2649(, stringresult characters)
 
 # Reset the set of characters for whitespace and word characters to the defaults.
 fun void SetCharsDefault=2444(,)

@@ -7527,6 +7527,9 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 		caret.period = wParam;
 		break;
 
+	case SCI_GETWORDCHARS:
+		return pdoc->GetCharsOfClass(CharClassify::ccWord, reinterpret_cast<unsigned char *>(lParam));
+
 	case SCI_SETWORDCHARS: {
 			pdoc->SetDefaultCharClasses(false);
 			if (lParam == 0)
@@ -7535,10 +7538,23 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 		}
 		break;
 
+	case SCI_GETWHITESPACECHARS:
+		return pdoc->GetCharsOfClass(CharClassify::ccSpace, reinterpret_cast<unsigned char *>(lParam));
+
 	case SCI_SETWHITESPACECHARS: {
 			if (lParam == 0)
 				return 0;
 			pdoc->SetCharClasses(reinterpret_cast<unsigned char *>(lParam), CharClassify::ccSpace);
+		}
+		break;
+
+	case SCI_GETPUNCTUATIONCHARS:
+		return pdoc->GetCharsOfClass(CharClassify::ccPunctuation, reinterpret_cast<unsigned char *>(lParam));
+
+	case SCI_SETPUNCTUATIONCHARS: {
+			if (lParam == 0)
+				return 0;
+			pdoc->SetCharClasses(reinterpret_cast<unsigned char *>(lParam), CharClassify::ccPunctuation);
 		}
 		break;
 

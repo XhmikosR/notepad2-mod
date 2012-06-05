@@ -751,7 +751,7 @@ void Document::CheckReadOnly() {
 // SetStyleAt does not change the persistent state of a document
 
 bool Document::DeleteChars(int pos, int len) {
-	if (len == 0)
+	if (len <= 0)
 		return false;
 	if ((pos + len) > Length())
 		return false;
@@ -1613,6 +1613,10 @@ void Document::SetDefaultCharClasses(bool includeWordClass) {
 
 void Document::SetCharClasses(const unsigned char *chars, CharClassify::cc newCharClass) {
     charClass.SetCharClasses(chars, newCharClass);
+}
+
+int Document::GetCharsOfClass(CharClassify::cc characterClass, unsigned char *buffer) {
+    return charClass.GetCharsOfClass(characterClass, buffer);
 }
 
 void Document::SetStylingBits(int bits) {
