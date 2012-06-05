@@ -3,8 +3,8 @@ rem ****************************************************************************
 rem *
 rem * Notepad2-mod
 rem *
-rem * build_vs2011.bat
-rem *   Batch file used to build Notepad2 with MSVC2011
+rem * build_vs2012.bat
+rem *   Batch file used to build Notepad2 with MSVC2012
 rem *
 rem * See License.txt for details about distribution and modification.
 rem *
@@ -17,7 +17,7 @@ SETLOCAL ENABLEEXTENSIONS
 CD /D %~dp0
 
 rem Check the building environment
-IF NOT DEFINED VS110COMNTOOLS CALL :SUBMSG "ERROR" "Visual Studio 2011 wasn't found!"
+IF NOT DEFINED VS110COMNTOOLS CALL :SUBMSG "ERROR" "Visual Studio 2012 wasn't found!"
 
 
 rem Check for the help switches
@@ -124,15 +124,15 @@ IF "%CONFIG%" == "all" (CALL :SUBMSVC %BUILDTYPE% Debug x64 && CALL :SUBMSVC %BU
 
 
 :END
-TITLE Building Notepad2-mod with MSVC2011 - Finished!
+TITLE Building Notepad2-mod with MSVC2012 - Finished!
 ENDLOCAL
 EXIT /B
 
 
 :SUBMSVC
 ECHO.
-TITLE Building Notepad2-mod with MSVC2011 - %~1 "%~2|%~3"...
-"%WINDIR%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo Notepad2_VS2011.sln^
+TITLE Building Notepad2-mod with MSVC2012 - %~1 "%~2|%~3"...
+"%WINDIR%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo Notepad2_VS2012.sln^
  /t:%~1 /p:Configuration=%~2;Platform=%~3 /consoleloggerparameters:Verbosity=minimal^
  /maxcpucount /nodeReuse:true
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
