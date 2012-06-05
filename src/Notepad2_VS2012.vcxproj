@@ -69,28 +69,28 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\bin\VS2011\$(Configuration)_x86\</OutDir>
-    <IntDir>..\bin\VS2011\$(Configuration)_x86\obj\</IntDir>
+    <OutDir>..\bin\VS2012\$(Configuration)_x86\</OutDir>
+    <IntDir>..\bin\VS2012\$(Configuration)_x86\obj\</IntDir>
     <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\bin\VS2011\$(Configuration)_x86\</OutDir>
-    <IntDir>..\bin\VS2011\$(Configuration)_x86\obj\</IntDir>
+    <OutDir>..\bin\VS2012\$(Configuration)_x86\</OutDir>
+    <IntDir>..\bin\VS2012\$(Configuration)_x86\obj\</IntDir>
     <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>..\bin\VS2011\$(Configuration)_x64\</OutDir>
+    <OutDir>..\bin\VS2012\$(Configuration)_x64\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IntDir>..\bin\VS2011\$(Configuration)_x64\obj\</IntDir>
+    <IntDir>..\bin\VS2012\$(Configuration)_x64\obj\</IntDir>
     <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>..\bin\VS2011\$(Configuration)_x64\</OutDir>
+    <OutDir>..\bin\VS2012\$(Configuration)_x64\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IntDir>..\bin\VS2011\$(Configuration)_x64\obj\</IntDir>
+    <IntDir>..\bin\VS2012\$(Configuration)_x64\obj\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>

@@ -14,7 +14,7 @@
 
 ;#define ICL12
 ;#define VS2010
-;#define VS2011
+;#define VS2012
 ;#define WDK
 
 ; Preprocessor related stuff
@@ -22,11 +22,11 @@
   #error Update your Inno Setup version (5.5.0 or newer)
 #endif
 
-#if !defined(ICL12) && !defined(VS2010) && !defined(VS2011) && !defined(WDK)
-  #error You need to define the compiler used; ICL12, VS2010, VS2011 or WDK
+#if !defined(ICL12) && !defined(VS2010) && !defined(VS2012) && !defined(WDK)
+  #error You need to define the compiler used; ICL12, VS2010, VS2012 or WDK
 #endif
 
-#if defined(ICL12) && (defined(VS2010) || defined(VS2011) || defined(WDK)) || defined(VS2010) && (defined(VS2011) || defined(WDK)) || defined(VS2011) && defined(WDK)
+#if defined(ICL12) && (defined(VS2010) || defined(VS2012) || defined(WDK)) || defined(VS2010) && (defined(VS2012) || defined(WDK)) || defined(VS2012) && defined(WDK)
   #error You can't use two or more compiler defines at the same time
 #endif
 
@@ -35,8 +35,8 @@
   #define sse2_required
 #elif defined(VS2010)
   #define compiler "VS2010"
-#elif defined(VS2011)
-  #define compiler "VS2011"
+#elif defined(VS2012)
+  #define compiler "VS2012"
 #elif defined(WDK)
   #define compiler "WDK"
 #endif
@@ -108,7 +108,7 @@ DisableWelcomePage=yes
 AllowCancelDuringInstall=no
 #if defined(WDK)
 MinVersion=5.0
-#elif defined(VS2011)
+#elif defined(VS2012)
 MinVersion=6.0
 #else
 MinVersion=5.1.2600sp3
