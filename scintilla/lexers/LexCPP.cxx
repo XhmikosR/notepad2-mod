@@ -918,7 +918,7 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 			}
 		}
 
-		if (!IsASpace(sc.ch) && !IsSpaceEquiv(sc.state)) {
+		if (!IsASpace(sc.ch) && !IsSpaceEquiv(MaskActive(sc.state))) {
 			chPrevNonWhite = sc.ch;
 			visibleChars++;
 		}

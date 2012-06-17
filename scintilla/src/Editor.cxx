@@ -5862,6 +5862,18 @@ char *Editor::CopyRange(int start, int end) {
 	return text;
 }
 
+std::string Editor::RangeText(int start, int end) const {
+	if (start < end) {
+		int len = end - start;
+		std::string ret(len, '\0');
+		for (int i = 0; i < len; i++) {
+			ret[i] = pdoc->CharAt(start + i);
+		}
+		return ret;
+	}
+	return std::string();
+}
+
 void Editor::CopySelectionRange(SelectionText *ss, bool allowLineCopy) {
 	if (sel.Empty()) {
 		if (allowLineCopy) {

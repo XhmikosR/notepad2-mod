@@ -1907,7 +1907,7 @@ get int GetIndicatorCurrent=2501(,)
 # Set the value used for IndicatorFillRange
 set void SetIndicatorValue=2502(int value,)
 
-# Get the current indicator vaue
+# Get the current indicator value
 get int GetIndicatorValue=2503(,)
 
 # Turn a indicator on over a range.
@@ -2131,7 +2131,7 @@ set void SetSelectionNStart=2584(int selection, position pos)
 get position GetSelectionNStart=2585(int selection,)
 
 # Sets the position that ends the selection - this becomes the currentPosition.
-set void SetSelectionNEnd=2586(int selection, position pos,)
+set void SetSelectionNEnd=2586(int selection, position pos)
 
 # Returns the position at the end of the selection.
 get position GetSelectionNEnd=2587(int selection,)
