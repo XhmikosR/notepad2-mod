@@ -79,7 +79,7 @@
 
     <h1>Scintilla Documentation</h1>
 
-    <p>Last edited 16/April/2012 NH</p>
+    <p>Last edited 27/June/2012 NH</p>
 
     <p>There is <a class="jump" href="Design.html">an overview of the internal design of
     Scintilla</a>.<br />
@@ -2899,6 +2899,9 @@ struct Sci_TextToFind {
      notification to be sent.
     </p>
     <p>
+    Only some style attributes are active in text margins: font, size/sizeFractional, bold/weight, italics, fore, back, and characterSet.
+    </p>
+    <p>
      <b id="SCI_MARGINSETSTYLEOFFSET">SCI_MARGINSETSTYLEOFFSET(int style)</b><br />
      <b id="SCI_MARGINGETSTYLEOFFSET">SCI_MARGINGETSTYLEOFFSET</b><br />
     Margin styles may be completely separated from standard text styles by setting a style offset. For example,
@@ -2964,6 +2967,9 @@ struct Sci_TextToFind {
     The number of lines annotating a line can be retrieved with <code>SCI_ANNOTATIONGETLINES</code>.
     All the lines can be cleared of annotations with <code>SCI_ANNOTATIONCLEARALL</code>
     which is equivalent to clearing each line (setting to 0) and then deleting other memory used for this feature.
+    </p>
+    <p>
+    Only some style attributes are active in annotations: font, size/sizeFractional, bold/weight, italics, fore, back, and characterSet.
     </p>
     <p>
      <b id="SCI_ANNOTATIONSETVISIBLE">SCI_ANNOTATIONSETVISIBLE(int visible)</b><br />
@@ -4638,8 +4644,6 @@ struct Sci_TextToFind {
     <p>Different platforms use different display surface ID types to print on. On Windows, these are
     <code>HDC</code>s., on GTK+ 3.x <code>cairo_t *</code>,
     and on Cocoa <code>CGContextRef</code> is used.</p>
-
-    <p><code>SCI_FORMATRANGE</code> is not supported on GTK+ 2.x.</p>
 
     <code><a class="message" href="#SCI_FORMATRANGE">SCI_FORMATRANGE(bool bDraw, Sci_RangeToFormat
     *pfr)</a><br />
