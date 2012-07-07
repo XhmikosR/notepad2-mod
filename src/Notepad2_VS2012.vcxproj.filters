@@ -417,11 +417,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Manifest Include="..\res\Notepad2.exe.manifest">
-      <Filter>Resource Files</Filter>
-    </Manifest>
-  </ItemGroup>
-  <ItemGroup>
     <ResourceCompile Include="Notepad2.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>

@@ -71,20 +71,17 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>..\bin\VS2012\$(Configuration)_x86\</OutDir>
     <IntDir>..\bin\VS2012\$(Configuration)_x86\obj\</IntDir>
-    <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>..\bin\VS2012\$(Configuration)_x86\</OutDir>
     <IntDir>..\bin\VS2012\$(Configuration)_x86\obj\</IntDir>
-    <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>..\bin\VS2012\$(Configuration)_x64\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IntDir>..\bin\VS2012\$(Configuration)_x64\obj\</IntDir>
-    <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>..\bin\VS2012\$(Configuration)_x64\</OutDir>
@@ -92,7 +89,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IntDir>..\bin\VS2012\$(Configuration)_x64\obj\</IntDir>
     <LinkIncremental>false</LinkIncremental>
-    <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -117,8 +113,12 @@
       <Message>Generating SVN revision...</Message>
     </PreBuildEvent>
     <ResourceCompile>
-      <PreprocessorDefinitions>WIN32;_UNICODE;UNICODE;BOOKMARK_EDITION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_UNICODE;UNICODE;BOOKMARK_EDITION;VS2012;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
+    <Manifest>
+      <AdditionalManifestFiles>..\res\Notepad2.exe.manifest %(AdditionalManifestFiles)</AdditionalManifestFiles>
+      <EnableDpiAwareness>true</EnableDpiAwareness>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -143,8 +143,12 @@
       <Message>Generating SVN revision...</Message>
     </PreBuildEvent>
     <ResourceCompile>
-      <PreprocessorDefinitions>_WIN64;_UNICODE;UNICODE;BOOKMARK_EDITION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WIN64;_UNICODE;UNICODE;BOOKMARK_EDITION;VS2012;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
+    <Manifest>
+      <AdditionalManifestFiles>..\res\Notepad2.exe.manifest %(AdditionalManifestFiles)</AdditionalManifestFiles>
+      <EnableDpiAwareness>true</EnableDpiAwareness>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -171,8 +175,12 @@
       <Message>Generating SVN revision...</Message>
     </PreBuildEvent>
     <ResourceCompile>
-      <PreprocessorDefinitions>WIN32;_UNICODE;UNICODE;BOOKMARK_EDITION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_UNICODE;UNICODE;BOOKMARK_EDITION;VS2012;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
+    <Manifest>
+      <AdditionalManifestFiles>..\res\Notepad2.exe.manifest %(AdditionalManifestFiles)</AdditionalManifestFiles>
+      <EnableDpiAwareness>true</EnableDpiAwareness>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -198,8 +206,12 @@
       <Message>Generating SVN revision...</Message>
     </PreBuildEvent>
     <ResourceCompile>
-      <PreprocessorDefinitions>_WIN64;_UNICODE;UNICODE;BOOKMARK_EDITION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WIN64;_UNICODE;UNICODE;BOOKMARK_EDITION;VS2012;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
+    <Manifest>
+      <AdditionalManifestFiles>..\res\Notepad2.exe.manifest %(AdditionalManifestFiles)</AdditionalManifestFiles>
+      <EnableDpiAwareness>true</EnableDpiAwareness>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\scintilla\lexers\LexAHK.cxx" />
@@ -332,9 +344,6 @@
     <None Include="..\res\Styles.ico" />
     <None Include="..\res\Toolbar.bmp" />
     <None Include="Notepad2.ver" />
-  </ItemGroup>
-  <ItemGroup>
-    <Manifest Include="..\res\Notepad2.exe.manifest" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Notepad2.rc" />

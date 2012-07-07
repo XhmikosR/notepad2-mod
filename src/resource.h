@@ -3,7 +3,6 @@
 // Used by Notepad2.rc
 //
 #define IDC_STATIC                      -1
-#define IDR_RT_MANIFEST                 1
 #define IDR_MAINWND                     100
 #define IDC_FINDTEXT                    100
 #define IDC_LINENUM                     100
