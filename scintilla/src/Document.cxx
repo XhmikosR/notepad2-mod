@@ -35,25 +35,8 @@
 using namespace Scintilla;
 #endif
 
-// This is ASCII specific but is safe with chars >= 0x80
-static inline bool isspacechar(unsigned char ch) {
-	return (ch == ' ') || ((ch >= 0x09) && (ch <= 0x0d));
-}
-
 static inline bool IsPunctuation(char ch) {
 	return isascii(ch) && ispunct(ch);
-}
-
-static inline bool IsADigit(char ch) {
-	return isascii(ch) && isdigit(ch);
-}
-
-static inline bool IsLowerCase(char ch) {
-	return isascii(ch) && islower(ch);
-}
-
-static inline bool IsUpperCase(char ch) {
-	return isascii(ch) && isupper(ch);
 }
 
 void LexInterface::Colourise(int start, int end) {

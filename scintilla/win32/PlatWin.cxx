@@ -1574,12 +1574,16 @@ void SurfaceD2D::Copy(PRectangle rc, Point from, Surface &surfaceSource) {
 	}
 }
 
-void SurfaceD2D::DrawTextCommon(PRectangle rc, Font &font_, XYPOSITION ybase, const char *s, int len, UINT) {
+void SurfaceD2D::DrawTextCommon(PRectangle rc, Font &font_, XYPOSITION ybase, const char *s, int len, UINT fuOptions) {
 	SetFont(font_);
 
 	// Use Unicode calls
 	const TextWide tbuf(s, len, unicodeMode, codePage);
 	if (pRenderTarget && pTextFormat && pBrush) {
+		if (fuOptions & ETO_CLIPPED) {
+			D2D1_RECT_F rcClip = {rc.left, rc.top, rc.right, rc.bottom};
+			pRenderTarget->PushAxisAlignedClip(rcClip, D2D1_ANTIALIAS_MODE_ALIASED);
+		}
 		
 		// Explicitly creating a text layout appears a little faster 
 		IDWriteTextLayout *pTextLayout;
@@ -1589,6 +1593,10 @@ void SurfaceD2D::DrawTextCommon(PRectangle rc, Font &font_, XYPOSITION ybase, co
 			D2D1_POINT_2F origin = {rc.left, ybase-yAscent};
 			pRenderTarget->DrawTextLayout(origin, pTextLayout, pBrush, D2D1_DRAW_TEXT_OPTIONS_NONE);
 			pTextLayout->Release();
+		}
+
+		if (fuOptions & ETO_CLIPPED) {
+			pRenderTarget->PopAxisAlignedClip();
 		}
 	}
 }

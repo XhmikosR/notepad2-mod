@@ -663,7 +663,8 @@ PRectangle Editor::RectangleFromRange(int start, int end) {
 	int maxLine = cs.DisplayFromDoc(lineDocMax) + cs.GetHeight(lineDocMax) - 1;
 	PRectangle rcClient = GetTextRectangle();
 	PRectangle rc;
-	rc.left = vs.fixedColumnWidth;
+	const int leftTextOverlap = ((xOffset == 0) && (vs.leftMarginWidth > 0)) ? 1 : 0;
+	rc.left = vs.fixedColumnWidth - leftTextOverlap;
 	rc.top = (minLine - topLine) * vs.lineHeight;
 	if (rc.top < 0)
 		rc.top = 0;
@@ -3242,6 +3243,8 @@ void Editor::DrawBlockCaret(Surface *surface, ViewStyle &vsDraw, LineLayout *ll,
 
 	// See if the next character shares horizontal space, if so we'll
 	// need to draw that too.
+	if (offsetFirstChar < 0)
+		offsetFirstChar = 0;
 	numCharsToDraw = offsetLastChar - offsetFirstChar;
 	while ((offsetLastChar < ll->LineStart(subLine + 1)) && (offsetLastChar <= ll->numCharsInLine)) {
 		// Update posAfter to point to the 2nd next char, this is where
@@ -3501,8 +3504,12 @@ void Editor::Paint(Surface *surfaceWindow, PRectangle rcArea) {
 	}
 	//Platform::DebugPrintf("start display %d, offset = %d\n", pdoc->Length(), xOffset);
 
+	// Allow text at start of line to overlap 1 pixel into the margin as this displays
+	// serifs and italic stems for aliased text.
+	const int leftTextOverlap = ((xOffset == 0) && (vs.leftMarginWidth > 0)) ? 1 : 0;
+
 	// Do the painting
-	if (rcArea.right > vs.fixedColumnWidth) {
+	if (rcArea.right > vs.fixedColumnWidth - leftTextOverlap) {
 
 		Surface *surface = surfaceWindow;
 		if (bufferedDraw) {
@@ -3522,10 +3529,6 @@ void Editor::Paint(Surface *surfaceWindow, PRectangle rcArea) {
 		PRectangle rcTextArea = rcClient;
 		rcTextArea.left = vs.fixedColumnWidth;
 		rcTextArea.right -= vs.rightMarginWidth;
-
-		// Allow text at start of line to overlap 1 pixel into the margin as this displays
-		// serifs and italic stems for aliased text.
-		const int leftTextOverlap = ((xOffset == 0) && (vs.leftMarginWidth > 0)) ? 1 : 0;
 
 		// Remove selection margin from drawing area so text will not be drawn
 		// on it in unbuffered mode.
@@ -6961,10 +6964,10 @@ void Editor::EnsureLineVisible(int lineDoc, bool enforcePolicy) {
 }
 
 int Editor::GetTag(char *tagValue, int tagNumber) {
-	char name[3] = "\\?";
 	const char *text = 0;
 	int length = 0;
 	if ((tagNumber >= 1) && (tagNumber <= 9)) {
+		char name[3] = "\\?";
 		name[1] = static_cast<char>(tagNumber + '0');
 		length = 2;
 		text = pdoc->SubstituteByPosition(name, &length);
