@@ -18,8 +18,8 @@
 ;#define WDK
 
 ; Preprocessor related stuff
-#if VER < EncodeVer(5,5,0)
-  #error Update your Inno Setup version (5.5.0 or newer)
+#if VER < EncodeVer(5,5,1)
+  #error Update your Inno Setup version (5.5.1 or newer)
 #endif
 
 #if !defined(ICL12) && !defined(VS2010) && !defined(VS2012) && !defined(WDK)
