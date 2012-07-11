@@ -4438,7 +4438,7 @@ bool Editor::NotifyMarginClick(Point pt, bool shift, bool ctrl, bool alt) {
 	int marginClicked = -1;
 	int x = 0;
 	for (int margin = 0; margin < ViewStyle::margins; margin++) {
-		if ((pt.x > x) && (pt.x < x + vs.ms[margin].width))
+		if ((pt.x >= x) && (pt.x < x + vs.ms[margin].width))
 			marginClicked = margin;
 		x += vs.ms[margin].width;
 	}

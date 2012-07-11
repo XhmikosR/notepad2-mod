@@ -1633,7 +1633,7 @@ fun void DelLineLeft=2395(,)
 # Delete forwards from the current position to the end of the line.
 fun void DelLineRight=2396(,)
 
-# Get and Set the xOffset (ie, horizonal scroll position).
+# Get and Set the xOffset (ie, horizontal scroll position).
 set void SetXOffset=2397(int newOffset,)
 get int GetXOffset=2398(,)
 
@@ -1667,7 +1667,7 @@ val CARET_JUMPS=0x10
 # where most code reside, and the lines after the caret, eg. the body of a function.
 val CARET_EVEN=0x08
 
-# Set the way the caret is kept visible when going sideway.
+# Set the way the caret is kept visible when going sideways.
 # The exclusion zone is given in pixels.
 fun void SetXCaretPolicy=2402(int caretPolicy, int caretSlop)
 
@@ -2235,7 +2235,7 @@ fun void ScrollToEnd=2629(,)
 val SC_TECHNOLOGY_DEFAULT=0
 val SC_TECHNOLOGY_DIRECTWRITE=1
 
-# Set the technolgy used.
+# Set the technology used.
 set void SetTechnology=2630(int technology,)
 
 # Get the tech.

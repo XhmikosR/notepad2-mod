@@ -40,10 +40,31 @@ public:
 		if (base & setDigits)
 			AddString("0123456789");
 	}
+	CharacterSet(const CharacterSet &other) {
+		size = other.size;
+		valueAfter = other.valueAfter;
+		bset = new bool[size];
+		for (int i=0; i < size; i++) {
+			bset[i] = other.bset[i];
+		}
+	}
 	~CharacterSet() {
 		delete []bset;
 		bset = 0;
 		size = 0;
+	}
+	CharacterSet &operator=(const CharacterSet &other) {
+		if (this != &other) {
+			bool *bsetNew = new bool[other.size];
+			for (int i=0; i < other.size; i++) {
+				bsetNew[i] = other.bset[i];
+			}
+			delete []bset;
+			size = other.size;
+			valueAfter = other.valueAfter;
+			bset = bsetNew;
+		}
+		return *this;
 	}
 	void Add(int val) {
 		assert(val >= 0);
