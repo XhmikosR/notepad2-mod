@@ -356,10 +356,10 @@ const unsigned char *RGBAImage::Pixels() const {
 void RGBAImage::SetPixel(int x, int y, ColourDesired colour, int alpha) {
 	unsigned char *pixel = &pixelBytes[0] + (y*width+x) * 4;
 	// RGBA
-	pixel[0] = colour.GetRed();
-	pixel[1] = colour.GetGreen();
-	pixel[2] = colour.GetBlue();
-	pixel[3] = alpha;
+	pixel[0] = static_cast<unsigned char>(colour.GetRed());
+	pixel[1] = static_cast<unsigned char>(colour.GetGreen());
+	pixel[2] = static_cast<unsigned char>(colour.GetBlue());
+	pixel[3] = static_cast<unsigned char>(alpha);
 }
 
 RGBAImageSet::RGBAImageSet() : height(-1), width(-1){

@@ -17,20 +17,16 @@
 #include <vector>
 #include <map>
 
-/* notepad2-mod custom code start */
-#if !defined(_WIN32_WINNT)
-#define _WIN32_WINNT  0x0500
-#endif
-/* notepad2-mod custom code end */
-
+#undef _WIN32_WINNT
+#define _WIN32_WINNT 0x0500
+#undef WINVER
+#define WINVER 0x0500
 #include <windows.h>
 #include <commctrl.h>
 #include <richedit.h>
 #include <windowsx.h>
 
-/* notepad2-mod custom code
-   D2D files are not included in WDK 7.1 */
-#if defined(_MSC_VER) && (_MSC_VER > 1200) && !defined(WDK_BUILD)
+#if defined(NTDDI_WIN7) && !defined(DISABLE_D2D)
 #define USE_D2D 1
 #endif
 
@@ -591,11 +587,6 @@ LRESULT ScintillaWin::WndPaint(uptr_t wParam) {
 			rcPaint = PRectangle(pps->rcPaint.left, pps->rcPaint.top, pps->rcPaint.right, pps->rcPaint.bottom);
 			PRectangle rcClient = GetClientRectangle();
 			paintingAllText = rcPaint.Contains(rcClient);
-			if (paintingAllText) {
-				//Platform::DebugPrintf("Performing full text paint\n");
-			} else {
-				//Platform::DebugPrintf("Performing partial paint %d .. %d\n", rcPaint.top, rcPaint.bottom);
-			}
 			Paint(surfaceWindow, rcPaint);
 			surfaceWindow->Release();
 			HRESULT hr = pRenderTarget->EndDraw();

@@ -2100,6 +2100,9 @@ get bool GetAdditionalCaretsVisible=2609(,)
 # How many selections are there?
 get int GetSelections=2570(,)
 
+# Is every selected range empty?
+get bool GetSelectionEmpty=2650(,)
+
 # Clear selections to a single empty stream selection
 fun void ClearSelections=2571(,)
 
