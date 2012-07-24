@@ -2221,6 +2221,9 @@ set void RGBAImageSetWidth=2624(int width,)
 # Set the height for future RGBA image data.
 set void RGBAImageSetHeight=2625(int height,)
 
+# Set the scale factor in percent for future RGBA image data.
+set void RGBAImageSetScale=2651(int scalePercent,)
+
 # Define a marker from RGBA data.
 # It has the width and height from RGBAImageSetWidth/Height
 fun void MarkerDefineRGBAImage=2626(int markerNumber, string pixels)

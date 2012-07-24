@@ -133,6 +133,7 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	ViewStyle vs;
 	int technology;
 	Point sizeRGBAImage;
+	float scaleRGBAImage;
 
 	int printMagnification;
 	int printColourMode;

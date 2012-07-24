@@ -319,8 +319,8 @@ int XPMSet::GetWidth() {
 	return (width > 0) ? width : 0;
 }
 
-RGBAImage::RGBAImage(int width_, int height_, const unsigned char *pixels_) :
-	height(height_), width(width_) {
+RGBAImage::RGBAImage(int width_, int height_, float scale_, const unsigned char *pixels_) :
+	height(height_), width(width_), scale(scale_) {
 	if (pixels_) {
 		pixelBytes.assign(pixels_, pixels_ + CountBytes());
 	} else {
@@ -331,6 +331,7 @@ RGBAImage::RGBAImage(int width_, int height_, const unsigned char *pixels_) :
 RGBAImage::RGBAImage(const XPM &xpm) {
 	height = xpm.GetHeight();
 	width = xpm.GetWidth();
+	scale = 1;
 	pixelBytes.resize(CountBytes());
 	for (int y=0; y<height; y++) {
 		for (int x=0; x<width; x++) {

@@ -2554,27 +2554,29 @@ STDMETHODIMP ScintillaWin::Drop(LPDATAOBJECT pIDataSource, DWORD grfKeyState,
 		HRESULT hr = pIDataSource->GetData(&fmtu, &medium);
 		if (SUCCEEDED(hr) && medium.hGlobal) {
 			wchar_t *udata = static_cast<wchar_t *>(::GlobalLock(medium.hGlobal));
-			if (IsUnicodeMode()) {
-				int tlen = ::GlobalSize(medium.hGlobal);
-				// Convert UTF-16 to UTF-8
-				int dataLen = UTF8Length(udata, tlen/2);
-				data = new char[dataLen+1];
-				UTF8FromUTF16(udata, tlen/2, data, dataLen);
-				dataAllocated = true;
-			} else {
-				// Convert UTF-16 to ANSI
-				//
-				// Default Scintilla behavior in Unicode mode
-				// CF_UNICODETEXT available, but not in Unicode mode
-				// Convert from Unicode to current Scintilla code page
-				UINT cpDest = CodePageOfDocument();
-				int tlen = ::WideCharToMultiByte(cpDest, 0, udata, -1,
-					NULL, 0, NULL, NULL) - 1; // subtract 0 terminator
-				data = new char[tlen + 1];
-				memset(data, 0, (tlen+1));
-				::WideCharToMultiByte(cpDest, 0, udata, -1,
-						data, tlen + 1, NULL, NULL);
-				dataAllocated = true;
+			if (udata) {
+				if (IsUnicodeMode()) {
+					int tlen = ::GlobalSize(medium.hGlobal);
+					// Convert UTF-16 to UTF-8
+					int dataLen = UTF8Length(udata, tlen/2);
+					data = new char[dataLen+1];
+					UTF8FromUTF16(udata, tlen/2, data, dataLen);
+					dataAllocated = true;
+				} else {
+					// Convert UTF-16 to ANSI
+					//
+					// Default Scintilla behavior in Unicode mode
+					// CF_UNICODETEXT available, but not in Unicode mode
+					// Convert from Unicode to current Scintilla code page
+					UINT cpDest = CodePageOfDocument();
+					int tlen = ::WideCharToMultiByte(cpDest, 0, udata, -1,
+						NULL, 0, NULL, NULL) - 1; // subtract 0 terminator
+					data = new char[tlen + 1];
+					memset(data, 0, (tlen+1));
+					::WideCharToMultiByte(cpDest, 0, udata, -1,
+							data, tlen + 1, NULL, NULL);
+					dataAllocated = true;
+				}
 			}
 		}
 
