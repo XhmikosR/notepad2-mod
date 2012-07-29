@@ -269,6 +269,9 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 
 	bool convertPastes;
 
+	int marginNumberPadding; // the right-side padding of the number margin
+	int ctrlCharPadding; // the padding around control character text blobs
+
 	Document *pdoc;
 
 	Editor();

@@ -218,6 +218,9 @@ Editor::Editor() {
 
 	convertPastes = true;
 
+	marginNumberPadding = 3;
+	ctrlCharPadding = 3; // +3 For a blank on front and rounded edge each side
+
 	hsStart = -1;
 	hsEnd = -1;
 
@@ -1957,7 +1960,7 @@ void Editor::PaintSelMargin(Surface *surfWindow, PRectangle &rc) {
 						PRectangle rcNumber = rcMarker;
 						// Right justify
 						XYPOSITION width = surface->WidthText(vs.styles[STYLE_LINENUMBER].font, number, istrlen(number));
-						XYPOSITION xpos = rcNumber.right - width - 3;
+						XYPOSITION xpos = rcNumber.right - width - marginNumberPadding;
 						rcNumber.left = xpos;
 						surface->DrawTextNoClip(rcNumber, vs.styles[STYLE_LINENUMBER].font,
 								rcNumber.top + vs.maxAscent, number, istrlen(number),
@@ -2199,9 +2202,8 @@ void Editor::LayoutLine(int line, Surface *surface, ViewStyle &vstyle, LineLayou
 						} else if (controlCharSymbol < 32) {
 							if (ctrlCharWidth[ll->chars[charInLine]] == 0) {
 								const char *ctrlChar = ControlCharacterString(ll->chars[charInLine]);
-								// +3 For a blank on front and rounded edge each side:
 								ctrlCharWidth[ll->chars[charInLine]] =
-								    surface->WidthText(ctrlCharsFont, ctrlChar, istrlen(ctrlChar)) + 3;
+								    surface->WidthText(ctrlCharsFont, ctrlChar, istrlen(ctrlChar)) + ctrlCharPadding;
 							}
 							ll->positions[charInLine + 1] = ctrlCharWidth[ll->chars[charInLine]];
 						} else {
