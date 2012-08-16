@@ -31,6 +31,6 @@ Ctrl+Alt+F2         Expand selection to next match.
 Ctrl+Alt+Shift+F2   Expand selection to previous match.
 Ctrl+Shift+Enter    New line with toggled auto indent option.
 
-Notepad2-mod 4.2.25 has been created with Scintilla 3.2.1 HG 928661c9cdce.
+Notepad2-mod 4.2.25 has been created with Scintilla 3.2.1 HG 407e41242bf1.
 You can use WDK 7.1, MSVC 2010 or Intel C++ Compiler XE 2011 SP1 Update 6 (or newer)
 to build Notepad2-mod.

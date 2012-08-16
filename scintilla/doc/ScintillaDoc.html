@@ -3811,6 +3811,17 @@ struct Sci_TextToFind {
               Not available for OS X Carbon.</td>
         </tr>
 
+        <tr>
+          <td align="left"><code>INDIC_SQUIGGLEPIXMAP</code></td>
+
+          <td align="center">13</td>
+
+          <td>A version of <code>INDIC_SQUIGGLE</code> that draws using a pixmap instead of
+	  as a series of line segments for performance.
+	  Measured to be between 3 and 6 times faster than <code>INDIC_SQUIGGLE</code> on GTK+.
+	  Apperance will not be as good as <code>INDIC_SQUIGGLE</code> on OS X in HiDPI mode.</td>
+        </tr>
+
       </tbody>
     </table>
 
