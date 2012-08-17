@@ -117,15 +117,17 @@ KEYWORDLIST KeyWords_HTML = {
 "preserve private property public raiseevent redim rem resume return rset select set single "
 "static stop string sub then to true type unload until variant wend while with withevents xor",
 "",
-"__callstatic __class__ __dir__ __file__ __function__ __get __isset __line__ __method__ "
-"__namespace__ __set __sleep __unset __wakeup abstract and argc argv array as break case catch "
-"cfunction class clone const continue declare default define die do e_all e_error e_fatal "
-"e_notice e_parse e_strict e_warning echo else elseif empty enddeclare endfor endforeach endif "
-"endswitch endwhile eval exception exit extends false final for foreach function global goto "
-"http_cookie_vars http_env_vars http_get_vars http_post_files http_post_vars http_server_vars if "
-"implements include include_once instanceof interface isset list namespace new not null "
-"old_function or parent php_self print private protected public require require_once return "
-"static stdclass switch this throw true try unset use var virtual while xor",
+"__callstatic __class__ __compiler_halt_offset__ __dir__ __file__ __function__ __get __halt_compiler "
+"__isset __line__ __method__ __namespace__ __set __sleep __trait__ __unset __wakeup "
+"abstract and argc argv array as break callable case catch cfunction class clone closure const continue "
+"declare default define die directory do e_all e_compile_error e_compile_warning e_core_error e_core_warning "
+"e_deprecated e_error e_fatal e_notice e_parse e_strict e_user_deprecated e_user_error e_user_notice "
+"e_user_warning e_warning echo else elseif empty enddeclare endfor endforeach endif endswitch endwhile "
+"eval exception exit extends false final for foreach function global goto http_cookie_vars http_env_vars "
+"http_get_vars http_post_files http_post_vars http_server_vars if implements include include_once "
+"instanceof insteadof interface isset list namespace new not null old_function or parent php_self "
+"print private protected public require require_once return static stdclass switch this throw trait "
+"true try unset use var virtual while xor",
 "", "", "", "" };
 
 
