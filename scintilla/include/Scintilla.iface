@@ -2328,6 +2328,10 @@ fun int DescribeProperty=4016(string name, stringresult description)
 # Retrieve a '\n' separated list of descriptions of the keyword sets understood by the current lexer.
 fun int DescribeKeyWordSets=4017(, stringresult descriptions)
 
+# Move caret to before first visible character on display line.
+# If already there move to first character on display line.
+fun void VCHomeDisplay=4018(,)
+
 # Notifications
 # Type of modification and the action which caused the modification.
 # These are defined as a bit mask to make it easy to specify which notifications are wanted.

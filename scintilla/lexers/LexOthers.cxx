@@ -560,7 +560,7 @@ static void ColouriseDiffLine(char *lineBuffer, int endLine, Accessor &styler) {
 }
 
 static void ColouriseDiffDoc(unsigned int startPos, int length, int, WordList *[], Accessor &styler) {
-	char lineBuffer[DIFF_BUFFER_START_SIZE];
+	char lineBuffer[DIFF_BUFFER_START_SIZE] = "";
 	styler.StartAt(startPos);
 	styler.StartSegment(startPos);
 	unsigned int linePos = 0;
