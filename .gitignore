@@ -1,6 +1,6 @@
 /bin
 /build/packages
-/build/temp_zip
+/build/temp_zip*
 /build/*.opensdf
 /build/*.sdf
 /build/*.suo
