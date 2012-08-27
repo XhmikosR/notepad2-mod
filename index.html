@@ -104,8 +104,13 @@ You can use WDK 7.1, MSVC 2010 or Intel C++ Compiler XE 2011 SP1 Update 6 (or ne
           </script>
           <script type="text/javascript">
             try {
-              var pageTracker = _gat._getTracker("UA-5461943-2");
-            pageTracker._trackPageview();
+            var _gaq = [['_setAccount', 'UA-5461943-2'], ['_trackPageview']];
+            (function(d, t) {
+                var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
+                g.async = true;
+                g.src = '//www.google-analytics.com/ga.js';
+                s.parentNode.insertBefore(g, s);
+            }(document, 'script'));
             } catch(err) {}
           </script>
 
