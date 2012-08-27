@@ -7,7 +7,7 @@
 * See License.txt for details about distribution and modification.
 *
 *                                       (c) XhmikosR 2010-2012
-*                                       http://code.google.com/p/notepad2-mod/
+*                                       https://github.com/XhmikosR/notepad2-mod
 *
 *
 ******************************************************************************/
@@ -34,6 +34,6 @@
 #define VERSION_WEBPAGEDISPLAY       L"flo's freeware - http://www.flos-freeware.ch"
 #define VERSION_EMAILDISPLAY         L"florian.balmer@gmail.com"
 #define VERSION_COMPANYNAME          L"Florian Balmer et al."
-#define VERSION_MODPAGEDISPLAY       L"http://code.google.com/p/notepad2-mod"
+#define VERSION_MODPAGEDISPLAY       L"https://github.com/XhmikosR/notepad2-mod"
 
 #endif // NOTEPAD2_VERSION_H

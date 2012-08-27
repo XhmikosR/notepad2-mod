@@ -17,7 +17,7 @@ _A modified version (fork) of Notepad2 based on Kai Liu's and other people's pat
 * XP (SP3, SP2 might or might not work), Vista, 7 and 8 both 32-bit and 64-bit
 
 
-# [Screenshots] (Screenshots)
+# [Screenshots] (https://github.com/XhmikosR/notepad2-mod/wiki/Screenshots)
 
 
 # Notes:

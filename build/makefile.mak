@@ -8,7 +8,7 @@
 #* See License.txt for details about distribution and modification.
 #*
 #*                                       (c) XhmikosR 2010-2012
-#*                                       http://code.google.com/p/notepad2-mod/
+#*                                       https://github.com/XhmikosR/notepad2-mod
 #*
 #* Use build_wdk.bat and set there your WDK directory.
 #*
