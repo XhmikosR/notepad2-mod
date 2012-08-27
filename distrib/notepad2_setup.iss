@@ -9,8 +9,6 @@
 ; Requirements:
 ; Inno Setup: http://www.jrsoftware.org/isdl.php
 
-; $Id$
-
 
 ;#define ICL12
 ;#define VS2010
