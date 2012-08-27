@@ -132,7 +132,7 @@ a.button {
 	width: 134px;
 	height: 58px;
 	line-height: 1.2;
-	font-size: 23px;
+	font-size: 24px;
 	color: #fff;
 	padding-left: 68px;
 	padding-top: 22px;
@@ -154,7 +154,7 @@ aside a.button {
 	display: block;
 	background: transparent url(../images/download-button.png) 0 0 no-repeat;
 	margin-bottom: 20px;
-	font-size: 21px;
+	font-size: 18px;
 }
 
 code, pre {
