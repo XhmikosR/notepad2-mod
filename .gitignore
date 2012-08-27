@@ -1,0 +1,11 @@
+/bin
+/build/packages
+/build/temp_zip
+/build/*.opensdf
+/build/*.sdf
+/build/*.suo
+/distrib/Notepad2-mod.*.exe
+/res/Notepad2.exe.manifest
+/src/*.aps
+/src/*.user
+/src/VersionRev.h
