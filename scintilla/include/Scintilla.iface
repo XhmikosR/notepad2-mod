@@ -2332,6 +2332,9 @@ fun int DescribeKeyWordSets=4017(, stringresult descriptions)
 # If already there move to first character on display line.
 fun void VCHomeDisplay=4018(,)
 
+# Like VCHomeDisplay but extending selection to new caret position.
+fun void VCHomeDisplayExtend=4019(,)
+
 # Notifications
 # Type of modification and the action which caused the modification.
 # These are defined as a bit mask to make it easy to specify which notifications are wanted.
