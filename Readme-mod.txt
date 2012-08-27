@@ -8,6 +8,9 @@ Notable changes:
 * Word auto-completion
 * Syntax highlighting support for AutoHotkey, AutoIt3, AviSynth, Bash,
   CMake, Inno Setup, LaTeX, Lua, NSIS, Ruby, and Tcl scripts
+* Improved support for NFO ANSI art
+* Support for replacing Windows Notepad using a clean, unintrusive registry-based method
+* Other various minor changes and tweaks
 
 Supported Operating Systems:
 * Windows 2000 (when compiled with WDK, which is the default build)
@@ -20,9 +23,9 @@ Contributors:
 * Bruno Barbieri
 
 More information:
-* Source code and binaries:   http://code.google.com/p/notepad2-mod/
+* Source code and binaries:   https://github.com/XhmikosR/notepad2-mod
 * Official Notepad2 website:  http://www.flos-freeware.ch/notepad2.html
-* Code folding usage guide:   http://code.google.com/p/notepad2-mod/wiki/CodeFoldingUsageNotes
+* Code folding usage guide:   https://github.com/XhmikosR/notepad2-mod/wiki/Code-Folding-Usage
 * Kai Liu's website:          http://code.kliu.org/misc/notepad2/
 * Bookmark Edition website:   http://www.rlvision.com/notepad2/about.asp
 
