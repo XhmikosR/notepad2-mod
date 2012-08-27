@@ -9,4 +9,3 @@ sh.exe ./version.sh
 POPD
 ENDLOCAL
 EXIT /B
-

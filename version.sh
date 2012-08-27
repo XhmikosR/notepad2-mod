@@ -57,12 +57,12 @@ fi
 
 VER_FULL="_T(\"$VER ($HASH)$VER_FULL\")"
 
-VERSION_INFO+="#define VERSION_HASH _T(\"$HASH\")\n"
+VERSION_INFO+="#define VERSION_HASH L\"$HASH\"\n"
 VERSION_INFO+="#define VERSION_REV $VER\n"
 VERSION_INFO+="#if defined(_WIN64)\n"
-VERSION_INFO+="#define VERSION_FILEVERSION_LONG  L\"Notepad2-mod (64-bit) 4.2.25 rev. $VER\"\n"
+VERSION_INFO+="#define VERSION_FILEVERSION_LONG L\"Notepad2-mod (64-bit) 4.2.25 rev. $VER\"\n"
 VERSION_INFO+="#else\n"
-VERSION_INFO+="#define VERSION_FILEVERSION_LONG  L\"Notepad2-mod 4.2.25 rev. $VER\"\n"
+VERSION_INFO+="#define VERSION_FILEVERSION_LONG L\"Notepad2-mod 4.2.25 rev. $VER\"\n"
 VERSION_INFO+="#endif"
 
 if [ "$BRANCH" ] ; then
