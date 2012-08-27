@@ -1,6 +1,0 @@
-#define VERSION_REV                 0
-#if defined(_WIN64)
-  #define VERSION_FILEVERSION_LONG  L"Notepad2-mod (64-bit) 4.2.25 rev. 0"
-#else
-  #define VERSION_FILEVERSION_LONG  L"Notepad2-mod 4.2.25 rev. 0"
-#endif
