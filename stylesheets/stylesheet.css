@@ -158,7 +158,7 @@ aside a.button {
 }
 
 code, pre {
-	font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+	font-family: Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal, monospace;
 	color: #222;
 	margin-bottom: 30px;
 	font-size: 13px;
@@ -190,15 +190,6 @@ ul, ol, dl {
 
 
 /* COMMON STYLES */
-
-hr {
-	height: 1px;
-	line-height: 1px;
-	margin-top: 1em;
-	padding-bottom: 1em;
-	border: none;
-	background: transparent url(../images/hr.png) 0 0 no-repeat;
-}
 
 table {
 	width: 100%;
@@ -232,7 +223,7 @@ form {
 }
 
 #main-content h1:before {
-	content: "/";
+	content: '/';
 	color: #9ddcff;
 	padding-right: 0.3em;
 	margin-left: -0.9em;
@@ -246,7 +237,7 @@ form {
 	color: #474747;
 }
 #main-content h2:before {
-	content: "//";
+	content: '//';
 	color: #9ddcff;
 	padding-right: 0.3em;
 	margin-left: -1.5em;
@@ -262,7 +253,7 @@ form {
 }
 
 #main-content h3:before {
-	content: "///";
+	content: '///';
 	color: #9ddcff;
 	padding-right: 0.3em;
 	margin-left: -2em;
@@ -276,7 +267,7 @@ form {
 }
 
 h4:before {
-	content: "////";
+	content: '////';
 	color: #9ddcff;
 	padding-right: 0.3em;
 	margin-left: -2.8em;
@@ -288,7 +279,7 @@ h4:before {
 	color: #474747;
 }
 h5:before {
-	content: "/////";
+	content: '/////';
 	color: #9ddcff;
 	padding-right: 0.3em;
 	margin-left: -3.2em;
@@ -300,7 +291,7 @@ h5:before {
 	color: #474747;
 }
 h6:before {
-	content: "//////";
+	content: '//////';
 	color: #9ddcff;
 	padding-right: 0.3em;
 	margin-left: -3.7em;
@@ -338,22 +329,6 @@ ol li {
 dl dd {
 	font-style: italic;
 	font-weight: 100;
-}
-
-footer {
-	background: transparent url(../images/hr.png) 0 0 no-repeat;
-	margin-top: 40px;
-	padding-top: 20px;
-	padding-bottom: 30px;
-	font-size: 13px;
-	color: #aaa;
-}
-
-footer a {
-	color: #666;
-}
-footer a:hover {
-	color: #444;
 }
 
 /* MISC */
