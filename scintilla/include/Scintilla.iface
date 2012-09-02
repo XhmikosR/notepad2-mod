@@ -2260,6 +2260,13 @@ fun void FindIndicatorFlash=2641(position start, position end)
 # On OS X, hide the find indicator.
 fun void FindIndicatorHide=2642(,)
 
+# Move caret to before first visible character on display line.
+# If already there move to first character on display line.
+fun void VCHomeDisplay=2652(,)
+
+# Like VCHomeDisplay but extending selection to new caret position.
+fun void VCHomeDisplayExtend=2653(,)
+
 # Start notifying the container of all key presses and commands.
 fun void StartRecord=3001(,)
 
@@ -2327,13 +2334,6 @@ fun int DescribeProperty=4016(string name, stringresult description)
 
 # Retrieve a '\n' separated list of descriptions of the keyword sets understood by the current lexer.
 fun int DescribeKeyWordSets=4017(, stringresult descriptions)
-
-# Move caret to before first visible character on display line.
-# If already there move to first character on display line.
-fun void VCHomeDisplay=4018(,)
-
-# Like VCHomeDisplay but extending selection to new caret position.
-fun void VCHomeDisplayExtend=4019(,)
 
 # Notifications
 # Type of modification and the action which caused the modification.

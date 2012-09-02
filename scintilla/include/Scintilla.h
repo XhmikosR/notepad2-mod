@@ -851,6 +851,8 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
 #define SCI_FINDINDICATORSHOW 2640
 #define SCI_FINDINDICATORFLASH 2641
 #define SCI_FINDINDICATORHIDE 2642
+#define SCI_VCHOMEDISPLAY 2652
+#define SCI_VCHOMEDISPLAYEXTEND 2653
 #define SCI_STARTRECORD 3001
 #define SCI_STOPRECORD 3002
 #define SCI_SETLEXER 4001
@@ -874,8 +876,6 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
 #define SCI_PROPERTYTYPE 4015
 #define SCI_DESCRIBEPROPERTY 4016
 #define SCI_DESCRIBEKEYWORDSETS 4017
-#define SCI_VCHOMEDISPLAY 4018
-#define SCI_VCHOMEDISPLAYEXTEND 4019
 #define SC_MOD_INSERTTEXT 0x1
 #define SC_MOD_DELETETEXT 0x2
 #define SC_MOD_CHANGESTYLE 0x4
