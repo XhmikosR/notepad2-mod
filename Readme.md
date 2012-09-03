@@ -39,4 +39,4 @@ _A modified version (fork) of Notepad2 based on Kai Liu's and other people's pat
 `Ctrl+Alt+Shift+F2` Expand selection to previous match.  
 `Ctrl+Shift+Enter`  New line with toggled auto indent option.  
 
-You can use WDK 7.1, MSVC 2010 or Intel C++ Compiler XE 2011 SP1 Update 6 (or newer) to build Notepad2-mod.
+You can use WDK 7.1, MSVC 2010, MSVC 2012 or Intel C++ Compiler XE 2011 SP1 Update 6 (or newer) to build Notepad2-mod.

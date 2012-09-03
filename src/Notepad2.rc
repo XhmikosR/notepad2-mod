@@ -21,14 +21,12 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
 #endif //_WIN32
 
-#if !defined(VS2012)
 /////////////////////////////////////////////////////////////////////////////
 //
 // RT_MANIFEST
 //
 
 1                        RT_MANIFEST            "..\\res\\Notepad2.exe.manifest"
-#endif
 
 /////////////////////////////////////////////////////////////////////////////
 //
