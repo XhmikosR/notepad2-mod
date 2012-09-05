@@ -467,6 +467,7 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 	int styleBeforeDCKeyword = SCE_C_DEFAULT;
 	bool continuationLine = false;
 	bool isIncludePreprocessor = false;
+	bool isStringInPreprocessor = false;
 
 	int lineCurrent = styler.GetLine(startPos);
 	if ((MaskActive(initStyle) == SCE_C_PREPROCESSOR) ||
@@ -618,13 +619,17 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 					sc.SetState(SCE_C_DEFAULT|activitySet);
 				}
 				break;
-			case SCE_C_PREPROCESSOR:
+			case SCE_C_PREPROCESSOR: 	
 				if (options.stylingWithinPreprocessor) {
 					if (IsASpace(sc.ch)) {
 						sc.SetState(SCE_C_DEFAULT|activitySet);
 					}
-				} else {
-					if (sc.Match('/', '*')) {
+				} else if (isStringInPreprocessor && (sc.Match('>') || sc.Match('\"'))) {
+					isStringInPreprocessor = false;
+				} else if (!isStringInPreprocessor) {
+					if ((isIncludePreprocessor && sc.Match('<')) || sc.Match('\"')) {
+						isStringInPreprocessor = true;
+					} else if (sc.Match('/', '*')) {
 						sc.SetState(SCE_C_PREPROCESSORCOMMENT|activitySet);
 						sc.Forward();	// Eat the *
 					} else if (sc.Match('/', '/')) {
