@@ -336,6 +336,11 @@
   <ItemGroup>
     <ResourceCompile Include="Notepad2.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\scintilla\Scintilla_VS2012.vcxproj">
+      <Project>{5877b917-512b-49f5-b514-1b4159e7a9ca}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

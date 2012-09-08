@@ -21,6 +21,7 @@
 
 CC = cl.exe
 LD = link.exe
+LD_LIB = lib.exe
 RC = rc.exe
 
 !IFDEF x64
@@ -30,6 +31,7 @@ BINDIR  = ..\bin\WDK\Release_x86
 !ENDIF
 OBJDIR  = $(BINDIR)\obj
 EXE     = $(BINDIR)\Notepad2.exe
+SCI_LIB_TARGET = $(OBJDIR)\scintilla\scintilla.lib
 
 SCI_OBJDIR      = $(OBJDIR)\scintilla
 SCI_LEX_OBJDIR  = $(SCI_OBJDIR)\lexers
@@ -60,19 +62,22 @@ LDFLAGS       = /NOLOGO /WX /INCREMENTAL:NO /RELEASE /OPT:REF /OPT:ICF /MERGE:.r
 LIBS          = advapi32.lib comctl32.lib comdlg32.lib gdi32.lib imm32.lib kernel32.lib \
                 ole32.lib oleaut32.lib psapi.lib shell32.lib shlwapi.lib user32.lib \
                 winspool.lib ntstc_msvcrt.lib
+LIB_LD_FLAGS  = /NOLOGO $(MACHINE) /WX /LTCG
 RFLAGS        = /l 0x0409 /d "_UNICODE" /d "UNICODE" /d "BOOKMARK_EDITION"
 SCI_CXXFLAGS  = $(CXXFLAGS:/WX=/WX-) /D "STATIC_BUILD" /D "SCI_LEXER" /D "DISABLE_D2D"
 
 
 !IFDEF x64
 DEFINES       = $(DEFINES) /D "_WIN64" /D "_WIN32_WINNT=0x0502"
-LDFLAGS       = $(LDFLAGS) /SUBSYSTEM:WINDOWS,5.02 /MACHINE:X64
+MACHINE       = /MACHINE:X64
+LDFLAGS       = $(LDFLAGS) /SUBSYSTEM:WINDOWS,5.02 $(MACHINE)
 LIBS          = $(LIBS) msvcrt_win2003.obj
 RFLAGS        = $(RFLAGS) /d "_WIN64"
 !ELSE
 CXXFLAGS      = $(CXXFLAGS) /Oy
 DEFINES       = $(DEFINES) /D "WIN32" /D "_WIN32_WINNT=0x0501"
-LDFLAGS       = $(LDFLAGS) /SUBSYSTEM:WINDOWS,5.0 /MACHINE:X86
+MACHINE       = /MACHINE:X86
+LDFLAGS       = $(LDFLAGS) /SUBSYSTEM:WINDOWS,5.0 $(MACHINE)
 LIBS          = $(LIBS) msvcrt_win2000.obj
 RFLAGS        = $(RFLAGS) /d "WIN32"
 !ENDIF
@@ -81,7 +86,7 @@ RFLAGS        = $(RFLAGS) /d "WIN32"
 ###############
 ##  Targets  ##
 ###############
-BUILD:	PREBUILD $(EXE)
+BUILD:	PREBUILD $(SCI_LIB_TARGET) $(EXE)
 
 PREBUILD:
 	IF NOT EXIST "$(SCI_LEX_OBJDIR)"    MD "$(SCI_LEX_OBJDIR)"
@@ -190,12 +195,11 @@ NOTEPAD2_OBJ = \
     $(NP2_SRC_OBJDIR)\Print.obj \
     $(NP2_SRC_OBJDIR)\Styles.obj
 
-OBJECTS = \
+SCI_OBJECTS = \
     $(SCI_LEX_OBJ) \
     $(SCI_LIB_OBJ) \
     $(SCI_SRC_OBJ) \
-    $(SCI_WIN_OBJ) \
-    $(NOTEPAD2_OBJ)
+    $(SCI_WIN_OBJ)
 
 
 ###################
@@ -223,9 +227,12 @@ OBJECTS = \
 ################
 ##  Commands  ##
 ################
-$(EXE): $(OBJECTS)
+$(SCI_LIB_TARGET): $(SCI_OBJECTS)
+	$(LD_LIB) $(LIB_LD_FLAGS) $(SCI_OBJECTS) /OUT:"$(SCI_LIB_TARGET)"
+
+$(EXE): $(SCI_LIB_TARGET) $(NOTEPAD2_OBJ)
 	$(RC) $(RFLAGS) /fo"$(NP2_SRC_OBJDIR)\Notepad2.res" "$(NP2_SRC)\Notepad2.rc" >NUL
-	$(LD) $(LDFLAGS) $(LIBS) $(OBJECTS) /OUT:"$(EXE)"
+	$(LD) $(LDFLAGS) $(LIBS) $(NOTEPAD2_OBJ) $(SCI_LIB_TARGET) /OUT:"$(EXE)"
 
 
 ####################

@@ -1,11 +1,12 @@
 /bin
-/build/packages
-/build/temp_zip*
 /build/*.opensdf
 /build/*.sdf
 /build/*.suo
+/build/packages
+/build/temp_zip*
 /distrib/Notepad2-mod.*.exe
 /res/Notepad2.exe.manifest
+/scintilla/*.user
 /src/*.aps
 /src/*.user
 /src/VersionRev.h
