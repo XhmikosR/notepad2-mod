@@ -101,6 +101,7 @@ CLEAN:
 	ECHO Cleaning... & ECHO.
 	IF EXIST "$(EXE)"                         DEL "$(EXE)"
 	IF EXIST "$(BINDIR)\Notepad2.pdb"         DEL "$(BINDIR)\Notepad2.pdb"
+	IF EXIST "$(SCI_LIB_TARGET)"              DEL "$(SCI_LIB_TARGET)"
 	IF EXIST "$(NP2_SRC_OBJDIR)\*.obj"        DEL "$(NP2_SRC_OBJDIR)\*.obj"
 	IF EXIST "$(SCI_LEX_OBJDIR)\*.obj"        DEL "$(SCI_LEX_OBJDIR)\*.obj"
 	IF EXIST "$(SCI_LIB_OBJDIR)\*.obj"        DEL "$(SCI_LIB_OBJDIR)\*.obj"
