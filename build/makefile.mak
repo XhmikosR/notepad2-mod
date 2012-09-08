@@ -3,7 +3,7 @@
 #* Notepad2-mod
 #*
 #* makefile.mak
-#*   makefile for building Notepad2 with WDK
+#*   makefile for building Notepad2-mod with WDK
 #*
 #* See License.txt for details about distribution and modification.
 #*
@@ -21,7 +21,7 @@
 
 CC = cl.exe
 LD = link.exe
-LD_LIB = lib.exe
+LIB_EXE = lib.exe
 RC = rc.exe
 
 !IFDEF x64
@@ -33,22 +33,22 @@ OBJDIR  = $(BINDIR)\obj
 EXE     = $(BINDIR)\Notepad2.exe
 SCI_LIB_TARGET = $(OBJDIR)\scintilla\scintilla.lib
 
-SCI_OBJDIR      = $(OBJDIR)\scintilla
-SCI_LEX_OBJDIR  = $(SCI_OBJDIR)\lexers
-SCI_LIB_OBJDIR  = $(SCI_OBJDIR)\lexlib
-SCI_SRC_OBJDIR  = $(SCI_OBJDIR)\src
-SCI_WIN_OBJDIR  = $(SCI_OBJDIR)\win32
-NP2_SRC_OBJDIR  = $(OBJDIR)\notepad2
 
+SCI_OBJDIR     = $(OBJDIR)\scintilla
+SCI_LEX_OBJDIR = $(SCI_OBJDIR)\lexers
+SCI_LIB_OBJDIR = $(SCI_OBJDIR)\lexlib
+SCI_SRC_OBJDIR = $(SCI_OBJDIR)\src
+SCI_WIN_OBJDIR = $(SCI_OBJDIR)\win32
+NP2_SRC_OBJDIR = $(OBJDIR)\notepad2
 
-SCI_DIR         = ..\scintilla
-SCI_INC         = $(SCI_DIR)\include
-SCI_LEX         = $(SCI_DIR)\lexers
-SCI_LIB         = $(SCI_DIR)\lexlib
-SCI_SRC         = $(SCI_DIR)\src
-SCI_WIN         = $(SCI_DIR)\win32
-NP2_SRC         = ..\src
-NP2_RES         = ..\res
+SCI_DIR        = ..\scintilla
+SCI_INC        = $(SCI_DIR)\include
+SCI_LEX        = $(SCI_DIR)\lexers
+SCI_LIB        = $(SCI_DIR)\lexlib
+SCI_SRC        = $(SCI_DIR)\src
+SCI_WIN        = $(SCI_DIR)\win32
+NP2_SRC        = ..\src
+NP2_RES        = ..\res
 
 
 DEFINES       = /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE" /D "_STL70_" \
@@ -62,7 +62,7 @@ LDFLAGS       = /NOLOGO /WX /INCREMENTAL:NO /RELEASE /OPT:REF /OPT:ICF /MERGE:.r
 LIBS          = advapi32.lib comctl32.lib comdlg32.lib gdi32.lib imm32.lib kernel32.lib \
                 ole32.lib oleaut32.lib psapi.lib shell32.lib shlwapi.lib user32.lib \
                 winspool.lib ntstc_msvcrt.lib
-LIB_LD_FLAGS  = /NOLOGO $(MACHINE) /WX /LTCG
+LIB_FLAGS     = /NOLOGO $(MACHINE) /WX /LTCG
 RFLAGS        = /l 0x0409 /d "_UNICODE" /d "UNICODE" /d "BOOKMARK_EDITION"
 SCI_CXXFLAGS  = $(CXXFLAGS:/WX=/WX-) /D "STATIC_BUILD" /D "SCI_LEXER" /D "DISABLE_D2D"
 
@@ -86,35 +86,35 @@ RFLAGS        = $(RFLAGS) /d "WIN32"
 ###############
 ##  Targets  ##
 ###############
-BUILD:	PREBUILD $(SCI_LIB_TARGET) $(EXE)
+BUILD:	PREBUILD $(EXE)
 
 PREBUILD:
-	IF NOT EXIST "$(SCI_LEX_OBJDIR)"    MD "$(SCI_LEX_OBJDIR)"
-	IF NOT EXIST "$(SCI_LIB_OBJDIR)"    MD "$(SCI_LIB_OBJDIR)"
-	IF NOT EXIST "$(SCI_SRC_OBJDIR)"    MD "$(SCI_SRC_OBJDIR)"
-	IF NOT EXIST "$(SCI_WIN_OBJDIR)"    MD "$(SCI_WIN_OBJDIR)"
-	IF NOT EXIST "$(NP2_SRC_OBJDIR)"    MD "$(NP2_SRC_OBJDIR)"
+	IF NOT EXIST "$(SCI_LEX_OBJDIR)" MD "$(SCI_LEX_OBJDIR)"
+	IF NOT EXIST "$(SCI_LIB_OBJDIR)" MD "$(SCI_LIB_OBJDIR)"
+	IF NOT EXIST "$(SCI_SRC_OBJDIR)" MD "$(SCI_SRC_OBJDIR)"
+	IF NOT EXIST "$(SCI_WIN_OBJDIR)" MD "$(SCI_WIN_OBJDIR)"
+	IF NOT EXIST "$(NP2_SRC_OBJDIR)" MD "$(NP2_SRC_OBJDIR)"
 	CALL "..\update_rev.bat"
 	ECHO.
 
 CLEAN:
 	ECHO Cleaning... & ECHO.
-	IF EXIST "$(EXE)"                           DEL "$(EXE)"
-	IF EXIST "$(BINDIR)\Notepad2.pdb"           DEL "$(BINDIR)\Notepad2.pdb"
-	IF EXIST "$(NP2_SRC_OBJDIR)\*.obj"          DEL "$(NP2_SRC_OBJDIR)\*.obj"
-	IF EXIST "$(SCI_LEX_OBJDIR)\*.obj"          DEL "$(SCI_LEX_OBJDIR)\*.obj"
-	IF EXIST "$(SCI_LIB_OBJDIR)\*.obj"          DEL "$(SCI_LIB_OBJDIR)\*.obj"
-	IF EXIST "$(SCI_SRC_OBJDIR)\*.obj"          DEL "$(SCI_SRC_OBJDIR)\*.obj"
-	IF EXIST "$(SCI_WIN_OBJDIR)\*.obj"          DEL "$(SCI_WIN_OBJDIR)\*.obj"
-	IF EXIST "$(NP2_SRC_OBJDIR)\Notepad2.res"   DEL "$(NP2_SRC_OBJDIR)\Notepad2.res"
-	-IF EXIST "$(SCI_LEX_OBJDIR)"               RD /Q "$(SCI_LEX_OBJDIR)"
-	-IF EXIST "$(SCI_LIB_OBJDIR)"               RD /Q "$(SCI_LIB_OBJDIR)"
-	-IF EXIST "$(SCI_SRC_OBJDIR)"               RD /Q "$(SCI_SRC_OBJDIR)"
-	-IF EXIST "$(SCI_WIN_OBJDIR)"               RD /Q "$(SCI_WIN_OBJDIR)"
-	-IF EXIST "$(SCI_OBJDIR)"                   RD /Q "$(SCI_OBJDIR)"
-	-IF EXIST "$(NP2_SRC_OBJDIR)"               RD /Q "$(NP2_SRC_OBJDIR)"
-	-IF EXIST "$(OBJDIR)"                       RD /Q "$(OBJDIR)"
-	-IF EXIST "$(BINDIR)"                       RD /Q "$(BINDIR)"
+	IF EXIST "$(EXE)"                         DEL "$(EXE)"
+	IF EXIST "$(BINDIR)\Notepad2.pdb"         DEL "$(BINDIR)\Notepad2.pdb"
+	IF EXIST "$(NP2_SRC_OBJDIR)\*.obj"        DEL "$(NP2_SRC_OBJDIR)\*.obj"
+	IF EXIST "$(SCI_LEX_OBJDIR)\*.obj"        DEL "$(SCI_LEX_OBJDIR)\*.obj"
+	IF EXIST "$(SCI_LIB_OBJDIR)\*.obj"        DEL "$(SCI_LIB_OBJDIR)\*.obj"
+	IF EXIST "$(SCI_SRC_OBJDIR)\*.obj"        DEL "$(SCI_SRC_OBJDIR)\*.obj"
+	IF EXIST "$(SCI_WIN_OBJDIR)\*.obj"        DEL "$(SCI_WIN_OBJDIR)\*.obj"
+	IF EXIST "$(NP2_SRC_OBJDIR)\Notepad2.res" DEL "$(NP2_SRC_OBJDIR)\Notepad2.res"
+	-IF EXIST "$(SCI_LEX_OBJDIR)"             RD /Q "$(SCI_LEX_OBJDIR)"
+	-IF EXIST "$(SCI_LIB_OBJDIR)"             RD /Q "$(SCI_LIB_OBJDIR)"
+	-IF EXIST "$(SCI_SRC_OBJDIR)"             RD /Q "$(SCI_SRC_OBJDIR)"
+	-IF EXIST "$(SCI_WIN_OBJDIR)"             RD /Q "$(SCI_WIN_OBJDIR)"
+	-IF EXIST "$(SCI_OBJDIR)"                 RD /Q "$(SCI_OBJDIR)"
+	-IF EXIST "$(NP2_SRC_OBJDIR)"             RD /Q "$(NP2_SRC_OBJDIR)"
+	-IF EXIST "$(OBJDIR)"                     RD /Q "$(OBJDIR)"
+	-IF EXIST "$(BINDIR)"                     RD /Q "$(BINDIR)"
 
 REBUILD:	CLEAN BUILD
 
@@ -228,7 +228,7 @@ SCI_OBJECTS = \
 ##  Commands  ##
 ################
 $(SCI_LIB_TARGET): $(SCI_OBJECTS)
-	$(LD_LIB) $(LIB_LD_FLAGS) $(SCI_OBJECTS) /OUT:"$(SCI_LIB_TARGET)"
+	$(LIB_EXE) $(LIB_FLAGS) $(SCI_OBJECTS) /OUT:"$(SCI_LIB_TARGET)"
 
 $(EXE): $(SCI_LIB_TARGET) $(NOTEPAD2_OBJ)
 	$(RC) $(RFLAGS) /fo"$(NP2_SRC_OBJDIR)\Notepad2.res" "$(NP2_SRC)\Notepad2.rc" >NUL
