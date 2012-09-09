@@ -23,8 +23,7 @@
 SVNREV=760
 SVNHASH="0cd53aab71b006820233224bbf14c2b18b2caca6"
 
-if [ ! -d ".git" ] || ! git --version >/dev/null ; then
-
+if [ ! -d ".git" ] || ! command -v git >/dev/null 2>&1 ; then
   # If the folder ".git" doesn't exist or git isn't present then we use hardcoded values
   HASH=0000000
   VER=0
