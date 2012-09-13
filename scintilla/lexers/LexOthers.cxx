@@ -614,76 +614,115 @@ static void FoldDiffDoc(unsigned int startPos, int length, int, WordList *[], Ac
 	} while (static_cast<int>(startPos) + length > curLineStart);
 }
 
-static void ColourisePoLine(
-    char *lineBuffer,
-    unsigned int lengthLine,
-    unsigned int startLine,
-    unsigned int endPos,
-    Accessor &styler) {
-
-	unsigned int i = 0;
-	static unsigned int state = SCE_PO_DEFAULT;
-	unsigned int state_start = SCE_PO_DEFAULT;
-
-	while ((i < lengthLine) && isspacechar(lineBuffer[i]))	// Skip initial spaces
-		i++;
-	if (i < lengthLine) {
-		if (lineBuffer[i] == '#') {
-			// check if the comment contains any flags ("#, ") and
-			// then whether the flags contain "fuzzy"
-			if (strstart(lineBuffer, "#, ") && strstr(lineBuffer, "fuzzy"))
-				styler.ColourTo(endPos, SCE_PO_FUZZY);
-			else
-				styler.ColourTo(endPos, SCE_PO_COMMENT);
-		} else {
-			if (lineBuffer[0] == '"') {
-				// line continuation, use previous style
-				styler.ColourTo(endPos, state);
-				return;
-			// this implicitly also matches "msgid_plural"
-			} else if (strstart(lineBuffer, "msgid")) {
-				state_start = SCE_PO_MSGID;
-				state = SCE_PO_MSGID_TEXT;
-			} else if (strstart(lineBuffer, "msgstr")) {
-				state_start = SCE_PO_MSGSTR;
-				state = SCE_PO_MSGSTR_TEXT;
-			} else if (strstart(lineBuffer, "msgctxt")) {
-				state_start = SCE_PO_MSGCTXT;
-				state = SCE_PO_MSGCTXT_TEXT;
-			}
-			if (state_start != SCE_PO_DEFAULT) {
-				// find the next space
-				while ((i < lengthLine) && ! isspacechar(lineBuffer[i]))
-					i++;
-				styler.ColourTo(startLine + i - 1, state_start);
-				styler.ColourTo(startLine + i, SCE_PO_DEFAULT);
-				styler.ColourTo(endPos, state);
-			}
+// see https://www.gnu.org/software/gettext/manual/gettext.html#PO-Files for the syntax reference
+// some details are taken from the GNU msgfmt behavior (like that indent is allows in front of lines)
+static void ColourisePoDoc(unsigned int startPos, int length, int initStyle, WordList *[], Accessor &styler) {
+	StyleContext sc(startPos, length, initStyle, styler);
+	bool escaped = false;
+	int curLine = styler.GetLine(startPos);
+	// the line state holds the last state on or before the line that isn't the default style
+	int curLineState = curLine > 0 ? styler.GetLineState(curLine - 1) : SCE_PO_DEFAULT;
+	
+	for (; sc.More(); sc.Forward()) {
+		// whether we should leave a state
+		switch (sc.state) {
+			case SCE_PO_COMMENT:
+			case SCE_PO_PROGRAMMER_COMMENT:
+			case SCE_PO_REFERENCE:
+			case SCE_PO_FLAGS:
+			case SCE_PO_FUZZY:
+				if (sc.atLineEnd)
+					sc.SetState(SCE_PO_DEFAULT);
+				else if (sc.state == SCE_PO_FLAGS && sc.Match("fuzzy"))
+					// here we behave like the previous parser, but this should probably be highlighted
+					// on its own like a keyword rather than changing the whole flags style
+					sc.ChangeState(SCE_PO_FUZZY);
+				break;
+			
+			case SCE_PO_MSGCTXT:
+			case SCE_PO_MSGID:
+			case SCE_PO_MSGSTR:
+				if (isspacechar(sc.ch))
+					sc.SetState(SCE_PO_DEFAULT);
+				break;
+			
+			case SCE_PO_ERROR:
+				if (sc.atLineEnd)
+					sc.SetState(SCE_PO_DEFAULT);
+				break;
+			
+			case SCE_PO_MSGCTXT_TEXT:
+			case SCE_PO_MSGID_TEXT:
+			case SCE_PO_MSGSTR_TEXT:
+				if (sc.atLineEnd) { // invalid inside a string
+					if (sc.state == SCE_PO_MSGCTXT_TEXT)
+						sc.ChangeState(SCE_PO_MSGCTXT_TEXT_EOL);
+					else if (sc.state == SCE_PO_MSGID_TEXT)
+						sc.ChangeState(SCE_PO_MSGID_TEXT_EOL);
+					else if (sc.state == SCE_PO_MSGSTR_TEXT)
+						sc.ChangeState(SCE_PO_MSGSTR_TEXT_EOL);
+					sc.SetState(SCE_PO_DEFAULT);
+					escaped = false;
+				} else {
+					if (escaped)
+						escaped = false;
+					else if (sc.ch == '\\')
+						escaped = true;
+					else if (sc.ch == '"')
+						sc.ForwardSetState(SCE_PO_DEFAULT);
+				}
+				break;
 		}
-	} else {
-		styler.ColourTo(endPos, SCE_PO_DEFAULT);
-	}
-}
-
-static void ColourisePoDoc(unsigned int startPos, int length, int, WordList *[], Accessor &styler) {
-	char lineBuffer[1024];
-	styler.StartAt(startPos);
-	styler.StartSegment(startPos);
-	unsigned int linePos = 0;
-	unsigned int startLine = startPos;
-	for (unsigned int i = startPos; i < startPos + length; i++) {
-		lineBuffer[linePos++] = styler[i];
-		if (AtEOL(styler, i) || (linePos >= sizeof(lineBuffer) - 1)) {
-			// End of line (or of line buffer) met, colourise it
-			lineBuffer[linePos] = '\0';
-			ColourisePoLine(lineBuffer, linePos, startLine, i, styler);
-			linePos = 0;
-			startLine = i + 1;
+		
+		// whether we should enter a new state
+		if (sc.state == SCE_PO_DEFAULT) {
+			// forward to the first non-white character on the line
+			bool atLineStart = sc.atLineStart;
+			if (atLineStart) {
+				while (sc.More() && ! sc.atLineEnd && isspacechar(sc.ch))
+					sc.Forward();
+			}
+			
+			if (atLineStart && sc.ch == '#') {
+				if (sc.chNext == '.')
+					sc.SetState(SCE_PO_PROGRAMMER_COMMENT);
+				else if (sc.chNext == ':')
+					sc.SetState(SCE_PO_REFERENCE);
+				else if (sc.chNext == ',')
+					sc.SetState(SCE_PO_FLAGS);
+				else if (sc.chNext == '|')
+					sc.SetState(SCE_PO_COMMENT); // previous untranslated string, no special style yet
+				else
+					sc.SetState(SCE_PO_COMMENT);
+			} else if (atLineStart && sc.Match("msgid")) { // includes msgid_plural
+				sc.SetState(SCE_PO_MSGID);
+			} else if (atLineStart && sc.Match("msgstr")) { // includes [] suffixes
+				sc.SetState(SCE_PO_MSGSTR);
+			} else if (atLineStart && sc.Match("msgctxt")) {
+				sc.SetState(SCE_PO_MSGCTXT);
+			} else if (sc.ch == '"') {
+				if (curLineState == SCE_PO_MSGCTXT || curLineState == SCE_PO_MSGCTXT_TEXT)
+					sc.SetState(SCE_PO_MSGCTXT_TEXT);
+				else if (curLineState == SCE_PO_MSGID || curLineState == SCE_PO_MSGID_TEXT)
+					sc.SetState(SCE_PO_MSGID_TEXT);
+				else if (curLineState == SCE_PO_MSGSTR || curLineState == SCE_PO_MSGSTR_TEXT)
+					sc.SetState(SCE_PO_MSGSTR_TEXT);
+				else
+					sc.SetState(SCE_PO_ERROR);
+			} else if (! isspacechar(sc.ch))
+				sc.SetState(SCE_PO_ERROR);
+			
+			if (sc.state != SCE_PO_DEFAULT)
+				curLineState = sc.state;
+		}
+		
+		if (sc.atLineEnd) {
+			// Update the line state, so it can be seen by next line
+			curLine = styler.GetLine(sc.currentPos);
+			styler.SetLineState(curLine, curLineState);
 		}
 	}
-	if (linePos > 0) {	// Last line does not have ending characters
-		ColourisePoLine(lineBuffer, linePos, startLine, startPos + length - 1, styler);
-	}
+	sc.Complete();
 }
 
 static inline bool isassignchar(unsigned char ch) {
