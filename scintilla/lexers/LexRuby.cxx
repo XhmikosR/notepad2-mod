@@ -1436,7 +1436,8 @@ static bool keywordIsAmbiguous(const char *prevWord)
         || !strcmp(prevWord, "do")
         || !strcmp(prevWord, "while")
         || !strcmp(prevWord, "unless")
-        || !strcmp(prevWord, "until")) {
+        || !strcmp(prevWord, "until")
+        || !strcmp(prevWord, "for")) {
         return true;
     } else {
         return false;
@@ -1554,6 +1555,7 @@ static bool keywordIsModifier(const char *word,
 
 #define WHILE_BACKWARDS "elihw"
 #define UNTIL_BACKWARDS "litnu"
+#define FOR_BACKWARDS "rof"
 
 // Nothing fancy -- look to see if we follow a while/until somewhere
 // on the current line
@@ -1591,7 +1593,8 @@ static bool keywordDoStartsLoop(int pos,
             *dst = 0;
             // Did we see our keyword?
             if (!strcmp(prevWord, WHILE_BACKWARDS)
-                || !strcmp(prevWord, UNTIL_BACKWARDS)) {
+                || !strcmp(prevWord, UNTIL_BACKWARDS)
+                || !strcmp(prevWord, FOR_BACKWARDS)) {
                 return true;
             }
             // We can move pos to the beginning of the keyword, and then

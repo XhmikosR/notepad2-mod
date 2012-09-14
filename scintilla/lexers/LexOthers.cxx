@@ -614,117 +614,6 @@ static void FoldDiffDoc(unsigned int startPos, int length, int, WordList *[], Ac
 	} while (static_cast<int>(startPos) + length > curLineStart);
 }
 
-// see https://www.gnu.org/software/gettext/manual/gettext.html#PO-Files for the syntax reference
-// some details are taken from the GNU msgfmt behavior (like that indent is allows in front of lines)
-static void ColourisePoDoc(unsigned int startPos, int length, int initStyle, WordList *[], Accessor &styler) {
-	StyleContext sc(startPos, length, initStyle, styler);
-	bool escaped = false;
-	int curLine = styler.GetLine(startPos);
-	// the line state holds the last state on or before the line that isn't the default style
-	int curLineState = curLine > 0 ? styler.GetLineState(curLine - 1) : SCE_PO_DEFAULT;
-	
-	for (; sc.More(); sc.Forward()) {
-		// whether we should leave a state
-		switch (sc.state) {
-			case SCE_PO_COMMENT:
-			case SCE_PO_PROGRAMMER_COMMENT:
-			case SCE_PO_REFERENCE:
-			case SCE_PO_FLAGS:
-			case SCE_PO_FUZZY:
-				if (sc.atLineEnd)
-					sc.SetState(SCE_PO_DEFAULT);
-				else if (sc.state == SCE_PO_FLAGS && sc.Match("fuzzy"))
-					// here we behave like the previous parser, but this should probably be highlighted
-					// on its own like a keyword rather than changing the whole flags style
-					sc.ChangeState(SCE_PO_FUZZY);
-				break;
-			
-			case SCE_PO_MSGCTXT:
-			case SCE_PO_MSGID:
-			case SCE_PO_MSGSTR:
-				if (isspacechar(sc.ch))
-					sc.SetState(SCE_PO_DEFAULT);
-				break;
-			
-			case SCE_PO_ERROR:
-				if (sc.atLineEnd)
-					sc.SetState(SCE_PO_DEFAULT);
-				break;
-			
-			case SCE_PO_MSGCTXT_TEXT:
-			case SCE_PO_MSGID_TEXT:
-			case SCE_PO_MSGSTR_TEXT:
-				if (sc.atLineEnd) { // invalid inside a string
-					if (sc.state == SCE_PO_MSGCTXT_TEXT)
-						sc.ChangeState(SCE_PO_MSGCTXT_TEXT_EOL);
-					else if (sc.state == SCE_PO_MSGID_TEXT)
-						sc.ChangeState(SCE_PO_MSGID_TEXT_EOL);
-					else if (sc.state == SCE_PO_MSGSTR_TEXT)
-						sc.ChangeState(SCE_PO_MSGSTR_TEXT_EOL);
-					sc.SetState(SCE_PO_DEFAULT);
-					escaped = false;
-				} else {
-					if (escaped)
-						escaped = false;
-					else if (sc.ch == '\\')
-						escaped = true;
-					else if (sc.ch == '"')
-						sc.ForwardSetState(SCE_PO_DEFAULT);
-				}
-				break;
-		}
-		
-		// whether we should enter a new state
-		if (sc.state == SCE_PO_DEFAULT) {
-			// forward to the first non-white character on the line
-			bool atLineStart = sc.atLineStart;
-			if (atLineStart) {
-				while (sc.More() && ! sc.atLineEnd && isspacechar(sc.ch))
-					sc.Forward();
-			}
-			
-			if (atLineStart && sc.ch == '#') {
-				if (sc.chNext == '.')
-					sc.SetState(SCE_PO_PROGRAMMER_COMMENT);
-				else if (sc.chNext == ':')
-					sc.SetState(SCE_PO_REFERENCE);
-				else if (sc.chNext == ',')
-					sc.SetState(SCE_PO_FLAGS);
-				else if (sc.chNext == '|')
-					sc.SetState(SCE_PO_COMMENT); // previous untranslated string, no special style yet
-				else
-					sc.SetState(SCE_PO_COMMENT);
-			} else if (atLineStart && sc.Match("msgid")) { // includes msgid_plural
-				sc.SetState(SCE_PO_MSGID);
-			} else if (atLineStart && sc.Match("msgstr")) { // includes [] suffixes
-				sc.SetState(SCE_PO_MSGSTR);
-			} else if (atLineStart && sc.Match("msgctxt")) {
-				sc.SetState(SCE_PO_MSGCTXT);
-			} else if (sc.ch == '"') {
-				if (curLineState == SCE_PO_MSGCTXT || curLineState == SCE_PO_MSGCTXT_TEXT)
-					sc.SetState(SCE_PO_MSGCTXT_TEXT);
-				else if (curLineState == SCE_PO_MSGID || curLineState == SCE_PO_MSGID_TEXT)
-					sc.SetState(SCE_PO_MSGID_TEXT);
-				else if (curLineState == SCE_PO_MSGSTR || curLineState == SCE_PO_MSGSTR_TEXT)
-					sc.SetState(SCE_PO_MSGSTR_TEXT);
-				else
-					sc.SetState(SCE_PO_ERROR);
-			} else if (! isspacechar(sc.ch))
-				sc.SetState(SCE_PO_ERROR);
-			
-			if (sc.state != SCE_PO_DEFAULT)
-				curLineState = sc.state;
-		}
-		
-		if (sc.atLineEnd) {
-			// Update the line state, so it can be seen by next line
-			curLine = styler.GetLine(sc.currentPos);
-			styler.SetLineState(curLine, curLineState);
-		}
-	}
-	sc.Complete();
-}
-
 static inline bool isassignchar(unsigned char ch) {
 	return (ch == '=') || (ch == ':');
 }
@@ -1537,7 +1426,6 @@ static void ColouriseNullDoc(unsigned int startPos, int length, int, WordList *[
 
 LexerModule lmBatch(SCLEX_BATCH, ColouriseBatchDoc, "batch", 0, batchWordListDesc);
 LexerModule lmDiff(SCLEX_DIFF, ColouriseDiffDoc, "diff", FoldDiffDoc, emptyWordListDesc);
-LexerModule lmPo(SCLEX_PO, ColourisePoDoc, "po", 0, emptyWordListDesc);
 LexerModule lmProps(SCLEX_PROPERTIES, ColourisePropsDoc, "props", FoldPropsDoc, emptyWordListDesc);
 LexerModule lmMake(SCLEX_MAKEFILE, ColouriseMakeDoc, "makefile", 0, emptyWordListDesc);
 LexerModule lmErrorList(SCLEX_ERRORLIST, ColouriseErrorListDoc, "errorlist", 0, emptyWordListDesc);
