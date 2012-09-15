@@ -1,4 +1,5 @@
 /bin
+/build.user.bat
 /build/*.opensdf
 /build/*.sdf
 /build/*.suo
