@@ -719,8 +719,10 @@ void SCI_METHOD LexerSQL::Fold(unsigned int startPos, int length, int initStyle,
 							levelNext--; //again for the "end case;" and block when
 					}
 				} else if (!options.foldOnlyBegin) {
-					if (strcmp(s, "case") == 0)
+					if (strcmp(s, "case") == 0) {
 						sqlStatesCurrentLine = sqlStates.BeginCaseBlock(sqlStatesCurrentLine);
+						sqlStatesCurrentLine = sqlStates.CaseMergeWithoutWhenFound(sqlStatesCurrentLine, true);
+					}
 
 					if (levelCurrent > levelNext)
 						levelCurrent = levelNext;
@@ -728,7 +730,6 @@ void SCI_METHOD LexerSQL::Fold(unsigned int startPos, int length, int initStyle,
 					if (!statementFound)
 						levelNext++;
 
-					sqlStatesCurrentLine = sqlStates.CaseMergeWithoutWhenFound(sqlStatesCurrentLine, true);
 					statementFound = true;
 				} else if (levelCurrent > levelNext) {
 					// doesn't include this line into the folding block

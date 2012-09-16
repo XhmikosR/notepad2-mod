@@ -465,7 +465,9 @@ static bool sureThisIsNotHeredoc(int lt2StartPos,
     }
     prevStyle = styler.StyleAt(firstWordPosn);
     // If we have '<<' following a keyword, it's not a heredoc
-    if (prevStyle != SCE_RB_IDENTIFIER) {
+    if (prevStyle != SCE_RB_IDENTIFIER
+        && prevStyle != SCE_RB_INSTANCE_VAR
+        && prevStyle != SCE_RB_CLASS_VAR) {
         return definitely_not_a_here_doc;
     }
     int newStyle = prevStyle;
@@ -495,6 +497,9 @@ static bool sureThisIsNotHeredoc(int lt2StartPos,
         } else {
             break;
         }
+        // on second and next passes, only identifiers may appear since
+        // class and instance variable are private
+        prevStyle = SCE_RB_IDENTIFIER;
     }
     // Skip next batch of white-space
     firstWordPosn = skipWhitespace(firstWordPosn, lt2StartPos, styler);
