@@ -60,22 +60,22 @@ LDFLAGS       = /NOLOGO /WX /INCREMENTAL:NO /RELEASE /OPT:REF /OPT:ICF /MERGE:.r
 LIBS          = advapi32.lib comctl32.lib comdlg32.lib gdi32.lib imm32.lib kernel32.lib \
                 ole32.lib oleaut32.lib psapi.lib shell32.lib shlwapi.lib user32.lib \
                 winspool.lib ntstc_msvcrt.lib
-LIB_FLAGS     = /lib /NOLOGO $(MACHINE) /WX /LTCG
+LIB_FLAGS     = /lib /NOLOGO /MACHINE:$(MACHINE) /WX /LTCG
 RFLAGS        = /l 0x0409 /d "_UNICODE" /d "UNICODE" /d "BOOKMARK_EDITION"
 SCI_CXXFLAGS  = $(CXXFLAGS:/WX=/WX-) /D "STATIC_BUILD" /D "SCI_LEXER" /D "DISABLE_D2D"
 
 
 !IFDEF x64
 DEFINES       = $(DEFINES) /D "_WIN64" /D "_WIN32_WINNT=0x0502"
-MACHINE       = /MACHINE:X64
-LDFLAGS       = $(LDFLAGS) /SUBSYSTEM:WINDOWS,5.02 $(MACHINE)
+MACHINE       = X64
+LDFLAGS       = $(LDFLAGS) /SUBSYSTEM:WINDOWS,5.02 /MACHINE:$(MACHINE)
 LIBS          = $(LIBS) msvcrt_win2003.obj
 RFLAGS        = $(RFLAGS) /d "_WIN64"
 !ELSE
 CXXFLAGS      = $(CXXFLAGS) /Oy
 DEFINES       = $(DEFINES) /D "WIN32" /D "_WIN32_WINNT=0x0501"
-MACHINE       = /MACHINE:X86
-LDFLAGS       = $(LDFLAGS) /SUBSYSTEM:WINDOWS,5.0 $(MACHINE)
+MACHINE       = X86
+LDFLAGS       = $(LDFLAGS) /SUBSYSTEM:WINDOWS,5.0 /MACHINE:$(MACHINE)
 LIBS          = $(LIBS) msvcrt_win2000.obj
 RFLAGS        = $(RFLAGS) /d "WIN32"
 !ENDIF
