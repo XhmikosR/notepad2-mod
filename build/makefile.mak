@@ -3,7 +3,7 @@
 #* Notepad2-mod
 #*
 #* makefile.mak
-#*   makefile for building Notepad2-mod with WDK
+#*   makefile for building Notepad2-mod with WDK 7.1
 #*
 #* See License.txt for details about distribution and modification.
 #*
@@ -21,7 +21,6 @@
 
 CC = cl.exe
 LD = link.exe
-LIB_EXE = lib.exe
 RC = rc.exe
 
 !IFDEF x64
@@ -61,7 +60,7 @@ LDFLAGS       = /NOLOGO /WX /INCREMENTAL:NO /RELEASE /OPT:REF /OPT:ICF /MERGE:.r
 LIBS          = advapi32.lib comctl32.lib comdlg32.lib gdi32.lib imm32.lib kernel32.lib \
                 ole32.lib oleaut32.lib psapi.lib shell32.lib shlwapi.lib user32.lib \
                 winspool.lib ntstc_msvcrt.lib
-LIB_FLAGS     = /NOLOGO $(MACHINE) /WX /LTCG
+LIB_FLAGS     = /lib /NOLOGO $(MACHINE) /WX /LTCG
 RFLAGS        = /l 0x0409 /d "_UNICODE" /d "UNICODE" /d "BOOKMARK_EDITION"
 SCI_CXXFLAGS  = $(CXXFLAGS:/WX=/WX-) /D "STATIC_BUILD" /D "SCI_LEXER" /D "DISABLE_D2D"
 
@@ -228,7 +227,7 @@ SCI_OBJECTS = \
 ##  Commands  ##
 ################
 $(SCI_LIB_TARGET): $(SCI_OBJECTS)
-	$(LIB_EXE) $(LIB_FLAGS) $(SCI_OBJECTS) /OUT:"$(SCI_LIB_TARGET)"
+	$(LD) $(LIB_FLAGS) $(SCI_OBJECTS) /OUT:"$(SCI_LIB_TARGET)"
 
 $(EXE): $(SCI_LIB_TARGET) $(NOTEPAD2_OBJ)
 	$(RC) $(RFLAGS) /fo"$(NP2_SRC_OBJDIR)\Notepad2.res" "$(NP2_SRC)\Notepad2.rc" >NUL
