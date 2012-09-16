@@ -2,7 +2,7 @@
 /** @file LexBash.cxx
  ** Lexer for Bash.
  **/
-// Copyright 2004-2010 by Neil Hodgson <neilh@scintilla.org>
+// Copyright 2004-2012 by Neil Hodgson <neilh@scintilla.org>
 // Adapted from LexPerl by Kein-Hong Man 2004
 // The License.txt file describes the conditions under which this software may be distributed.
 
@@ -163,6 +163,8 @@ static void ColouriseBashDoc(unsigned int startPos, int length, int initStyle,
 	// Always backtracks to the start of a line that is not a continuation
 	// of the previous line (i.e. start of a bash command segment)
 	int ln = styler.GetLine(startPos);
+	if (ln > 0 && startPos == static_cast<unsigned int>(styler.LineStart(ln)))
+		ln--;
 	for (;;) {
 		startPos = styler.LineStart(ln);
 		if (ln == 0 || styler.GetLineState(ln) == BASH_CMD_START)
@@ -376,7 +378,7 @@ static void ColouriseBashDoc(unsigned int startPos, int length, int initStyle,
 						sc.ForwardSetState(SCE_SH_DEFAULT);
 					} else if (sc.ch == '\\') {
 						// skip escape prefix
-					} else {
+					} else if (!HereDoc.Quoted) {
 						sc.SetState(SCE_SH_DEFAULT);
 					}
 					if (HereDoc.DelimiterLength >= HERE_DELIM_MAX - 1) {	// force blowup
@@ -401,8 +403,11 @@ static void ColouriseBashDoc(unsigned int startPos, int length, int initStyle,
 					}
 					char s[HERE_DELIM_MAX];
 					sc.GetCurrent(s, sizeof(s));
-					if (sc.LengthCurrent() == 0)
+					if (sc.LengthCurrent() == 0) {  // '' or "" delimiters
+						if (prefixws == 0 && HereDoc.Quoted && HereDoc.DelimiterLength == 0)
+							sc.SetState(SCE_SH_DEFAULT);
 						break;
+					}
 					if (s[strlen(s) - 1] == '\r')
 						s[strlen(s) - 1] = '\0';
 					if (strcmp(HereDoc.Delimiter, s) == 0) {
@@ -461,8 +466,14 @@ static void ColouriseBashDoc(unsigned int startPos, int length, int initStyle,
 					sc.ChangeState(SCE_SH_ERROR);
 				}
 				// HereDoc.Quote always == '\''
+				sc.SetState(SCE_SH_HERE_Q);
+			} else if (HereDoc.DelimiterLength == 0) {
+				// no delimiter, illegal (but '' and "" are legal)
+				sc.ChangeState(SCE_SH_ERROR);
+				sc.SetState(SCE_SH_DEFAULT);
+			} else {
+				sc.SetState(SCE_SH_HERE_Q);
 			}
-			sc.SetState(SCE_SH_HERE_Q);
 		}
 
 		// update cmdState about the current command segment
@@ -597,6 +608,10 @@ static void ColouriseBashDoc(unsigned int startPos, int length, int initStyle,
 		}// sc.state
 	}
 	sc.Complete();
+	if (sc.state == SCE_SH_HERE_Q) {
+		styler.ChangeLexerState(sc.currentPos, styler.Length());
+	}
+	sc.Complete();
 }
 
 static bool IsCommentLine(int line, Accessor &styler) {
@@ -651,7 +666,7 @@ static void FoldBashDoc(unsigned int startPos, int length, int, WordList *[],
 			if (ch == '<' && chNext == '<') {
 				levelCurrent++;
 			}
-		} else if (style == SCE_SH_HERE_Q && styler.StyleAt(i+1) == SCE_PL_DEFAULT) {
+		} else if (style == SCE_SH_HERE_Q && styler.StyleAt(i+1) == SCE_SH_DEFAULT) {
 			levelCurrent--;
 		}
 		if (atEOL) {
