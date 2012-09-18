@@ -5,8 +5,8 @@ SET PATH=C:\MSYS\bin;%PATH%
 
 ECHO Minifying and combining css files...
 
-cat pygment_trac.css stylesheet.css | cssc > pack.css
-cssc print.css > print.min.css
+cat pygment_trac.css stylesheet.css | cleancss -o pack.css
+cleancss print.css -o print.min.css
 
 ENDLOCAL
 PAUSE
