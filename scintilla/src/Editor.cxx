@@ -220,6 +220,7 @@ Editor::Editor() {
 
 	marginNumberPadding = 3;
 	ctrlCharPadding = 3; // +3 For a blank on front and rounded edge each side
+	lastSegItalicsOffset = 2;
 
 	hsStart = -1;
 	hsEnd = -1;
@@ -2243,7 +2244,7 @@ void Editor::LayoutLine(int line, Surface *surface, ViewStyle &vstyle, LineLayou
 		}
 		// Small hack to make lines that end with italics not cut off the edge of the last character
 		if ((startseg > 0) && lastSegItalics) {
-			ll->positions[startseg] += 2;
+			ll->positions[startseg] += lastSegItalicsOffset;
 		}
 		ll->numCharsInLine = numCharsInLine;
 		ll->numCharsBeforeEOL = numCharsBeforeEOL;
