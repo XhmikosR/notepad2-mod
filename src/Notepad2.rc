@@ -637,9 +637,9 @@ BEGIN
     LTEXT           "",IDC_COPYRIGHT,45,19,174,8
     LTEXT           "",IDC_WEBPAGE2,45,28,174,8,NOT WS_VISIBLE | WS_DISABLED
     CONTROL         "",IDC_WEBPAGE,"SysLink",WS_TABSTOP,45,28,174,10
-    LTEXT           "Visit Notepad2-mod's project page:",IDC_STATIC,45,44,140,8
-    LTEXT           "",IDC_MOD_PAGE2,45,53,140,8,NOT WS_VISIBLE | WS_DISABLED
-    CONTROL         "",IDC_MOD_PAGE,"SysLink",WS_TABSTOP,45,53,140,10
+    LTEXT           "Visit Notepad2-mod's project page:",IDC_STATIC,45,44,174,8
+    LTEXT           "",IDC_MOD_PAGE2,45,53,174,8,NOT WS_VISIBLE | WS_DISABLED
+    CONTROL         "",IDC_MOD_PAGE,"SysLink",WS_TABSTOP,45,53,174,10
     LTEXT           "Contact Florian Balmer:",IDC_STATIC,45,68,140,8
     LTEXT           "",IDC_EMAIL2,45,77,140,8,NOT WS_VISIBLE | WS_DISABLED
     CONTROL         "",IDC_EMAIL,"SysLink",WS_TABSTOP,45,77,140,10
