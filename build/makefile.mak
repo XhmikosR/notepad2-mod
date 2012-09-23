@@ -24,12 +24,12 @@ LD = link.exe
 RC = rc.exe
 
 !IFDEF x64
-BINDIR  = ..\bin\WDK\Release_x64
+BINDIR = ..\bin\WDK\Release_x64
 !ELSE
-BINDIR  = ..\bin\WDK\Release_x86
+BINDIR = ..\bin\WDK\Release_x86
 !ENDIF
-OBJDIR  = $(BINDIR)\obj
-EXE     = $(BINDIR)\Notepad2.exe
+OBJDIR = $(BINDIR)\obj
+EXE    = $(BINDIR)\Notepad2.exe
 SCI_LIB_TARGET = $(OBJDIR)\scintilla\scintilla.lib
 
 

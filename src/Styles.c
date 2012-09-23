@@ -1627,28 +1627,28 @@ KEYWORDLIST KeyWords_AHK = {
 
 
 EDITLEXER lexAHK = { SCLEX_AHK, 63305, L"AutoHotkey Script", L"ahk; ia; scriptlet", L"", &KeyWords_AHK, {
-                    { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
-                    //{ SCE_AHK_DEFAULT, L"Default", L"", L"" },
-                    { MULTI_STYLE(SCE_AHK_COMMENTLINE,SCE_AHK_COMMENTBLOCK,0,0), 63127, L"Comment", L"fore:#008000", L"" },
-                    { SCE_AHK_ESCAPE, 63306, L"Escape", L"fore:#FF8000", L"" },
-                    { SCE_AHK_SYNOPERATOR, 63307, L"Syntax Operator", L"fore:#7F200F", L"" },
-                    { SCE_AHK_EXPOPERATOR, 63308, L"Expression operator", L"fore:#FF4F00", L"" },
-                    { SCE_AHK_STRING, 63131, L"String", L"fore:#404040", L"" },
-                    { SCE_AHK_NUMBER, 63130, L"Number", L"fore:#2F4F7F", L"" },
-                    { SCE_AHK_IDENTIFIER, 63129, L"Identifier", L"fore:#CF2F0F", L"" },
-                    { SCE_AHK_VARREF, 63309, L"Variable dereferencing", L"fore:#CF2F0F; back:#E4FFE4", L"" },
-                    { SCE_AHK_LABEL, 63235, L"Label", L"fore:#000000; back:#FFFFA1", L"" },
-                    { SCE_AHK_WORD_CF, 63310, L"Flow of control", L"fore:#480048; bold", L"" },
-                    { SCE_AHK_WORD_CMD, 63236, L"Command", L"fore:#004080", L"" },
-                    { SCE_AHK_WORD_FN, 63277, L"Function", L"fore:#0F707F; italics", L"" },
-                    { SCE_AHK_WORD_DIR, 63203, L"Directive", L"fore:#F04020; italics", L"" },
-                    { SCE_AHK_WORD_KB, 63311, L"Keys & buttons", L"fore:#FF00FF; bold", L"" },
-                    { SCE_AHK_WORD_VAR, 63312, L"Built-in Variables", L"fore:#CF00CF; italics", L"" },
-                    { SCE_AHK_WORD_SP, 63280, L"Special", L"fore:#0000FF; italics", L"" },
-                    //{ SCE_AHK_WORD_UD, 63106, L"User Defined", L"fore:#800020", L"" },
-                    { SCE_AHK_VARREFKW, 63313, L"Variable keyword", L"fore:#CF00CF; italics; back:#F9F9FF", L"" },
-                    { SCE_AHK_ERROR, 63260, L"Error", L"back:#FFC0C0", L"" },
-                    { -1, 00000, L"", L"", L"" } } };
+                     { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
+                     //{ SCE_AHK_DEFAULT, L"Default", L"", L"" },
+                     { MULTI_STYLE(SCE_AHK_COMMENTLINE,SCE_AHK_COMMENTBLOCK,0,0), 63127, L"Comment", L"fore:#008000", L"" },
+                     { SCE_AHK_ESCAPE, 63306, L"Escape", L"fore:#FF8000", L"" },
+                     { SCE_AHK_SYNOPERATOR, 63307, L"Syntax Operator", L"fore:#7F200F", L"" },
+                     { SCE_AHK_EXPOPERATOR, 63308, L"Expression operator", L"fore:#FF4F00", L"" },
+                     { SCE_AHK_STRING, 63131, L"String", L"fore:#404040", L"" },
+                     { SCE_AHK_NUMBER, 63130, L"Number", L"fore:#2F4F7F", L"" },
+                     { SCE_AHK_IDENTIFIER, 63129, L"Identifier", L"fore:#CF2F0F", L"" },
+                     { SCE_AHK_VARREF, 63309, L"Variable dereferencing", L"fore:#CF2F0F; back:#E4FFE4", L"" },
+                     { SCE_AHK_LABEL, 63235, L"Label", L"fore:#000000; back:#FFFFA1", L"" },
+                     { SCE_AHK_WORD_CF, 63310, L"Flow of control", L"fore:#480048; bold", L"" },
+                     { SCE_AHK_WORD_CMD, 63236, L"Command", L"fore:#004080", L"" },
+                     { SCE_AHK_WORD_FN, 63277, L"Function", L"fore:#0F707F; italics", L"" },
+                     { SCE_AHK_WORD_DIR, 63203, L"Directive", L"fore:#F04020; italics", L"" },
+                     { SCE_AHK_WORD_KB, 63311, L"Keys & buttons", L"fore:#FF00FF; bold", L"" },
+                     { SCE_AHK_WORD_VAR, 63312, L"Built-in Variables", L"fore:#CF00CF; italics", L"" },
+                     { SCE_AHK_WORD_SP, 63280, L"Special", L"fore:#0000FF; italics", L"" },
+                     //{ SCE_AHK_WORD_UD, 63106, L"User Defined", L"fore:#800020", L"" },
+                     { SCE_AHK_VARREFKW, 63313, L"Variable keyword", L"fore:#CF00CF; italics; back:#F9F9FF", L"" },
+                     { SCE_AHK_ERROR, 63260, L"Error", L"back:#FFC0C0", L"" },
+                     { -1, 00000, L"", L"", L"" } } };
 
 
 KEYWORDLIST KeyWords_CMAKE = {
@@ -1681,21 +1681,21 @@ KEYWORDLIST KeyWords_CMAKE = {
 
 
 EDITLEXER lexCmake = { SCLEX_CMAKE, 63324, L"Cmake Script", L"cmake; ctest", L"", &KeyWords_CMAKE, {
-                     { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
-                     //{ SCE_CMAKE_DEFAULT, L"Default", L"", L"" },
-                     { SCE_CMAKE_COMMENT, 63127, L"Comment", L"fore:#008000", L"" },
-                     { MULTI_STYLE(SCE_CMAKE_STRINGDQ,SCE_CMAKE_STRINGLQ,SCE_CMAKE_STRINGRQ,0), 63131, L"String", L"back:#EEEEEE; fore:#7F007F", L"" },
-                     { SCE_CMAKE_COMMANDS, 63277, L"Function", L"fore:#00007F", L"" },
-                     { SCE_CMAKE_PARAMETERS, 63294, L"Parameter", L"fore:#7F200F", L"" },
-                     { SCE_CMAKE_VARIABLE, 63249, L"Variable", L"fore:#CC3300", L"" },
-                     { SCE_CMAKE_WHILEDEF, 63325, L"While def", L"fore:#00007F", L"" },
-                     { SCE_CMAKE_FOREACHDEF, 63326, L"For each def", L"fore:#00007F", L"" },
-                     { SCE_CMAKE_IFDEFINEDEF, 63327, L"If def", L"fore:#00007F", L"" },
-                     { SCE_CMAKE_MACRODEF, 63328, L"Macro def", L"fore:#00007F", L"" },
-                     { SCE_CMAKE_STRINGVAR, 63329, L"Variable within string", L"back:#EEEEEE; fore:#CC3300", L"" },
-                     { SCE_CMAKE_NUMBER, 63130, L"Number", L"fore:#008080", L"" },
-                     //{ SCE_CMAKE_USERDEFINED, 63106, L"User Defined", L"fore:#800020", L"" },
-                     { -1, 00000, L"", L"", L"" } } };
+                       { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
+                       //{ SCE_CMAKE_DEFAULT, L"Default", L"", L"" },
+                       { SCE_CMAKE_COMMENT, 63127, L"Comment", L"fore:#008000", L"" },
+                       { MULTI_STYLE(SCE_CMAKE_STRINGDQ,SCE_CMAKE_STRINGLQ,SCE_CMAKE_STRINGRQ,0), 63131, L"String", L"back:#EEEEEE; fore:#7F007F", L"" },
+                       { SCE_CMAKE_COMMANDS, 63277, L"Function", L"fore:#00007F", L"" },
+                       { SCE_CMAKE_PARAMETERS, 63294, L"Parameter", L"fore:#7F200F", L"" },
+                       { SCE_CMAKE_VARIABLE, 63249, L"Variable", L"fore:#CC3300", L"" },
+                       { SCE_CMAKE_WHILEDEF, 63325, L"While def", L"fore:#00007F", L"" },
+                       { SCE_CMAKE_FOREACHDEF, 63326, L"For each def", L"fore:#00007F", L"" },
+                       { SCE_CMAKE_IFDEFINEDEF, 63327, L"If def", L"fore:#00007F", L"" },
+                       { SCE_CMAKE_MACRODEF, 63328, L"Macro def", L"fore:#00007F", L"" },
+                       { SCE_CMAKE_STRINGVAR, 63329, L"Variable within string", L"back:#EEEEEE; fore:#CC3300", L"" },
+                       { SCE_CMAKE_NUMBER, 63130, L"Number", L"fore:#008080", L"" },
+                       //{ SCE_CMAKE_USERDEFINED, 63106, L"User Defined", L"fore:#800020", L"" },
+                       { -1, 00000, L"", L"", L"" } } };
 
 
 KEYWORDLIST KeyWords_AVS = {
@@ -1774,19 +1774,19 @@ KEYWORDLIST KeyWords_AVS = {
 
 
 EDITLEXER lexAVS = { SCLEX_AVS, 63332, L"AviSynth Script", L"avs; avsi", L"", &KeyWords_AVS, {
-                    { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
-                    //{ SCE_AVS_DEFAULT, L"Default", L"", L"" },
-                    { MULTI_STYLE(SCE_AVS_COMMENTLINE,SCE_AVS_COMMENTBLOCK,SCE_AVS_COMMENTBLOCKN,0), 63127, L"Comment", L"fore:#008000", L"" },
-                    { SCE_AVS_OPERATOR, 63132, L"Operator", L"", L"" },
-                    { MULTI_STYLE(SCE_AVS_STRING,SCE_AVS_TRIPLESTRING,0,0), 63131, L"String", L"fore:#7F007F", L"" },
-                    { SCE_AVS_NUMBER, 63130, L"Number", L"fore:#007F7F", L"" },
-                    { SCE_AVS_KEYWORD, 63333, L"Keywords", L"fore:#00007F; bold", L"" },
-                    { SCE_AVS_FILTER, 63334, L"Filter", L"fore:#00007F; bold", L"" },
-                    { SCE_AVS_PLUGIN, 63335, L"Plugin", L"fore:#0080C0; bold", L"" },
-                    { SCE_AVS_FUNCTION, 63277, L"Function", L"fore:#007F7F", L"" },
-                    { SCE_AVS_CLIPPROP, 63337, L"Clip property", L"fore:#00007F", L"" },
-                    //{ SCE_AVS_USERDFN, 63106, L"User Defined", L"fore:#8000FF", L"" },
-                    { -1, 00000, L"", L"", L"" } } };
+                     { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
+                     //{ SCE_AVS_DEFAULT, L"Default", L"", L"" },
+                     { MULTI_STYLE(SCE_AVS_COMMENTLINE,SCE_AVS_COMMENTBLOCK,SCE_AVS_COMMENTBLOCKN,0), 63127, L"Comment", L"fore:#008000", L"" },
+                     { SCE_AVS_OPERATOR, 63132, L"Operator", L"", L"" },
+                     { MULTI_STYLE(SCE_AVS_STRING,SCE_AVS_TRIPLESTRING,0,0), 63131, L"String", L"fore:#7F007F", L"" },
+                     { SCE_AVS_NUMBER, 63130, L"Number", L"fore:#007F7F", L"" },
+                     { SCE_AVS_KEYWORD, 63333, L"Keywords", L"fore:#00007F; bold", L"" },
+                     { SCE_AVS_FILTER, 63334, L"Filter", L"fore:#00007F; bold", L"" },
+                     { SCE_AVS_PLUGIN, 63335, L"Plugin", L"fore:#0080C0; bold", L"" },
+                     { SCE_AVS_FUNCTION, 63277, L"Function", L"fore:#007F7F", L"" },
+                     { SCE_AVS_CLIPPROP, 63337, L"Clip property", L"fore:#00007F", L"" },
+                     //{ SCE_AVS_USERDFN, 63106, L"User Defined", L"fore:#8000FF", L"" },
+                     { -1, 00000, L"", L"", L"" } } };
 
 
 // This array holds all the lexers...
