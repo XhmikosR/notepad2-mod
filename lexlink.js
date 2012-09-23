@@ -20,6 +20,7 @@
     "lmLatex",
     "lmLua",
     "lmMake",
+    "lmMarkdown",
     "lmNsis",
     "lmNull",
     "lmPascal",

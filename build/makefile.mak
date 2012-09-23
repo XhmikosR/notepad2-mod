@@ -134,6 +134,7 @@ SCI_LEX_OBJ = \
     $(SCI_LEX_OBJDIR)\LexHTML.obj \
     $(SCI_LEX_OBJDIR)\LexInno.obj \
     $(SCI_LEX_OBJDIR)\LexLua.obj \
+    $(SCI_LEX_OBJDIR)\LexMarkdown.obj \
     $(SCI_LEX_OBJDIR)\LexNsis.obj \
     $(SCI_LEX_OBJDIR)\LexOthers.obj \
     $(SCI_LEX_OBJDIR)\LexPascal.obj \
