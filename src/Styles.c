@@ -1790,12 +1790,7 @@ EDITLEXER lexAVS = { SCLEX_AVS, 63332, L"AviSynth Script", L"avs; avsi", L"", &K
 
 
 KEYWORDLIST KeyWords_MARKDOWN = {
-"",
-"",
-"",
-"",
-"",
-"", "", "", "" };
+"", "", "", "", "", "", "", "", "" };
 
 
 EDITLEXER lexMARKDOWN = { SCLEX_MARKDOWN, 63336, L"Markdown", L"md; markdown; mdown; mkdn; mkd", L"", &KeyWords_MARKDOWN, {
@@ -1812,12 +1807,12 @@ EDITLEXER lexMARKDOWN = { SCLEX_MARKDOWN, 63336, L"Markdown", L"md; markdown; md
                           { SCE_MARKDOWN_HEADER5, 63345, L"Header 5", L"fore:#FF0088; bold", L"" },
                           { SCE_MARKDOWN_HEADER6, 63346, L"Header 6", L"fore:#FF0088; bold", L"" },
                           { SCE_MARKDOWN_PRECHAR, 63347, L"Pre char", L"fore:#00007F", L"" },
-                          { SCE_MARKDOWN_ULIST_ITEM, 63348, L"Ulist", L"fore:#00007F; bold", L"" },
-                          { SCE_MARKDOWN_OLIST_ITEM, 63349, L"Olist", L"fore:#00007F; bold", L"" },
+                          { SCE_MARKDOWN_ULIST_ITEM, 63348, L"Ulist", L"fore:#0080FF; bold", L"" },
+                          { SCE_MARKDOWN_OLIST_ITEM, 63349, L"Olist", L"fore:#0080FF; bold", L"" },
                           { SCE_MARKDOWN_BLOCKQUOTE, 63350, L"Block quote", L"fore:#00007F", L"" },
                           { SCE_MARKDOWN_STRIKEOUT, 63351, L"Strikeout", L"", L"" },
-                          { SCE_MARKDOWN_HRULE, 63352, L"HRULE", L"fore:#00007F", L"" },
-                          { SCE_MARKDOWN_LINK, 63353, L"Link", L"fore:#00007F", L"" },
+                          { SCE_MARKDOWN_HRULE, 63352, L"HRULE", L"bold", L"" },
+                          { SCE_MARKDOWN_LINK, 63353, L"Link", L"fore:#0000FF", L"" },
                           { MULTI_STYLE(SCE_MARKDOWN_CODE,SCE_MARKDOWN_CODE2,0,0), 63354, L"Code", L"fore:#00007F", L"" },
                           { SCE_MARKDOWN_CODEBK, 63355, L"Code Block", L"fore:#00007F", L"" },
                           { -1, 00000, L"", L"", L"" } } };
