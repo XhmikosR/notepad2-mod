@@ -7,7 +7,7 @@ Notable changes:
 * Option to mark all occurrences of a word
 * Word auto-completion
 * Syntax highlighting support for AutoHotkey, AutoIt3, AviSynth, Bash,
-  CMake, Inno Setup, LaTeX, Lua, NSIS, Ruby, and Tcl scripts
+  CMake, Inno Setup, LaTeX, Lua, Markdown, NSIS, Ruby, and Tcl scripts
 * Improved support for NFO ANSI art
 * Support for replacing Windows Notepad using a clean, unintrusive registry-based method
 * Other various minor changes and tweaks

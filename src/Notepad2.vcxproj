@@ -194,6 +194,7 @@
     <ClCompile Include="..\scintilla\lexers\LexHTML.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexInno.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexLua.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexMarkdown.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexNsis.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexOthers.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexPascal.cxx" />

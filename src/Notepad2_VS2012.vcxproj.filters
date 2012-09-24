@@ -87,6 +87,9 @@
     <ClCompile Include="..\scintilla\lexers\LexLua.cxx">
       <Filter>Scintilla\lexers</Filter>
     </ClCompile>
+    <ClCompile Include="..\scintilla\lexers\LexMarkdown.cxx">
+      <Filter>Scintilla\lexers</Filter>
+    </ClCompile>
     <ClCompile Include="..\scintilla\lexers\LexNsis.cxx">
       <Filter>Scintilla\lexers</Filter>
     </ClCompile>

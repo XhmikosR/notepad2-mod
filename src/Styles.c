@@ -1789,6 +1789,40 @@ EDITLEXER lexAVS = { SCLEX_AVS, 63332, L"AviSynth Script", L"avs; avsi", L"", &K
                      { -1, 00000, L"", L"", L"" } } };
 
 
+KEYWORDLIST KeyWords_MARKDOWN = {
+"",
+"",
+"",
+"",
+"",
+"", "", "", "" };
+
+
+EDITLEXER lexMARKDOWN = { SCLEX_MARKDOWN, 63336, L"Markdown", L"md; markdown; mdown; mkdn; mkd", L"", &KeyWords_MARKDOWN, {
+                          { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
+                          //{ SCE_MARKDOWN_DEFAULT, L"Default", L"", L"" },
+                          { SCE_MARKDOWN_LINE_BEGIN, 63337, L"Line Begin", L"", L"" },
+                          { MULTI_STYLE(SCE_MARKDOWN_STRONG1,SCE_MARKDOWN_STRONG2,0,0), 63338, L"Strong", L"bold", L"" },
+                          { SCE_MARKDOWN_EM1, 63339, L"EM1", L"italic", L"" },
+                          { SCE_MARKDOWN_EM2, 63340, L"EM2", L"italic", L"" },
+                          { SCE_MARKDOWN_HEADER1, 63341, L"Header 1", L"fore:#FF0088; bold", L"" },
+                          { SCE_MARKDOWN_HEADER2, 63342, L"Header 2", L"fore:#FF0088; bold", L"" },
+                          { SCE_MARKDOWN_HEADER3, 63343, L"Header 3", L"fore:#FF0088; bold", L"" },
+                          { SCE_MARKDOWN_HEADER4, 63344, L"Header 4", L"fore:#FF0088; bold", L"" },
+                          { SCE_MARKDOWN_HEADER5, 63345, L"Header 5", L"fore:#FF0088; bold", L"" },
+                          { SCE_MARKDOWN_HEADER6, 63346, L"Header 6", L"fore:#FF0088; bold", L"" },
+                          { SCE_MARKDOWN_PRECHAR, 63347, L"Pre char", L"fore:#00007F", L"" },
+                          { SCE_MARKDOWN_ULIST_ITEM, 63348, L"Ulist", L"fore:#00007F; bold", L"" },
+                          { SCE_MARKDOWN_OLIST_ITEM, 63349, L"Olist", L"fore:#00007F; bold", L"" },
+                          { SCE_MARKDOWN_BLOCKQUOTE, 63350, L"Block quote", L"fore:#00007F", L"" },
+                          { SCE_MARKDOWN_STRIKEOUT, 63351, L"Strikeout", L"", L"" },
+                          { SCE_MARKDOWN_HRULE, 63352, L"HRULE", L"fore:#00007F", L"" },
+                          { SCE_MARKDOWN_LINK, 63353, L"Link", L"fore:#00007F", L"" },
+                          { MULTI_STYLE(SCE_MARKDOWN_CODE,SCE_MARKDOWN_CODE2,0,0), 63354, L"Code", L"fore:#00007F", L"" },
+                          { SCE_MARKDOWN_CODEBK, 63355, L"Code Block", L"fore:#00007F", L"" },
+                          { -1, 00000, L"", L"", L"" } } };
+
+
 // This array holds all the lexers...
 // Don't forget to change the number of the lexer for HTML and XML
 // in Notepad2.c ParseCommandLine() if you change this array!
@@ -1812,6 +1846,7 @@ PEDITLEXER pLexArray[NUMLEXERS] =
   &lexJAVA,
   &lexJS,
   &lexMAK,
+  &lexMARKDOWN,
   &lexLATEX,
   &lexLUA,
   &lexNSIS,
