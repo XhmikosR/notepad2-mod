@@ -15,24 +15,21 @@ _A modified version (fork) of Notepad2 based on Kai Liu's and other people's pat
 * Windows 2000 (when compiled with WDK, which is the default build)
 * XP (SP3, SP2 might or might not work), Vista, 7 and 8 both 32-bit and 64-bit
 
-# [Screenshots] (https://github.com/XhmikosR/notepad2-mod/wiki/Screenshots)
+# [Screenshots] (http://xhmikosr.github.com/notepad2-mod/screenshots)
 
 # Notes:
-* If you find any bugs or have any suggestions for the implemented lexers (and **not** only) feel free to **provide patches/pull requests**.
+* If you find any bugs or have any suggestions for the implemented lexers (and **not** only) feel free to **provide patches/pull requests**. Without patches or PR chances are that nothing will be fixed/implemented.
 * I'm not interested in any **localization** of Notepad2.
 
 # Contributors:
-* Kai Liu
-* RL Vision
+* [Kai Liu] (http://code.kliu.org/misc/notepad2/)
+* [RL Vision] (http://www.rlvision.com/notepad2/about.asp)
 * Aleksandar Lekov
 * Bruno Barbieri
 
 # More information:
-* Source code and binaries:  https://github.com/XhmikosR/notepad2-mod
-* Official Notepad2 website: http://www.flos-freeware.ch/notepad2.html
-* Code folding usage guide:  https://github.com/XhmikosR/notepad2-mod/wiki/Code-Folding-Usage
-* Kai Liu's website:         http://code.kliu.org/misc/notepad2/
-* Bookmark Edition website:  http://www.rlvision.com/notepad2/about.asp
+* [Official Notepad2 website] (http://www.flos-freeware.ch/notepad2.html)
+* [Code folding usage guide] (https://github.com/XhmikosR/notepad2-mod/wiki/Code-Folding-Usage)
 
 # Changed keyboard shortcuts compared to Notepad2:
 `Ctrl+Alt+F2`       Expand selection to next match.  
