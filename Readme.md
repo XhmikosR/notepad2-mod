@@ -18,7 +18,7 @@ _A modified version (fork) of Notepad2 based on Kai Liu's and other people's pat
 # [Screenshots] (https://github.com/XhmikosR/notepad2-mod/wiki/Screenshots)
 
 # Notes:
-* If you find any bugs or have any suggestions for the implemented lexers (and **not** only) feel free to **provide patches/pull requests**.
+* If you find any bugs or have any suggestions for the implemented lexers (and **not** only) feel free to **provide patches/pull requests**. Without patches or PR chances are that nothing will be fixed/implemented.
 * I'm not interested in any **localization** of Notepad2.
 
 # Contributors:
