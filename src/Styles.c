@@ -541,12 +541,12 @@ EDITLEXER lexMAK = { SCLEX_MAKEFILE, 63007, L"Makefiles", L"mak; make; mk; dsp; 
 
 
 KEYWORDLIST KeyWords_VBS = {
-"alias and as attribute begin boolean byref byte byval call case class compare const continue "
-"currency date declare dim do double each else elseif empty end enum eqv erase error event exit "
-"explicit false for friend function get global gosub goto if imp implement in integer is let lib "
-"load long loop lset me mid mod module new next not nothing null object on option optional or "
-"preserve private property public raiseevent redim rem resume return rset select set single "
-"static stop string sub then to true type unload until variant wend while with withevents xor",
+"Alias And As Attribute Begin Boolean ByRef Byte ByVal Call Case Class Compare Const Continue "
+"Currency Date Declare Dim Do Double Each Else ElseIf Empty End Enum Eqv Erase Error Event Exit "
+"Explicit False For Friend Function Get Global GoSub Goto If Imp Implement In Integer Is Let Lib "
+"Load Long Loop LSet Me Mid Mod Module New Next Not Nothing Null Object On Option Optional Or "
+"Preserve Private Property Public RaiseEvent ReDim Rem Resume Return RSet Select Set Single "
+"Static Stop String Sub Then To True Type Unload Until Variant Wend While With WithEvents Xor",
 "", "", "", "", "", "", "", "" };
 
 
@@ -570,17 +570,17 @@ EDITLEXER lexVBS = { SCLEX_VBSCRIPT, 63008, L"VBScript", L"vbs; dsm", L"", &KeyW
 
 
 KEYWORDLIST KeyWords_VB = {
-"addhandler addressof alias and andalso ansi any as assembly auto boolean byref byte byval call "
-"case catch cbool cbyte cchar cdate cdbl cdec char cint class clng cobj compare const cshort csng "
-"cstr ctype date decimal declare default delegate dim directcast do double each else elseif end "
-"enum erase error event exit explicit externalsource false finally for friend function get "
-"gettype gosub goto handles if implements imports in inherits integer interface is let lib like "
-"long loop me mid mod module mustinherit mustoverride mybase myclass namespace new next not "
-"nothing notinheritable notoverridable object on option optional or orelse overloads overridable "
-"overrides paramarray preserve private property protected public raiseevent randomize readonly "
-"redim rem removehandler resume return select set shadows shared short single static step stop "
-"strict string structure sub synclock then throw to true try typeof unicode until variant when "
-"while with withevents writeonly xor",
+"Addhandler AddressOf Alias And AndAlso Ansi Any As Assembly Auto Boolean ByRef Byte ByVal Call "
+"Case Catch CBool CByte CChar CDate CDbl CDec Char CInt Class CLng CObj Compare Const CShort CSng "
+"CStr CType Date Decimal Declare Default Delegate Dim DirectCast Do Double Each Else ElseIf End "
+"Enum Erase Error Event Exit Explicit ExternalSource False Finally For Friend Function Get "
+"GetType GoSub Goto Handles If Implements Imports In Inherits Integer Interface Is Let Lib Like "
+"Long Loop Me Mid Mod Module MustInherit MustOverride MyBase MyClass Namespace New Next Not "
+"Nothing NotInheritable NotOverridable Object On Option Optional Or OrElse Overloads Overridable "
+"Overrides ParamArray Preserve Private Property Protected Public RaiseEvent Randomize Readonly "
+"ReDim Rem RemoveHandler Resume Return Select Set Shadows Shared Short Single Static Step Stop "
+"Strict String Structure Sub SyncLock Then Throw To True Try TypeOf Unicode Until Variant When "
+"While With WithEvents WriteOnly Xor",
 "", "", "", "", "", "", "", "" };
 
 
@@ -969,52 +969,107 @@ EDITLEXER lexPY = { SCLEX_PYTHON, 63019, L"Python Script", L"py; pyw", L"", &Key
 
 
 KEYWORDLIST KeyWords_CONF = {
-"acceptmutex acceptpathinfo accessconfig accessfilename action addalt addaltbyencoding addaltbytype addcharset adddefaultcharset "
-"adddescription addencoding addhandler addicon addiconbyencoding addiconbytype addinputfilter addlanguage addmodule addmoduleinfo "
-"addoutputfilter addoutputfilterbytype addtype agentlog alias aliasmatch all allow allowconnect allowencodedslashes allowoverride "
-"anonymous anonymous_authoritative anonymous_logemail anonymous_mustgiveemail anonymous_nouserid anonymous_verifyemail "
-"assignuserid authauthoritative authdbauthoritative authdbgroupfile authdbmauthoritative authdbmgroupfile authdbmtype "
-"authdbmuserfile authdbuserfile authdigestalgorithm authdigestdomain authdigestfile authdigestgroupfile authdigestnccheck "
-"authdigestnonceformat authdigestnoncelifetime authdigestqop authdigestshmemsize authgroupfile authldapauthoritative "
-"authldapbinddn authldapbindpassword authldapcharsetconfig authldapcomparednonserver authldapdereferencealiases authldapenabled "
-"authldapfrontpagehack authldapgroupattribute authldapgroupattributeisdn authldapremoteuserisdn authldapurl authname authtype "
-"authuserfile bindaddress browsermatch browsermatchnocase bs2000account bufferedlogs cachedefaultexpire cachedirlength "
-"cachedirlevels cachedisable cacheenable cacheexpirycheck cachefile cacheforcecompletion cachegcclean cachegcdaily "
-"cachegcinterval cachegcmemusage cachegcunused cacheignorecachecontrol cacheignoreheaders cacheignorenolastmod "
-"cachelastmodifiedfactor cachemaxexpire cachemaxfilesize cacheminfilesize cachenegotiateddocs cacheroot cachesize cachetimemargin "
-"cgimapextension charsetdefault charsetoptions charsetsourceenc checkspelling childperuserid clearmodulelist contentdigest "
-"cookiedomain cookieexpires cookielog cookiename cookiestyle cookietracking coredumpdirectory customlog dav davdepthinfinity "
-"davlockdb davmintimeout defaulticon defaultlanguage defaulttype define deflatebuffersize deflatecompressionlevel "
-"deflatefilternote deflatememlevel deflatewindowsize deny directory directoryindex directorymatch directoryslash documentroot "
-"dumpioinput dumpiooutput enableexceptionhook enablemmap enablesendfile errordocument errorlog example expiresactive "
-"expiresbytype expiresdefault extendedstatus extfilterdefine extfilteroptions fancyindexing fileetag files filesmatch "
-"forcelanguagepriority forcetype forensiclog from group header headername hostnamelookups identitycheck ifdefine ifmodule "
-"imapbase imapdefault imapmenu include indexignore indexoptions indexorderdefault isapiappendlogtoerrors isapiappendlogtoquery "
-"isapicachefile isapifakeasync isapilognotsupported isapireadaheadbuffer keepalive keepalivetimeout languagepriority "
-"ldapcacheentries ldapcachettl ldapconnectiontimeout ldapopcacheentries ldapopcachettl ldapsharedcachefile ldapsharedcachesize "
-"ldaptrustedca ldaptrustedcatype limit limitexcept limitinternalrecursion limitrequestbody limitrequestfields "
-"limitrequestfieldsize limitrequestline limitxmlrequestbody listen listenbacklog loadfile loadmodule location locationmatch "
-"lockfile logformat loglevel maxclients maxkeepaliverequests maxmemfree maxrequestsperchild maxrequestsperthread maxspareservers "
-"maxsparethreads maxthreads maxthreadsperchild mcachemaxobjectcount mcachemaxobjectsize mcachemaxstreamingbuffer "
-"mcacheminobjectsize mcacheremovalalgorithm mcachesize metadir metafiles metasuffix mimemagicfile minspareservers minsparethreads "
-"mmapfile modmimeusepathinfo multiviewsmatch namevirtualhost nocache noproxy numservers nwssltrustedcerts nwsslupgradeable "
-"options order passenv pidfile port protocolecho proxy proxybadheader proxyblock proxydomain proxyerroroverride proxyiobuffersize "
-"proxymatch proxymaxforwards proxypass proxypassreverse proxypreservehost proxyreceivebuffersize proxyremote proxyremotematch "
-"proxyrequests proxytimeout proxyvia qsc readmename redirect redirectmatch redirectpermanent redirecttemp refererignore "
-"refererlog removecharset removeencoding removehandler removeinputfilter removelanguage removeoutputfilter removetype "
-"requestheader require resourceconfig rewritebase rewritecond rewriteengine rewritelock rewritelog rewriteloglevel rewritemap "
-"rewriteoptions rewriterule rlimitcpu rlimitmem rlimitnproc satisfy scoreboardfile script scriptalias scriptaliasmatch "
-"scriptinterpretersource scriptlog scriptlogbuffer scriptloglength scriptsock securelisten sendbuffersize serveradmin serveralias "
-"serverlimit servername serverpath serverroot serversignature servertokens servertype setenv setenvif setenvifnocase sethandler "
-"setinputfilter setoutputfilter singlelisten ssiendtag ssierrormsg ssistarttag ssitimeformat ssiundefinedecho "
-"sslcacertificatefile sslcacertificatepath sslcarevocationfile sslcarevocationpath sslcertificatechainfile sslcertificatefile "
-"sslcertificatekeyfile sslciphersuite sslengine sslmutex ssloptions sslpassphrasedialog sslprotocol sslproxycacertificatefile "
-"sslproxycacertificatepath sslproxycarevocationfile sslproxycarevocationpath sslproxyciphersuite sslproxyengine "
-"sslproxymachinecertificatefile sslproxymachinecertificatepath sslproxyprotocol sslproxyverify sslproxyverifydepth sslrandomseed "
-"sslrequire sslrequiressl sslsessioncache sslsessioncachetimeout sslusername sslverifyclient sslverifydepth startservers "
-"startthreads suexecusergroup threadlimit threadsperchild threadstacksize timeout transferlog typesconfig unsetenv "
-"usecanonicalname user userdir virtualdocumentroot virtualdocumentrootip virtualhost virtualscriptalias virtualscriptaliasip "
-"win32disableacceptex xbithack",
+"AuthnProviderAlias AuthzProviderAlias Directory DirectoryMatch Else ElseIf Files FilesMatch If "
+"IfDefine IfModule IfVersion Limit LimitExcept Location LocationMatch Proxy ProxyMatch RequireAll "
+"RequireAny RequireNone VirtualHost "
+
+"AcceptFilter AcceptMutex AcceptPathInfo AccessFileName Action AddAlt AddAltByEncoding AddAltByType "
+"AddCharset AddDefaultCharset AddDescription AddEncoding AddHandler AddIcon AddIconByEncoding "
+"AddIconByType AddInputFilter AddLanguage AddModuleInfo AddOutputFilter AddOutputFilterByType AddType "
+"Alias AliasMatch Allow AllowCONNECT AllowEncodedSlashes AllowMethods AllowOverride AllowOverrideList "
+"Anonymous Anonymous_LogEmail Anonymous_MustGiveEmail Anonymous_NoUserID Anonymous_VerifyEmail "
+"AsyncRequestWorkerFactor AuthBasicAuthoritative AuthBasicProvider AuthDBDUserPWQuery "
+"AuthDBDUserRealmQuery AuthDBMGroupFile AuthDBMType AuthDBMUserFile AuthDefaultAuthoritative "
+"AuthDigestAlgorithm AuthDigestDomain AuthDigestNcCheck AuthDigestNonceFormat AuthDigestNonceLifetime "
+"AuthDigestProvider AuthDigestQop AuthDigestShmemSize AuthFormAuthoritative AuthFormBody "
+"AuthFormDisableNoStore AuthFormFakeBasicAuth AuthFormLocation AuthFormLoginRequiredLocation "
+"AuthFormLoginSuccessLocation AuthFormLogoutLocation AuthFormMethod AuthFormMimetype AuthFormPassword "
+"AuthFormProvider AuthFormSitePassphrase AuthFormSize AuthFormUsername AuthGroupFile AuthLDAPAuthorizePrefix "
+"AuthLDAPBindAuthoritative AuthLDAPBindDN AuthLDAPBindPassword AuthLDAPCharsetConfig AuthLDAPCompareAsUser "
+"AuthLDAPCompareDNOnServer AuthLDAPDereferenceAliases AuthLDAPGroupAttribute AuthLDAPGroupAttributeIsDN "
+"AuthLDAPInitialBindAsUser AuthLDAPInitialBindPattern AuthLDAPMaxSubGroupDepth AuthLDAPRemoteUserAttribute "
+"AuthLDAPRemoteUserIsDN AuthLDAPSearchAsUser AuthLDAPSubGroupAttribute AuthLDAPSubGroupClass AuthLDAPUrl "
+"AuthMerging AuthName AuthnCacheContext AuthnCacheEnable AuthnCacheProvideFor AuthnCacheSOCache "
+"AuthnCacheTimeout AuthType AuthUserFile AuthzDBDLoginToReferer AuthzDBDQuery AuthzDBDRedirectQuery "
+"AuthzDBMAuthoritative AuthzDBMType AuthzDefaultAuthoritative AuthzGroupFileAuthoritative "
+"AuthzLDAPAuthoritative AuthzOwnerAuthoritative AuthzSendForbiddenOnFailure AuthzUserAuthoritative "
+"BalancerGrowth BalancerMember BrowserMatch BrowserMatchNoCase BufferedLogs BufferSize CacheDefaultExpire "
+"CacheDetailHeader CacheDirLength CacheDirLevels CacheDisable CacheEnable CacheFile CacheHeader "
+"CacheIgnoreCacheControl CacheIgnoreHeaders CacheIgnoreNoLastMod CacheIgnoreQueryString "
+"CacheIgnoreURLSessionIdentifiers CacheKeyBaseURL CacheLastModifiedFactor CacheLock CacheLockMaxAge "
+"CacheLockPath CacheMaxExpire CacheMaxFileSize CacheMinExpire CacheMinFileSize CacheNegotiatedDocs "
+"CacheQuickHandler CacheReadSize CacheReadTime CacheRoot CacheStaleOnError CacheStoreExpired "
+"CacheStoreNoStore CacheStorePrivate CGIMapExtension CharsetDefault CharsetOptions CharsetSourceEnc "
+"CheckCaseOnly CheckSpelling ChrootDir ContentDigest CookieDomain CookieExpires CookieLog CookieName "
+"CookieStyle CookieTracking CoreDumpDirectory CustomLog Dav DavDepthInfinity DavGenericLockDB DavLockDB "
+"DavMinTimeout DBDExptime DBDInitSQL DBDKeep DBDMax DBDMin DBDParams DBDPersist DBDPrepareSQL DBDriver "
+"DefaultIcon DefaultLanguage DefaultRuntimeDir DefaultType Define DeflateBufferSize DeflateCompressionLevel "
+"DeflateFilterNote DeflateMemLevel DeflateWindowSize Deny DirectoryIndex DirectoryIndexRedirect "
+"DirectorySlash DocumentRoot DTracePrivileges DumpIOInput DumpIOLogLevel DumpIOOutput EnableExceptionHook "
+"EnableMMAP EnableSendfile Error ErrorDocument ErrorLog ErrorLogFormat Example ExpiresActive ExpiresByType "
+"ExpiresDefault ExtendedStatus ExtFilterDefine ExtFilterOptions FallbackResource FileETag FilterChain "
+"FilterDeclare FilterProtocol FilterProvider FilterTrace ForceLanguagePriority ForceType ForensicLog "
+"GprofDir GracefulShutdownTimeout Group Header HeaderName HeartbeatAddress HeartbeatListen "
+"HeartbeatMaxServers HeartbeatStorage HostnameLookups IdentityCheck IdentityCheckTimeout ImapBase "
+"ImapDefault ImapMenu Include IncludeOptional IndexHeadInsert IndexIgnore IndexIgnoreReset IndexOptions "
+"IndexOrderDefault IndexStyleSheet InputSed ISAPIAppendLogToErrors ISAPIAppendLogToQuery ISAPICacheFile "
+"ISAPIFakeAsync ISAPILogNotSupported ISAPIReadAheadBuffer KeepAlive KeepAliveTimeout KeptBodySize "
+"LanguagePriority LDAPCacheEntries LDAPCacheTTL LDAPConnectionPoolTTL LDAPConnectionTimeout "
+"LDAPLibraryDebug LDAPOpCacheEntries LDAPOpCacheTTL LDAPReferralHopLimit LDAPReferrals LDAPRetries "
+"LDAPRetryDelay LDAPSharedCacheFile LDAPSharedCacheSize LDAPTimeout LDAPTrustedClientCert "
+"LDAPTrustedGlobalCert LDAPTrustedMode LDAPVerifyServerCert LimitInternalRecursion LimitRequestBody "
+"LimitRequestFields LimitRequestFieldSize LimitRequestLine LimitXMLRequestBody Listen ListenBackLog "
+"LoadFile LoadModule LockFile LogFormat LogLevel LogMessage LuaAuthzProvider LuaHookAccessChecker "
+"LuaHookAuthChecker LuaHookCheckUserID LuaHookFixups LuaHookInsertFilter LuaHookMapToStorage "
+"LuaHookTranslateName LuaHookTypeChecker LuaInherit LuaPackageCPath LuaPackagePath LuaQuickHandler "
+"LuaRoot LuaScope MaxClients MaxConnectionsPerChild MaxKeepAliveRequests MaxMemFree MaxRangeOverlaps "
+"MaxRangeReversals MaxRanges MaxRequestsPerChild MaxRequestsPerThread MaxRequestWorkers MaxSpareServers "
+"MaxSpareThreads MaxThreads MCacheMaxObjectCount MCacheMaxObjectSize MCacheMaxStreamingBuffer "
+"MCacheMinObjectSize MCacheRemovalAlgorithm MCacheSize MetaDir MetaFiles MetaSuffix MimeMagicFile "
+"MinSpareServers MinSpareThreads MMapFile ModemStandard ModMimeUsePathInfo MultiviewsMatch Mutex "
+"NameVirtualHost NoProxy NWSSLTrustedCerts NWSSLUpgradeable Options Order OutputSed PassEnv PidFile "
+"PrivilegesMode Protocol ProtocolEcho ProxyAddHeaders ProxyBadHeader ProxyBlock ProxyDomain "
+"ProxyErrorOverride ProxyExpressDBMFile ProxyExpressDBMType ProxyExpressEnable ProxyFtpDirCharset "
+"ProxyFtpEscapeWildcards ProxyFtpListOnWildcard ProxyHTMLBufSize ProxyHTMLCharsetOut ProxyHTMLDocType "
+"ProxyHTMLEnable ProxyHTMLEvents ProxyHTMLExtended ProxyHTMLFixups ProxyHTMLInterp ProxyHTMLLinks "
+"ProxyHTMLMeta ProxyHTMLStripComments ProxyHTMLURLMap ProxyIOBufferSize ProxyMaxForwards ProxyPass "
+"ProxyPassInterpolateEnv ProxyPassMatch ProxyPassReverse ProxyPassReverseCookieDomain "
+"ProxyPassReverseCookiePath ProxyPreserveHost ProxyReceiveBufferSize ProxyRemote ProxyRemoteMatch "
+"ProxyRequests ProxySCGIInternalRedirect ProxySCGISendfile ProxySet ProxySourceAddress ProxyStatus "
+"ProxyTimeout ProxyVia ReadmeName ReceiveBufferSize Redirect RedirectMatch RedirectPermanent "
+"RedirectTemp ReflectorHeader RemoteIPHeader RemoteIPInternalProxy RemoteIPInternalProxyList "
+"RemoteIPProxiesHeader RemoteIPTrustedProxy RemoteIPTrustedProxyList RemoveCharset RemoveEncoding "
+"RemoveHandler RemoveInputFilter RemoveLanguage RemoveOutputFilter RemoveType RequestHeader "
+"RequestReadTimeout Require RewriteBase RewriteCond RewriteEngine RewriteLock RewriteLog RewriteLogLevel "
+"RewriteMap RewriteOptions RewriteRule RLimitCPU RLimitMEM RLimitNPROC Satisfy ScoreBoardFile Script "
+"ScriptAlias ScriptAliasMatch ScriptInterpreterSource ScriptLog ScriptLogBuffer ScriptLogLength "
+"ScriptSock SecureListen SeeRequestTail SendBufferSize ServerAdmin ServerAlias ServerLimit ServerName "
+"ServerPath ServerRoot ServerSignature ServerTokens Session SessionCookieName SessionCookieName2 "
+"SessionCookieRemove SessionCryptoCipher SessionCryptoDriver SessionCryptoPassphrase "
+"SessionCryptoPassphraseFile SessionDBDCookieName SessionDBDCookieName2 SessionDBDCookieRemove "
+"SessionDBDDeleteLabel SessionDBDInsertLabel SessionDBDPerUser SessionDBDSelectLabel SessionDBDUpdateLabel "
+"SessionEnv SessionExclude SessionHeader SessionInclude SessionMaxAge SetEnv SetEnvIf SetEnvIfExpr "
+"SetEnvIfNoCase SetHandler SetInputFilter SetOutputFilter SSIEnableAccess SSIEndTag SSIErrorMsg "
+"SSIETag SSILastModified SSILegacyExprParser SSIStartTag SSITimeFormat SSIUndefinedEcho "
+"SSLCACertificateFile SSLCACertificatePath SSLCADNRequestFile SSLCADNRequestPath SSLCARevocationCheck "
+"SSLCARevocationFile SSLCARevocationPath SSLCertificateChainFile SSLCertificateFile SSLCertificateKeyFile "
+"SSLCipherSuite SSLCompression SSLCryptoDevice SSLEngine SSLFIPS SSLHonorCipherOrder SSLInsecureRenegotiation "
+"SSLMutex SSLOCSPDefaultResponder SSLOCSPEnable SSLOCSPOverrideResponder SSLOCSPResponderTimeout "
+"SSLOCSPResponseMaxAge SSLOCSPResponseTimeSkew SSLOptions SSLPassPhraseDialog SSLProtocol "
+"SSLProxyCACertificateFile SSLProxyCACertificatePath SSLProxyCARevocationCheck SSLProxyCARevocationFile "
+"SSLProxyCARevocationPath SSLProxyCheckPeerCN SSLProxyCheckPeerExpire SSLProxyCipherSuite SSLProxyEngine "
+"SSLProxyMachineCertificateChainFile SSLProxyMachineCertificateFile SSLProxyMachineCertificatePath "
+"SSLProxyProtocol SSLProxyVerify SSLProxyVerifyDepth SSLRandomSeed SSLRenegBufferSize SSLRequire "
+"SSLRequireSSL SSLSessionCache SSLSessionCacheTimeout SSLSessionTicketKeyFile SSLStaplingCache "
+"SSLStaplingErrorCacheTimeout SSLStaplingFakeTryLater SSLStaplingForceURL SSLStaplingResponderTimeout "
+"SSLStaplingResponseMaxAge SSLStaplingResponseTimeSkew SSLStaplingReturnResponderErrors "
+"SSLStaplingStandardCacheTimeout SSLStrictSNIVHostCheck SSLUserName SSLUseStapling SSLVerifyClient "
+"SSLVerifyDepth StartServers StartThreads Substitute Suexec SuexecUserGroup ThreadLimit ThreadsPerChild "
+"ThreadStackSize TimeOut TraceEnable TransferLog TypesConfig UnDefine UnsetEnv UseCanonicalName "
+"UseCanonicalPhysicalPort User UserDir VHostCGIMode VHostCGIPrivs VHostGroup VHostPrivs VHostSecure "
+"VHostUser VirtualDocumentRoot VirtualDocumentRootIP VirtualScriptAlias VirtualScriptAliasIP "
+"WatchdogInterval Win32DisableAcceptEx XBitHack xml2EncAlias xml2EncDefault xml2StartParse"
+,
 "", //"on off standalone inetd force-response-1.0 downgrade-1.0 nokeepalive indexes includes followsymlinks none x-compress x-gzip",
 "", "", "", "", "", "", "" };
 
@@ -1878,6 +1933,19 @@ extern int  iDefaultCharSet;
 extern BOOL bHiliteCurrentLine;
 
 
+__inline BOOL IsLexerUsingLowerKeywords(PEDITLEXER pLex)
+{
+	switch (pLex->iLexer) {
+		case SCLEX_VB:			// VB
+		case SCLEX_VBSCRIPT:	// VBS
+		case SCLEX_CONF:		// Apache Config
+			return TRUE;
+		default:
+			return FALSE;
+	}
+}
+
+
 //=============================================================================
 //
 //  Style_Load()
@@ -2169,8 +2237,35 @@ void Style_SetLexer(HWND hwnd,PEDITLEXER pLexNew)
   SciCall_SetProperty("fold.cpp.comment.explicit", "0");
 
   // Add KeyWord Lists
-  for (i = 0; i < 9; i++)
-    SendMessage(hwnd,SCI_SETKEYWORDS,i,(LPARAM)pLexNew->pKeyWords->pszKeyWords[i]);
+	if (IsLexerUsingLowerKeywords(pLexNew)) {
+		const char *pKeywords;
+		char *lowerKeywords;
+		char ch;
+		int wLen;
+		for (i = 0; i <= KEYWORDSET_MAX; i++) {
+			pKeywords = pLexNew->pKeyWords->pszKeyWords[i];
+			if (*pKeywords) {
+				wLen = lstrlenA(pKeywords);
+				lowerKeywords = LocalAlloc(LPTR, wLen + 1);
+				lstrcpyA(lowerKeywords, pKeywords);
+				while ((ch = *lowerKeywords)) {
+					if (ch >= 'A' && ch <= 'Z') {
+						*lowerKeywords = ch - 'A' + 'a';
+					}
+					lowerKeywords++;
+				}
+				lowerKeywords -= wLen;
+				SendMessage(hwnd, SCI_SETKEYWORDS, i, (LPARAM)lowerKeywords);
+				LocalFree(lowerKeywords);
+			} else {
+				SendMessage(hwnd, SCI_SETKEYWORDS, i, (LPARAM)"");
+			}
+		}
+	} else {
+		for (i = 0; i <= KEYWORDSET_MAX; i++) {
+			SendMessage(hwnd, SCI_SETKEYWORDS, i, (LPARAM)pLexNew->pKeyWords->pszKeyWords[i]);
+		}
+	}
 
   // Use 2nd default style
   iIdx = (bUse2ndDefaultStyle) ? 12 : 0;

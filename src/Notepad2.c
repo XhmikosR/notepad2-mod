@@ -250,6 +250,7 @@ UINT cpLastFind = 0;
 BOOL bReplaceInitialized = FALSE;
 
 extern NP2ENCODING mEncoding[];
+extern PEDITLEXER pLexCurrent;
 
 int iLineEndings[3] = {
   SC_EOL_CRLF,
@@ -265,6 +266,7 @@ WCHAR wchAppendLines[256] = L"";
 
 int   iSortOptions = 0;
 int   iAlignMode   = 0;
+int   iMatchesCount = 0;
 
 BOOL      fIsElevated = FALSE;
 WCHAR     wchWndClass[16] = WC_NOTEPAD2;
@@ -1142,7 +1144,6 @@ LRESULT CALLBACK MainWndProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lParam)
     // update Scintilla colors
     case WM_SYSCOLORCHANGE:
       {
-        extern PEDITLEXER pLexCurrent;
         Style_SetLexer(hwndEdit,pLexCurrent);
         return DefWindowProc(hwnd,umsg,wParam,lParam);
       }
@@ -3976,26 +3977,31 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
     case IDM_VIEW_MARKOCCURRENCES_RED:
       iMarkOccurrences = 1;
       EditMarkAll(hwndEdit, iMarkOccurrences, bMarkOccurrencesMatchCase, bMarkOccurrencesMatchWords);
+      UpdateStatusbar();
       break;
 
     case IDM_VIEW_MARKOCCURRENCES_GREEN:
       iMarkOccurrences = 2;
       EditMarkAll(hwndEdit, iMarkOccurrences, bMarkOccurrencesMatchCase, bMarkOccurrencesMatchWords);
+      UpdateStatusbar();
       break;
 
     case IDM_VIEW_MARKOCCURRENCES_BLUE:
       iMarkOccurrences = 3;
       EditMarkAll(hwndEdit, iMarkOccurrences, bMarkOccurrencesMatchCase, bMarkOccurrencesMatchWords);
+      UpdateStatusbar();
       break;
 
     case IDM_VIEW_MARKOCCURRENCES_CASE:
       bMarkOccurrencesMatchCase = (bMarkOccurrencesMatchCase) ? FALSE : TRUE;
       EditMarkAll(hwndEdit, iMarkOccurrences, bMarkOccurrencesMatchCase, bMarkOccurrencesMatchWords);
+      UpdateStatusbar();
       break;
 
     case IDM_VIEW_MARKOCCURRENCES_WORD:
       bMarkOccurrencesMatchWords = (bMarkOccurrencesMatchWords) ? FALSE : TRUE;
       EditMarkAll(hwndEdit, iMarkOccurrences, bMarkOccurrencesMatchCase, bMarkOccurrencesMatchWords);
+      UpdateStatusbar();
       break;
 
     case IDM_VIEW_FOLDING:
@@ -5099,6 +5105,7 @@ LRESULT MsgNotify(HWND hwnd,WPARAM wParam,LPARAM lParam)
 
             // mark occurrences of text currently selected
             EditMarkAll(hwndEdit, iMarkOccurrences, bMarkOccurrencesMatchCase, bMarkOccurrencesMatchWords);
+            UpdateStatusbar();
 
             // Brace Match
             if (bMatchBraces)
@@ -5288,9 +5295,31 @@ LRESULT MsgNotify(HWND hwnd,WPARAM wParam,LPARAM lParam)
                 }
               }
             }
-          }
-          else if (bAutoCompleteWords && !SendMessage(hwndEdit, SCI_AUTOCACTIVE, 0, 0))
-            CompleteWord(hwndEdit, FALSE);
+			} else if ((scn->ch < 0x80) && StrChrA("([{\"\'`", (char)(scn->ch))) {
+				char tchIns[2] = "";
+				int iCurPos = (int)SendMessage(hwndEdit, SCI_GETCURRENTPOS, 0, 0);
+				switch (scn->ch) {
+					case '(':	tchIns[0] = ')';	break;
+					case '[':	tchIns[0] = ']';	break;
+					case '{':	tchIns[0] = '}';	break;
+					//case '<':	tchIns[0] = '>';	break;
+					default:
+					if (('\\' == (int)SendMessage(hwndEdit, SCI_GETCHARAT, (WPARAM)(iCurPos - 2), 0)) ||
+						(scn->ch == '\'' && (pLexCurrent->iLexer == SCLEX_VB || pLexCurrent->iLexer == SCLEX_VBSCRIPT)) ||
+						(scn->ch == '`' && (pLexCurrent->iLexer == SCLEX_VERILOG))) {
+						break;
+					}
+					tchIns[0] = (char)(scn->ch);
+				}
+				if (tchIns[0]) {
+					SendMessage(hwndEdit, SCI_BEGINUNDOACTION, 0, 0);
+					SendMessage(hwndEdit, SCI_REPLACESEL, 0, (LPARAM)tchIns);
+					SendMessage(hwndEdit, SCI_SETSEL, iCurPos, iCurPos);
+					SendMessage(hwndEdit, SCI_ENDUNDOACTION, 0, 0);
+				}
+			} else if (bAutoCompleteWords && !SendMessage(hwndEdit, SCI_AUTOCACTIVE, 0, 0)) {
+				CompleteWord(hwndEdit, FALSE);
+			}
           break;
 
         case SCN_MODIFIED:
@@ -6647,6 +6676,7 @@ void UpdateStatusbar()
     int iStartOfLinePos;
     int iLinesSelected;
     WCHAR tchLinesSelected[32];
+	WCHAR tchMatchesCount[32];
 #endif
 
   if (!bShowStatusbar)
@@ -6691,11 +6721,13 @@ void UpdateStatusbar()
     if( iSelStart != iSelEnd  &&  iStartOfLinePos != iSelEnd ) iLinesSelected += 1;
     wsprintf(tchLinesSelected,L"%i",iLinesSelected);
     FormatNumberStr(tchLinesSelected);
+	wsprintf(tchMatchesCount, L"%i", iMatchesCount);
+	FormatNumberStr(tchMatchesCount);
 
     if (!bMarkLongLines)
-        FormatString(tchDocPos,COUNTOF(tchDocPos),IDS_DOCPOS,tchLn,tchLines,tchCol,tchSel,tchLinesSelected);
+        FormatString(tchDocPos,COUNTOF(tchDocPos),IDS_DOCPOS,tchLn,tchLines,tchCol,tchSel,tchLinesSelected,tchMatchesCount);
     else
-        FormatString(tchDocPos,COUNTOF(tchDocPos),IDS_DOCPOS2,tchLn,tchLines,tchCol,tchCols,tchSel,tchLinesSelected);
+        FormatString(tchDocPos,COUNTOF(tchDocPos),IDS_DOCPOS2,tchLn,tchLines,tchCol,tchCols,tchSel,tchLinesSelected,tchMatchesCount);
 
 #else
 
