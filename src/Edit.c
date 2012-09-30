@@ -41,6 +41,7 @@
 extern HWND  hwndMain;
 extern HWND  hwndEdit;
 extern HINSTANCE g_hInstance;
+extern PEDITLEXER pLexCurrent;
 //extern LPMALLOC  g_lpMalloc;
 extern DWORD dwLastIOError;
 extern HWND hDlgFindReplace;
@@ -2336,6 +2337,16 @@ void EditModifyNumber(HWND hwnd,BOOL bIncrease) {
 }
 
 
+extern int iTabWidth;
+extern int iTabWidthG;
+extern int iIndentWidth;
+extern int iIndentWidthG;
+extern BOOL bTabsAsSpaces;
+extern BOOL bTabsAsSpacesG;
+extern BOOL bTabIndents;
+extern BOOL bTabIndentsG;
+
+
 //=============================================================================
 //
 //  EditTabsToSpaces()
@@ -3501,47 +3512,66 @@ void EditToggleLineComments(HWND hwnd,LPCWSTR pwszComment,BOOL bInsertAtStart)
 
     SendMessage(hwnd,SCI_BEGINUNDOACTION,0,0);
 
-    for (iLine = iLineStart; iLine <= iLineEnd; iLine++)
-    {
-      int iCommentPos;
-      int iIndentPos = (int)SendMessage(hwnd,SCI_GETLINEINDENTPOSITION,(WPARAM)iLine,0);
-      char tchBuf[32];
-      struct TextRange tr;
+	for (iLine = iLineStart; iLine <= iLineEnd; iLine++) {
+		int iCommentPos;
+		int iIndentPos = (int)SendMessage(hwnd, SCI_GETLINEINDENTPOSITION, (WPARAM)iLine, 0);
+		char tchBuf[32];
+		struct TextRange tr;
+		BOOL bWhitespaceLine = FALSE;
 
-      if (iIndentPos == SendMessage(hwnd,SCI_GETLINEENDPOSITION,(WPARAM)iLine,0))
-        continue;
+		// a line with [space/tab] only
+		if (iCommentCol && iIndentPos == SendMessage(hwnd, SCI_GETLINEENDPOSITION, (WPARAM)iLine, 0)) {
+			//continue;
+			bWhitespaceLine = TRUE;
+		}
 
-      tr.chrg.cpMin = iIndentPos;
-      tr.chrg.cpMax = tr.chrg.cpMin + min(31,cchComment);
-      tr.lpstrText = tchBuf;
-      SendMessage(hwnd,SCI_GETTEXTRANGE,0,(LPARAM)&tr);
+		tr.chrg.cpMin = iIndentPos;
+		tr.chrg.cpMax = tr.chrg.cpMin + min(31, cchComment);
+		tr.lpstrText = tchBuf;
+		SendMessage(hwnd, SCI_GETTEXTRANGE, 0, (LPARAM)&tr);
 
-      if (StrCmpNIA(tchBuf,mszComment,cchComment) == 0) {
-        switch (iAction) {
-          case 0:
-            iAction = 2;
-          case 2:
-            SendMessage(hwnd,SCI_SETTARGETSTART,(WPARAM)iIndentPos,0);
-            SendMessage(hwnd,SCI_SETTARGETEND,(WPARAM)iIndentPos+cchComment,0);
-            SendMessage(hwnd,SCI_REPLACETARGET,0,(LPARAM)"");
-            break;
-          case 1:
-            break;
-        }
-      }
-      else {
-        switch (iAction) {
-          case 0:
-            iAction = 1;
-          case 1:
-            iCommentPos = (int)SendMessage(hwnd,SCI_FINDCOLUMN,(WPARAM)iLine,(LPARAM)iCommentCol);
-            SendMessage(hwnd,SCI_INSERTTEXT,(WPARAM)iCommentPos,(LPARAM)mszComment);
-            break;
-          case 2:
-            break;
-        }
-      }
-    }
+		if (StrCmpNIA(tchBuf, mszComment, cchComment) == 0) {
+			int ch;
+			switch (iAction) {
+				case 0:
+					iAction = 2;
+				case 2:
+					iCommentPos = iIndentPos;
+					if ((ch = (int)SendMessage(hwnd, SCI_GETCHARAT, (WPARAM)(iIndentPos + cchComment), 0)) && (ch == '\n' || ch == '\r'))
+						iCommentPos = (int)SendMessage(hwnd, SCI_POSITIONFROMLINE, (WPARAM)iLine, 0);
+					SendMessage(hwnd, SCI_SETTARGETSTART, (WPARAM)iCommentPos, 0);
+					SendMessage(hwnd, SCI_SETTARGETEND, (WPARAM)(iIndentPos + cchComment), 0);
+					SendMessage(hwnd, SCI_REPLACETARGET, 0, (LPARAM)"");
+
+					break;
+				case 1:
+					break;
+			}
+		} else {
+			switch (iAction) {
+				case 0:
+					iAction = 1;
+				case 1:
+					iCommentPos = (int)SendMessage(hwnd, SCI_FINDCOLUMN, (WPARAM)iLine, (LPARAM)iCommentCol);
+					if (!bWhitespaceLine) {
+						SendMessage(hwnd, SCI_INSERTTEXT, (WPARAM)iCommentPos, (LPARAM)mszComment);
+					} else {
+						char tchComment[1024] = "";
+						int tch = 0;
+						if (!bTabsAsSpaces && iTabWidth > 0) {
+							tch = iCommentCol / iTabWidth;
+							memset(tchComment, '\t', tch);
+						}
+						memset(&tchComment[tch], ' ', iCommentCol - tch*iTabWidth);
+						lstrcatA(tchComment, mszComment);
+						SendMessage(hwnd, SCI_INSERTTEXT, (WPARAM)iCommentPos, (LPARAM)tchComment);
+					}
+					break;
+				case 2:
+					break;
+			}
+		}
+	}
     SendMessage(hwnd,SCI_ENDUNDOACTION,0,0);
 
     if (iSelStart != iSelEnd)
@@ -5661,13 +5691,62 @@ BOOL EditReplace(HWND hwnd,LPCEDITFINDREPLACE lpefr)
 //  CompleteWord()
 //  Auto-complete words (by Aleksandar Lekov)
 //
-typedef struct WLIST{
+struct WLIST{
   char* word;
   struct WLIST* next;
 };
 
+typedef int (WINAPI *NP2FunPtr_StrCmpA) (LPCSTR, LPCSTR);
+typedef int (WINAPI *NP2FunPtr_StrNCmpA) (LPCSTR, LPCSTR, int);
+
+__inline BOOL IsLexerKeywordChar(int ch) {
+	return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_' || ch == '-';
+}
+__inline BOOL IsLexerWordStart(int ch) {
+	return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || ch == '_';
+}
+__inline BOOL IsEscapeChar(int ch) {
+	return ch == 't' || ch == 'n' || ch == 'r' || ch == 'a' || ch == 'b' || ch == 'v' || ch == 'f';
+	// x u U
+}
+__inline BOOL IsLexerWordChar(int ch) {
+	if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_') {
+		return TRUE;
+	}
+	switch (pLexCurrent->iLexer) {
+		case SCLEX_XML:
+			return (ch == '-' || ch == ':');
+		case SCLEX_NULL:
+		case SCLEX_CSS:
+		case SCLEX_POWERSHELL:
+		case SCLEX_BATCH:
+		case SCLEX_BASH:
+			return (ch == '-');
+		//case SCLEX_HTML:
+	}
+	return FALSE;
+}
+__inline BOOL IsLexerCaseInsensitive() {
+	switch (pLexCurrent->iLexer) {
+		case SCLEX_CPP:
+		case SCLEX_XML:
+		case SCLEX_PERL:
+		case SCLEX_PYTHON:
+		case SCLEX_RUBY:
+		case SCLEX_LUA:
+		case SCLEX_TCL:
+		case SCLEX_BASH:
+		case SCLEX_POWERSHELL:
+		case SCLEX_MATLAB:
+		case SCLEX_VERILOG:
+		case SCLEX_MAKEFILE:
+			return FALSE;
+	}
+	return TRUE;
+}
+
 void CompleteWord(HWND hwnd, BOOL autoInsert) {
-  const char* NON_WORD = " \t\r\n@#$%^&*~-=+()[]{}\\/.,:;'\"!?<>`|";
+  //const char* NON_WORD = " \t\r\n@#$%^&*~-=+()[]{}\\/.,:;'\"!?<>`|";
   int iCurrentPos = (int)SendMessage(hwnd, SCI_GETCURRENTPOS, 0, 0);
   int iLine = (int)SendMessage(hwnd, SCI_LINEFROMPOSITION, iCurrentPos, 0);
   int iCurrentLinePos = iCurrentPos - (int)SendMessage(hwnd, SCI_POSITIONFROMLINE, (WPARAM)iLine, 0);
@@ -5681,29 +5760,106 @@ void CompleteWord(HWND hwnd, BOOL autoInsert) {
   int iPosFind;
   struct TextRange tr = { { 0, -1 }, NULL };
   struct Sci_TextToFind ft = {{0, 0}, 0, {0, 0}};
-  BOOL bWordAllNumbers = TRUE;
+	BOOL bIgnore = TRUE;
+	NP2FunPtr_StrCmpA NP2_StrCmp = NULL;
+	NP2FunPtr_StrNCmpA NP2_StrNCmp = NULL;
   struct WLIST* lListHead = NULL;
   int iWListSize = 0;
 
   pLine = LocalAlloc(LPTR, (int)SendMessage(hwnd, SCI_GETLINE, (WPARAM)iLine, 0) + 1);
   SendMessage(hwnd, SCI_GETLINE, (WPARAM)iLine, (LPARAM)pLine);
+  iRootLen = autoInsert? 1 : 2;
 
-  while (iStartWordPos > 0 && !StrChrIA(NON_WORD, pLine[iStartWordPos - 1])) {
+	//while (iStartWordPos > 0 && !StrChrIA(NON_WORD, pLine[iStartWordPos - 1])) {
+	while (iStartWordPos > 0 && IsLexerWordChar(pLine[iStartWordPos - 1])) {
     iStartWordPos--;
     if (pLine[iStartWordPos] < '0' || pLine[iStartWordPos] > '9') {
-      bWordAllNumbers = FALSE;
+      bIgnore = FALSE;
     }
   }
 
-  if (iStartWordPos == iCurrentLinePos || bWordAllNumbers || iCurrentLinePos - iStartWordPos < 2) {
+	// word after escape char
+	if (iStartWordPos > 1 && pLine[iStartWordPos - 1] == '\\' && IsEscapeChar(pLine[iStartWordPos])) {
+		if (!(iStartWordPos > 2 && pLine[iStartWordPos - 2] == '\\'))
+			++iStartWordPos;
+	}
+
+  if (iStartWordPos == iCurrentLinePos || bIgnore || iCurrentLinePos - iStartWordPos < iRootLen) {
     LocalFree(pLine);
     return;
   }
 
-  pRoot = LocalAlloc(LPTR, iCurrentLinePos - iStartWordPos + 2);
+  pRoot = LocalAlloc(LPTR, iCurrentLinePos - iStartWordPos + iRootLen);
   lstrcpynA(pRoot, pLine + iStartWordPos, iCurrentLinePos - iStartWordPos + 1);
   LocalFree(pLine);
   iRootLen = lstrlenA(pRoot);
+
+	if (!autoInsert && !IsLexerWordStart(*pRoot)) {
+		LocalFree(pRoot);
+		return;
+	}
+
+	bIgnore = IsLexerCaseInsensitive();
+	if (bIgnore) {
+		NP2_StrCmp = lstrcmpiA;
+		NP2_StrNCmp = StrCmpNIA;
+	} else {
+		NP2_StrCmp = lstrcmpA;
+		NP2_StrNCmp = StrCmpNA;
+	}
+
+	// add keywords to lListHead
+	pWord = LocalAlloc(LPTR, 256);
+	for (iLine = 0; iLine <= KEYWORDSET_MAX; iLine++) {
+		const char *pKeywords = pLexCurrent->pKeyWords->pszKeyWords[iLine];
+		iDocLen = 0;
+		while (*pKeywords) {
+			if (!IsLexerKeywordChar(*pKeywords)) {
+				++pKeywords;
+				while (*pKeywords && !IsLexerKeywordChar(*pKeywords)) ++pKeywords;
+				if (iDocLen == 0) continue;
+				pWord[iDocLen] = 0;
+
+				// match word start
+				if (iDocLen > iRootLen && NP2_StrNCmp(pRoot, pWord, iRootLen) == 0) {
+					struct WLIST *p = lListHead;
+					struct WLIST *t = NULL;
+					BOOL found = FALSE;
+					int cmp;
+
+					while (p) {
+						cmp =  NP2_StrCmp(pWord, p->word);
+						if (!cmp) {
+							found = TRUE;
+							break;
+						} else if (cmp < 0) {
+							break;
+						}
+						t = p;
+						p = p->next;
+					}
+
+					if (!found) {
+						struct WLIST *el = (struct WLIST *)LocalAlloc(LPTR, sizeof(struct WLIST));
+						el->word = LocalAlloc(LPTR, iDocLen + 1);
+						lstrcpyA(el->word, pWord);
+						el->next = p;
+						if (t) {
+							t->next = el;
+						} else {
+							lListHead = el;
+						}
+						iNumWords++;
+						iWListSize += iDocLen + 1;
+					}
+				}
+				iDocLen = 0;
+			} else {
+				pWord[iDocLen++] = *pKeywords++;
+			}
+		}
+	}
+	LocalFree(pWord);
 
   iDocLen = (int)SendMessage(hwnd, SCI_GETLENGTH, 0, 0);
 
@@ -5717,16 +5873,12 @@ void CompleteWord(HWND hwnd, BOOL autoInsert) {
     int wordEnd = iPosFind + iRootLen;
 
     if (iPosFind != iCurrentPos - iRootLen) {
-      while (wordEnd < iDocLen && !StrChrIA(NON_WORD, (char)SendMessage(hwnd, SCI_GETCHARAT, (WPARAM)wordEnd, 0)))
+		//while (wordEnd < iDocLen && !StrChrIA(NON_WORD, (char)SendMessage(hwnd, SCI_GETCHARAT, (WPARAM)wordEnd, 0)))
+		while (wordEnd < iDocLen && IsLexerWordChar((int)SendMessage(hwnd, SCI_GETCHARAT, (WPARAM)wordEnd, 0)))
         wordEnd++;
 
       wordLength = wordEnd - iPosFind;
       if (wordLength > iRootLen) {
-        struct WLIST* p = lListHead;
-        struct WLIST* t = NULL;
-        int lastCmp = 0;
-        BOOL found = FALSE;
-
         pWord = LocalAlloc(LPTR, wordEnd - iPosFind + 2);
 
         tr.lpstrText = pWord;
@@ -5734,31 +5886,47 @@ void CompleteWord(HWND hwnd, BOOL autoInsert) {
         tr.chrg.cpMax = wordEnd;
         SendMessage(hwnd, SCI_GETTEXTRANGE, 0, (LPARAM)&tr);
 
-        while(p) {
-          int cmp = lstrcmpA(pWord, p->word);
-          if (!cmp) {
-            found = TRUE;
-            break;
-          } else if (cmp < 0) {
-            break;
-          }
-          t = p;
-          p = p->next;
-        }
-        if (!found) {
-          struct WLIST* el = (struct WLIST*)LocalAlloc(LPTR, sizeof(struct WLIST));
-          el->word = LocalAlloc(LPTR, wordEnd - iPosFind + 2);
-          lstrcpyA(el->word, pWord);
-          el->next = p;
-          if (t) {
-            t->next = el;
-          } else {
-            lListHead = el;
-          }
+		// word after escape char
+		iStartWordPos = (int)SendMessage(hwnd, SCI_GETCHARAT, (WPARAM)(wordEnd - wordLength - 1), 0);
+		iCurrentLinePos = (int)SendMessage(hwnd, SCI_GETCHARAT, (WPARAM)(wordEnd - wordLength - 2), 0);
+		if (iCurrentLinePos != '\\' && iStartWordPos == '\\' && IsEscapeChar(*pWord)) {
+			pWord++;
+			++iPosFind;
+		}
 
-          iNumWords++;
-          iWListSize += lstrlenA(pWord) + 1;
-        }
+		// match word start
+		if (NP2_StrNCmp(pRoot, pWord, iRootLen) == 0) {
+			struct WLIST* p = lListHead;
+			struct WLIST* t = NULL;
+			int lastCmp = 0;
+			BOOL found = FALSE;
+
+			while(p) {
+			  int cmp = NP2_StrCmp(pWord, p->word);
+			  if (!cmp) {
+				found = TRUE;
+				break;
+			  } else if (cmp < 0) {
+				break;
+			  }
+			  t = p;
+			  p = p->next;
+			}
+			if (!found) {
+			  struct WLIST* el = (struct WLIST*)LocalAlloc(LPTR, sizeof(struct WLIST));
+			  el->word = LocalAlloc(LPTR, wordEnd - iPosFind + 2);
+			  lstrcpyA(el->word, pWord);
+			  el->next = p;
+			  if (t) {
+				t->next = el;
+			  } else {
+				lListHead = el;
+			  }
+
+			  iNumWords++;
+			  iWListSize += wordEnd - iPosFind + 2;
+			}
+		}
         LocalFree(pWord);
       }
     }
@@ -5781,7 +5949,7 @@ void CompleteWord(HWND hwnd, BOOL autoInsert) {
       LocalFree(t);
     }
 
-    SendMessage(hwnd, SCI_AUTOCSETIGNORECASE, 1, 0);
+    SendMessage(hwnd, SCI_AUTOCSETIGNORECASE, bIgnore, 0);
     SendMessage(hwnd, SCI_AUTOCSETSEPARATOR, ' ', 0);
     SendMessage(hwnd, SCI_AUTOCSETFILLUPS, 0, (LPARAM)"\t\n\r");
     SendMessage(hwnd, SCI_AUTOCSETCHOOSESINGLE, autoInsert, 0);
@@ -5797,6 +5965,9 @@ void CompleteWord(HWND hwnd, BOOL autoInsert) {
 //  EditMarkAll()
 //  Mark all occurrences of the text currently selected (by Aleksandar Lekov)
 //
+
+extern 	int iMatchesCount;
+
 void EditMarkAll(HWND hwnd, int iMarkOccurrences, BOOL bMarkOccurrencesMatchCase, BOOL bMarkOccurrencesMatchWords)
 {
   struct TextToFind ttf;
@@ -5806,7 +5977,7 @@ void EditMarkAll(HWND hwnd, int iMarkOccurrences, BOOL bMarkOccurrencesMatchCase
   int iSelStart;
   int iSelEnd;
   int iSelCount;
-  int iMatchesCount;
+  iMatchesCount = 0;
 
   // feature is off
   if (!iMarkOccurrences)
@@ -5841,8 +6012,8 @@ void EditMarkAll(HWND hwnd, int iMarkOccurrences, BOOL bMarkOccurrencesMatchCase
     iSelStart = 0;
     while (pszText[iSelStart])
     {
-      if (StrChrIA(" \t\r\n@#$%^&*~-=+()[]{}\\/:;'\"", pszText[iSelStart]))
-      {
+		//if (StrChrIA(" \t\r\n@#$%^&*~-=+()[]{}\\/:;'\"", pszText[iSelStart])) {
+		if (!IsLexerWordChar(pszText[iSelStart])) {
         LocalFree(pszText);
         return;
       }
@@ -5861,13 +6032,11 @@ void EditMarkAll(HWND hwnd, int iMarkOccurrences, BOOL bMarkOccurrencesMatchCase
   SendMessage(hwnd, SCI_INDICSETFORE, 1, 0xff << ((iMarkOccurrences - 1) << 3));
   SendMessage(hwnd, SCI_INDICSETSTYLE, 1, INDIC_ROUNDBOX);
 
-  iMatchesCount = 0;
-  while ((iPos = (int)SendMessage(hwnd, SCI_FINDTEXT,
-      (bMarkOccurrencesMatchCase ? SCFIND_MATCHCASE : 0) | (bMarkOccurrencesMatchWords ? SCFIND_WHOLEWORD : 0),
-      (LPARAM)&ttf)) != -1
-      && ++iMatchesCount < 2000)
-  {
+	while ((iPos = (int)SendMessage(hwnd, SCI_FINDTEXT,
+						(bMarkOccurrencesMatchCase ? SCFIND_MATCHCASE : 0) |
+						(bMarkOccurrencesMatchWords ? SCFIND_WHOLEWORD : 0), (LPARAM)&ttf)) != -1) {
     // mark this match
+	++iMatchesCount;
     SendMessage(hwnd, SCI_INDICATORFILLRANGE, iPos, iSelCount);
     ttf.chrg.cpMin = ttf.chrgText.cpMin + iSelCount;
     if (ttf.chrg.cpMin == ttf.chrg.cpMax)
@@ -7021,14 +7190,6 @@ BOOL FileVars_Init(char *lpData,DWORD cbData,LPFILEVARS lpfv) {
 //
 //  FileVars_Apply()
 //
-extern int iTabWidth;
-extern int iTabWidthG;
-extern int iIndentWidth;
-extern int iIndentWidthG;
-extern BOOL bTabsAsSpaces;
-extern BOOL bTabsAsSpacesG;
-extern BOOL bTabIndents;
-extern BOOL bTabIndentsG;
 extern int fWordWrap;
 extern int fWordWrapG;
 extern int iWordWrapMode;
