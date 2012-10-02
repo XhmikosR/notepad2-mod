@@ -9,7 +9,7 @@ rem cat css\jquery.fancybox.css css\stylesheet.css | cleancss -o css\pack.css
 cleancss css\jquery.fancybox.css -o css\jquery.fancybox.min.css && ^
 cleancss css\stylesheet.css -o css\stylesheet.min.css && ^
 cleancss css\print.css -o css\print.min.css && ^
-uglifyjs --no-copyright -o js\jquery.fancybox.min.js js\jquery.fancybox.js
+cat js\jquery.mousewheel.js js\jquery.fancybox.js | uglifyjs --no-copyright -o js\pack.js
 
 ENDLOCAL
 PAUSE
