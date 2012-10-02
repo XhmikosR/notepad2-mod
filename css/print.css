@@ -48,6 +48,10 @@ table {
 b, strong {
     font-weight: bold;
 }
+em {
+  font-style: italic;
+}
+
 body {
     font-size: 13px;
     line-height: 1.5;

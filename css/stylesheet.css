@@ -48,6 +48,9 @@ table {
 b, strong {
     font-weight: bold;
 }
+em {
+  font-style: italic;
+}
 
 /* LAYOUT STYLES */
 body {
