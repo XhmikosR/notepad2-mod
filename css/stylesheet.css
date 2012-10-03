@@ -1,7 +1,8 @@
 /* http://meyerweb.com/eric/tools/css/reset/
-     v2.0 | 20110126
-     License: none (public domain)
+   v2.0 | 20110126
+   License: none (public domain)
 */
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -45,9 +46,11 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
+
 b, strong {
     font-weight: bold;
 }
+
 em {
     font-style: italic;
 }
@@ -65,6 +68,7 @@ body {
 a:link {
     color: #2879d0;
 }
+
 a:hover {
     color: #2268b2;
 }
@@ -98,6 +102,7 @@ header h2 {
 header a {
     color: #fff;
 }
+
 header a:hover {
     color: #fff;
 }
@@ -151,16 +156,19 @@ a.button {
     padding-top: 22px;
     font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;
 }
+
 a.button small {
     display: block;
     font-size: 11px;
 }
+
 header a.button {
     position: absolute;
     right: 0;
     top: 0;
     background: transparent url(../img/github-button.png) 0 0 no-repeat;
 }
+
 aside a.button {
     width: 138px;
     padding-left: 64px;
@@ -190,6 +198,7 @@ pre {
     overflow: auto;
     border: solid 1px #f2f2f2;
 }
+
 pre code {
     color: #2879d0;
     background-color: #fff;
@@ -203,7 +212,6 @@ ul, ol, dl {
 
 
 /* COMMON STYLES */
-
 table {
     width: 100%;
     border: 1px solid #ebebeb;
@@ -225,9 +233,7 @@ form {
 
 }
 
-
 /* GENERAL ELEMENT TYPE STYLES */
-
 #main-content h1 {
     font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;
     font-size: 2.8em;
@@ -249,6 +255,7 @@ form {
     margin-bottom: 8px;
     color: #474747;
 }
+
 #main-content h2:before {
     content: '//';
     color: #9ddcff;
@@ -291,6 +298,7 @@ h4:before {
     font-size: 14px;
     color: #474747;
 }
+
 h5:before {
     content: '/////';
     color: #9ddcff;
@@ -353,9 +361,15 @@ dl dd {
     height: 0;
 }
 
-.clearfix {display: inline-block;}
-* html .clearfix {height: 1%;}
-.clearfix {display: block;}
+.clearfix {
+    display: inline-block;
+}
+* html .clearfix {
+    height: 1%;
+}
+.clearfix {
+    display: block;
+}
 
 /* #Media Queries
 ================================================== */

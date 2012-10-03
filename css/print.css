@@ -1,7 +1,8 @@
 /* http://meyerweb.com/eric/tools/css/reset/
-     v2.0 | 20110126
-     License: none (public domain)
+   v2.0 | 20110126
+   License: none (public domain)
 */
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -45,9 +46,11 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
+
 b, strong {
     font-weight: bold;
 }
+
 em {
   font-style: italic;
 }
@@ -84,9 +87,11 @@ header h2 {
     font-weight: normal;
     line-height: 1.3;
 }
+
 #downloads {
     display: none;
 }
+
 #main_content {
     padding-top: 20px;
 }
@@ -107,6 +112,7 @@ pre {
     padding: 20px;
     overflow: auto;
 }
+
 pre code {
     padding: 0;
 }
@@ -115,9 +121,7 @@ ul, ol, dl {
     margin-bottom: 20px;
 }
 
-
 /* COMMON STYLES */
-
 table {
     width: 100%;
     border: 1px solid #ebebeb;
@@ -139,9 +143,7 @@ form {
 
 }
 
-
 /* GENERAL ELEMENT TYPE STYLES */
-
 h1 {
     font-size: 2.8em;
 }
@@ -232,6 +234,14 @@ footer a {
     height: 0;
 }
 
-.clearfix {display: inline-block;}
-* html .clearfix {height: 1%;}
-.clearfix {display: block;}
+.clearfix {
+    display: inline-block;
+}
+
+* html .clearfix {
+    height: 1%;
+}
+
+.clearfix {
+    display: block;
+}
