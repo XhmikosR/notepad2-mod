@@ -49,7 +49,7 @@ b, strong {
     font-weight: bold;
 }
 em {
-  font-style: italic;
+    font-style: italic;
 }
 
 /* LAYOUT STYLES */
@@ -62,7 +62,7 @@ body {
     color: #666;
 }
 
-a {
+a:link {
     color: #2879d0;
 }
 a:hover {
