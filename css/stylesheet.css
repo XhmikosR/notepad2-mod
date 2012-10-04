@@ -99,11 +99,7 @@ header h2 {
     letter-spacing: 0;
 }
 
-header a {
-    color: #fff;
-}
-
-header a:hover {
+header a:link, header a:hover, header a:visited {
     color: #fff;
 }
 
