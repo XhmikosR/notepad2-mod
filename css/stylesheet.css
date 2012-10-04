@@ -138,9 +138,9 @@ aside#sidebar p.repo-owner a {
     font-weight: bold;
 }
 
-#downloads {
+/*#downloads {
     margin-bottom: 40px;
-}
+}*/
 
 a.button {
     width: 134px;
@@ -187,7 +187,7 @@ code {
     padding: 0 3px;
 }
 
-pre {
+/*pre {
     padding: 20px;
     background: #fff;
     text-shadow: none;
@@ -200,7 +200,7 @@ pre code {
     background-color: #fff;
     border: none;
     padding: 0;
-}
+}*/
 
 ul, ol, dl {
     margin-bottom: 20px;
@@ -208,7 +208,7 @@ ul, ol, dl {
 
 
 /* COMMON STYLES */
-table {
+/*table {
     width: 100%;
     border: 1px solid #ebebeb;
 }
@@ -227,7 +227,7 @@ form {
     background: #f2f2f2;
     padding: 20px;
 
-}
+}*/
 
 /* GENERAL ELEMENT TYPE STYLES */
 #main-content h1 {
@@ -326,19 +326,19 @@ p a {
     font-weight: 400;
 }
 
-blockquote {
+/*blockquote {
     font-size: 1.6em;
     border-left: 10px solid #e9e9e9;
     margin-bottom: 20px;
     padding: 0 0 0 30px;
-}
+}*/
 
 ul li {
     list-style: disc inside;
     padding-left: 20px;
 }
 
-ol li {
+/*ol li {
     list-style: decimal inside;
     padding-left: 3px;
 }
@@ -346,23 +346,25 @@ ol li {
 dl dd {
     font-style: italic;
     font-weight: 100;
-}
+}*/
 
 /* MISC */
-.clearfix:after {
+/*.clearfix:after {
     clear: both;
     content: '.';
     display: block;
     visibility: hidden;
     height: 0;
-}
+}*/
 
 .clearfix {
     display: inline-block;
 }
-* html .clearfix {
+
+/** html .clearfix {
     height: 1%;
-}
+}*/
+
 .clearfix {
     display: block;
 }
