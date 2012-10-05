@@ -133,7 +133,7 @@ bool LoadD2D() {
 		typedef HRESULT (WINAPI *DWriteCFSig)(DWRITE_FACTORY_TYPE factoryType, REFIID iid,
 			IUnknown **factory);
 
-		hDLLD2D = ::LoadLibrary(TEXT("D2D1.DLL"));
+		hDLLD2D = ::LoadLibraryEx(TEXT("D2D1.DLL"), 0, 0x00000800 /*LOAD_LIBRARY_SEARCH_SYSTEM32*/);
 		if (hDLLD2D) {
 			D2D1CFSig fnD2DCF = (D2D1CFSig)::GetProcAddress(hDLLD2D, "D2D1CreateFactory");
 			if (fnD2DCF) {
@@ -144,7 +144,7 @@ bool LoadD2D() {
 					reinterpret_cast<IUnknown**>(&pD2DFactory));
 			}
 		}
-		hDLLDWrite = ::LoadLibrary(TEXT("DWRITE.DLL"));
+		hDLLDWrite = ::LoadLibraryEx(TEXT("DWRITE.DLL"), 0, 0x00000800 /*LOAD_LIBRARY_SEARCH_SYSTEM32*/);
 		if (hDLLDWrite) {
 			DWriteCFSig fnDWCF = (DWriteCFSig)::GetProcAddress(hDLLDWrite, "DWriteCreateFactory");
 			if (fnDWCF) {
