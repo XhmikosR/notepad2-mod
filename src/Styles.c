@@ -1813,8 +1813,8 @@ EDITLEXER lexMARKDOWN = { SCLEX_MARKDOWN, 63336, L"Markdown", L"md; markdown; md
                           { SCE_MARKDOWN_STRIKEOUT, 63351, L"Strikeout", L"", L"" },
                           { SCE_MARKDOWN_HRULE, 63352, L"HRULE", L"bold", L"" },
                           { SCE_MARKDOWN_LINK, 63353, L"Link", L"fore:#0000FF", L"" },
-                          { MULTI_STYLE(SCE_MARKDOWN_CODE,SCE_MARKDOWN_CODE2,0,0), 63354, L"Code", L"fore:#00007F", L"" },
-                          { SCE_MARKDOWN_CODEBK, 63355, L"Code Block", L"fore:#00007F", L"" },
+                          { MULTI_STYLE(SCE_MARKDOWN_CODE,SCE_MARKDOWN_CODE2,0,0), 63354, L"Code", L"fore:#00007F; back:#EBEBEB", L"" },
+                          { SCE_MARKDOWN_CODEBK, 63355, L"Code Block", L"fore:#00007F; back:#EBEBEB", L"" },
                           { -1, 00000, L"", L"", L"" } } };
 
 
