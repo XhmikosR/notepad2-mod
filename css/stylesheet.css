@@ -74,7 +74,7 @@ a:hover {
 }
 
 a:visited {
-    color: MediumVioletRed;
+    color: #C71585; /*MediumVioletRed*/
 }
 
 header {
