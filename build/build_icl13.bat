@@ -3,8 +3,8 @@ rem ****************************************************************************
 rem *
 rem * Notepad2-mod
 rem *
-rem * build_icl12.bat
-rem *   Batch file used to build Notepad2 with ICL12
+rem * build_icl13.bat
+rem *   Batch file used to build Notepad2 with ICL13
 rem *
 rem * See License.txt for details about distribution and modification.
 rem *
@@ -17,8 +17,8 @@ SETLOCAL ENABLEEXTENSIONS
 CD /D %~dp0
 
 rem Check the building environment
-IF NOT DEFINED VS100COMNTOOLS    CALL :SUBMSG "ERROR" "Visual Studio 2010 wasn't found!"
-IF NOT DEFINED ICPP_COMPOSER2011 CALL :SUBMSG "ERROR" "Intel C++ Compiler XE 2011 wasn't found!"
+IF NOT DEFINED VS100COMNTOOLS  CALL :SUBMSG "ERROR" "Visual Studio 2010 wasn't found!"
+IF NOT DEFINED ICPP_COMPILER13 CALL :SUBMSG "ERROR" "Intel C++ Compiler XE 2013 wasn't found!"
 
 
 rem Check for the help switches
@@ -125,15 +125,15 @@ IF "%CONFIG%" == "all" (CALL :SUBMSVC %BUILDTYPE% Debug x64 && CALL :SUBMSVC %BU
 
 
 :END
-TITLE Building Notepad2-mod with ICL12 - Finished!
+TITLE Building Notepad2-mod with ICL13 - Finished!
 ENDLOCAL
 EXIT /B
 
 
 :SUBMSVC
 ECHO.
-TITLE Building Notepad2-mod with ICL12 - %~1 "%~2|%~3"...
-"%WINDIR%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo Notepad2_icl12.sln^
+TITLE Building Notepad2-mod with ICL13 - %~1 "%~2|%~3"...
+"%WINDIR%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo Notepad2_icl13.sln^
  /t:%~1 /p:Configuration=%~2;Platform=%~3 /consoleloggerparameters:Verbosity=minimal^
  /maxcpucount /nodeReuse:true
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
