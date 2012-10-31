@@ -5696,53 +5696,145 @@ struct WLIST{
   struct WLIST* next;
 };
 
-typedef int (WINAPI *NP2FunPtr_StrCmpA) (LPCSTR, LPCSTR);
-typedef int (WINAPI *NP2FunPtr_StrNCmpA) (LPCSTR, LPCSTR, int);
+struct WordList {
+    struct WLIST *pListHead;
+    SIZE_T nWordCount;
+    SIZE_T nListSize;
+    BOOL bMatchStart;
+    LPCSTR pWordStart;
+    int iStartLen;
+    int (WINAPI *WL_StrCmpA) (LPCSTR, LPCSTR);
+    int (WINAPI *WL_StrCmpNA) (LPCSTR, LPCSTR, int);
+};
 
-__inline BOOL IsLexerKeywordChar(int ch) {
-	return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_' || ch == '-';
+__inline BOOL IsWordChar(int ch) {
+    return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_' || ch == '-';
 }
-__inline BOOL IsLexerWordStart(int ch) {
-	return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || ch == '_';
+__inline BOOL IsWordStart(int ch) {
+    return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || ch == '_';
 }
 __inline BOOL IsEscapeChar(int ch) {
-	return ch == 't' || ch == 'n' || ch == 'r' || ch == 'a' || ch == 'b' || ch == 'v' || ch == 'f';
-	// x u U
+    return ch == 't' || ch == 'n' || ch == 'r' || ch == 'a' || ch == 'b' || ch == 'v' || ch == 'f';
+    // x u U
 }
-__inline BOOL IsLexerWordChar(int ch) {
-	if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_') {
-		return TRUE;
-	}
-	switch (pLexCurrent->iLexer) {
-		case SCLEX_XML:
-			return (ch == '-' || ch == ':');
-		case SCLEX_NULL:
-		case SCLEX_CSS:
-		case SCLEX_POWERSHELL:
-		case SCLEX_BATCH:
-		case SCLEX_BASH:
-			return (ch == '-');
-		//case SCLEX_HTML:
-	}
-	return FALSE;
+
+void WordList_AddWord(struct WordList *pWList, LPCSTR pWord, int len)
+{
+    struct WLIST **pListHead;
+    struct WLIST *p;
+    struct WLIST *t;
+
+    BOOL found = len > pWList->iStartLen;
+    int cmp = pWList->WL_StrCmpNA(pWList->pWordStart, pWord, pWList->iStartLen);
+    if (!found || (pWList->bMatchStart && cmp))
+        return;
+
+    pListHead = &(pWList->pListHead);
+    p = *pListHead;
+    t = NULL;
+    found = FALSE;
+
+    while (p) {
+        cmp = pWList->WL_StrCmpA(pWord, p->word);
+        if (!cmp) {
+            found = TRUE;
+            break;
+        } else if (cmp < 0) {
+            break;
+        }
+        t = p;
+        p = p->next;
+    }
+
+    if (!found) {
+        struct WLIST *node = (struct WLIST *)LocalAlloc(LPTR, sizeof(struct WLIST));
+        node->word = LocalAlloc(LPTR, len + 1);
+        lstrcpyA(node->word, pWord);
+        node->next = p;
+        if (t) {
+            t->next = node;
+        } else {
+            *pListHead = node;
+        }
+        pWList->nWordCount++;
+        pWList->nListSize += len + 1;
+    }
 }
-__inline BOOL IsLexerCaseInsensitive() {
-	switch (pLexCurrent->iLexer) {
-		case SCLEX_CPP:
-		case SCLEX_XML:
-		case SCLEX_PERL:
-		case SCLEX_PYTHON:
-		case SCLEX_RUBY:
-		case SCLEX_LUA:
-		case SCLEX_TCL:
-		case SCLEX_BASH:
-		case SCLEX_POWERSHELL:
-		case SCLEX_MATLAB:
-		case SCLEX_VERILOG:
-		case SCLEX_MAKEFILE:
-			return FALSE;
-	}
-	return TRUE;
+
+void WordList_AddList(struct WordList *pWList, LPCSTR pList)
+{
+    char word[256] = "";
+    int len = 0;
+    while (*pList) {
+        if (IsWordChar(*pList)) {
+            word[len++] = *pList++;
+            if (!*pList)
+                goto wordFound;
+        } else {
+            ++pList;
+            while (*pList && !IsWordChar(*pList)) ++pList;
+wordFound:
+            word[len] = 0;
+            if (len > pWList->iStartLen)
+                WordList_AddWord(pWList, word, len);
+            len = 0;
+        }
+    }
+}
+
+void WordList_GetList(struct WordList *pWList, char **pList)
+{
+    if (pWList->nWordCount > 0) {
+        struct WLIST *p = pWList->pListHead;
+        struct WLIST *t;
+        *pList = LocalAlloc(LPTR, pWList->nListSize + 1);
+
+        while (p) {
+            lstrcatA(*pList, "\n");
+            lstrcatA(*pList, p->word);
+            LocalFree(p->word);
+            t = p;
+            p = p->next;
+            LocalFree(t);
+        }
+        (*pList)++;
+    }
+}
+
+
+__inline BOOL IsDocWordChar(int ch) {
+    if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_') {
+        return TRUE;
+    }
+    switch (pLexCurrent->iLexer) {
+        case SCLEX_HTML:
+        case SCLEX_XML:
+        case SCLEX_NULL:
+        case SCLEX_CSS:
+        case SCLEX_POWERSHELL:
+        case SCLEX_BATCH:
+        case SCLEX_BASH:
+            return (ch == '-');
+    }
+    return FALSE;
+}
+__inline BOOL IsDocCaseInsensitive() {
+    switch (pLexCurrent->iLexer) {
+        case SCLEX_CPP:
+        case SCLEX_XML:
+        case SCLEX_PERL:
+        case SCLEX_PYTHON:
+        case SCLEX_RUBY:
+        case SCLEX_LUA:
+        case SCLEX_TCL:
+        case SCLEX_BASH:
+        case SCLEX_POWERSHELL:
+        case SCLEX_MATLAB:
+        case SCLEX_VERILOG:
+        case SCLEX_MAKEFILE:
+            return FALSE;
+    }
+    return TRUE;
 }
 
 void CompleteWord(HWND hwnd, BOOL autoInsert) {
@@ -5751,38 +5843,38 @@ void CompleteWord(HWND hwnd, BOOL autoInsert) {
   int iLine = (int)SendMessage(hwnd, SCI_LINEFROMPOSITION, iCurrentPos, 0);
   int iCurrentLinePos = iCurrentPos - (int)SendMessage(hwnd, SCI_POSITIONFROMLINE, (WPARAM)iLine, 0);
   int iStartWordPos = iCurrentLinePos;
+
   char *pLine;
   char *pRoot;
   char *pWord;
-  int iNumWords = 0;
-  int iRootLen = 0;
+
+  int iRootLen;
   int iDocLen;
   int iPosFind;
+
   struct TextRange tr = { { 0, -1 }, NULL };
   struct Sci_TextToFind ft = {{0, 0}, 0, {0, 0}};
-	BOOL bIgnore = TRUE;
-	NP2FunPtr_StrCmpA NP2_StrCmp = NULL;
-	NP2FunPtr_StrNCmpA NP2_StrNCmp = NULL;
-  struct WLIST* lListHead = NULL;
-  int iWListSize = 0;
+
+  BOOL bIgnore = TRUE;
+  struct WordList *pWList = NULL;
 
   pLine = LocalAlloc(LPTR, (int)SendMessage(hwnd, SCI_GETLINE, (WPARAM)iLine, 0) + 1);
   SendMessage(hwnd, SCI_GETLINE, (WPARAM)iLine, (LPARAM)pLine);
   iRootLen = autoInsert? 1 : 2;
 
-	//while (iStartWordPos > 0 && !StrChrIA(NON_WORD, pLine[iStartWordPos - 1])) {
-	while (iStartWordPos > 0 && IsLexerWordChar(pLine[iStartWordPos - 1])) {
+  //while (iStartWordPos > 0 && !StrChrIA(NON_WORD, pLine[iStartWordPos - 1])) {
+  while (iStartWordPos > 0 && IsDocWordChar(pLine[iStartWordPos - 1])) {
     iStartWordPos--;
     if (pLine[iStartWordPos] < '0' || pLine[iStartWordPos] > '9') {
       bIgnore = FALSE;
     }
   }
 
-	// word after escape char
-	if (iStartWordPos > 1 && pLine[iStartWordPos - 1] == '\\' && IsEscapeChar(pLine[iStartWordPos])) {
-		if (!(iStartWordPos > 2 && pLine[iStartWordPos - 2] == '\\'))
-			++iStartWordPos;
-	}
+    // word after escape char
+    if (iStartWordPos > 1 && pLine[iStartWordPos - 1] == '\\' && IsEscapeChar(pLine[iStartWordPos])) {
+        if (!(iStartWordPos > 2 && pLine[iStartWordPos - 2] == '\\'))
+            ++iStartWordPos;
+    }
 
   if (iStartWordPos == iCurrentLinePos || bIgnore || iCurrentLinePos - iStartWordPos < iRootLen) {
     LocalFree(pLine);
@@ -5794,78 +5886,39 @@ void CompleteWord(HWND hwnd, BOOL autoInsert) {
   LocalFree(pLine);
   iRootLen = lstrlenA(pRoot);
 
-	if (!autoInsert && !IsLexerWordStart(*pRoot)) {
-		LocalFree(pRoot);
-		return;
-	}
+  if (!autoInsert && !IsWordStart(*pRoot)) {
+      LocalFree(pRoot);
+      return;
+  }
 
-	bIgnore = IsLexerCaseInsensitive();
-	if (bIgnore) {
-		NP2_StrCmp = lstrcmpiA;
-		NP2_StrNCmp = StrCmpNIA;
-	} else {
-		NP2_StrCmp = lstrcmpA;
-		NP2_StrNCmp = StrCmpNA;
-	}
+  bIgnore = IsDocCaseInsensitive();
+  pWList = (struct WordList *)LocalAlloc(LPTR, sizeof(struct WordList));
+  pWList->bMatchStart = TRUE;
+  pWList->pWordStart = pRoot;
+  pWList->iStartLen = iRootLen;
+  if (bIgnore) {  // case insensitive
+      pWList->WL_StrCmpA = StrCmpIA;
+      pWList->WL_StrCmpNA = StrCmpNIA;
+  } else {        // case sensitive
+      pWList->WL_StrCmpA = StrCmpA;
+      pWList->WL_StrCmpNA = StrCmpNA;
+  }
 
-	// add keywords to lListHead
-	pWord = LocalAlloc(LPTR, 256);
-	for (iLine = 0; iLine <= KEYWORDSET_MAX; iLine++) {
-		const char *pKeywords = pLexCurrent->pKeyWords->pszKeyWords[iLine];
-		iDocLen = 0;
-		while (*pKeywords) {
-			if (!IsLexerKeywordChar(*pKeywords)) {
-				++pKeywords;
-				while (*pKeywords && !IsLexerKeywordChar(*pKeywords)) ++pKeywords;
-				if (iDocLen == 0) continue;
-				pWord[iDocLen] = 0;
+  // add keywords to pWList
+  for (iLine = 0; iLine <= KEYWORDSET_MAX; iLine++) {
+    const char *pKeywords = pLexCurrent->pKeyWords->pszKeyWords[iLine];
+    if (!*pKeywords)
+      continue;
+    WordList_AddList(pWList, pKeywords);
+  }
 
-				// match word start
-				if (iDocLen > iRootLen && NP2_StrNCmp(pRoot, pWord, iRootLen) == 0) {
-					struct WLIST *p = lListHead;
-					struct WLIST *t = NULL;
-					BOOL found = FALSE;
-					int cmp;
-
-					while (p) {
-						cmp =  NP2_StrCmp(pWord, p->word);
-						if (!cmp) {
-							found = TRUE;
-							break;
-						} else if (cmp < 0) {
-							break;
-						}
-						t = p;
-						p = p->next;
-					}
-
-					if (!found) {
-						struct WLIST *el = (struct WLIST *)LocalAlloc(LPTR, sizeof(struct WLIST));
-						el->word = LocalAlloc(LPTR, iDocLen + 1);
-						lstrcpyA(el->word, pWord);
-						el->next = p;
-						if (t) {
-							t->next = el;
-						} else {
-							lListHead = el;
-						}
-						iNumWords++;
-						iWListSize += iDocLen + 1;
-					}
-				}
-				iDocLen = 0;
-			} else {
-				pWord[iDocLen++] = *pKeywords++;
-			}
-		}
-	}
-	LocalFree(pWord);
+  // word in current document: case sensitive
+  pWList->WL_StrCmpA = StrCmpA;
+  pWList->WL_StrCmpNA = StrCmpNA;
 
   iDocLen = (int)SendMessage(hwnd, SCI_GETLENGTH, 0, 0);
-
   ft.lpstrText = pRoot;
   ft.chrg.cpMax = iDocLen;
-
   iPosFind = (int)SendMessage(hwnd, SCI_FINDTEXT, SCFIND_WORDSTART, (LPARAM)&ft);
 
   while (iPosFind >= 0 && iPosFind < iDocLen) {
@@ -5873,9 +5926,10 @@ void CompleteWord(HWND hwnd, BOOL autoInsert) {
     int wordEnd = iPosFind + iRootLen;
 
     if (iPosFind != iCurrentPos - iRootLen) {
-		//while (wordEnd < iDocLen && !StrChrIA(NON_WORD, (char)SendMessage(hwnd, SCI_GETCHARAT, (WPARAM)wordEnd, 0)))
-		while (wordEnd < iDocLen && IsLexerWordChar((int)SendMessage(hwnd, SCI_GETCHARAT, (WPARAM)wordEnd, 0)))
-        wordEnd++;
+        //while (wordEnd < iDocLen && !StrChrIA(NON_WORD, (char)SendMessage(hwnd, SCI_GETCHARAT, (WPARAM)wordEnd, 0)))
+        while (wordEnd < iDocLen && IsDocWordChar((int)SendMessage(hwnd, SCI_GETCHARAT, (WPARAM)wordEnd, 0))){
+          wordEnd++;
+        }
 
       wordLength = wordEnd - iPosFind;
       if (wordLength > iRootLen) {
@@ -5886,47 +5940,15 @@ void CompleteWord(HWND hwnd, BOOL autoInsert) {
         tr.chrg.cpMax = wordEnd;
         SendMessage(hwnd, SCI_GETTEXTRANGE, 0, (LPARAM)&tr);
 
-		// word after escape char
-		iStartWordPos = (int)SendMessage(hwnd, SCI_GETCHARAT, (WPARAM)(wordEnd - wordLength - 1), 0);
-		iCurrentLinePos = (int)SendMessage(hwnd, SCI_GETCHARAT, (WPARAM)(wordEnd - wordLength - 2), 0);
-		if (iCurrentLinePos != '\\' && iStartWordPos == '\\' && IsEscapeChar(*pWord)) {
-			pWord++;
-			++iPosFind;
-		}
+        // word after escape char
+        iStartWordPos = (int)SendMessage(hwnd, SCI_GETCHARAT, (WPARAM)(wordEnd - wordLength - 1), 0);
+        iCurrentLinePos = (int)SendMessage(hwnd, SCI_GETCHARAT, (WPARAM)(wordEnd - wordLength - 2), 0);
+        if (iCurrentLinePos != '\\' && iStartWordPos == '\\' && IsEscapeChar(*pWord)) {
+          pWord++;
+          --wordLength;
+        }
 
-		// match word start
-		if (NP2_StrNCmp(pRoot, pWord, iRootLen) == 0) {
-			struct WLIST* p = lListHead;
-			struct WLIST* t = NULL;
-			int lastCmp = 0;
-			BOOL found = FALSE;
-
-			while(p) {
-			  int cmp = NP2_StrCmp(pWord, p->word);
-			  if (!cmp) {
-				found = TRUE;
-				break;
-			  } else if (cmp < 0) {
-				break;
-			  }
-			  t = p;
-			  p = p->next;
-			}
-			if (!found) {
-			  struct WLIST* el = (struct WLIST*)LocalAlloc(LPTR, sizeof(struct WLIST));
-			  el->word = LocalAlloc(LPTR, wordEnd - iPosFind + 2);
-			  lstrcpyA(el->word, pWord);
-			  el->next = p;
-			  if (t) {
-				t->next = el;
-			  } else {
-				lListHead = el;
-			  }
-
-			  iNumWords++;
-			  iWListSize += wordEnd - iPosFind + 2;
-			}
-		}
+        WordList_AddWord(pWList, pWord, wordLength);
         LocalFree(pWord);
       }
     }
@@ -5934,30 +5956,20 @@ void CompleteWord(HWND hwnd, BOOL autoInsert) {
     iPosFind = (int)SendMessage(hwnd, SCI_FINDTEXT, SCFIND_WORDSTART, (LPARAM)&ft);
   }
 
-  if (iNumWords > 0) {
+  if (pWList->nWordCount > 0) {
     char *pList;
-    struct WLIST* p = lListHead;
-    struct WLIST* t;
+    WordList_GetList(pWList, &pList);
 
-    pList = LocalAlloc(LPTR, iWListSize + 1);
-    while (p) {
-      lstrcatA(pList, " ");
-      lstrcatA(pList, p->word);
-      LocalFree(p->word);
-      t = p;
-      p = p->next;
-      LocalFree(t);
-    }
-
-    SendMessage(hwnd, SCI_AUTOCSETIGNORECASE, bIgnore, 0);
-    SendMessage(hwnd, SCI_AUTOCSETSEPARATOR, ' ', 0);
+    SendMessage(hwnd, SCI_AUTOCSETIGNORECASE, 0, 0); // case sensitive
+    SendMessage(hwnd, SCI_AUTOCSETSEPARATOR, '\n', 0);
     SendMessage(hwnd, SCI_AUTOCSETFILLUPS, 0, (LPARAM)"\t\n\r");
     SendMessage(hwnd, SCI_AUTOCSETCHOOSESINGLE, autoInsert, 0);
-    SendMessage(hwnd, SCI_AUTOCSHOW, iRootLen, (LPARAM)(pList + 1));
+    SendMessage(hwnd, SCI_AUTOCSHOW, iRootLen, (LPARAM)(pList));
     LocalFree(pList);
   }
 
   LocalFree(pRoot);
+  LocalFree(pWList);
 }
 
 //=============================================================================
@@ -5966,7 +5978,7 @@ void CompleteWord(HWND hwnd, BOOL autoInsert) {
 //  Mark all occurrences of the text currently selected (by Aleksandar Lekov)
 //
 
-extern 	int iMatchesCount;
+extern int iMatchesCount;
 
 void EditMarkAll(HWND hwnd, int iMarkOccurrences, BOOL bMarkOccurrencesMatchCase, BOOL bMarkOccurrencesMatchWords)
 {
@@ -6012,8 +6024,8 @@ void EditMarkAll(HWND hwnd, int iMarkOccurrences, BOOL bMarkOccurrencesMatchCase
     iSelStart = 0;
     while (pszText[iSelStart])
     {
-		//if (StrChrIA(" \t\r\n@#$%^&*~-=+()[]{}\\/:;'\"", pszText[iSelStart])) {
-		if (!IsLexerWordChar(pszText[iSelStart])) {
+        //if (StrChrIA(" \t\r\n@#$%^&*~-=+()[]{}\\/:;'\"", pszText[iSelStart])) {
+        if (!IsDocWordChar(pszText[iSelStart])) {
         LocalFree(pszText);
         return;
       }
@@ -6032,11 +6044,11 @@ void EditMarkAll(HWND hwnd, int iMarkOccurrences, BOOL bMarkOccurrencesMatchCase
   SendMessage(hwnd, SCI_INDICSETFORE, 1, 0xff << ((iMarkOccurrences - 1) << 3));
   SendMessage(hwnd, SCI_INDICSETSTYLE, 1, INDIC_ROUNDBOX);
 
-	while ((iPos = (int)SendMessage(hwnd, SCI_FINDTEXT,
-						(bMarkOccurrencesMatchCase ? SCFIND_MATCHCASE : 0) |
-						(bMarkOccurrencesMatchWords ? SCFIND_WHOLEWORD : 0), (LPARAM)&ttf)) != -1) {
+    while ((iPos = (int)SendMessage(hwnd, SCI_FINDTEXT,
+                        (bMarkOccurrencesMatchCase ? SCFIND_MATCHCASE : 0) |
+                        (bMarkOccurrencesMatchWords ? SCFIND_WHOLEWORD : 0), (LPARAM)&ttf)) != -1) {
     // mark this match
-	++iMatchesCount;
+    ++iMatchesCount;
     SendMessage(hwnd, SCI_INDICATORFILLRANGE, iPos, iSelCount);
     ttf.chrg.cpMin = ttf.chrgText.cpMin + iSelCount;
     if (ttf.chrg.cpMin == ttf.chrg.cpMax)
