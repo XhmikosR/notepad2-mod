@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="chrome=1">
 		<title>Notepad2-mod - Screenshots</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -9,9 +9,9 @@
 		<link rel="stylesheet" type="text/css" href="css/stylesheet.min.css" media="screen" />
 		<link rel="stylesheet" type="text/css" href="css/jquery.fancybox.min.css" media="screen" />
 		<link rel="stylesheet" type="text/css" href="css/print.min.css" media="print" />
-		<link rel="shortcut icon" href="favicon.ico" />
+		<link rel="icon" href="favicon.ico">
 		<!--[if lt IE 9]>
-		<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<script src="js/html5shiv.js"></script>
 		<![endif]-->
 	</head>
 	<body>
@@ -94,16 +94,12 @@
 				</aside>
 			</div>
 		</div>
-		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-		<script type="text/javascript" src="js/pack.js"></script>
-		<script type="text/javascript">
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script src="js/pack.js"></script>
+		<script>
 			$(document).ready(function() {
 				$(".fancybox-thumb").fancybox({
 					padding: 0,
-					openEffect: 'fade',
-					closeEffect: 'fade',
-					prevEffect: 'none',
-					nextEffect: 'none',
 					helpers: {
 						title: { type: 'float' },
 						thumbs: { width: 50, height: 50 }
