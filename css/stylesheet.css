@@ -308,10 +308,6 @@ dl dd {
     height: 0;
 }
 
-.clearfix {
-    display: inline-block;
-}
-
 * html .clearfix {
     height: 1%;
 }
