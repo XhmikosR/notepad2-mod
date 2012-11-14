@@ -8,4 +8,4 @@ TYPE js\jquery.mousewheel.js js\jquery.fancybox.js js\jquery.fancybox-thumbs.js 
 TYPE css\stylesheet.css css\print.css css\normalize.css | cleancss --s0 -o css\pack.css
 
 ENDLOCAL
-PAUSE
+rem PAUSE
