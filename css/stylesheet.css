@@ -85,6 +85,11 @@ aside {
     width: 200px;
 }
 
+.repo-owner,
+.repo-owner a {
+    font-weight: bold;
+}
+
 .repo-owner {
     font-weight: bold;
 }
@@ -196,7 +201,7 @@ section h1:before {
     padding-right: 0.3em;
 }
 
-section h2 {
+/*section h2 {
     color: #474747;
     font-size: 22px;
     font-weight: bold;
@@ -259,7 +264,7 @@ h6:before {
     content: "//////";
     margin-left: -3.7em;
     padding-right: 0.3em;
-}
+}*/
 
 p {
     margin-bottom: 20px;
@@ -304,9 +309,9 @@ dl dd {
     visibility: hidden;
 }
 
-* html .clearfix {
+/** html .clearfix {
     height: 1%;
-}
+}*/
 
 .clearfix {
     display: block;

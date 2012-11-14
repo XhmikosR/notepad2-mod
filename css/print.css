@@ -104,7 +104,7 @@
         margin-bottom: 8px;
     }
 
-    h3 {
+    /*h3 {
         color: #d5000d;
         font-size: 18px;
         font-weight: bold;
@@ -125,7 +125,7 @@
     h6 {
         color: #303030;
         font-size: .8em;
-    }
+    }*/
 
     p {
         font-weight: 300;
@@ -183,13 +183,13 @@
         visibility: hidden;
     }
 
-    .clearfix {
+    /*.clearfix {
         display: inline-block;
     }
 
     * html .clearfix {
         height: 1%;
-    }
+    }*/
 
     .clearfix {
         display: block;
