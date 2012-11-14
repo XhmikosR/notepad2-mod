@@ -78,15 +78,6 @@ strong {
 }
 
 /*
- * Addresses styling not present in Safari 5 and Chrome.
- */
-
-dfn {
-    font-style: italic;
-}
-
-
-/*
  * Corrects font family set oddly in Safari 5 and Chrome.
  */
 
@@ -106,7 +97,6 @@ small {
     font-size: 80%;
 }
 
-
 /* ==========================================================================
    Embedded content
    ========================================================================== */
@@ -117,17 +107,4 @@ small {
 
 img {
     border: 0;
-}
-
-/* ==========================================================================
-   Tables
-   ========================================================================== */
-
-/*
- * Remove most spacing between table cells.
- */
-
-table {
-    border-collapse: collapse;
-    border-spacing: 0;
 }
