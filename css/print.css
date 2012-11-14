@@ -1,10 +1,8 @@
 /* print styles */
 @media print {
     body {
-        font-size: 13px;
-        line-height: 1.5;
-        font-family: 'Helvetica Neue', Helvetica, Arial, serif;
         color: #000;
+        font: 400 13px/1.5 "Helvetica Neue", Helvetica, Arial, serif;
     }
 
     a {
@@ -13,43 +11,44 @@
     }
 
     header {
-        padding-top: 35px;
         padding-bottom: 10px;
+        padding-top: 35px;
     }
 
     header h1 {
+        color: #303030;
+        font-size: 48px;
         font-weight: bold;
         letter-spacing: -1px;
-        font-size: 48px;
-        color: #303030;
         line-height: 1.2;
     }
 
     header h2 {
-        letter-spacing: -1px;
-        font-size: 24px;
         color: #aaa;
+        font-size: 24px;
         font-weight: normal;
+        letter-spacing: -1px;
         line-height: 1.3;
     }
 
     /*#downloads {
         display: none;
-    }
-
-    #main_content {
-        padding-top: 20px;
     }*/
+
+    section {
+        padding-top: 20px;
+    }
 
     em {
       font-style: italic;
     }
 
-    code, pre {
-        font-family: Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;
+    code,
+    pre {
         color: #222;
-        margin-bottom: 30px;
+        font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal;
         font-size: 12px;
+        margin-bottom: 30px;
     }
 
     code {
@@ -66,13 +65,14 @@
         padding: 0;
     }*/
 
-    ul, ol, dl {
+    ul,
+    ol,
+    dl {
         margin-bottom: 20px;
     }
 
     /* COMMON STYLES */
     /*table {
-        width: 100%;
         border: 1px solid #ebebeb;
     }
 
@@ -82,8 +82,8 @@
 
     td {
         border: 1px solid #ebebeb;
-        text-align: center;
         font-weight: 300;
+        text-align: center;
     }
 
     form {
@@ -112,19 +112,19 @@
     }
 
     h4 {
-        font-size: 16px;
         color: #303030;
+        font-size: 16px;
         font-weight: bold;
     }
 
     h5 {
-        font-size: 1em;
         color: #303030;
+        font-size: 1em;
     }
 
     h6 {
-        font-size: .8em;
         color: #303030;
+        font-size: .8em;
     }
 
     p {
@@ -141,8 +141,8 @@
     }
 
     /*blockquote {
-        font-size: 1.6em;
         border-left: 10px solid #e9e9e9;
+        font-size: 1.6em;
         margin-bottom: 20px;
         padding: 0 0 0 30px;
     }*/
@@ -163,11 +163,11 @@
     }
 
     footer {
-        margin-top: 40px;
-        padding-top: 20px;
-        padding-bottom: 30px;
-        font-size: 13px;
         color: #aaa;
+        font-size: 13px;
+        margin-top: 40px;
+        padding-bottom: 30px;
+        padding-top: 20px;
     }
 
     footer a {
@@ -179,8 +179,8 @@
         clear: both;
         content: '.';
         display: block;
-        visibility: hidden;
         height: 0;
+        visibility: hidden;
     }
 
     .clearfix {
