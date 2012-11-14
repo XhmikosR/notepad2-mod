@@ -85,8 +85,7 @@ aside {
     width: 200px;
 }
 
-aside p.repo-owner,
-aside p.repo-owner a {
+.repo-owner {
     font-weight: bold;
 }
 
@@ -324,18 +323,24 @@ dl dd {
     .inner {
         width: 740px;
     }
-    header h1, header h2 {
+
+    header h1,
+    header h2 {
         width: 340px;
     }
+
     header h1 {
         font-size: 60px;
     }
+
     header h2 {
         font-size: 30px;
     }
+
     section {
         width: 490px;
     }
+
     section h1:before,
     section h2:before,
     section h3:before,
@@ -353,21 +358,28 @@ dl dd {
     .inner {
         width: 93%;
     }
+
     header {
         padding: 20px 0;
     }
+
     header .inner {
         position: relative;
     }
-    header h1, header h2 {
+
+    header h1,
+    header h2 {
         width: 100%;
     }
+
     header h1 {
         font-size: 48px;
     }
+
     header h2 {
         font-size: 24px;
     }
+
     header a.button {
         background-color: #9ddcff;
         background-image: none;
@@ -385,15 +397,18 @@ dl dd {
         width: auto;
         height: auto;
     }
-    header a.button small {
+
+    a.button small {
         display: inline;
         font-size: 13px;
     }
+
     section,
     aside {
         float: none;
         width: 100% ! important;
     }
+
     aside {
         background-image: none;
         border-top: solid 1px #ddd;
@@ -401,9 +416,11 @@ dl dd {
         min-height: 0;
         padding: 20px 0;
     }
+
     aside a.button {
         display: none;
     }
+
     section h1:before,
     section h2:before,
     section h3:before,
