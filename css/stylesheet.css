@@ -12,6 +12,7 @@ h4,
 h5,
 h6,
 a.button {
+    -webkit-font-smoothing: antialiased;
     font-family: "Architects Daughter", "Helvetica Neue", Helvetica, Arial, serif;
 }
 
@@ -69,16 +70,12 @@ header a:visited {
     padding-top: 30px;
 }
 
-#main-content {
+section {
     float: left;
     width: 690px;
 }
 
-#main-content img {
-    max-width: 100%;
-}
-
-aside#sidebar {
+aside {
     background: transparent url("../img/sidebar-bg.jpg") 0 0 no-repeat;
     float: right;
     font-size: 12px;
@@ -88,8 +85,8 @@ aside#sidebar {
     width: 200px;
 }
 
-aside#sidebar p.repo-owner,
-aside#sidebar p.repo-owner a {
+aside p.repo-owner,
+aside p.repo-owner a {
     font-weight: bold;
 }
 
@@ -187,34 +184,34 @@ form {
 }*/
 
 /* GENERAL ELEMENT TYPE STYLES */
-#main-content h1 {
+section h1 {
     color: #474747;
     font-size: 2.8em;
     letter-spacing: -1px;
 }
 
-#main-content h1:before {
+section h1:before {
     color: #9ddcff;
     content: "/";
     margin-left: -0.9em;
     padding-right: 0.3em;
 }
 
-#main-content h2 {
+section h2 {
     color: #474747;
     font-size: 22px;
     font-weight: bold;
     margin-bottom: 8px;
 }
 
-#main-content h2:before {
+section h2:before {
     color: #9ddcff;
     content: "//";
     margin-left: -1.5em;
     padding-right: 0.3em;
 }
 
-#main-content h3 {
+section h3 {
     color: #474747;
     font-size: 18px;
     font-weight: bold;
@@ -222,14 +219,14 @@ form {
     margin-top: 24px;
 }
 
-#main-content h3:before {
+section h3:before {
     color: #9ddcff;
     content: "///";
     margin-left: -2em;
     padding-right: 0.3em;
 }
 
-#main-content h4 {
+section h4 {
     color: #474747;
     font-size: 15px;
     font-weight: bold;
@@ -242,7 +239,7 @@ h4:before {
     padding-right: 0.3em;
 }
 
-#main-content h5 {
+section h5 {
     color: #474747;
     font-size: 14px;
 }
@@ -254,7 +251,7 @@ h5:before {
     padding-right: 0.3em;
 }
 
-#main-content h6 {
+section h6 {
     color: #474747;
     font-size: .8em;
 }
@@ -336,15 +333,15 @@ dl dd {
     header h2 {
         font-size: 30px;
     }
-    #main-content {
+    section {
         width: 490px;
     }
-    #main-content h1:before,
-    #main-content h2:before,
-    #main-content h3:before,
-    #main-content h4:before,
-    #main-content h5:before,
-    #main-content h6:before {
+    section h1:before,
+    section h2:before,
+    section h3:before,
+    section h4:before,
+    section h5:before,
+    section h6:before {
         content: none;
         margin-left: 0;
         padding-right: 0;
@@ -392,27 +389,27 @@ dl dd {
         display: inline;
         font-size: 13px;
     }
-    #main-content,
-    aside#sidebar {
+    section,
+    aside {
         float: none;
         width: 100% ! important;
     }
-    aside#sidebar {
+    aside {
         background-image: none;
         border-top: solid 1px #ddd;
         margin-top: 20px;
         min-height: 0;
         padding: 20px 0;
     }
-    aside#sidebar a.button {
+    aside a.button {
         display: none;
     }
-    #main-content h1:before,
-    #main-content h2:before,
-    #main-content h3:before,
-    #main-content h4:before,
-    #main-content h5:before,
-    #main-content h6:before {
+    section h1:before,
+    section h2:before,
+    section h3:before,
+    section h4:before,
+    section h5:before,
+    section h6:before {
         content: none;
         margin-left: 0;
         padding-right: 0;
