@@ -389,8 +389,8 @@ dl dd {
         background-color: #9ddcff;
         background-image: none;
         border-radius: 5px;
-        -moz-border-radius: 5px;
         -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
         color: #2879d0;
         display: inline-block;
         font-size: 13px;
