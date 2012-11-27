@@ -2,7 +2,7 @@
 body {
     background: #fafafa url("../img/body-bg.jpg") 0 0 repeat;
     color: #666;
-    font: 400 15px/1.5 "Helvetica Neue", Helvetica, Arial, serif;
+    font: normal 15px/1.5 "Helvetica Neue", Helvetica, Arial, serif;
 }
 
 h1,
@@ -271,7 +271,7 @@ a {
 }
 
 p a {
-    font-weight: 400;
+    font-weight: normal;
 }
 
 /*blockquote {
@@ -439,3 +439,198 @@ dl dd {
 
 /* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
 /*@media only screen and (max-width: 479px) {}*/
+
+
+/* print styles */
+@media print {
+    body {
+        color: #000;
+        font: normal 13px/1.5 "Helvetica Neue", Helvetica, Arial, serif;
+    }
+
+    a {
+        color: #d5000d;
+        font-weight: bold;
+    }
+
+    header {
+        padding-bottom: 10px;
+        padding-top: 35px;
+    }
+
+    header h1 {
+        color: #303030;
+        font-size: 48px;
+        font-weight: bold;
+        letter-spacing: -1px;
+        line-height: 1.2;
+    }
+
+    header h2 {
+        color: #aaa;
+        font-size: 24px;
+        font-weight: normal;
+        letter-spacing: -1px;
+        line-height: 1.3;
+    }
+
+    /*#downloads {
+        display: none;
+    }*/
+
+    section {
+        padding-top: 20px;
+    }
+
+    em {
+      font-style: italic;
+    }
+
+    code,
+    pre {
+        color: #222;
+        font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal;
+        font-size: 12px;
+        margin-bottom: 30px;
+    }
+
+    code {
+        padding: 0 3px;
+    }
+
+    /*pre {
+        border: solid 1px #ddd;
+        padding: 20px;
+        overflow: auto;
+    }
+
+    pre code {
+        padding: 0;
+    }*/
+
+    ul,
+    ol,
+    dl {
+        margin-bottom: 20px;
+    }
+
+    /* COMMON STYLES */
+    /*table {
+        border: 1px solid #ebebeb;
+    }
+
+    th {
+        font-weight: 500;
+    }
+
+    td {
+        border: 1px solid #ebebeb;
+        font-weight: 300;
+        text-align: center;
+    }
+
+    form {
+        background: #f2f2f2;
+        padding: 20px;
+
+    }*/
+
+    /* GENERAL ELEMENT TYPE STYLES */
+    h1 {
+        font-size: 2.8em;
+    }
+
+    h2 {
+        font-size: 22px;
+        font-weight: bold;
+        color: #303030;
+        margin-bottom: 8px;
+    }
+
+    /*h3 {
+        color: #d5000d;
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+
+    h4 {
+        color: #303030;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    h5 {
+        color: #303030;
+        font-size: 1em;
+    }
+
+    h6 {
+        color: #303030;
+        font-size: .8em;
+    }*/
+
+    p {
+        font-weight: 300;
+        margin-bottom: 20px;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    p a {
+        font-weight: normal;
+    }
+
+    /*blockquote {
+        border-left: 10px solid #e9e9e9;
+        font-size: 1.6em;
+        margin-bottom: 20px;
+        padding: 0 0 0 30px;
+    }*/
+
+    ul li {
+        list-style: disc inside;
+        padding-left: 10px;
+    }
+
+    /*ol li {
+        list-style: decimal inside;
+        padding-left: 3px;
+    }
+
+    dl dd {
+        font-style: italic;
+        font-weight: 100;
+    }
+
+    footer {
+        color: #aaa;
+        font-size: 13px;
+        margin-top: 40px;
+        padding-bottom: 30px;
+        padding-top: 20px;
+    }
+
+    footer a {
+        color: #666;
+    }
+    */
+    /* MISC */
+    .clearfix:after {
+        clear: both;
+        content: '.';
+        display: block;
+        height: 0;
+        visibility: hidden;
+    }
+
+    * html .clearfix {
+        height: 1%;
+    }
+
+    .clearfix {
+        display: block;
+    }
+}
