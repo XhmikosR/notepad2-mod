@@ -111,7 +111,7 @@
     </Link>
     <PreBuildEvent>
       <Command>..\update_rev.bat</Command>
-      <Message>Generating SVN revision...</Message>
+      <Message>Generating revision number...</Message>
     </PreBuildEvent>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_UNICODE;UNICODE;BOOKMARK_EDITION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -137,7 +137,7 @@
     </Link>
     <PreBuildEvent>
       <Command>..\update_rev.bat</Command>
-      <Message>Generating SVN revision...</Message>
+      <Message>Generating revision number...</Message>
     </PreBuildEvent>
     <ResourceCompile>
       <PreprocessorDefinitions>_WIN64;_UNICODE;UNICODE;BOOKMARK_EDITION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -165,7 +165,7 @@
     </Link>
     <PreBuildEvent>
       <Command>..\update_rev.bat</Command>
-      <Message>Generating SVN revision...</Message>
+      <Message>Generating revision number...</Message>
     </PreBuildEvent>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_UNICODE;UNICODE;BOOKMARK_EDITION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -192,7 +192,7 @@
     </Link>
     <PreBuildEvent>
       <Command>..\update_rev.bat</Command>
-      <Message>Generating SVN revision...</Message>
+      <Message>Generating revision number...</Message>
     </PreBuildEvent>
     <ResourceCompile>
       <PreprocessorDefinitions>_WIN64;_UNICODE;UNICODE;BOOKMARK_EDITION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
