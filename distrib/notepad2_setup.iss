@@ -106,8 +106,6 @@ DisableWelcomePage=yes
 AllowCancelDuringInstall=no
 #if defined(WDK)
 MinVersion=5.0
-#elif defined(VS2012)
-MinVersion=6.0
 #else
 MinVersion=5.1.2600sp3
 #endif
