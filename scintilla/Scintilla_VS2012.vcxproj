@@ -21,6 +21,7 @@
   <PropertyGroup Label="Globals">
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{5877B917-512B-49F5-B514-1B4159E7A9CA}</ProjectGuid>
+    <ProjectName>Scintilla</ProjectName>
     <RootNamespace>Scintilla</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
