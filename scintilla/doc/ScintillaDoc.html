@@ -2603,6 +2603,8 @@ struct Sci_TextToFind {
     <a class="message" href="#SCI_GETCARETLINEBACK">SCI_GETCARETLINEBACK</a><br />
     <a class="message" href="#SCI_SETCARETLINEBACKALPHA">SCI_SETCARETLINEBACKALPHA(int alpha)</a><br />
     <a class="message" href="#SCI_GETCARETLINEBACKALPHA">SCI_GETCARETLINEBACKALPHA</a><br />
+    <a class="message" href="#SCI_SETCARETLINEVISIBLEALWAYS">SCI_SETCARETLINEVISIBLEALWAYS(bool alwaysVisible)</a><br />
+    <a class="message" href="#SCI_GETCARETLINEVISIBLEALWAYS">SCI_GETCARETLINEVISIBLEALWAYS</a><br />
     <a class="message" href="#SCI_SETCARETPERIOD">SCI_SETCARETPERIOD(int milliseconds)</a><br />
     <a class="message" href="#SCI_GETCARETPERIOD">SCI_GETCARETPERIOD</a><br />
     <a class="message" href="#SCI_SETCARETSTYLE">SCI_SETCARETSTYLE(int style)</a><br />
@@ -2665,6 +2667,12 @@ struct Sci_TextToFind {
            through. This is done by setting the alpha (translucency) value by calling
            SCI_SETCARETLINEBACKALPHA. When the alpha is not SC_ALPHA_NOALPHA,
            the caret line is drawn after all other features so will affect the colour of all other features.
+          </p>
+
+    <p><b id="SCI_SETCARETLINEVISIBLEALWAYS">SCI_SETCARETLINEVISIBLEALWAYS(bool alwaysVisible)</b><br />
+     <b id="SCI_GETCARETLINEVISIBLEALWAYS">SCI_GETCARETLINEVISIBLEALWAYS</b><br />
+     Choose to make the caret line always visible even when the window is not in focus.
+     Default behaviour <code>SCI_SETCARETLINEVISIBLEALWAYS(false)</code> the caret line is only visible when the window is in focus.
           </p>
 
     <p><b id="SCI_SETCARETPERIOD">SCI_SETCARETPERIOD(int milliseconds)</b><br />
