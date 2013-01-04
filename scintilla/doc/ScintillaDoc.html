@@ -79,7 +79,7 @@
 
     <h1>Scintilla Documentation</h1>
 
-    <p>Last edited 21/July/2012 NH</p>
+    <p>Last edited 3/January/2013 NH</p>
 
     <p>There is <a class="jump" href="Design.html">an overview of the internal design of
     Scintilla</a>.<br />
@@ -3680,6 +3680,21 @@ struct Sci_TextToFind {
      <a class="message" href="#SCI_INDICGETOUTLINEALPHA">SCI_INDICGETOUTLINEALPHA(int indicatorNumber)</a><br />
      <a class="message" href="#SCI_INDICSETUNDER">SCI_INDICSETUNDER(int indicatorNumber, bool under)</a><br />
      <a class="message" href="#SCI_INDICGETUNDER">SCI_INDICGETUNDER(int indicatorNumber)</a><br />
+
+     <a class="message" href="#SCI_SETINDICATORCURRENT">SCI_SETINDICATORCURRENT(int indicator)</a><br />
+     <a class="message" href="#SCI_GETINDICATORCURRENT">SCI_GETINDICATORCURRENT</a><br />
+     <a class="message" href="#SCI_SETINDICATORVALUE">SCI_SETINDICATORVALUE(int value)</a><br />
+     <a class="message" href="#SCI_GETINDICATORVALUE">SCI_GETINDICATORVALUE</a><br />
+     <a class="message" href="#SCI_INDICATORFILLRANGE">SCI_INDICATORFILLRANGE(int position, int fillLength)</a><br />
+     <a class="message" href="#SCI_INDICATORCLEARRANGE">SCI_INDICATORCLEARRANGE(int position, int clearLength)</a><br />
+     <a class="message" href="#SCI_INDICATORALLONFOR">SCI_INDICATORALLONFOR(int position)</a><br />
+     <a class="message" href="#SCI_INDICATORVALUEAT">SCI_INDICATORVALUEAT(int indicator, int position)</a><br />
+     <a class="message" href="#SCI_INDICATORSTART">SCI_INDICATORSTART(int indicator, int position)</a><br />
+     <a class="message" href="#SCI_INDICATOREND">SCI_INDICATOREND(int indicator, int position)</a><br />
+
+     <a class="message" href="#SCI_FINDINDICATORSHOW">SCI_FINDINDICATORSHOW(int start, int end)</a><br />
+     <a class="message" href="#SCI_FINDINDICATORFLASH">SCI_FINDINDICATORFLASH(int start, int end)</a><br />
+     <a class="message" href="#SCI_FINDINDICATORHIDE">SCI_FINDINDICATORHIDE</a><br />
     </code>
 
     <p><b id="SCI_INDICSETSTYLE">SCI_INDICSETSTYLE(int indicatorNumber, int
