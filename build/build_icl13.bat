@@ -8,7 +8,7 @@ rem *   Batch file used to build Notepad2 with ICL13
 rem *
 rem * See License.txt for details about distribution and modification.
 rem *
-rem *                                       (c) XhmikosR 2010-2012
+rem *                                       (c) XhmikosR 2010-2013
 rem *                                       https://github.com/XhmikosR/notepad2-mod
 rem *
 rem ******************************************************************************
@@ -17,7 +17,7 @@ SETLOCAL ENABLEEXTENSIONS
 CD /D %~dp0
 
 rem Check the building environment
-IF NOT DEFINED VS100COMNTOOLS  CALL :SUBMSG "ERROR" "Visual Studio 2010 wasn't found!"
+IF NOT DEFINED VS110COMNTOOLS  CALL :SUBMSG "ERROR" "Visual Studio 2012 wasn't found!"
 IF NOT DEFINED ICPP_COMPILER13 CALL :SUBMSG "ERROR" "Intel C++ Compiler XE 2013 wasn't found!"
 
 
@@ -109,7 +109,7 @@ IF "%ARCH%" == "x86" GOTO x86
 
 
 :x86
-CALL "%VS100COMNTOOLS%..\..\VC\vcvarsall.bat" x86
+CALL "%VS110COMNTOOLS%..\..\VC\vcvarsall.bat" x86
 
 IF "%CONFIG%" == "all" (CALL :SUBMSVC %BUILDTYPE% Debug Win32 && CALL :SUBMSVC %BUILDTYPE% Release Win32) ELSE (CALL :SUBMSVC %BUILDTYPE% %CONFIG% Win32)
 
@@ -119,7 +119,7 @@ IF "%ARCH%" == "x86" GOTO END
 :x64
 IF DEFINED PROGRAMFILES(x86) (SET build_type=amd64) ELSE (SET build_type=x86_amd64)
 
-CALL "%VS100COMNTOOLS%..\..\VC\vcvarsall.bat" %build_type%
+CALL "%VS110COMNTOOLS%..\..\VC\vcvarsall.bat" %build_type%
 
 IF "%CONFIG%" == "all" (CALL :SUBMSVC %BUILDTYPE% Debug x64 && CALL :SUBMSVC %BUILDTYPE% Release x64) ELSE (CALL :SUBMSVC %BUILDTYPE% %CONFIG% x64)
 
@@ -133,9 +133,8 @@ EXIT /B
 :SUBMSVC
 ECHO.
 TITLE Building Notepad2-mod with ICL13 - %~1 "%~2|%~3"...
-"%WINDIR%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo Notepad2_icl13.sln^
- /t:%~1 /p:Configuration=%~2;Platform=%~3 /consoleloggerparameters:Verbosity=minimal^
- /maxcpucount /nodeReuse:true
+"MSBuild.exe" /nologo Notepad2_icl13.sln /t:%~1 /p:Configuration=%~2;Platform=%~3^
+ /consoleloggerparameters:Verbosity=minimal /maxcpucount /nodeReuse:true
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 EXIT /B
 

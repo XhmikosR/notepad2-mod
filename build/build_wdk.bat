@@ -8,7 +8,7 @@ rem *   Batch file "wrapper" for makefile.mak, used to build Notepad2 with WDK
 rem *
 rem * See License.txt for details about distribution and modification.
 rem *
-rem *                                       (c) XhmikosR 2010-2012
+rem *                                       (c) XhmikosR 2010-2013
 rem *                                       https://github.com/XhmikosR/notepad2-mod
 rem *
 rem ******************************************************************************
@@ -21,16 +21,6 @@ IF NOT DEFINED WDKBASEDIR SET "WDKBASEDIR=C:\WinDDK\7600.16385.1"
 
 rem Check the building environment
 IF NOT EXIST "%WDKBASEDIR%" CALL :SUBMSG "ERROR" "Specify your WDK directory!"
-
-IF NOT DEFINED VS100COMNTOOLS (
-  CALL :SUBMSG "INFO" "Visual Studio 2010 wasn't found, I will use WDK's compiler"
-  SET USE_MSVC2010=
-) ELSE (
-  rem Comment out the following line or set USE_MSVC2010 to anything but true
-  rem if you want to use WDK's compiler instead of MSVC 2010 compiler
-  SET USE_MSVC2010=true
-)
-
 
 rem Check for the help switches
 IF /I "%~1" == "help"   GOTO SHOWHELP
@@ -95,13 +85,9 @@ IF "%ARCH%" == "x86" GOTO x86
 
 
 :x86
-IF "%USE_MSVC2010%" == "true" (
-  CALL "%VS100COMNTOOLS%..\..\VC\vcvarsall.bat" x86
-) ELSE (
-  SET "PATH=%WDKBASEDIR%\bin\x86;%WDKBASEDIR%\bin\x86\x86;%PATH%"
-)
 SET "INCLUDE=%WDKBASEDIR%\inc\api;%WDKBASEDIR%\inc\api\crt\stl70;%WDKBASEDIR%\inc\crt;%WDKBASEDIR%\inc\ddk"
 SET "LIB=%WDKBASEDIR%\lib\crt\i386;%WDKBASEDIR%\lib\win7\i386"
+SET "PATH=%WDKBASEDIR%\bin\x86;%WDKBASEDIR%\bin\x86\x86;%PATH%"
 
 TITLE Building Notepad2-mod x86 with WDK...
 ECHO. & ECHO.
@@ -114,13 +100,9 @@ IF "%ARCH%" == "x86" GOTO END
 :x64
 IF DEFINED PROGRAMFILES(x86) (SET build_type=amd64) ELSE (SET build_type=x86_amd64)
 
-IF "%USE_MSVC2010%" == "true" (
-  CALL "%VS100COMNTOOLS%..\..\VC\vcvarsall.bat" %build_type%
-) ELSE (
-  SET "PATH=%WDKBASEDIR%\bin\x86;%WDKBASEDIR%\bin\x86\amd64;%PATH%"
-)
 SET "INCLUDE=%WDKBASEDIR%\inc\api;%WDKBASEDIR%\inc\api\crt\stl70;%WDKBASEDIR%\inc\crt;%WDKBASEDIR%\inc\ddk"
 SET "LIB=%WDKBASEDIR%\lib\crt\amd64;%WDKBASEDIR%\lib\win7\amd64"
+SET "PATH=%WDKBASEDIR%\bin\x86;%WDKBASEDIR%\bin\x86\amd64;%PATH%"
 
 TITLE Building Notepad2-mod x64 with WDK...
 ECHO. & ECHO.
@@ -150,9 +132,6 @@ ECHO        The arguments are not case sensitive.
 ECHO. & ECHO.
 ECHO Edit %~nx0 and set your WDK directory or define %%WDKBASEDIR%%.
 ECHO You shouldn't need to make any changes other than that.
-ECHO.
-ECHO If MSVC 2010 is installed, its compiler will be used.
-ECHO If you don't wish to use that then edit %~nx0 (see the first lines)
 ECHO. & ECHO.
 ECHO Executing %~nx0 without any arguments is equivalent to "%~nx0 build all"
 ECHO.
