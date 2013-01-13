@@ -1,5 +1,5 @@
-#!/bin/sh
-# (C) 2012 see Authors.txt
+#!/bin/bash
+# (C) 2012-2013 see Authors.txt
 #
 # This file is part of MPC-HC.
 #
@@ -16,73 +16,79 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-[ -n "$1" ] && cd $1
 # This is the last svn changeset, the number and hash can be automatically
 # calculated, but it is slow to do that. So it is better to have it hardcoded.
-# We'll need to update this with the last svn data before committing this script
-SVNREV=760
-SVNHASH="0cd53aab71b006820233224bbf14c2b18b2caca6"
+svnrev=760
+svnhash="0cd53aab71b006820233224bbf14c2b18b2caca6"
 
-if [ ! -d ".git" ] || ! command -v git >/dev/null 2>&1 ; then
-  # If the folder ".git" doesn't exist or git isn't present then we use hardcoded values
-  HASH=0000000
-  VER=0
+versionfile="./src/VersionRev.h"
+manifestfile="./res/Notepad2.exe.manifest"
+
+#If the git command isn't available or we are not inside a git repo use hardcoded values
+if ! git rev-parse --git-dir > /dev/null 2>&1; then
+  hash=0000000
+  ver=0
 else
   # Get the current branch name
-  BRANCH=`git branch | grep "^\*" | awk '{print $2}'`
+  branch=$(git symbolic-ref -q HEAD) && branch=${branch##refs/heads/} || branch="no branch"
   # If we are on the master branch
-  if [ "$BRANCH" == "master" ] ; then
-    BASE="HEAD"
+  if [[ "$branch" == "master" ]]; then
+    base="HEAD"
   # If we are on another branch that isn't master, we want extra info like on
   # which commit from master it is based on and what its hash is. This assumes we
   # won't ever branch from a changeset from before the move to git
   else
     # Get where the branch is based on master
-    BASE=`git merge-base master HEAD`
+    base=$(git merge-base master HEAD)
+    base_ver=$(git rev-list --count $svnhash..$base)
+    base_ver=$((base_ver+svnrev))
 
-    VERSION_INFO="#define BRANCH _T(\"$BRANCH\")\n"
-    VER_FULL=" ($BRANCH)"
+    version_info="#define BRANCH L\"$branch\""$'\n'
+    ver_full=" ($branch) (master@${base_ver:0:7})"
   fi
 
   # Count how many changesets we have since the last svn changeset
-  VER=`git rev-list $SVNHASH..$BASE | wc -l`
+  ver=$(git rev-list --count $svnhash..HEAD)
   # Now add it with to last svn revision number
-  VER=$(($VER+$SVNREV))
+  ver=$((ver+svnrev))
 
   # Get the abbreviated hash of the current changeset
-  HASH=`git log -n1 --format=%h`
+  hash=$(git rev-parse --short HEAD)
 
 fi
 
-VER_FULL="_T(\"$VER ($HASH)$VER_FULL\")"
+ver_full="L\"$ver ($hash)$ver_full\""
 
-VERSION_INFO+="#define VERSION_HASH \"$HASH\"\n"
-VERSION_INFO+="#define VERSION_REV $VER\n"
-VERSION_INFO+="#if defined(_WIN64)\n"
-VERSION_INFO+="#define VERSION_FILEVERSION_LONG L\"Notepad2-mod (64-bit) 4.2.25 r$VER ($HASH)\"\n"
-VERSION_INFO+="#else\n"
-VERSION_INFO+="#define VERSION_FILEVERSION_LONG L\"Notepad2-mod 4.2.25 r$VER ($HASH)\"\n"
-VERSION_INFO+="#endif"
+version_info+="#define VERSION_HASH \"$hash\""$'\n'
+version_info+="#define VERSION_REV $ver"$'\n'
+version_info+="#if defined(_WIN64)"$'\n'
+version_info+="#define VERSION_FILEVERSION_LONG L\"Notepad2-mod (64-bit) 4.2.25 r$ver ($hash)\""$'\n'
+version_info+="#else"$'\n'
+version_info+="#define VERSION_FILEVERSION_LONG L\"Notepad2-mod 4.2.25 r$ver ($hash)\""$'\n'
+version_info+="#endif"
 
-if [ "$BRANCH" ] ; then
-  echo -e "On branch: $BRANCH"
+if [[ "$branch" ]]; then
+  echo "On branch: $branch"
 fi
-echo -e "Hash:      $HASH"
-if [ "$BRANCH" ] && git status | grep -q "modified:" ; then
-  echo -e "Revision:  $VER (Local modifications found)"
+echo "Hash:      $hash"
+if [[ "$branch" ]] && ! git diff-index --quiet HEAD; then
+  echo "Revision:  $ver (Local modifications found)"
 else
-  echo -e "Revision:  $VER"
+  echo "Revision:  $ver"
+fi
+if [[ "$branch" ]] && [[ "$branch" != "master" ]]; then
+  echo "Mergebase: master@${base_ver} (${base:0:7})"
 fi
 
-if [ -f ./src/VersionRev.h ] ; then
-  VERSION_INFO_OLD=`<./src/VersionRev.h`
+# Update version_rev.h if it does not exist, or if version information was changed.
+if [[ ! -f "$versionfile" ]] || [[ "$version_info" != "$(<"$versionfile")" ]]; then
+  # Write the version information to version_rev.h
+  echo "$version_info" > "$versionfile"
 fi
 
-# Only write the files if the version information has changed
-if [ "$(echo $VERSION_INFO | sed -e 's/\\n/ /g')" != "$(echo $VERSION_INFO_OLD)" ] ; then
-  # Write the version information to VersionRev.h
-  echo -e $VERSION_INFO > ./src/VersionRev.h
-
+# Update manifest file if it does not exist or if source manifest.conf was changed.
+newmanifest="$(sed -e "s/\\\$WCREV\\\$/${ver}/" "$manifestfile.conf")"
+if [[ ! -f "$manifestfile" ]] || [[ "$newmanifest" != "$(<"$manifestfile")" ]]; then
   # Update the revision number in the manifest file
-  sed -e "s/\\\$WCREV\\\$/${VER}/" ./res/Notepad2.exe.manifest.conf > ./res/Notepad2.exe.manifest
+  echo "$newmanifest" > "$manifestfile"
 fi
