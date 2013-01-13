@@ -24,7 +24,7 @@ svnhash="0cd53aab71b006820233224bbf14c2b18b2caca6"
 versionfile="./src/VersionRev.h"
 manifestfile="./res/Notepad2.exe.manifest"
 
-#If the git command isn't available or we are not inside a git repo use hardcoded values
+# If we are not inside a git repo use hardcoded values
 if ! git rev-parse --git-dir > /dev/null 2>&1; then
   hash=0000000
   ver=0
