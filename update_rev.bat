@@ -7,10 +7,10 @@ IF EXIST "build.user.bat" (CALL "build.user.bat")
 
 SET PATH=%MSYS%\bin;%PATH%
 
-FOR %%G IN (sh.exe) DO (SET FOUND=%%~$PATH:G)
+FOR %%G IN (bash.exe) DO (SET FOUND=%%~$PATH:G)
 IF NOT DEFINED FOUND GOTO MissingVar
 
-sh.exe ./version.sh
+bash.exe ./version.sh
 
 
 :END
@@ -22,7 +22,7 @@ EXIT /B
 :MissingVar
 COLOR 0C
 TITLE ERROR
-ECHO MSYS (sh.exe) wasn't found. Create a file build.user.bat and set the variable there.
+ECHO MSYS (bash.exe) wasn't found. Create a file build.user.bat and set the variable there.
 ECHO.
 ECHO SET "MSYS=H:\progs\MSYS"
 ECHO. & ECHO.
