@@ -116,9 +116,7 @@ IF "%ARCH%" == "x86" GOTO END
 
 
 :x64
-IF DEFINED PROGRAMFILES(x86) (SET build_type=amd64) ELSE (SET build_type=x86_amd64)
-
-CALL "%VS110COMNTOOLS%..\..\VC\vcvarsall.bat" %build_type%
+CALL "%VS110COMNTOOLS%..\..\VC\vcvarsall.bat" x86_amd64
 
 IF "%CONFIG%" == "all" (CALL :SUBMSVC %BUILDTYPE% Debug x64 && CALL :SUBMSVC %BUILDTYPE% Release x64) ELSE (CALL :SUBMSVC %BUILDTYPE% %CONFIG% x64)
 
