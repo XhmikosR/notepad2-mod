@@ -101,7 +101,9 @@ DisableProgramGroupPage=yes
 DisableReadyPage=yes
 DisableWelcomePage=yes
 AllowCancelDuringInstall=no
-#if defined(WDK)
+#if defined(ICL13)
+MinVersion=6.0
+#elif defined(WDK)
 MinVersion=5.0
 #else
 MinVersion=5.1.2600sp3
