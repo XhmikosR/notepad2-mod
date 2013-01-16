@@ -43,7 +43,7 @@
     str = str.replace(
       /^(\s*)\/\/(LINK_LEXER)/gim,
       "$1$2");
-    var re = new RegExp("^(\\s*)(LINK_LEXER\\((?!"+lex.join("|")+")\\w+\\);)","gim")
+    var re = new RegExp("^(\\s*)(LINK_LEXER\\((?!"+lex.join("|")+")\\w+\\);)","gim");
     str = str.replace(re,"$1//$2");
     fh.Close();
     var fh = fso.OpenTextFile("scintilla\\src\\Catalogue.cxx",2,0);
