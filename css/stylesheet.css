@@ -36,7 +36,7 @@ header {
 }
 
 header h1 {
-    color: #fff;
+    color: white;
     font-size: 72px;
     letter-spacing: -1px;
     line-height: 1;
@@ -56,7 +56,7 @@ header h2 {
 header a:link,
 header a:hover,
 header a:visited {
-    color: #fff;
+    color: white;
 }
 
 .inner {
@@ -66,7 +66,7 @@ header a:visited {
 }
 
 #content-wrapper {
-    border-top: solid 1px #fff;
+    border-top: solid 1px white;
     padding-top: 30px;
 }
 
@@ -95,7 +95,7 @@ aside {
 }*/
 
 a.button {
-    color: #fff;
+    color: white;
     font-size: 24px;
     line-height: 1.2;
     padding-left: 68px;
@@ -140,7 +140,7 @@ code {
 }
 
 /*pre {
-    background: #fff;
+    background: white;
     border: solid 1px #f2f2f2;
     overflow: auto;
     padding: 20px;
@@ -148,7 +148,7 @@ code {
 }
 
 pre code {
-    background-color: #fff;
+    background-color: white;
     border: none;
     color: #2879d0;
     padding: 0;
@@ -444,7 +444,7 @@ dl dd {
 /* print styles */
 @media print {
     body {
-        color: #000;
+        color: black;
         font: normal 13px/1.5 "Helvetica Neue", Helvetica, Arial, serif;
     }
 
