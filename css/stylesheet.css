@@ -342,7 +342,7 @@ dl dd {
         width: 490px;
     }
 
-    section h1:before,
+    /*section h1:before,
     section h2:before,
     section h3:before,
     section h4:before,
@@ -351,7 +351,7 @@ dl dd {
         content: none;
         margin-left: 0;
         padding-right: 0;
-    }
+    }*/
 }
 
 /* All Mobile Sizes (devices and browser) */
@@ -422,7 +422,7 @@ dl dd {
         display: none;
     }
 
-    section h1:before,
+    /*section h1:before,
     section h2:before,
     section h3:before,
     section h4:before,
@@ -431,7 +431,7 @@ dl dd {
         content: none;
         margin-left: 0;
         padding-right: 0;
-    }
+    }*/
 }
 
 /* Mobile Landscape Size to Tablet Portrait (devices and browsers) */
@@ -617,20 +617,4 @@ dl dd {
         color: #666;
     }
     */
-    /* MISC */
-    .clearfix:after {
-        clear: both;
-        content: '.';
-        display: block;
-        height: 0;
-        visibility: hidden;
-    }
-
-    * html .clearfix {
-        height: 1%;
-    }
-
-    .clearfix {
-        display: block;
-    }
 }
