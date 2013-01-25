@@ -90,14 +90,11 @@ aside {
     font-weight: bold;
 }
 
-/*#downloads {
-    margin-bottom: 40px;
-}*/
-
 a.button {
     color: white;
     font-size: 24px;
     line-height: 1.2;
+    outline: none !important;
     padding-left: 68px;
     padding-top: 22px;
     width: 134px;
