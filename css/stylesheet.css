@@ -313,6 +313,12 @@ dl dd {
     display: block;
 }
 
+#version {
+    font-size: 1.3em;
+    color: DodgerBlue;
+}
+
+
 /* #Media Queries
 ================================================== */
 
