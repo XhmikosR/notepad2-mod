@@ -8,12 +8,9 @@ body {
 h1,
 h2,
 h3,
-h4,
-h5,
-h6,
 a.button {
-    -webkit-font-smoothing: antialiased;
     font-family: "Architects Daughter", "Helvetica Neue", Helvetica, Arial, serif;
+    -webkit-font-smoothing: antialiased;
 }
 
 a:link {
@@ -113,8 +110,6 @@ aside a.button {
     margin-bottom: 20px;
     padding-left: 64px;
     width: 138px;
-    /*width: 202px;
-    height: 78px;*/
 }
 
 header a.button {
@@ -122,8 +117,6 @@ header a.button {
     position: absolute;
     right: 0;
     top: 0;
-    /*width: 202px;
-    height: 80px;*/
 }
 
 code,
@@ -315,8 +308,8 @@ dl dd {
 }
 
 #version {
-    font-size: 1.3em;
     color: DodgerBlue;
+    font-size: 1.3em;
 }
 
 
