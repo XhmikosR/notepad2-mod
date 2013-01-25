@@ -106,20 +106,24 @@ a.button small {
     font-size: 11px;
 }
 
-header a.button {
-    background: transparent url("../img/github-button.png") 0 0 no-repeat;
-    position: absolute;
-    right: 0;
-    top: 0;
-}
-
 aside a.button {
-    background: transparent url("../img/download-button.png") 0 0 no-repeat;
+    background: transparent url("../img/sprite.png") 0 0 no-repeat;
     display: block;
     font-size: 18px;
     margin-bottom: 20px;
     padding-left: 64px;
     width: 138px;
+    /*width: 202px;
+    height: 78px;*/
+}
+
+header a.button {
+    background: transparent url("../img/sprite.png") 0 -88px no-repeat;
+    position: absolute;
+    right: 0;
+    top: 0;
+    /*width: 202px;
+    height: 80px;*/
 }
 
 code,
