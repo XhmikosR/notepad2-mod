@@ -80,9 +80,9 @@ if [[ "$branch" ]] && [[ "$branch" != "master" ]]; then
   echo "Mergebase: master@${base_ver} (${base:0:7})"
 fi
 
-# Update version_rev.h if it does not exist, or if version information was changed.
+# Update VersionRev.h if it does not exist, or if version information was changed.
 if [[ ! -f "$versionfile" ]] || [[ "$version_info" != "$(<"$versionfile")" ]]; then
-  # Write the version information to version_rev.h
+  # Write the version information to VersionRev.h
   echo "$version_info" > "$versionfile"
 fi
 
