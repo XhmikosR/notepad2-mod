@@ -308,6 +308,14 @@ dl dd {
 }
 
 #version {
+    border: 2px solid #ebebeb;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+       -moz-border-radius: 4px;
+    padding: 0 4px;
+}
+
+#version span {
     color: DodgerBlue;
     font-size: 1.3em;
 }
