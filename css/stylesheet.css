@@ -50,6 +50,10 @@ header h2 {
     width: 540px;
 }
 
+header a {
+    outline: none !important;
+}
+
 header a:link,
 header a:hover,
 header a:visited {
