@@ -137,6 +137,7 @@ SCI_LEX_OBJ = \
     $(SCI_LEX_OBJDIR)\LexLaTeX.obj \
     $(SCI_LEX_OBJDIR)\LexLua.obj \
     $(SCI_LEX_OBJDIR)\LexMarkdown.obj \
+    $(SCI_LEX_OBJDIR)\LexMatlab.obj \
     $(SCI_LEX_OBJDIR)\LexNsis.obj \
     $(SCI_LEX_OBJDIR)\LexOthers.obj \
     $(SCI_LEX_OBJDIR)\LexPascal.obj \

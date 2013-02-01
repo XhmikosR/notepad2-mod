@@ -173,6 +173,7 @@
     <ClCompile Include="lexers\LexLaTeX.cxx" />
     <ClCompile Include="lexers\LexLua.cxx" />
     <ClCompile Include="lexers\LexMarkdown.cxx" />
+    <ClCompile Include="lexers\LexMatlab.cxx" />
     <ClCompile Include="lexers\LexNsis.cxx" />
     <ClCompile Include="lexers\LexOthers.cxx" />
     <ClCompile Include="lexers\LexPascal.cxx" />
