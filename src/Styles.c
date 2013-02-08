@@ -1818,6 +1818,23 @@ EDITLEXER lexMARKDOWN = { SCLEX_MARKDOWN, 63336, L"Markdown", L"md; markdown; md
                           { -1, 00000, L"", L"", L"" } } };
 
 
+KEYWORDLIST KeyWords_YAML = {
+"y n yes no on off true false", "", "", "", "", "", "", "", "" };
+
+EDITLEXER lexYAML = { SCLEX_YAML, 63456, L"YAML", L"yaml; yml", L"", &KeyWords_YAML, {
+                          { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
+                          //{ SCE_YAML_DEFAULT, L"Default", L"", L"" },
+                          { SCE_YAML_COMMENT, 63127, L"Comment", L"fore:#008800", L"" },
+                          { SCE_YAML_IDENTIFIER, 63129, L"Identifier", L"bold; fore:#0A246A", L"" },
+                          { SCE_YAML_KEYWORD, 63128, L"Keyword", L"fore:#880088", L"" },
+                          { SCE_YAML_NUMBER, 63130, L"Number", L"fore:#FF8000", L"" },
+                          { SCE_YAML_REFERENCE, 63457, L"Reference", L"fore:#008888", L"" },
+                          { SCE_YAML_DOCUMENT, 63458, L"Document", L"fore:#FFFFFF; bold; back:#000088; eolfilled", L"" },
+                          { SCE_YAML_TEXT, 63459, L"Text", L"fore:#404040", L"" },
+                          { SCE_YAML_ERROR, 63260, L"Error", L"fore:#FFFFFF; bold; italic; back:#FF0000; eolfilled", L"" },
+                          { SCE_YAML_OPERATOR, 63132, L"Operator", L"fore:#333366", L"" },
+                          { -1, 00000, L"", L"", L"" } } };
+
 // This array holds all the lexers...
 // Don't forget to change the number of the lexer for HTML and XML
 // in Notepad2.c ParseCommandLine() if you change this array!
@@ -1857,7 +1874,8 @@ PEDITLEXER pLexArray[NUMLEXERS] =
   &lexVBS,
   &lexVB,
   &lexHTML,
-  &lexXML
+  &lexXML,
+  &lexYAML
 };
 
 
