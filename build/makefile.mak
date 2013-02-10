@@ -143,7 +143,8 @@ SCI_LEX_OBJ = \
     $(SCI_LEX_OBJDIR)\LexRuby.obj \
     $(SCI_LEX_OBJDIR)\LexSQL.obj \
     $(SCI_LEX_OBJDIR)\LexTCL.obj \
-    $(SCI_LEX_OBJDIR)\LexVB.obj
+    $(SCI_LEX_OBJDIR)\LexVB.obj \
+    $(SCI_LEX_OBJDIR)\LexYAML.obj
 
 SCI_LIB_OBJ = \
     $(SCI_LIB_OBJDIR)\Accessor.obj \
