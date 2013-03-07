@@ -34,6 +34,6 @@
 #define VERSION_WEBPAGEDISPLAY       L"flo's freeware - http://www.flos-freeware.ch"
 #define VERSION_EMAILDISPLAY         L"florian.balmer@gmail.com"
 #define VERSION_COMPANYNAME          L"Florian Balmer et al."
-#define VERSION_MODPAGEDISPLAY       L"https://github.com/XhmikosR/notepad2-mod"
+#define VERSION_MODPAGEDISPLAY       L"http://xhmikosr.github.com/notepad2-mod/"
 
 #endif // NOTEPAD2_VERSION_H
