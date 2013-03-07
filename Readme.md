@@ -35,8 +35,8 @@ _A modified version (fork) of Notepad2 based on Kai Liu's and other people's pat
 * [Code folding usage guide](https://github.com/XhmikosR/notepad2-mod/wiki/Code-Folding-Usage)
 
 ## Changed keyboard shortcuts compared to Notepad2:
-`Ctrl+Alt+F2`       Expand selection to next match.
-`Ctrl+Alt+Shift+F2` Expand selection to previous match.
-`Ctrl+Shift+Enter`  New line with toggled auto indent option.
+* `Ctrl+Alt+F2`       Expand selection to next match.
+* `Ctrl+Alt+Shift+F2` Expand selection to previous match.
+* `Ctrl+Shift+Enter`  New line with toggled auto indent option.
 
 You can use WDK 7.1, MSVC 2012 update 1 or Intel C++ Compiler XE 2013 to build Notepad2-mod.
