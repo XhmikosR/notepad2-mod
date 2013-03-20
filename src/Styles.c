@@ -2625,6 +2625,8 @@ PEDITLEXER __fastcall Style_SniffShebang(char *pchText)
       return(&lexBASH);
     else if ((pch - pchText) >= 4 && StrCmpNA(pch-4,"ruby",4) == 0)
       return(&lexRUBY);
+    else if ((pch - pchText) >= 4 && StrCmpNA(pch-4,"node",4) == 0)
+      return(&lexJS);
   }
 
   return(NULL);
