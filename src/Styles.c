@@ -2763,6 +2763,12 @@ void Style_SetLexerFromFile(HWND hwnd,LPCWSTR lpszFile)
     bFound = TRUE;
   }
 
+  if (!bFound && bAutoSelect &&
+       lstrcmpi(PathFindFileName(lpszFile),L"mozconfig") == 0) {
+    pLexNew = &lexBASH;
+    bFound = TRUE;
+  }
+
   if (!bFound && bAutoSelect && (!fNoHTMLGuess || !fNoCGIGuess)) {
     char tchText[512];
     SendMessage(hwnd,SCI_GETTEXT,(WPARAM)COUNTOF(tchText)-1,(LPARAM)tchText);
