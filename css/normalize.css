@@ -28,21 +28,19 @@ summary {
    ========================================================================== */
 
 /**
- * 2. Prevent iOS text size adjust after orientation change, without disabling
+ * 1. Prevent system color scheme's background color being used in Firefox, IE,
+ *    and Opera.
+ * 2. Prevent system color scheme's text color being used in Firefox, IE, and
+ *    Opera.
+ * 4. Prevent iOS text size adjust after orientation change, without disabling
  *    user zoom.
  */
 
 html {
-    -webkit-text-size-adjust: 100%; /* 2 */
-    -ms-text-size-adjust: 100%; /* 2 */
-}
-
-/**
- * Remove default margin.
- */
-
-body {
-    margin: 0;
+    background: #fff; /* 1 */
+    color: #000; /* 2 */
+    -ms-text-size-adjust: 100%; /* 4 */
+    -webkit-text-size-adjust: 100%; /* 4 */
 }
 
 /* ==========================================================================
@@ -94,9 +92,7 @@ strong {
  */
 
 code,
-kbd,
-pre,
-samp {
+pre {
     font-family: monospace, serif;
     font-size: 1em;
 }
@@ -107,16 +103,4 @@ samp {
 
 small {
     font-size: 80%;
-}
-
-/* ==========================================================================
-   Embedded content
-   ========================================================================== */
-
-/**
- * Remove border when inside `a` element in IE 8/9.
- */
-
-img {
-    border: 0;
 }
