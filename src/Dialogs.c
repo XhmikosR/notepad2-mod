@@ -277,7 +277,7 @@ INT_PTR CALLBACK AboutDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lParam)
                 ShellExecute(hwnd,L"open",L"mailto:florian.balmer@gmail.com",NULL,NULL,SW_SHOWNORMAL);
               }
               else if (pnmhdr->idFrom == IDC_MOD_PAGE) {
-                ShellExecute(hwnd,L"open",L"http://xhmikosr.github.com/notepad2-mod/",NULL,NULL,SW_SHOWNORMAL);
+                ShellExecute(hwnd,L"open",L"http://xhmikosr.github.io/notepad2-mod/",NULL,NULL,SW_SHOWNORMAL);
               }
             }
             break;
