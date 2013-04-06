@@ -2764,6 +2764,12 @@ void Style_SetLexerFromFile(HWND hwnd,LPCWSTR lpszFile)
   }
 
   if (!bFound && bAutoSelect &&
+       lstrcmpi(PathFindFileName(lpszFile),L"rakefile") == 0) {
+    pLexNew = &lexRUBY;
+    bFound = TRUE;
+  }
+
+  if (!bFound && bAutoSelect &&
        lstrcmpi(PathFindFileName(lpszFile),L"mozconfig") == 0) {
     pLexNew = &lexBASH;
     bFound = TRUE;
