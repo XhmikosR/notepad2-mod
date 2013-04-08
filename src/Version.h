@@ -29,13 +29,14 @@
 #define DO_STRINGIFY(x) _T(#x)
 #define STRINGIFY(x)    DO_STRINGIFY(x)
 
-#define VERSION_MAJOR 4
-#define VERSION_MINOR 2
-#define VERSION_BUILD 25
+#define VERSION_MAJOR   4
+#define VERSION_MINOR   2
+#define VERSION_BUILD   25
 
 #define MY_APPNAME                   L"Notepad2-mod"
 #define VERSION_FILEVERSION_NUM      VERSION_MAJOR,VERSION_MINOR,VERSION_BUILD,VERSION_REV
-#define VERSION_FILEVERSION          STRINGIFY(VERSION_MAJOR) "." STRINGIFY(VERSION_MINOR) "." STRINGIFY(VERSION_BUILD) "." STRINGIFY(VERSION_REV)
+#define VERSION_FILEVERSION          STRINGIFY(VERSION_MAJOR) "." STRINGIFY(VERSION_MINOR) "." \
+                                     STRINGIFY(VERSION_BUILD) "." STRINGIFY(VERSION_REV)
 #define VERSION_LEGALCOPYRIGHT_SHORT L"Copyright © 2004-2013"
 #define VERSION_LEGALCOPYRIGHT_LONG  L"© Florian Balmer 2004-2013"
 #define VERSION_AUTHORNAME           L"Florian Balmer"
@@ -46,59 +47,60 @@
 
 #if defined(_WIN64)
    #define VERSION_FILEVERSION_LONG  L"Notepad2-mod (64-bit) " STRINGIFY(VERSION_MAJOR) L"." \
-                                     STRINGIFY(VERSION_MINOR) L"." STRINGIFY(VERSION_BUILD) \
+                                     STRINGIFY(VERSION_MINOR) L"." STRINGIFY(VERSION_BUILD)  \
                                      L" r" STRINGIFY(VERSION_REV) L" (" VERSION_HASH L")"
 #else
-   #define VERSION_FILEVERSION_LONG  L"Notepad2-mod " STRINGIFY(VERSION_MAJOR) L"." \
+   #define VERSION_FILEVERSION_LONG  L"Notepad2-mod " STRINGIFY(VERSION_MAJOR) L"."         \
                                      STRINGIFY(VERSION_MINOR) L"." STRINGIFY(VERSION_BUILD) \
                                      L" r" STRINGIFY(VERSION_REV) L" (" VERSION_HASH L")"
 #endif
 
 // Compiler specific
 #if defined(__INTEL_COMPILER)
-    #define VERSION_COMPILER L"ICL " STRINGIFY(__INTEL_COMPILER) L" Build " STRINGIFY(__INTEL_COMPILER_BUILD_DATE)
+    #define VERSION_COMPILER    L"ICL " STRINGIFY(__INTEL_COMPILER) L" Build " \
+                                STRINGIFY(__INTEL_COMPILER_BUILD_DATE)
 #elif defined(WDK_BUILD)
     #if _MSC_VER == 1600
         #if (_MSC_FULL_VER >= 160040219)
-            #define VERSION_COMPILER L"WDK (MSVC 2010 SP1)"
+            #define VERSION_COMPILER    L"WDK (MSVC 2010 SP1)"
         #else
-            #define VERSION_COMPILER L"WDK (MSVC 2010)"
+            #define VERSION_COMPILER    L"WDK (MSVC 2010)"
         #endif
     #elif _MSC_VER == 1500
         #if (_MSC_FULL_VER == 150030729)
-            #define VERSION_COMPILER L"WDK"
+            #define VERSION_COMPILER    L"WDK"
         #else
-            #define VERSION_COMPILER L"WDK (version unknown)"
+            #define VERSION_COMPILER    L"WDK (version unknown)"
         #endif
     #endif
 #elif defined(_MSC_VER)
     #if _MSC_VER == 1700
         #if (_MSC_FULL_VER == 170060315)
-            #define VERSION_COMPILER L"MSVC 2012 Update 2"
+            #define VERSION_COMPILER    L"MSVC 2012 Update 2"
         #elif (_MSC_FULL_VER == 170051106)
-            #define VERSION_COMPILER L"MSVC 2012 Update 1"
+            #define VERSION_COMPILER    L"MSVC 2012 Update 1"
         #elif (_MSC_FULL_VER < 170050727)
-            #define VERSION_COMPILER L"MSVC 2012 Beta/RC/PR"
+            #define VERSION_COMPILER    L"MSVC 2012 Beta/RC/PR"
         #else
-            #define VERSION_COMPILER L"MSVC 2012"
+            #define VERSION_COMPILER    L"MSVC 2012"
         #endif
     #elif _MSC_VER == 1600
         #if (_MSC_FULL_VER >= 160040219)
-            #define VERSION_COMPILER L"MSVC 2010 SP1"
+            #define VERSION_COMPILER    L"MSVC 2010 SP1"
         #else
-            #define VERSION_COMPILER L"MSVC 2010"
+            #define VERSION_COMPILER    L"MSVC 2010"
         #endif
     #elif _MSC_VER == 1500
         #if (_MSC_FULL_VER >= 150030729)
-            #define VERSION_COMPILER L"MSVC 2008 SP1"
+            #define VERSION_COMPILER    L"MSVC 2008 SP1"
         #else
-            #define VERSION_COMPILER L"MSVC 2008"
+            #define VERSION_COMPILER    L"MSVC 2008"
         #endif
     #else
-        #define VERSION_COMPILER L"MSVC (version unknown)"
+        #define VERSION_COMPILER        L"MSVC (version unknown)"
     #endif
 #else
-    #define VERSION_COMPILER L"(Unknown compiler)"
+    #define VERSION_COMPILER            L"(Unknown compiler)"
 #endif
 
 #endif // NOTEPAD2_VERSION_H
