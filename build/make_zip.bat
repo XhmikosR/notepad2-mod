@@ -130,7 +130,7 @@ FOR /F "tokens=3,4 delims= " %%K IN (
 FOR /F "tokens=3,4 delims= " %%K IN (
   'FINDSTR /I /L /C:"define VERSION_BUILD" "..\src\Version.h"') DO (SET "VerBuild=%%K")
 FOR /F "tokens=3,4 delims= " %%K IN (
-  'FINDSTR /I /L /C:"define VERSION_REV" "..\src\VersionRev.h"') DO (SET "VerRev=%%K")
+  'FINDSTR /I /L /C:"define VERSION_REV " "..\src\VersionRev.h"') DO (SET "VerRev=%%K")
 
 SET NP2_VER=%VerMajor%.%VerMinor%.%VerBuild%.%VerRev%
 EXIT /B

@@ -43,7 +43,7 @@ else
     base_ver=$(git rev-list --count $svnhash..$base)
     base_ver=$((base_ver+svnrev))
 
-    version_info="#define BRANCH L\"$branch\""$'\n'
+    version_info="#define BRANCH _T(\"$branch\")"$'\n'
     ver_full=" ($branch) (master@${base_ver:0:7})"
   fi
 
@@ -57,15 +57,11 @@ else
 
 fi
 
-ver_full="L\"$ver ($hash)$ver_full\""
+ver_full="_T(\"$ver ($hash)$ver_full\")"
 
-version_info+="#define VERSION_HASH \"$hash\""$'\n'
+version_info+="#define VERSION_HASH _T(\"$hash\")"$'\n'
 version_info+="#define VERSION_REV $ver"$'\n'
-version_info+="#if defined(_WIN64)"$'\n'
-version_info+="#define VERSION_FILEVERSION_LONG L\"Notepad2-mod (64-bit) 4.2.25 r$ver ($hash)\""$'\n'
-version_info+="#else"$'\n'
-version_info+="#define VERSION_FILEVERSION_LONG L\"Notepad2-mod 4.2.25 r$ver ($hash)\""$'\n'
-version_info+="#endif"
+version_info+="#define VERSION_REV_FULL $ver_full"
 
 if [[ "$branch" ]]; then
   echo "On branch: $branch"

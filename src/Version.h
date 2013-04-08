@@ -44,6 +44,16 @@
 #define VERSION_COMPANYNAME          L"Florian Balmer et al."
 #define VERSION_MODPAGEDISPLAY       L"http://xhmikosr.github.io/notepad2-mod/"
 
+#if defined(_WIN64)
+   #define VERSION_FILEVERSION_LONG  L"Notepad2-mod (64-bit) " STRINGIFY(VERSION_MAJOR) L"." \
+                                     STRINGIFY(VERSION_MINOR) L"." STRINGIFY(VERSION_BUILD) \
+                                     L" r" STRINGIFY(VERSION_REV) L" (" VERSION_HASH L")"
+#else
+   #define VERSION_FILEVERSION_LONG  L"Notepad2-mod " STRINGIFY(VERSION_MAJOR) L"." \
+                                     STRINGIFY(VERSION_MINOR) L"." STRINGIFY(VERSION_BUILD) \
+                                     L" r" STRINGIFY(VERSION_REV) L" (" VERSION_HASH L")"
+#endif
+
 // Compiler specific
 #if defined(__INTEL_COMPILER)
     #define VERSION_COMPILER L"ICL " STRINGIFY(__INTEL_COMPILER) L" Build " STRINGIFY(__INTEL_COMPILER_BUILD_DATE)
