@@ -220,6 +220,7 @@ INT_PTR CALLBACK AboutDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lParam)
         SetDlgItemText(hwnd,IDC_VERSION,VERSION_FILEVERSION_LONG);
         SetDlgItemText(hwnd,IDC_COPYRIGHT,VERSION_LEGALCOPYRIGHT_SHORT);
         SetDlgItemText(hwnd,IDC_AUTHORNAME,VERSION_AUTHORNAME);
+        SetDlgItemText(hwnd,IDC_COMPILER,VERSION_COMPILER);
 
         if (hFontTitle)
           DeleteObject(hFontTitle);

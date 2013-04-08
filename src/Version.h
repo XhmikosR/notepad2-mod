@@ -18,7 +18,15 @@
 
 #include "VersionRev.h"
 
-#define DO_STRINGIFY(x) #x
+#ifndef _T
+#if !defined(ISPP_INVOKED) && (defined(UNICODE) || defined(_UNICODE))
+#define _T(text) L##text
+#else
+#define _T(text) text
+#endif
+#endif
+
+#define DO_STRINGIFY(x) _T(#x)
 #define STRINGIFY(x)    DO_STRINGIFY(x)
 
 #define VERSION_MAJOR 4
@@ -35,5 +43,52 @@
 #define VERSION_EMAILDISPLAY         L"florian.balmer@gmail.com"
 #define VERSION_COMPANYNAME          L"Florian Balmer et al."
 #define VERSION_MODPAGEDISPLAY       L"http://xhmikosr.github.io/notepad2-mod/"
+
+// Compiler specific
+#if defined(__INTEL_COMPILER)
+    #define VERSION_COMPILER L"ICL " STRINGIFY(__INTEL_COMPILER) L" Build " STRINGIFY(__INTEL_COMPILER_BUILD_DATE)
+#elif defined(WDK_BUILD)
+    #if _MSC_VER == 1600
+        #if (_MSC_FULL_VER >= 160040219)
+            #define VERSION_COMPILER L"WDK (MSVC 2010 SP1)"
+        #else
+            #define VERSION_COMPILER L"WDK (MSVC 2010)"
+        #endif
+    #elif _MSC_VER == 1500
+        #if (_MSC_FULL_VER == 150030729)
+            #define VERSION_COMPILER L"WDK"
+        #else
+            #define VERSION_COMPILER L"WDK (version unknown)"
+        #endif
+    #endif
+#elif defined(_MSC_VER)
+    #if _MSC_VER == 1700
+        #if (_MSC_FULL_VER == 170060315)
+            #define VERSION_COMPILER L"MSVC 2012 Update 2"
+        #elif (_MSC_FULL_VER == 170051106)
+            #define VERSION_COMPILER L"MSVC 2012 Update 1"
+        #elif (_MSC_FULL_VER < 170050727)
+            #define VERSION_COMPILER L"MSVC 2012 Beta/RC/PR"
+        #else
+            #define VERSION_COMPILER L"MSVC 2012"
+        #endif
+    #elif _MSC_VER == 1600
+        #if (_MSC_FULL_VER >= 160040219)
+            #define VERSION_COMPILER L"MSVC 2010 SP1"
+        #else
+            #define VERSION_COMPILER L"MSVC 2010"
+        #endif
+    #elif _MSC_VER == 1500
+        #if (_MSC_FULL_VER >= 150030729)
+            #define VERSION_COMPILER L"MSVC 2008 SP1"
+        #else
+            #define VERSION_COMPILER L"MSVC 2008"
+        #endif
+    #else
+        #define VERSION_COMPILER L"MSVC (version unknown)"
+    #endif
+#else
+    #define VERSION_COMPILER L"(Unknown compiler)"
+#endif
 
 #endif // NOTEPAD2_VERSION_H

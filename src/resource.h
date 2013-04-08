@@ -122,6 +122,8 @@
 #define IDACC_SELTONEXT                 208
 #define IDACC_SELTOPREV                 209
 #define IDC_NFOASOEM                    300
+#define IDC_COMPILER                    301
+#define IDC_COMPILER2                   302
 #define IDS_APPTITLE                    10000
 #define IDS_APPTITLE_ELEVATED           10001
 #define IDS_APPTITLE_PASTEBOARD         10002
