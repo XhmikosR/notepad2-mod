@@ -145,6 +145,7 @@
     <ClCompile Include="lexers\LexCSS.cxx" />
     <ClCompile Include="lexers\LexHTML.cxx" />
     <ClCompile Include="lexers\LexInno.cxx" />
+    <ClCompile Include="lexers\LexLaTeX.cxx" />
     <ClCompile Include="lexers\LexLua.cxx" />
     <ClCompile Include="lexers\LexMarkdown.cxx" />
     <ClCompile Include="lexers\LexNsis.cxx" />
@@ -209,6 +210,7 @@
     <ClInclude Include="lexlib\PropSetSimple.h" />
     <ClInclude Include="lexlib\SparseState.h" />
     <ClInclude Include="lexlib\StyleContext.h" />
+    <ClInclude Include="lexlib\SubStyles.h" />
     <ClInclude Include="lexlib\WordList.h" />
     <ClInclude Include="src\AutoComplete.h" />
     <ClInclude Include="src\CallTip.h" />

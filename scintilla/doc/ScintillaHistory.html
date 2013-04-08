@@ -415,6 +415,13 @@
 	<td>Joel B. Mohler</td>
 	<td>Isiledhel</td>
 	<td>Vidya Wasi</td>
+      </tr><tr>
+	<td>G. Hu</td>
+	<td>Byron Hawkins</td>
+	<td>Alpha</td>
+	<td>John Donoghue</td>
+      </tr><tr>
+	<td>kudah</td>
     </tr>
     </table>
     <p>
@@ -425,6 +432,205 @@
         <a href="http://sourceforge.net/projects/icon-collection/">
         Icons</a> Copyright(C) 1998 by Dean S. Jones<br />
       </li>
+    </ul>
+    <h3>
+       3.3.1 placeholder
+    </h3>
+    <ul>
+	<li>
+	Haskell lexer improved in several ways.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1459/">Bug #1459.</a>
+	</li>
+	<li>
+	Matlab/Octave lexer recognises block comments and ... comments.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1414/">Bug #1414.</a>
+	</li>
+	<li>
+	The PLAT_NCURSES platform now called PLAT_CURSES as may work on other implementations.
+	</li>
+    </ul>
+    <h3>
+       <a href="http://prdownloads.sourceforge.net/scintilla/scite330.zip?download">Release 3.3.0</a>
+    </h3>
+    <ul>
+	<li>
+	Released 30 March 2013.
+	</li>
+	<li>
+	Overlay scrollers and kinetic scrolling implemented on Cocoa.
+	</li>
+	<li>
+	To improve display smoothness, styling and UI Update notifications will, when possible, be performed in
+	a high-priority idle task on Cocoa instead of during painting.
+	Performing these jobs inside painting can cause paints to be abandoned and a new paint scheduled.
+	On GTK+, the high-priority idle task is used in more cases.
+	</li>
+	<li>
+	SCI_SCROLLRANGE added to scroll the view to display a range of text.
+	If the whole range can not be displayed, priority is given to one end.
+	</li>
+	<li>
+	C++ lexer no longer recognises raw (R"") strings when the first character after "
+	is invalid.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1454/">Bug #1454.</a>
+	</li>
+	<li>
+	HTML lexer recognises JavaScript RegEx literals in more contexts.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1412/">Bug #1412.</a>
+	</li>
+	<li>
+	Fixed automatic display of folded text when return pressed at end of fold header and
+	first folded line was blank.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1455/">Bug #1455.</a>
+	</li>
+	<li>
+	SCI_VISIBLEFROMDOCLINE fixed to never return a line beyond the document end.
+	</li>
+	<li>
+	SCI_LINESCROLL fixed for a negative column offset.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1450/">Bug #1450.</a>
+	</li>
+	<li>
+	On GTK+, fix tab markers so visible if indent markers are visible.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1453/">Bug #1453.</a>
+	</li>
+    </ul>
+    <h3>
+       <a href="http://prdownloads.sourceforge.net/scintilla/scite325.zip?download">Release 3.2.5</a>
+    </h3>
+    <ul>
+	<li>
+	Released 26 February 2013.
+	</li>
+	<li>
+	To allow cooperation between different uses of extended (beyond 255) styles they should be allocated
+	using SCI_ALLOCATEEXTENDEDSTYLES.
+	</li>
+	<li>
+	For Unicode documents, lexers that use StyleContext will retrieve whole characters
+	instead of bytes.
+	LexAccessor provides a LineEnd method which can be a more efficient way to
+	handle line ends and can enable Unicode line ends.
+	</li>
+	<li>
+	The C++ lexer understands the #undef directive when determining preprocessor definitions.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/978/">Feature #978.</a>
+	</li>
+	<li>
+	The errorlist lexer recognises gcc include path diagnostics that appear before an error.
+	</li>
+	<li>
+	Folding implemented for GetText (PO)  translation language.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1437/">Bug #1437.</a>
+	</li>
+	<li>
+	HTML lexer does not interrupt comment style for processing instructions.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1447/">Bug #1447.</a>
+	</li>
+	<li>
+	Fix SciTE forgetting caret x-position when switching documents.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1442/">Bug #1442.</a>
+	</li>
+	<li>
+	Fixed bug where vertical scrollbar thumb appeared at beginning of document when
+	scrollbar shown.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1446/">Bug #1446.</a>
+	</li>
+	<li>
+	Fixed brace-highlighting bug on OS X 10.8 where matching brace is on a different line.
+	</li>
+	<li>
+	<a href="ScintillaDoc.html#ProvisionalMessages">Provisional features</a>
+	are new features that may change or be removed if they cause problems but should become
+	permanent if they work well.
+	For this release <a href="ScintillaDoc.html#SCI_GETLINEENDTYPESSUPPORTED">Unicode line ends</a> and
+	<a href="ScintillaDoc.html#Substyles">substyles</a>
+	are provisional features.
+	</li>
+    </ul>
+    <h3>
+       <a href="http://prdownloads.sourceforge.net/scintilla/scite324.zip?download">Release 3.2.4</a>
+    </h3>
+    <ul>
+	<li>
+	Released 17 January 2013.
+	</li>
+	<li>
+	Caret line highlight can optionally remain visible when window does not have focus.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/964/">Feature #964.</a>
+	</li>
+	<li>
+	Delegate mechanism for notifications added on Cocoa.
+	</li>
+	<li>
+	NUL characters in selection are copied to clipboard as spaces to avoid truncating
+	at the NUL.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1289/">Bug #1289.</a>
+	</li>
+	<li>
+	C++ lexer fixes problem with showing inactive sections when preprocessor lines contain trailing comment.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1413/">Bug #1413.</a>
+	</li>
+	<li>
+	C++ lexer fixes problem with JavaScript regular expressions with '/' in character ranges.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1415/">Bug #1415.</a>
+	</li>
+	<li>
+	LaTeX folder added.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/970/">Feature #970.</a>
+	</li>
+	<li>
+	LaTeX lexer improves styling of math environments.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/970/">Feature #970.</a>
+	</li>
+	<li>
+	MySQL lexer implements hidden commands.
+	</li>
+	<li>
+	Only produce a single undo step when autocompleting a single word.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1421/">Bug #1421.</a>
+	</li>
+	<li>
+	Fixed crash when printing lines longer than 8000 characters.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1430/">Bug #1430.</a>
+	</li>
+	<li>
+	Fixed problem in character movement extends selection mode where reversing
+	direction collapsed the selection.
+	</li>
+	<li>
+	Memory issues fixed on Cocoa, involving object ownership,
+	lifetime of timers, and images held by the info bar.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1436/">Bug #1436.</a>
+	</li>
+	<li>
+	Cocoa key binding for Alt+Delete changed to delete previous word to be more compatible with
+	platform standards.
+	</li>
+	<li>
+	Fixed crash on Cocoa with scrollbar when there is no scrolling possible.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1416/">Bug #1416.</a>
+	</li>
+	<li>
+	On Cocoa with retina display fixed positioning of autocompletion lists.
+	</li>
+	<li>
+	Fixed SciTE on Windows failure to run a batch file with a name containing a space by
+	quoting the path in the properties file.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1423/">Bug #1423.</a>
+	</li>
+	<li>
+	Fixed scaling bug when printing on GTK+.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1427/">Bug #1427.</a>
+	</li>
+	<li>
+	SciTE on GTK toolbar.detachable feature removed.
+	</li>
+	<li>
+	Fixed some background saving bugs in SciTE.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1366/">Bug #1366.</a>
+	<a href="http://sourceforge.net/p/scintilla/bugs/1339/">Bug #1339.</a>
+	</li>
     </ul>
     <h3>
        <a href="http://prdownloads.sourceforge.net/scintilla/scite323.zip?download">Release 3.2.3</a>
@@ -452,7 +658,7 @@
 	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3515392&group_id=2439">Bug #3515392.</a>
 	</li>
 	<li>
-	For C/C++, recognize exponent in floating point hexadecimal literals.
+	For C/C++, recognise exponent in floating point hexadecimal literals.
 	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3576454&group_id=2439">Bug #3576454.</a>
 	</li>
 	<li>
@@ -1306,7 +1512,7 @@
 	Fixed leak of document objects in SciTE.
 	</li>
 	<li>
-	Recognize URL characters '?' and '%' for Open Selected command in SciTE.
+	Recognise URL characters '?' and '%' for Open Selected command in SciTE.
 	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3429409&group_id=2439">Bug #3429409.</a>
 	</li>
     </ul>
@@ -1999,7 +2205,7 @@
 	Performance improved when creating large rectangular selections.
 	</li>
 	<li>
-	PHP folder recognizes #region and #endregion comments.
+	PHP folder recognises #region and #endregion comments.
 	<a href="https://sourceforge.net/tracker/?func=detail&atid=352439&aid=3101624&group_id=2439">Feature #3101624.</a>
 	</li>
 	<li>
@@ -2008,7 +2214,7 @@
 	<a href="https://sourceforge.net/tracker/?func=detail&atid=352439&aid=3098071&group_id=2439">Feature #3098071.</a>
 	</li>
 	<li>
-	SQL folder recognizes case statements and understands the fold.at.else property.
+	SQL folder recognises case statements and understands the fold.at.else property.
 	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3104091&group_id=2439">Bug #3104091.</a>
 	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3107362&group_id=2439">Bug #3107362.</a>
 	</li>
@@ -2102,7 +2308,7 @@
 	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3058924&group_id=2439">Bug #3058924.</a>
 	</li>
 	<li>
-	JavaScript lexer recognize regexes following return keyword.‎
+	JavaScript lexer recognise regexes following return keyword.‎
 	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3062287&group_id=2439">Bug #3062287.</a>
 	</li>
 	<li>
@@ -2565,7 +2771,7 @@
 	</li>
 	<li>
 	Erlang lexer extended set of numeric bases recognised; separate style for module:function_name; detects
-	built-in functions, known module attributes, and known preprocessor instructions; recognizes EDoc and EDoc macros;
+	built-in functions, known module attributes, and known preprocessor instructions; recognises EDoc and EDoc macros;
 	separates types of comments.
 	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=2942448&group_id=2439">Bug #2942448.</a>
 	</li>
@@ -3518,7 +3724,7 @@
 	Style changes may be made during text modification events.
 	</li>
 	<li>
-	Regular expressions recognize \d, \D, \s, \S, \w, \W, and \xHH.
+	Regular expressions recognise \d, \D, \s, \S, \w, \W, and \xHH.
 	</li>
 	<li>
 	Support for cmake language added.

@@ -51,6 +51,9 @@
     <ClCompile Include="lexers\LexInno.cxx">
       <Filter>lexers</Filter>
     </ClCompile>
+    <ClCompile Include="lexers\LexLaTeX.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
     <ClCompile Include="lexers\LexLua.cxx">
       <Filter>lexers</Filter>
     </ClCompile>
@@ -237,6 +240,9 @@
       <Filter>lexlib</Filter>
     </ClInclude>
     <ClInclude Include="lexlib\StyleContext.h">
+      <Filter>lexlib</Filter>
+    </ClInclude>
+    <ClInclude Include="lexlib\SubStyles.h">
       <Filter>lexlib</Filter>
     </ClInclude>
     <ClInclude Include="lexlib\WordList.h">

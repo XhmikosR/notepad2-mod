@@ -7,7 +7,7 @@
 #*
 #* See License.txt for details about distribution and modification.
 #*
-#*                                       (c) XhmikosR 2010-2012
+#*                                       (c) XhmikosR 2010-2013
 #*                                       https://github.com/XhmikosR/notepad2-mod
 #*
 #*
@@ -36,10 +36,12 @@ $(SCI_LEX_OBJDIR)\LexAVS.obj: $(SCI_LEX)\LexAVS.cxx $(LEX_HEADERS)
 $(SCI_LEX_OBJDIR)\LexBash.obj: $(SCI_LEX)\LexBash.cxx $(LEX_HEADERS)
 $(SCI_LEX_OBJDIR)\LexCmake.obj: $(SCI_LEX)\LexCmake.cxx $(LEX_HEADERS)
 $(SCI_LEX_OBJDIR)\LexConf.obj: $(SCI_LEX)\LexConf.cxx $(LEX_HEADERS)
-$(SCI_LEX_OBJDIR)\LexCPP.obj: $(SCI_LEX)\LexCPP.cxx $(LEX_HEADERS) $(SCI_LIB)\OptionSet.h $(SCI_LIB)\SparseState.h
+$(SCI_LEX_OBJDIR)\LexCPP.obj: $(SCI_LEX)\LexCPP.cxx $(LEX_HEADERS) $(SCI_LIB)\OptionSet.h \
+                              $(SCI_LIB)\SparseState.h $(SCI_LIB)\SubStyles.h
 $(SCI_LEX_OBJDIR)\LexCSS.obj: $(SCI_LEX)\LexCSS.cxx $(LEX_HEADERS)
 $(SCI_LEX_OBJDIR)\LexHTML.obj: $(SCI_LEX)\LexHTML.cxx $(LEX_HEADERS)
 $(SCI_LEX_OBJDIR)\LexInno.obj: $(SCI_LEX)\LexInno.cxx $(LEX_HEADERS)
+$(SCI_LEX_OBJDIR)\LexLua.obj: $(SCI_LEX)\LexLaTeX.cxx $(LEX_HEADERS)
 $(SCI_LEX_OBJDIR)\LexLua.obj: $(SCI_LEX)\LexLua.cxx $(LEX_HEADERS)
 $(SCI_LEX_OBJDIR)\LexMarkdown.obj: $(SCI_LEX)\LexMarkdown.cxx $(LEX_HEADERS)
 $(SCI_LEX_OBJDIR)\LexNsis.obj: $(SCI_LEX)\LexNsis.cxx $(LEX_HEADERS)
