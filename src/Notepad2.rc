@@ -13,20 +13,18 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
+// English (United States) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
-#endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // RT_MANIFEST
 //
 
-1                        RT_MANIFEST            "..\\res\\Notepad2.exe.manifest"
+1                       RT_MANIFEST             "..\\res\\Notepad2.exe.manifest"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -611,8 +609,8 @@ BEGIN
     "H",            IDACC_REPLACE,          VIRTKEY, CONTROL, NOINVERT
     "O",            IDACC_SAVEPOS,          VIRTKEY, CONTROL, NOINVERT
     "P",            IDACC_RESETPOS,         VIRTKEY, CONTROL, NOINVERT
-    VK_F2,          IDACC_SELTONEXT,        VIRTKEY, CONTROL ,ALT, NOINVERT
-    VK_F2,          IDACC_SELTOPREV,        VIRTKEY, CONTROL ,ALT, SHIFT, NOINVERT
+    VK_F2,          IDACC_SELTONEXT,        VIRTKEY, CONTROL, ALT, NOINVERT
+    VK_F2,          IDACC_SELTOPREV,        VIRTKEY, SHIFT, CONTROL, ALT, NOINVERT
     VK_F3,          IDACC_FINDNEXT,         VIRTKEY, NOINVERT
     VK_F3,          IDACC_SAVEFIND,         VIRTKEY, ALT, NOINVERT
     VK_F3,          IDACC_FINDPREV,         VIRTKEY, SHIFT, NOINVERT
@@ -1958,7 +1956,7 @@ BEGIN
     63257                   "XML Element Text"
 END
 
-#endif    // English (U.S.) resources
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
@@ -1966,10 +1964,8 @@ END
 // German (Switzerland) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DES)
-#ifdef _WIN32
 LANGUAGE LANG_GERMAN, SUBLANG_GERMAN_SWISS
 #pragma code_page(1252)
-#endif //_WIN32
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -1977,17 +1973,17 @@ LANGUAGE LANG_GERMAN, SUBLANG_GERMAN_SWISS
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE
+1 TEXTINCLUDE 
 BEGIN
     "resource.h\0"
 END
 
-2 TEXTINCLUDE
+2 TEXTINCLUDE 
 BEGIN
-    "#include <winres.h>\0"
+    "#include <winresrc.h>\0"
 END
 
-3 TEXTINCLUDE
+3 TEXTINCLUDE 
 BEGIN
     "#include ""Notepad2.ver""\0"
 END
