@@ -33,6 +33,10 @@ IF "%~1" == "" (
   IF /I "%~1" == "/WDK"     (SET "COMPILER=WDK"    & GOTO START)
   IF /I "%~1" == "-WDK"     (SET "COMPILER=WDK"    & GOTO START)
   IF /I "%~1" == "--WDK"    (SET "COMPILER=WDK"    & GOTO START)
+  IF /I "%~1" == "VS2010"   (SET "COMPILER=VS2010" & GOTO START)
+  IF /I "%~1" == "/VS2010"  (SET "COMPILER=VS2010" & GOTO START)
+  IF /I "%~1" == "-VS2010"  (SET "COMPILER=VS2010" & GOTO START)
+  IF /I "%~1" == "--VS2010" (SET "COMPILER=VS2010" & GOTO START)
   IF /I "%~1" == "VS2012"   (SET "COMPILER=VS2012" & GOTO START)
   IF /I "%~1" == "/VS2012"  (SET "COMPILER=VS2012" & GOTO START)
   IF /I "%~1" == "-VS2012"  (SET "COMPILER=VS2012" & GOTO START)
@@ -139,7 +143,7 @@ EXIT /B
 :SHOWHELP
 TITLE %~nx0 %1
 ECHO. & ECHO.
-ECHO Usage:  %~nx0 [ICL13^|VS2012^|WDK]
+ECHO Usage:  %~nx0 [ICL13^|VS2010^|VS2012^|WDK]
 ECHO.
 ECHO Notes:  You can also prefix the commands with "-", "--" or "/".
 ECHO         The arguments are not case sensitive.
