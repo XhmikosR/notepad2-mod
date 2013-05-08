@@ -3966,7 +3966,14 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
       break;
 
     case IDM_VIEW_AUTOCOMPLETEWORDS:
-      bAutoCompleteWords = bAutoCompleteWords ? FALSE : TRUE;
+      if (bAutoCompleteWords) {
+        // close the autocompletion list
+        SendMessage(hwndEdit, SCI_AUTOCCANCEL, 0, 0);
+        bAutoCompleteWords = FALSE;
+      }
+      else {
+        bAutoCompleteWords = TRUE;
+      }
       break;
 
     case IDM_VIEW_MARKOCCURRENCES_OFF:
