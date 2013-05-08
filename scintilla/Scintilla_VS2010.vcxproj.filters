@@ -317,9 +317,6 @@
     <ClInclude Include="src\Style.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\SVector.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\UniConversion.h">
       <Filter>src</Filter>
     </ClInclude>

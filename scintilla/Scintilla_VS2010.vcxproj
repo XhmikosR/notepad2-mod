@@ -230,7 +230,6 @@
     <ClInclude Include="src\Selection.h" />
     <ClInclude Include="src\SplitVector.h" />
     <ClInclude Include="src\Style.h" />
-    <ClInclude Include="src\SVector.h" />
     <ClInclude Include="src\UniConversion.h" />
     <ClInclude Include="src\ViewStyle.h" />
     <ClInclude Include="src\XPM.h" />

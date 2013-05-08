@@ -297,7 +297,6 @@ $(SCI_SRC_OBJDIR)\ScintillaBase.obj: \
     $(SCI_INC)\Scintilla.h \
     $(SCI_LIB)\PropSetSimple.h \
     $(SCI_SRC)\ContractionState.h \
-    $(SCI_SRC)\SVector.h \
     $(SCI_SRC)\SplitVector.h \
     $(SCI_SRC)\Partitioning.h \
     $(SCI_SRC)\RunStyles.h \
@@ -368,7 +367,6 @@ $(SCI_WIN_OBJDIR)\ScintillaWin.obj: \
     $(SCI_INC)\ILexer.h \
     $(SCI_INC)\Scintilla.h \
     $(SCI_SRC)\ContractionState.h \
-    $(SCI_SRC)\SVector.h \
     $(SCI_SRC)\SplitVector.h \
     $(SCI_SRC)\Partitioning.h \
     $(SCI_SRC)\RunStyles.h \
