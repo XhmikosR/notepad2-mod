@@ -2578,6 +2578,7 @@ val SCLEX_AVS=104
 val SCLEX_ECL=105
 val SCLEX_OSCRIPT=106
 val SCLEX_VISUALPROLOG=107
+val SCLEX_LITERATEHASKELL=108
 ## notepad2 custom code for the AHK lexer - start
 val SCLEX_AHK=200
 ## notepad2 custom code for the AHK lexer - end

@@ -45,8 +45,6 @@
 using namespace Scintilla;
 #endif
 
-#define INDENT_OFFSET       1
-
 static int u_iswalpha(int);
 static int u_iswalnum(int);
 static int u_iswupper(int);
@@ -141,8 +139,61 @@ static inline bool IsExternalStyle(int style) {
          || style == SCE_HA_LITERATE_CODEDELIM);
 }
 
-inline int CommentBlockStyleFromNestLevel(const unsigned int nestLevel) {
+static inline int CommentBlockStyleFromNestLevel(const unsigned int nestLevel) {
    return SCE_HA_COMMENTBLOCK + (nestLevel % 3);
+}
+
+// Mangled version of lexlib/Accessor.cxx IndentAmount.
+// Modified to treat comment blocks as whitespace
+// plus special case for commentline/preprocessor.
+static int HaskellIndentAmount(Accessor &styler, const int line) {
+
+   // Determines the indentation level of the current line
+   // Comment blocks are treated as whitespace
+
+   int pos = styler.LineStart(line);
+   int eol_pos = styler.LineStart(line + 1) - 1;
+
+   char ch = styler[pos];
+   int style = styler.StyleAt(pos);
+
+   int indent = 0;
+   bool inPrevPrefix = line > 0;
+
+   int posPrev = inPrevPrefix ? styler.LineStart(line-1) : 0;
+
+   while ((  ch == ' ' || ch == '\t'
+          || IsCommentBlockStyle(style)
+          || style == SCE_HA_LITERATE_CODEDELIM)
+         && (pos < eol_pos)) {
+      if (inPrevPrefix) {
+         char chPrev = styler[posPrev++];
+         if (chPrev != ' ' && chPrev != '\t') {
+            inPrevPrefix = false;
+         }
+      }
+      if (ch == '\t') {
+         indent = (indent / 8 + 1) * 8;
+      } else { // Space or comment block
+         indent++;
+      }
+      pos++;
+      ch = styler[pos];
+      style = styler.StyleAt(pos);
+   }
+
+   indent += SC_FOLDLEVELBASE;
+   // if completely empty line or the start of a comment or preprocessor...
+   if (  styler.LineStart(line) == styler.Length()
+      || ch == ' '
+      || ch == '\t'
+      || ch == '\n'
+      || ch == '\r'
+      || IsCommentStyle(style)
+      || style == SCE_HA_PREPROCESSOR)
+      return indent | SC_FOLDLEVELWHITEFLAG;
+   else
+      return indent;
 }
 
 struct OptionsHaskell {
@@ -224,6 +275,7 @@ struct OptionSetHaskell : public OptionSet<OptionsHaskell> {
 class LexerHaskell : public ILexer {
    bool literate;
    int firstImportLine;
+   int firstImportIndent;
    WordList keywords;
    WordList ffi;
    WordList reserved_operators;
@@ -310,7 +362,8 @@ class LexerHaskell : public ILexer {
             style = styler.StyleAt(currentPos);
 
             if (ch == ' ' || ch == '\t'
-             || IsCommentBlockStyle(style)) {
+             || IsCommentBlockStyle(style)
+             || style == SCE_HA_LITERATE_CODEDELIM) {
                currentPos++;
             } else {
                break;
@@ -324,8 +377,26 @@ class LexerHaskell : public ILexer {
       }
    }
 
+   inline int IndentAmountWithOffset(Accessor &styler, const int line) const {
+      const int indent = HaskellIndentAmount(styler, line);
+      const int indentLevel = indent & SC_FOLDLEVELNUMBERMASK;
+      return indentLevel <= ((firstImportIndent - 1) + SC_FOLDLEVELBASE)
+               ? indent
+               : (indentLevel + firstImportIndent) | (indent & ~SC_FOLDLEVELNUMBERMASK);
+   }
+
+   inline int IndentLevelRemoveIndentOffset(const int indentLevel) const {
+      return indentLevel <= ((firstImportIndent - 1) + SC_FOLDLEVELBASE)
+            ? indentLevel
+            : indentLevel - firstImportIndent;
+   }
+
 public:
-   LexerHaskell(const bool literate_) : literate(literate_), firstImportLine(-1) {}
+   LexerHaskell(bool literate_)
+      : literate(literate_)
+      , firstImportLine(-1)
+      , firstImportIndent(0)
+      {}
    virtual ~LexerHaskell() {}
 
    void SCI_METHOD Release() {
@@ -893,79 +964,19 @@ void SCI_METHOD LexerHaskell::Lex(unsigned int startPos, int length, int initSty
    sc.Complete();
 }
 
-// Mangled version of lexlib/Accessor.cxx IndentAmount.
-// Modified to treat comment blocks as whitespace
-// plus special case for commentline/preprocessor.
-static int HaskellIndentAmount(Accessor &styler, int line) {
-
-   // Determines the indentation level of the current line
-   // Comment blocks are treated as whitespace
-
-   int pos = styler.LineStart(line);
-   int eol_pos = styler.LineStart(line + 1) - 1;
-
-   char ch = styler[pos];
-   int style = styler.StyleAt(pos);
-
-   int indent = 0;
-   bool inPrevPrefix = line > 0;
-
-   int posPrev = inPrevPrefix ? styler.LineStart(line-1) : 0;
-
-   while ((  ch == ' ' || ch == '\t'
-          || IsCommentBlockStyle(style)
-          || style == SCE_HA_LITERATE_CODEDELIM)
-         && (pos < eol_pos)) {
-      if (inPrevPrefix) {
-         char chPrev = styler[posPrev++];
-         if (chPrev != ' ' && chPrev != '\t') {
-            inPrevPrefix = false;
-         }
-      }
-      if (ch == '\t') {
-         indent = (indent / 8 + 1) * 8;
-      } else { // Space or comment block
-         indent++;
-      }
-      pos++;
-      ch = styler[pos];
-      style = styler.StyleAt(pos);
-   }
-
-   indent += SC_FOLDLEVELBASE;
-   // if completely empty line or the start of a comment or preprocessor...
-   if (  styler.LineStart(line) == styler.Length()
-      || ch == ' '
-      || ch == '\t'
-      || ch == '\n'
-      || ch == '\r'
-      || IsCommentStyle(style)
-      || style == SCE_HA_PREPROCESSOR)
-      return indent | SC_FOLDLEVELWHITEFLAG;
-   else
-      return indent;
-}
-
-static inline int IndentAmountWithOffset(Accessor &styler, int line) {
-   int indent = HaskellIndentAmount(styler, line);
-   int indentLevel = indent & SC_FOLDLEVELNUMBERMASK;
-   return indentLevel == (SC_FOLDLEVELBASE & SC_FOLDLEVELNUMBERMASK)
-            ? indent
-            : (indentLevel + INDENT_OFFSET) | (indent & ~SC_FOLDLEVELNUMBERMASK);
-}
-
-static inline int RemoveIndentOffset(int indentLevel) {
-   return indentLevel == (SC_FOLDLEVELBASE & SC_FOLDLEVELNUMBERMASK)
-         ? indentLevel
-         : indentLevel - INDENT_OFFSET;
-}
-
 void SCI_METHOD LexerHaskell::Fold(unsigned int startPos, int length, int // initStyle
                                   ,IDocument *pAccess) {
    if (!options.fold)
       return;
 
    Accessor styler(pAccess, NULL);
+
+   int lineCurrent = styler.GetLine(startPos);
+
+   if (lineCurrent <= firstImportLine) {
+      firstImportLine = -1; // readjust first import position
+      firstImportIndent = 0;
+   }
 
    const int maxPos = startPos + length;
    const int maxLines =
@@ -978,7 +989,6 @@ void SCI_METHOD LexerHaskell::Fold(unsigned int startPos, int length, int // ini
    // for any white space lines
    // and so we can fix any preceding fold level (which is why we go back
    // at least one line in all cases)
-   int lineCurrent = styler.GetLine(startPos);
    bool importHere = LineContainsImport(lineCurrent, styler);
    int indentCurrent = IndentAmountWithOffset(styler, lineCurrent);
 
@@ -992,15 +1002,12 @@ void SCI_METHOD LexerHaskell::Fold(unsigned int startPos, int length, int // ini
 
    int indentCurrentLevel = indentCurrent & SC_FOLDLEVELNUMBERMASK;
 
-   if (lineCurrent <= firstImportLine) {
-      firstImportLine = -1; // readjust first import position
-   }
-
    if (importHere) {
+      indentCurrentLevel = IndentLevelRemoveIndentOffset(indentCurrentLevel);
       if (firstImportLine == -1) {
          firstImportLine = lineCurrent;
+         firstImportIndent = (1 + indentCurrentLevel) - SC_FOLDLEVELBASE;
       }
-      indentCurrentLevel = RemoveIndentOffset(indentCurrentLevel);
       if (firstImportLine != lineCurrent) {
          indentCurrentLevel++;
       }
@@ -1040,10 +1047,11 @@ void SCI_METHOD LexerHaskell::Fold(unsigned int startPos, int length, int // ini
       int indentNextLevel = indentNext & SC_FOLDLEVELNUMBERMASK;
 
       if (importHere) {
+         indentNextLevel = IndentLevelRemoveIndentOffset(indentNextLevel);
          if (firstImportLine == -1) {
             firstImportLine = lineNext;
+            firstImportIndent = (1 + indentNextLevel) - SC_FOLDLEVELBASE;
          }
-         indentNextLevel = RemoveIndentOffset(indentNextLevel);
          if (firstImportLine != lineNext) {
             indentNextLevel++;
          }

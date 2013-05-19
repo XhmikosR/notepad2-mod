@@ -373,7 +373,6 @@ BreakFinder::BreakFinder(LineLayout *ll_, int lineStart_, int lineEnd_, int posL
 	saeNext(0),
 	subBreak(-1),
 	pdoc(pdoc_) {
-	selAndEdge.resize(1);
 
 	// Search for first visible break
 	// First find the first visible character
