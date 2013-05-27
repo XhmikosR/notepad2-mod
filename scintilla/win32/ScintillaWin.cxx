@@ -16,6 +16,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <algorithm>
 
 #undef _WIN32_WINNT
 #define _WIN32_WINNT 0x0500
@@ -276,7 +277,7 @@ class ScintillaWin :
 	void FullPaint();
 	void FullPaintDC(HDC dc);
 	bool IsCompatibleDC(HDC dc);
-	DWORD EffectFromState(DWORD grfKeyState);
+	DWORD EffectFromState(DWORD grfKeyState) const;
 
 	virtual int SetScrollInfo(int nBar, LPCSCROLLINFO lpsi, BOOL bRedraw);
 	virtual bool GetScrollInfo(int nBar, LPSCROLLINFO lpsi);
@@ -310,13 +311,13 @@ public:
 	friend class DropSource;
 	friend class DataObject;
 	friend class DropTarget;
-	bool DragIsRectangularOK(CLIPFORMAT fmt) {
+	bool DragIsRectangularOK(CLIPFORMAT fmt) const {
 		return drag.rectangular && (fmt == cfColumnSelect);
 	}
 
 private:
 	// For use in creating a system caret
-	bool HasCaretSizeChanged();
+	bool HasCaretSizeChanged() const;
 	BOOL CreateSystemCaret();
 	BOOL DestroySystemCaret();
 	HBITMAP sysCaretBitmap;
@@ -2267,20 +2268,24 @@ void ScintillaWin::CopyToClipboard(const SelectionText &selectedText) {
 
 	// Default Scintilla behaviour in Unicode mode
 	if (IsUnicodeMode()) {
-		int uchars = UTF16Length(selectedText.s, selectedText.len);
+		int uchars = UTF16Length(selectedText.Data(),
+			static_cast<int>(selectedText.LengthWithTerminator()));
 		uniText.Allocate(2 * uchars);
 		if (uniText) {
-			UTF16FromUTF8(selectedText.s, selectedText.len, static_cast<wchar_t *>(uniText.ptr), uchars);
+			UTF16FromUTF8(selectedText.Data(), static_cast<int>(selectedText.LengthWithTerminator()),
+				static_cast<wchar_t *>(uniText.ptr), uchars);
 		}
 	} else {
 		// Not Unicode mode
 		// Convert to Unicode using the current Scintilla code page
 		UINT cpSrc = CodePageFromCharSet(
 					selectedText.characterSet, selectedText.codePage);
-		int uLen = ::MultiByteToWideChar(cpSrc, 0, selectedText.s, selectedText.len, 0, 0);
+		int uLen = ::MultiByteToWideChar(cpSrc, 0, selectedText.Data(),
+			static_cast<int>(selectedText.LengthWithTerminator()), 0, 0);
 		uniText.Allocate(2 * uLen);
 		if (uniText) {
-			::MultiByteToWideChar(cpSrc, 0, selectedText.s, selectedText.len,
+			::MultiByteToWideChar(cpSrc, 0, selectedText.Data(),
+				static_cast<int>(selectedText.LengthWithTerminator()),
 				static_cast<wchar_t *>(uniText.ptr), uLen);
 		}
 	}
@@ -2292,10 +2297,11 @@ void ScintillaWin::CopyToClipboard(const SelectionText &selectedText) {
 			// paste the text
 			// Windows NT, 2k, XP automatically generates CF_TEXT
 			GlobalMemory ansiText;
-			ansiText.Allocate(selectedText.len);
+			ansiText.Allocate(selectedText.LengthWithTerminator());
 			if (ansiText) {
 				::WideCharToMultiByte(CP_ACP, 0, static_cast<wchar_t *>(uniText.ptr), -1,
-					static_cast<char *>(ansiText.ptr), selectedText.len, NULL, NULL);
+					static_cast<char *>(ansiText.ptr),
+					static_cast<int>(selectedText.LengthWithTerminator()), NULL, NULL);
 				ansiText.SetClip(CF_TEXT);
 			}
 		}
@@ -2303,9 +2309,9 @@ void ScintillaWin::CopyToClipboard(const SelectionText &selectedText) {
 	} else {
 		// There was a failure - try to copy at least ANSI text
 		GlobalMemory ansiText;
-		ansiText.Allocate(selectedText.len);
+		ansiText.Allocate(selectedText.LengthWithTerminator());
 		if (ansiText) {
-			memcpy(static_cast<char *>(ansiText.ptr), selectedText.s, selectedText.len);
+			memcpy(static_cast<char *>(ansiText.ptr), selectedText.Data(), selectedText.LengthWithTerminator());
 			ansiText.SetClip(CF_TEXT);
 		}
 	}
@@ -2457,7 +2463,7 @@ bool ScintillaWin::IsCompatibleDC(HDC hOtherDC) {
 	return isCompatible;
 }
 
-DWORD ScintillaWin::EffectFromState(DWORD grfKeyState) {
+DWORD ScintillaWin::EffectFromState(DWORD grfKeyState) const {
 	// These are the Wordpad semantics.
 	DWORD dwEffect;
 	if (inDragDrop == ddDragging)	// Internal defaults to move
@@ -2619,7 +2625,7 @@ STDMETHODIMP ScintillaWin::Drop(LPDATAOBJECT pIDataSource, DWORD grfKeyState,
 		::ScreenToClient(MainHWND(), &rpt);
 		SelectionPosition movePos = SPositionFromLocation(Point(rpt.x, rpt.y), false, false, UserVirtualSpace());
 
-		DropAt(movePos, &data[0], *pdwEffect == DROPEFFECT_MOVE, hrRectangular == S_OK);
+		DropAt(movePos, &data[0], data.size() - 1, *pdwEffect == DROPEFFECT_MOVE, hrRectangular == S_OK);
 
 		// Free data
 		if (medium.pUnkForRelease != NULL)
@@ -2652,15 +2658,16 @@ STDMETHODIMP ScintillaWin::GetData(FORMATETC *pFEIn, STGMEDIUM *pSTM) {
 
 	GlobalMemory text;
 	if (pFEIn->cfFormat == CF_UNICODETEXT) {
-		int uchars = UTF16Length(drag.s, drag.len);
+		int uchars = UTF16Length(drag.Data(), static_cast<int>(drag.LengthWithTerminator()));
 		text.Allocate(2 * uchars);
 		if (text) {
-			UTF16FromUTF8(drag.s, drag.len, static_cast<wchar_t *>(text.ptr), uchars);
+			UTF16FromUTF8(drag.Data(), static_cast<int>(drag.LengthWithTerminator()),
+				static_cast<wchar_t *>(text.ptr), uchars);
 		}
 	} else {
-		text.Allocate(drag.len);
+		text.Allocate(drag.LengthWithTerminator());
 		if (text) {
-			memcpy(static_cast<char *>(text.ptr), drag.s, drag.len);
+			memcpy(static_cast<char *>(text.ptr), drag.Data(), drag.LengthWithTerminator());
 		}
 	}
 	pSTM->hGlobal = text ? text.Unlock() : 0;
@@ -2739,7 +2746,7 @@ bool ScintillaWin::Unregister() {
 	return result;
 }
 
-bool ScintillaWin::HasCaretSizeChanged() {
+bool ScintillaWin::HasCaretSizeChanged() const {
 	if (
 		( (0 != vs.caretWidth) && (sysCaretWidth != vs.caretWidth) )
 		|| ((0 != vs.lineHeight) && (sysCaretHeight != vs.lineHeight))
