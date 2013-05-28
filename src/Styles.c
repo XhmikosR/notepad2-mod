@@ -1297,12 +1297,12 @@ EDITLEXER lexLUA = { SCLEX_LUA, 63298, L"Lua Script", L"lua", L"", &KeyWords_LUA
                     { SCE_LUA_WORD2, 63321, L"Basic Functions", L"fore:#00007F", L"" },
                     { SCE_LUA_WORD3, 63322, L"String, Table & Math Functions", L"fore:#00007F", L"" },
                     { SCE_LUA_WORD4, 63323, L"Input, Output & System Facilities", L"fore:#00007F", L"" },
-                    { MULTI_STYLE(SCE_LUA_STRING,SCE_LUA_STRINGEOL,0,0), 63131, L"String", L"fore:#B000B0", L"" },
+                    { MULTI_STYLE(SCE_LUA_STRING,SCE_LUA_STRINGEOL,SCE_LUA_CHARACTER,0), 63131, L"String", L"fore:#B000B0", L"" },
                     { SCE_LUA_LITERALSTRING, 63302, L"Literal String", L"fore:#B000B0", L"" },
-                    { SCE_LUA_CHARACTER, 63301, L"Character", L"fore:#B000B0", L"" },
                     { SCE_LUA_PREPROCESSOR, 63133, L"Preprocessor", L"fore:#FF8000", L"" },
                     { SCE_LUA_OPERATOR, 63132, L"Operator", L"", L"" },
                     { SCE_LUA_IDENTIFIER, 63129, L"Identifier", L"", L"" },
+                    { SCE_LUA_LABEL, 63235, L"Label", L"fore:#808000", L"" },
                     { -1, 00000, L"", L"", L"" } } };
 
 
