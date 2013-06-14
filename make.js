@@ -31,7 +31,7 @@
 
         var fancyboxMinCss = cleanCSS.process(inCss, {
             removeEmpty: true,
-            keepSpecialComments: 0
+            keepSpecialComments: 1
         });
 
         fs.writeFileSync('css/jquery.fancybox.min.css', fancyboxMinCss, 'utf8');
