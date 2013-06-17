@@ -238,7 +238,7 @@ EDITLEXER lexXML = { SCLEX_XML, 63002, L"XML Document", L"xml; xsl; rss; svg; xu
 
 
 KEYWORDLIST KeyWords_CSS = {
-"^-moz- ^-ms- ^-o- ^-webkit- alignment-adjust alignment-baseline animation animation-delay "
+"alignment-adjust alignment-baseline animation animation-delay "
 "animation-direction animation-duration animation-fill-mode animation-iteration-count animation-name "
 "animation-play-state animation-timing-function appearance ascent azimuth backface-visibility "
 "background background-attachment background-break background-clip background-color "
@@ -289,9 +289,13 @@ KEYWORDLIST KeyWords_CSS = {
 "active after before checked choices default disabled empty enabled first first-child first-letter "
 "first-line first-of-type focus hover indeterminate in-range invalid lang last-child last-of-type left "
 "link not nth-child nth-last-child nth-last-of-type nth-of-type only-child only-of-type optional "
-"out-of-range read-only read-write repeat-index repeat-item required right root selection target valid "
-"visited",
-"", "", "", "", "", "", "" };
+"out-of-range read-only read-write repeat-index repeat-item required right root target valid visited",
+"", "",
+"after before first-letter first-line selection", 
+"^-moz- ^-ms- ^-o- ^-webkit-",
+"^-moz- ^-ms- ^-o- ^-webkit-",
+"^-moz- ^-ms- ^-o- ^-webkit-",
+"" };
 
 
 EDITLEXER lexCSS = { SCLEX_CSS, 63003, L"CSS Style Sheets", L"css", L"", &KeyWords_CSS, {
@@ -302,7 +306,8 @@ EDITLEXER lexCSS = { SCLEX_CSS, 63003, L"CSS Style Sheets", L"css", L"", &KeyWor
                      { SCE_CSS_CLASS, 63194, L"Tag-Class", L"fore:#648000", L"" },
                      { SCE_CSS_ID, 63195, L"Tag-Id", L"fore:#648000", L"" },
                      { SCE_CSS_ATTRIBUTE, 63196, L"Tag-Attribute", L"italic; fore:#648000", L"" },
-                     { MULTI_STYLE(SCE_CSS_PSEUDOCLASS,SCE_CSS_EXTENDED_PSEUDOCLASS,SCE_CSS_PSEUDOELEMENT,SCE_CSS_EXTENDED_PSEUDOELEMENT), 63197, L"Pseudo-class/element", L"fore:#B000B0", L"" },
+                     { MULTI_STYLE(SCE_CSS_PSEUDOCLASS,SCE_CSS_EXTENDED_PSEUDOCLASS,0,0), 63197, L"Pseudo-class", L"fore:#B000B0", L"" },
+                     { MULTI_STYLE(SCE_CSS_PSEUDOELEMENT,SCE_CSS_EXTENDED_PSEUDOELEMENT,0,0), 63361, L"Pseudo-element", L"fore:#B00050", L"" },
                      { SCE_CSS_UNKNOWN_PSEUDOCLASS, 63198, L"Unknown Pseudo-class", L"fore:#C80000; back:#FFFF80", L"" },
                      { MULTI_STYLE(SCE_CSS_IDENTIFIER,SCE_CSS_IDENTIFIER2,SCE_CSS_IDENTIFIER3,SCE_CSS_EXTENDED_IDENTIFIER), 63199, L"CSS Property", L"fore:#FF4000", L"" },
                      { SCE_CSS_UNKNOWN_IDENTIFIER, 63200, L"Unknown Property", L"fore:#C80000; back:#FFFF80", L"" },
