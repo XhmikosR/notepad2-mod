@@ -1877,7 +1877,7 @@ BEGIN
     63194                   "Tag-Class"
     63195                   "Tag-Id"
     63196                   "Tag-Attribute"
-    63197                   "Pseudo-class/element"
+    63197                   "Pseudo-class"
     63198                   "Unknown Pseudo-class"
     63199                   "CSS Property"
 END
