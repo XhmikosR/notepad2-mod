@@ -164,6 +164,7 @@
     <ClCompile Include="lexers\LexAVS.cxx" />
     <ClCompile Include="lexers\LexBash.cxx" />
     <ClCompile Include="lexers\LexCmake.cxx" />
+    <ClCompile Include="lexers\LexCoffeeScript.cxx" />
     <ClCompile Include="lexers\LexConf.cxx" />
     <ClCompile Include="lexers\LexCPP.cxx" />
     <ClCompile Include="lexers\LexCSS.cxx" />

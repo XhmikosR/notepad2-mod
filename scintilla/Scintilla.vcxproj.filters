@@ -36,6 +36,9 @@
     <ClCompile Include="lexers\LexCmake.cxx">
       <Filter>lexers</Filter>
     </ClCompile>
+    <ClCompile Include="lexers\LexCoffeeScript.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
     <ClCompile Include="lexers\LexConf.cxx">
       <Filter>lexers</Filter>
     </ClCompile>

@@ -35,6 +35,7 @@ $(SCI_LEX_OBJDIR)\LexAU3.obj: $(SCI_LEX)\LexAU3.cxx $(LEX_HEADERS)
 $(SCI_LEX_OBJDIR)\LexAVS.obj: $(SCI_LEX)\LexAVS.cxx $(LEX_HEADERS)
 $(SCI_LEX_OBJDIR)\LexBash.obj: $(SCI_LEX)\LexBash.cxx $(LEX_HEADERS)
 $(SCI_LEX_OBJDIR)\LexCmake.obj: $(SCI_LEX)\LexCmake.cxx $(LEX_HEADERS)
+$(SCI_LEX_OBJDIR)\LexCoffeeScript.obj: $(SCI_LEX)\LexCoffeeScript.cxx $(LEX_HEADERS)
 $(SCI_LEX_OBJDIR)\LexConf.obj: $(SCI_LEX)\LexConf.cxx $(LEX_HEADERS)
 $(SCI_LEX_OBJDIR)\LexCPP.obj: $(SCI_LEX)\LexCPP.cxx $(LEX_HEADERS) $(SCI_LIB)\OptionSet.h \
                               $(SCI_LIB)\SparseState.h $(SCI_LIB)\SubStyles.h

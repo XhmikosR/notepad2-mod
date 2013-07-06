@@ -128,6 +128,7 @@ SCI_LEX_OBJ = \
     $(SCI_LEX_OBJDIR)\LexAVS.obj \
     $(SCI_LEX_OBJDIR)\LexBash.obj \
     $(SCI_LEX_OBJDIR)\LexCmake.obj \
+    $(SCI_LEX_OBJDIR)\LexCoffeeScript.obj \
     $(SCI_LEX_OBJDIR)\LexConf.obj \
     $(SCI_LEX_OBJDIR)\LexCPP.obj \
     $(SCI_LEX_OBJDIR)\LexCSS.obj \

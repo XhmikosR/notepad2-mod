@@ -8,8 +8,8 @@ _A modified version (fork) of Notepad2 based on Kai Liu's and other people's pat
 * Support for bookmarks
 * Option to mark all occurrences of a word
 * Word auto-completion
-* Syntax highlighting support for AutoHotkey, AutoIt3, AviSynth, Bash, CMake, Inno Setup,
-  LaTeX, Lua, Markdown, NSIS, Ruby, Tcl, YAML and VHDL scripts
+* Syntax highlighting support for AutoHotkey, AutoIt3, AviSynth, Bash, CMake, CoffeeScript,
+  Inno Setup, LaTeX, Lua, Markdown, NSIS, Ruby, Tcl, YAML and VHDL scripts
 * Improved support for NFO ANSI art
 * Support for replacing Windows Notepad using a clean, unintrusive registry-based method
 * Other various minor changes and tweaks

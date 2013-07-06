@@ -11,6 +11,7 @@
     "lmBash",
     "lmBatch",
     "lmCmake",
+    "lmCoffeeScript",
     "lmConf",
     "lmCPP",
     "lmCss",
