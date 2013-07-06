@@ -278,7 +278,7 @@ KEYWORDLIST KeyWords_CSS = {
 "rendering-intent resize rest rest-after rest-before richness right rotation rotation-point ruby-align "
 "ruby-overhang ruby-position ruby-span shape-image-threshold shape-inside shape-outside size slope speak "
 "speak-header speak-numeral speak-punctuation speech-rate src stemh stemv stress string-set table-layout "
-"target target-name target-new target-position text-align text-align-last text-decoration " 
+"target target-name target-new target-position text-align text-align-last text-decoration "
 "text-decoration-color text-decoration-line text-decoration-style text-emphasis text-height text-indent "
 "text-justify text-outline text-replace text-shadow text-transform text-wrap top topline transform "
 "transform-origin transform-style transition transition-delay transition-duration transition-property "
@@ -291,7 +291,7 @@ KEYWORDLIST KeyWords_CSS = {
 "link not nth-child nth-last-child nth-last-of-type nth-of-type only-child only-of-type optional "
 "out-of-range read-only read-write repeat-index repeat-item required right root target valid visited",
 "", "",
-"after before first-letter first-line selection", 
+"after before first-letter first-line selection",
 "^-moz- ^-ms- ^-o- ^-webkit-",
 "^-moz- ^-ms- ^-o- ^-webkit-",
 "^-moz- ^-ms- ^-o- ^-webkit-",
@@ -2035,7 +2035,7 @@ KEYWORDLIST KeyWords_AU3 = {
 "_worddocaddlink _worddocaddpicture _worddocclose _worddocfindreplace _worddocgetcollection "
 "_worddoclinkgetcollection _worddocopen _worddocprint _worddocpropertyget _worddocpropertyset _worddocsave "
 "_worddocsaveas _worderrorhandlerderegister _worderrorhandlerregister _worderrornotify _wordmacrorun "
-"_wordpropertyget _wordpropertyset _wordquit", 
+"_wordpropertyget _wordpropertyset _wordquit",
 "" };
 
 
