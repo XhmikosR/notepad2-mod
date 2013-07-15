@@ -1564,8 +1564,8 @@ void SurfaceD2D::DrawRGBAImage(PRectangle rc, int width, int height, const unsig
 		if (SUCCEEDED(hr)) {
 			D2D1_RECT_F rcDestination = {rc.left, rc.top, rc.right, rc.bottom};
 			pRenderTarget->DrawBitmap(bitmap, rcDestination);
+			bitmap->Release();
 		}
-		bitmap->Release();
 	}
 }
 
@@ -1669,8 +1669,8 @@ XYPOSITION SurfaceD2D::WidthText(Font &font_, const char *s, int len) {
 		HRESULT hr = pIDWriteFactory->CreateTextLayout(tbuf.buffer, tbuf.tlen, pTextFormat, 1000.0, 1000.0, &pTextLayout);
 		if (SUCCEEDED(hr)) {
 			DWRITE_TEXT_METRICS textMetrics;
-			pTextLayout->GetMetrics(&textMetrics);
-			width = textMetrics.widthIncludingTrailingWhitespace;
+			if (SUCCEEDED(pTextLayout->GetMetrics(&textMetrics)))
+				width = textMetrics.widthIncludingTrailingWhitespace;
 			pTextLayout->Release();
 		}
 	}
@@ -1694,7 +1694,8 @@ void SurfaceD2D::MeasureWidths(Font &font_, const char *s, int len, XYPOSITION *
 		if (!SUCCEEDED(hr))
 			return;
 		// For now, assuming WCHAR == cluster
-		pTextLayout->GetClusterMetrics(clusterMetrics, clusters, &count);
+		if (!SUCCEEDED(pTextLayout->GetClusterMetrics(clusterMetrics, clusters, &count)))
+			return;
 		FLOAT position = 0.0f;
 		size_t ti=0;
 		for (size_t ci=0;ci<count;ci++) {
@@ -1771,8 +1772,8 @@ XYPOSITION SurfaceD2D::WidthChar(Font &font_, char ch) {
 		HRESULT hr = pIDWriteFactory->CreateTextLayout(&wch, 1, pTextFormat, 1000.0, 1000.0, &pTextLayout);
 		if (SUCCEEDED(hr)) {
 			DWRITE_TEXT_METRICS textMetrics;
-			pTextLayout->GetMetrics(&textMetrics);
-			width = textMetrics.widthIncludingTrailingWhitespace;
+			if (SUCCEEDED(pTextLayout->GetMetrics(&textMetrics)))
+				width = textMetrics.widthIncludingTrailingWhitespace;
 			pTextLayout->Release();
 		}
 	}
@@ -1814,8 +1815,8 @@ XYPOSITION SurfaceD2D::AverageCharWidth(Font &font_) {
 			pTextFormat, 1000.0, 1000.0, &pTextLayout);
 		if (SUCCEEDED(hr)) {
 			DWRITE_TEXT_METRICS textMetrics;
-			pTextLayout->GetMetrics(&textMetrics);
-			width = textMetrics.width / wcslen(wszAllAlpha);
+			if (SUCCEEDED(pTextLayout->GetMetrics(&textMetrics)))
+				width = textMetrics.width / wcslen(wszAllAlpha);
 			pTextLayout->Release();
 		}
 	}
@@ -1887,7 +1888,12 @@ static RECT RectFromMonitor(HMONITOR hMonitor) {
 		}
 	}
 	RECT rc = {0, 0, 0, 0};
-	::SystemParametersInfoA(SPI_GETWORKAREA, 0, &rc, 0);
+	if (::SystemParametersInfoA(SPI_GETWORKAREA, 0, &rc, 0) == 0) {
+		rc.left = 0;
+		rc.top = 0;
+		rc.right = 0;
+		rc.bottom = 0;
+	}
 	return rc;
 }
 
@@ -2133,7 +2139,7 @@ class ListBoxX : public ListBox {
 
 	HWND GetHWND() const;
 	void AppendListItem(const char *text, const char *numword);
-	void AdjustWindowRect(PRectangle *rc) const;
+	static void AdjustWindowRect(PRectangle *rc);
 	int ItemHeight() const;
 	int MinClientWidth() const;
 	int TextOffset() const;
@@ -2496,7 +2502,7 @@ void ListBoxX::SetList(const char *list, char separator, char typesep) {
 	SetRedraw(true);
 }
 
-void ListBoxX::AdjustWindowRect(PRectangle *rc) const {
+void ListBoxX::AdjustWindowRect(PRectangle *rc) {
 	RECT rcw = RectFromPRectangle(*rc);
 	::AdjustWindowRectEx(&rcw, WS_THICKFRAME, false, WS_EX_WINDOWEDGE);
 	*rc = PRectangle(rcw.left, rcw.top, rcw.right, rcw.bottom);
@@ -3202,6 +3208,12 @@ int Platform::Clamp(int val, int minVal, int maxVal) {
 	return val;
 }
 
+#ifdef _MSC_VER
+// GetVersionEx has been deprecated fro Windows 8.1 but called here to determine if Windows 9x.
+// Too dangerous to find alternate check.
+#pragma warning(disable: 4996)
+#endif
+
 void Platform_Initialise(void *hInstance) {
 	OSVERSIONINFO osv = {sizeof(OSVERSIONINFO),0,0,0,0,TEXT("")};
 	::GetVersionEx(&osv);
@@ -3227,6 +3239,10 @@ void Platform_Initialise(void *hInstance) {
 
 	ListBoxX_Register();
 }
+
+#ifdef _MSC_VER
+#pragma warning(default: 4996)
+#endif
 
 void Platform_Finalise() {
 	if (reverseArrowCursor != NULL)

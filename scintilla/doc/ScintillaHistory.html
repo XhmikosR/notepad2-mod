@@ -425,6 +425,8 @@
 	<td>Igor Shaula</td>
 	<td>Pavel Bulochkin</td>
 	<td>Yosef Or Boczko</td>
+      </tr><tr>
+	<td>Brian Griffin</td>
     </tr>
     </table>
     <p>
@@ -435,6 +437,131 @@
         <a href="http://sourceforge.net/projects/icon-collection/">
         Icons</a> Copyright(C) 1998 by Dean S. Jones<br />
       </li>
+    </ul>
+    <h3>
+       <a href="http://prdownloads.sourceforge.net/scintilla/scite334.zip?download">Release 3.3.4</a>
+    </h3>
+    <ul>
+	<li>
+	Released 19 July 2013.
+	</li>
+	<li>
+	Handling of UTF-8 and DBCS text in lexers improved with methods ForwardBytes and
+	GetRelativeCharacter added to StyleContext.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1483/">Bug #1483</a>.
+	</li>
+	<li>
+	For Unicode text, case-insensitive searching and making text upper or lower case is now
+	compliant with Unicode standards on all platforms and is much faster for non-ASCII characters.
+	</li>
+	<li>
+	A CategoriseCharacter function was added to return the Unicode general category of a character
+	which can be useful in lexers.
+	</li>
+	<li>
+	On Cocoa, the LCD Optimized font quality level turns font smoothing on.
+	</li>
+	<li>
+	SciTE 'immediate' subsystem added to allow scripts that work while tools are executed.
+	</li>
+	<li>
+	Font quality exposed in SciTE as font.quality setting.
+	</li>
+	<li>
+	On Cocoa, message:... methods simplify direct access to Scintilla and avoid call layers..
+	</li>
+	<li>
+	A68K lexer updated.
+	</li>
+	<li>
+	CoffeeScript lexer fixes a bug with comment blocks.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/1495/">Feature #1495.</a>
+	</li>
+	<li>
+	ECL lexer regular expression code fixed.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1491/">Bug #1491</a>.
+	</li>
+	<li>
+	errorlist lexer only recognises Perl diagnostics when there is a filename between
+	"at" and "line". Had been triggering for MSVC errors containing "at line".
+	</li>
+	<li>
+	Haskell lexer fixed to avoid unnecessary full redraws.
+	Don't highlight CPP inside comments when styling.within.preprocessor is on.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1459/">Bug #1459</a>.
+	</li>
+	<li>
+	Lua lexer fixes bug in labels with UTF-8 text.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1483/">Bug #1483</a>.
+	</li>
+	<li>
+	Perl lexer fixes bug in string interpolation with UTF-8 text.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1483/">Bug #1483</a>.
+	</li>
+	<li>
+	Fixed bugs with case conversion when the result was longer or shorter than the original text.
+	Could access past end of string potentially crashing.
+	Selection now updated to result length.
+	</li>
+	<li>
+	Fixed bug where data being inserted and removed was not being reported in
+	notification messages. Bug was introduced in 3.3.2.
+	</li>
+	<li>
+	Word wrap bug fixed where the last line could be shown twice.
+	</li>
+	<li>
+	Word wrap bug fixed for lines wrapping too short on Windows and GTK+.
+	</li>
+	<li>
+	Word wrap performance improved.
+	</li>
+	<li>
+	Minor memory leak fixed.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1487/">Bug #1487</a>.
+	</li>
+	<li>
+	On Cocoa, fixed insertText: method which was broken when implementing a newer protocol.
+	</li>
+	<li>
+	On Cocoa, fixed a crash when performing string folding for bytes that do not represent a character
+	in the current encoding.
+	</li>
+	<li>
+	On Qt, fixed layout problem when QApplication construction delayed.
+	</li>
+	<li>
+	On Qt, find_text reports failure with -1 as first element of return value.
+	</li>
+	<li>
+	Fixed SciTE on GTK+ bug where a tool command could be performed using the keyboard while one was
+	already running leading to confusion and crashes.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1486/">Bug #1486</a>.
+	</li>
+	<li>
+	Fixed SciTE bug in Copy as RTF which was limited to first 32 styles.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1011/">Bug #1011</a>.
+	</li>
+	<li>
+	Fixed SciTE on Windows user strip height when the system text scaling factor is 125% or 150%.
+	</li>
+	<li>
+	Compile time checks for Digital Mars C++ removed.
+	</li>
+	<li>
+	Visual C++ 2013 supported.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1492/">Bug #1492</a>.
+	</li>
+	<li>
+	Python scripts used for building and maintenance improved and moved into scripts directory.
+	</li>
+	<li>
+	Testing scripts now work on Linux using Qt and PySide.
+	</li>
+	<li>
+	Tk platform defined.
+	Implementation for Tk will be available separately from main Scintilla distribution.
+	</li>
     </ul>
     <h3>
        <a href="http://prdownloads.sourceforge.net/scintilla/scite333.zip?download">Release 3.3.3</a>

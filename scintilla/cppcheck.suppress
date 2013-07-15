@@ -7,7 +7,6 @@
 useInitializationList
 
 // Suppress most lexer warnings since the lexers are maintained by others
-variableScope:scintilla/lexers/LexA68k.cxx
 useInitializationList:scintilla/lexers/LexAsm.cxx
 useInitializationList:scintilla/lexers/LexBasic.cxx
 noCopyConstructor:scintilla/lexers/LexBash.cxx
@@ -16,7 +15,6 @@ variableScope:scintilla/lexers/LexCmake.cxx
 variableScope:scintilla/lexers/LexCoffeeScript.cxx
 variableScope:scintilla/lexers/LexCSS.cxx
 useInitializationList:scintilla/lexers/LexD.cxx
-redundantCondition:scintilla/lexers/LexECL.cxx
 variableScope:scintilla/lexers/LexErlang.cxx
 variableScope:scintilla/lexers/LexFortran.cxx
 variableScope:scintilla/lexers/LexGui4Cli.cxx
@@ -31,7 +29,6 @@ variableScope:scintilla/lexers/LexOpal.cxx
 variableScope:scintilla/lexers/LexOthers.cxx
 variableScope:scintilla/lexers/LexPB.cxx
 variableScope:scintilla/lexers/LexPS.cxx
-uninitMemberVar:scintilla/lexers/LexPerl.cxx
 variableScope:scintilla/lexers/LexRuby.cxx
 uninitMemberVar:scintilla/lexers/LexRuby.cxx
 variableScope:scintilla/lexers/LexSpecman.cxx

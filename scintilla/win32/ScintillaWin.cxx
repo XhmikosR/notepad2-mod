@@ -60,12 +60,15 @@
 #include "ViewStyle.h"
 #include "CharClassify.h"
 #include "Decoration.h"
+#include "CaseFolder.h"
 #include "Document.h"
 #include "Selection.h"
 #include "PositionCache.h"
 #include "Editor.h"
 #include "ScintillaBase.h"
 #include "UniConversion.h"
+#include "CaseConvert.h"
+
 #include "PlatWin.h"
 
 #ifdef SCI_LEXER
@@ -89,9 +92,7 @@
 #endif
 
 #include <commctrl.h>
-#ifndef __DMC__
 #include <zmouse.h>
-#endif
 #include <ole2.h>
 
 #ifndef MK_ALT
@@ -217,8 +218,10 @@ class ScintillaWin :
 
 	virtual void Initialise();
 	virtual void Finalise();
+#if defined(USE_D2D)
 	void EnsureRenderTarget();
 	void DropRenderTarget();
+#endif
 	HWND MainHWND();
 
 	static sptr_t DirectFunction(
@@ -404,15 +407,18 @@ void ScintillaWin::Finalise() {
 	ScintillaBase::Finalise();
 	SetTicking(false);
 	SetIdle(false);
+#if defined(USE_D2D)
 	DropRenderTarget();
+#endif
 	::RevokeDragDrop(MainHWND());
 	if (SUCCEEDED(hrOle)) {
 		::OleUninitialize();
 	}
 }
 
-void ScintillaWin::EnsureRenderTarget() {
 #if defined(USE_D2D)
+
+void ScintillaWin::EnsureRenderTarget() {
 	if (!renderTargetValid) {
 		DropRenderTarget();
 		renderTargetValid = true;
@@ -454,17 +460,16 @@ void ScintillaWin::EnsureRenderTarget() {
 		// need to be recreated.
 		DropGraphics(false);
 	}
-#endif
 }
 
 void ScintillaWin::DropRenderTarget() {
-#if defined(USE_D2D)
 	if (pRenderTarget) {
 		pRenderTarget->Release();
 		pRenderTarget = 0;
 	}
-#endif
 }
+
+#endif
 
 HWND ScintillaWin::MainHWND() {
 	return reinterpret_cast<HWND>(wMain.GetID());
@@ -630,10 +635,6 @@ LRESULT ScintillaWin::WndPaint(uptr_t wParam) {
 }
 
 sptr_t ScintillaWin::HandleComposition(uptr_t wParam, sptr_t lParam) {
-#ifdef __DMC__
-	// Digital Mars compiler does not include Imm library
-	return 0;
-#else
 	if (lParam & GCS_RESULTSTR) {
 		HIMC hIMC = ::ImmGetContext(MainHWND());
 		if (hIMC) {
@@ -668,7 +669,6 @@ sptr_t ScintillaWin::HandleComposition(uptr_t wParam, sptr_t lParam) {
 		return 0;
 	}
 	return ::DefWindowProc(MainHWND(), WM_IME_COMPOSITION, wParam, lParam);
-#endif
 }
 
 // Translate message IDs from WM_* and EM_* to SCI_* so can partly emulate Windows Edit control
@@ -871,13 +871,10 @@ sptr_t ScintillaWin::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam
 			return ::DefWindowProc(MainHWND(), iMessage, wParam, lParam);
 
 		case WM_LBUTTONDOWN: {
-#ifndef __DMC__
-			// Digital Mars compiler does not include Imm library
 			// For IME, set the composition string as the result string.
 			HIMC hIMC = ::ImmGetContext(MainHWND());
 			::ImmNotifyIME(hIMC, NI_COMPOSITIONSTR, CPS_COMPLETE, 0);
 			::ImmReleaseContext(MainHWND(), hIMC);
-#endif
 			//
 			//Platform::DebugPrintf("Buttdown %d %x %x %x %x %x\n",iMessage, wParam, lParam,
 			//	Platform::IsKeyDown(VK_SHIFT),
@@ -1449,55 +1446,6 @@ void ScintillaWin::NotifyDoubleClick(Point pt, bool shift, bool ctrl, bool alt) 
 			  MAKELPARAM(pt.x, pt.y));
 }
 
-class CaseFolderUTF8 : public CaseFolderTable {
-	// Allocate the expandable storage here so that it does not need to be reallocated
-	// for each call to Fold.
-	std::vector<wchar_t> utf16Mixed;
-	std::vector<wchar_t> utf16Folded;
-public:
-	CaseFolderUTF8() {
-		StandardASCII();
-	}
-	virtual size_t Fold(char *folded, size_t sizeFolded, const char *mixed, size_t lenMixed) {
-		if ((lenMixed == 1) && (sizeFolded > 0)) {
-			folded[0] = mapping[static_cast<unsigned char>(mixed[0])];
-			return 1;
-		} else {
-			if (lenMixed > utf16Mixed.size()) {
-				utf16Mixed.resize(lenMixed + 8);
-			}
-			size_t nUtf16Mixed = ::MultiByteToWideChar(65001, 0, mixed,
-				static_cast<int>(lenMixed),
-				&utf16Mixed[0],
-				static_cast<int>(utf16Mixed.size()));
-
-			if (nUtf16Mixed == 0) {
-				// Failed to convert -> bad UTF-8
-				folded[0] = '\0';
-				return 1;
-			}
-
-			if (nUtf16Mixed * 4 > utf16Folded.size()) {	// Maximum folding expansion factor of 4
-				utf16Folded.resize(nUtf16Mixed * 4 + 8);
-			}
-			int lenFlat = ::LCMapStringW(LOCALE_SYSTEM_DEFAULT,
-				LCMAP_LINGUISTIC_CASING | LCMAP_LOWERCASE,
-				&utf16Mixed[0],
-				static_cast<int>(nUtf16Mixed),
-				&utf16Folded[0],
-				static_cast<int>(utf16Folded.size()));
-
-			size_t lenOut = UTF8Length(&utf16Folded[0], lenFlat);
-			if (lenOut < sizeFolded) {
-				UTF8FromUTF16(&utf16Folded[0], lenFlat, folded, static_cast<int>(lenOut));
-				return lenOut;
-			} else {
-				return 0;
-			}
-		}
-	}
-};
-
 class CaseFolderDBCS : public CaseFolderTable {
 	// Allocate the expandable storage here so that it does not need to be reallocated
 	// for each call to Fold.
@@ -1527,15 +1475,23 @@ public:
 				return 1;
 			}
 
-			if (nUtf16Mixed * 4 > utf16Folded.size()) {	// Maximum folding expansion factor of 4
-				utf16Folded.resize(nUtf16Mixed * 4 + 8);
+			unsigned int lenFlat = 0;
+			for (size_t mixIndex=0; mixIndex < nUtf16Mixed; mixIndex++) {
+				if ((lenFlat + 20) > utf16Folded.size())
+					utf16Folded.resize(lenFlat + 60);
+				const char *foldedUTF8 = CaseConvert(utf16Mixed[mixIndex], CaseConversionFold);
+				if (foldedUTF8) {
+					// Maximum length of a case conversion is 6 bytes, 3 characters
+					wchar_t wFolded[20];
+					unsigned int charsConverted = UTF16FromUTF8(foldedUTF8,
+							static_cast<unsigned int>(strlen(foldedUTF8)), 
+							wFolded, sizeof(wFolded)/sizeof(wFolded[0]));
+					for (size_t j=0;j<charsConverted;j++)
+						utf16Folded[lenFlat++] = wFolded[j];
+				} else {
+					utf16Folded[lenFlat++] = utf16Mixed[mixIndex];
+				}
 			}
-			int lenFlat = ::LCMapStringW(LOCALE_SYSTEM_DEFAULT,
-				LCMAP_LINGUISTIC_CASING | LCMAP_LOWERCASE,
-				&utf16Mixed[0],
-				static_cast<int>(nUtf16Mixed),
-				&utf16Folded[0],
-				static_cast<int>(utf16Folded.size()));
 
 			size_t lenOut = ::WideCharToMultiByte(cp, 0,
 				&utf16Folded[0], lenFlat,
@@ -1556,7 +1512,7 @@ public:
 CaseFolder *ScintillaWin::CaseFolderForEncoding() {
 	UINT cpDest = CodePageOfDocument();
 	if (cpDest == SC_CP_UTF8) {
-		return new CaseFolderUTF8();
+		return new CaseFolderUnicode();
 	} else {
 		if (pdoc->dbcsCodePage == 0) {
 			CaseFolderTable *pcf = new CaseFolderTable();
@@ -1570,16 +1526,21 @@ CaseFolder *ScintillaWin::CaseFolderForEncoding() {
 				unsigned int lengthUTF16 = ::MultiByteToWideChar(cpDoc, 0, sCharacter, 1,
 					wCharacter, sizeof(wCharacter)/sizeof(wCharacter[0]));
 				if (lengthUTF16 == 1) {
-					wchar_t wLower[20];
-					int charsConverted = ::LCMapStringW(LOCALE_SYSTEM_DEFAULT,
-						LCMAP_LINGUISTIC_CASING | LCMAP_LOWERCASE,
-						wCharacter, lengthUTF16, wLower, sizeof(wLower)/sizeof(wLower[0]));
-					char sCharacterLowered[20];
-					unsigned int lengthConverted = ::WideCharToMultiByte(cpDoc, 0,
-						wLower, charsConverted,
-						sCharacterLowered, sizeof(sCharacterLowered), NULL, 0);
-					if ((lengthConverted == 1) && (sCharacter[0] != sCharacterLowered[0])) {
-						pcf->SetTranslation(sCharacter[0], sCharacterLowered[0]);
+					const char *caseFolded = CaseConvert(wCharacter[0], CaseConversionFold);
+					if (caseFolded) {
+						wchar_t wLower[20];
+						unsigned int charsConverted = UTF16FromUTF8(caseFolded,
+							static_cast<unsigned int>(strlen(caseFolded)), 
+							wLower, sizeof(wLower)/sizeof(wLower[0]));
+						if (charsConverted == 1) {
+							char sCharacterLowered[20];
+							unsigned int lengthConverted = ::WideCharToMultiByte(cpDoc, 0,
+								wLower, charsConverted,
+								sCharacterLowered, sizeof(sCharacterLowered), NULL, 0);
+							if ((lengthConverted == 1) && (sCharacter[0] != sCharacterLowered[0])) {
+								pcf->SetTranslation(sCharacter[0], sCharacterLowered[0]);
+							}
+						}
 					}
 				}
 			}
@@ -1591,13 +1552,17 @@ CaseFolder *ScintillaWin::CaseFolderForEncoding() {
 }
 
 std::string ScintillaWin::CaseMapString(const std::string &s, int caseMapping) {
-	if (s.size() == 0)
-		return std::string();
-
-	if (caseMapping == cmSame)
+	if ((s.size() == 0) || (caseMapping == cmSame))
 		return s;
 
 	UINT cpDoc = CodePageOfDocument();
+	if (cpDoc == SC_CP_UTF8) {
+		std::string retMapped(s.length() * maxExpansionCaseConversion, 0);
+		size_t lenMapped = CaseConvertString(&retMapped[0], retMapped.length(), s.c_str(), s.length(), 
+			(caseMapping == cmUpper) ? CaseConversionUpper : CaseConversionLower);
+		retMapped.resize(lenMapped);
+		return retMapped;
+	}
 
 	unsigned int lengthUTF16 = ::MultiByteToWideChar(cpDoc, 0, s.c_str(),
 		static_cast<int>(s.size()), NULL, 0);
@@ -1607,63 +1572,27 @@ std::string ScintillaWin::CaseMapString(const std::string &s, int caseMapping) {
 	DWORD mapFlags = LCMAP_LINGUISTIC_CASING |
 		((caseMapping == cmUpper) ? LCMAP_UPPERCASE : LCMAP_LOWERCASE);
 
-	// Many conversions performed by search function are short so optimize this case.
-	enum { shortSize=20 };
+	// Change text to UTF-16
+	std::vector<wchar_t> vwcText(lengthUTF16);
+	::MultiByteToWideChar(cpDoc, 0, s.c_str(), static_cast<int>(s.size()), &vwcText[0], lengthUTF16);
 
-	if (s.size() > shortSize) {
-		// Use dynamic allocations for long strings
+	// Change case
+	int charsConverted = ::LCMapStringW(LOCALE_SYSTEM_DEFAULT, mapFlags,
+		&vwcText[0], lengthUTF16, NULL, 0);
+	std::vector<wchar_t> vwcConverted(charsConverted);
+	::LCMapStringW(LOCALE_SYSTEM_DEFAULT, mapFlags,
+		&vwcText[0], lengthUTF16, &vwcConverted[0], charsConverted);
 
-		// Change text to UTF-16
-		std::vector<wchar_t> vwcText(lengthUTF16);
-		::MultiByteToWideChar(cpDoc, 0, s.c_str(), static_cast<int>(s.size()), &vwcText[0], lengthUTF16);
+	// Change back to document encoding
+	unsigned int lengthConverted = ::WideCharToMultiByte(cpDoc, 0,
+		&vwcConverted[0], static_cast<int>(vwcConverted.size()),
+		NULL, 0, NULL, 0);
+	std::vector<char> vcConverted(lengthConverted);
+	::WideCharToMultiByte(cpDoc, 0,
+		&vwcConverted[0], static_cast<int>(vwcConverted.size()),
+		&vcConverted[0], static_cast<int>(vcConverted.size()), NULL, 0);
 
-		// Change case
-		int charsConverted = ::LCMapStringW(LOCALE_SYSTEM_DEFAULT, mapFlags,
-			&vwcText[0], lengthUTF16, NULL, 0);
-		std::vector<wchar_t> vwcConverted(charsConverted);
-		::LCMapStringW(LOCALE_SYSTEM_DEFAULT, mapFlags,
-			&vwcText[0], lengthUTF16, &vwcConverted[0], charsConverted);
-
-		// Change back to document encoding
-		unsigned int lengthConverted = ::WideCharToMultiByte(cpDoc, 0,
-			&vwcConverted[0], static_cast<int>(vwcConverted.size()),
-			NULL, 0, NULL, 0);
-		std::vector<char> vcConverted(lengthConverted);
-		::WideCharToMultiByte(cpDoc, 0,
-			&vwcConverted[0], static_cast<int>(vwcConverted.size()),
-			&vcConverted[0], static_cast<int>(vcConverted.size()), NULL, 0);
-
-		return std::string(&vcConverted[0], vcConverted.size());
-
-	} else {
-		// Use static allocations for short strings as much faster
-		// A factor of 15 for single character strings
-
-		// Change text to UTF-16
-		wchar_t vwcText[shortSize];
-		::MultiByteToWideChar(cpDoc, 0, s.c_str(), static_cast<int>(s.size()),
-			vwcText, lengthUTF16);
-
-		// Change case
-		int charsConverted = ::LCMapStringW(LOCALE_SYSTEM_DEFAULT, mapFlags,
-			vwcText, lengthUTF16, NULL, 0);
-		// Full mapping may produce up to 3 characters per input character
-		wchar_t vwcConverted[shortSize*3];
-		::LCMapStringW(LOCALE_SYSTEM_DEFAULT, mapFlags, vwcText, lengthUTF16,
-			vwcConverted, charsConverted);
-
-		// Change back to document encoding
-		unsigned int lengthConverted = ::WideCharToMultiByte(cpDoc, 0,
-			vwcConverted, charsConverted,
-			NULL, 0, NULL, 0);
-		// Each UTF-16 code unit may need up to 3 bytes in UTF-8
-		char vcConverted[shortSize * 3 * 3];
-		::WideCharToMultiByte(cpDoc, 0,
-			vwcConverted, charsConverted,
-			vcConverted, lengthConverted, NULL, 0);
-
-		return std::string(vcConverted, lengthConverted);
-	}
+	return std::string(&vcConverted[0], vcConverted.size());
 }
 
 void ScintillaWin::Copy() {
@@ -2172,8 +2101,6 @@ DropTarget::DropTarget() {
  * Called when IME Window opened.
  */
 void ScintillaWin::ImeStartComposition() {
-#ifndef __DMC__
-	// Digital Mars compiler does not include Imm library
 	if (caret.active) {
 		// Move IME Window to current caret position
 		HIMC hIMC = ::ImmGetContext(MainHWND());
@@ -2214,7 +2141,6 @@ void ScintillaWin::ImeStartComposition() {
 		// Caret is displayed in IME window. So, caret in Scintilla is useless.
 		DropCaret();
 	}
-#endif
 }
 
 /** Called when IME Window closed. */
@@ -2613,7 +2539,7 @@ STDMETHODIMP ScintillaWin::Drop(LPDATAOBJECT pIDataSource, DWORD grfKeyState,
 			data.assign(convertedText.c_str(), convertedText.c_str()+convertedText.length()+1);
 		}
 
-		if (data.empty()) {
+		if (!SUCCEEDED(hr) || data.empty()) {
 			//Platform::DebugPrintf("Bad data format: 0x%x\n", hres);
 			return hr;
 		}
@@ -2832,7 +2758,12 @@ sptr_t PASCAL ScintillaWin::CTWndProc(
 						drtp.usage = D2D1_RENDER_TARGET_USAGE_NONE;
 						drtp.minLevel = D2D1_FEATURE_LEVEL_DEFAULT;
 
-						pD2DFactory->CreateHwndRenderTarget(drtp, dhrtp, &pCTRenderTarget);
+						if (!SUCCEEDED(pD2DFactory->CreateHwndRenderTarget(drtp, dhrtp, &pCTRenderTarget))) {
+							surfaceWindow->Release();
+							delete surfaceWindow;
+							::EndPaint(hWnd, &ps);
+							return 0;
+						}
 						surfaceWindow->Init(pCTRenderTarget, hWnd);
 						pCTRenderTarget->BeginDraw();
 #endif

@@ -150,6 +150,7 @@ SCI_LEX_OBJ = \
 
 SCI_LIB_OBJ = \
     $(SCI_LIB_OBJDIR)\Accessor.obj \
+    $(SCI_LIB_OBJDIR)\CharacterCategory.obj \
     $(SCI_LIB_OBJDIR)\CharacterSet.obj \
     $(SCI_LIB_OBJDIR)\LexerBase.obj \
     $(SCI_LIB_OBJDIR)\LexerModule.obj \
@@ -161,6 +162,8 @@ SCI_LIB_OBJ = \
 SCI_SRC_OBJ = \
     $(SCI_SRC_OBJDIR)\AutoComplete.obj \
     $(SCI_SRC_OBJDIR)\CallTip.obj \
+    $(SCI_SRC_OBJDIR)\CaseConvert.obj \
+    $(SCI_SRC_OBJDIR)\CaseFolder.obj \
     $(SCI_SRC_OBJDIR)\Catalogue.obj \
     $(SCI_SRC_OBJDIR)\CellBuffer.obj \
     $(SCI_SRC_OBJDIR)\CharClassify.obj \
