@@ -74,8 +74,16 @@
         #endif
     #endif
 #elif defined(_MSC_VER)
-    #if _MSC_VER == 1700
-        #if (_MSC_FULL_VER == 170060315)
+    #if _MSC_VER == 1800
+        #if (_MSC_FULL_VER <= 180020617)
+            #define VERSION_COMPILER    L"MSVC 2013 Preview"
+        #else
+            #define VERSION_COMPILER    L"MSVC 2013"
+        #endif
+    #elif _MSC_VER == 1700
+        #if (_MSC_FULL_VER == 170060610)
+            #define VERSION_COMPILER    L"MSVC 2012 Update 3"
+        #elif (_MSC_FULL_VER == 170060315)
             #define VERSION_COMPILER    L"MSVC 2012 Update 2"
         #elif (_MSC_FULL_VER == 170051106)
             #define VERSION_COMPILER    L"MSVC 2012 Update 1"
