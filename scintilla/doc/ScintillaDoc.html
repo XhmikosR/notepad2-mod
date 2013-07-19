@@ -82,7 +82,7 @@
 
     <h1>Scintilla Documentation</h1>
 
-    <p>Last edited 5/May/2013 NH</p>
+    <p>Last edited 29/June/2013 NH</p>
 
     <p>There is <a class="jump" href="Design.html">an overview of the internal design of
     Scintilla</a>.<br />
@@ -114,6 +114,9 @@
 
     <p>The GTK+ version also uses messages in a similar way to the Windows version. This is
     different to normal GTK+ practice but made it easier to implement rapidly.</p>
+
+    <p>Scintilla also builds with Cocoa on OS X and with Qt, and follows the conventions of 
+    those platforms.</p>
 
     <p>Scintilla does not properly support right-to-left languages like Arabic and Hebrew.
     While text in these languages may appear correct, it is not possible to interact with this text
@@ -1344,7 +1347,7 @@ struct Sci_TextToFind {
     <p><b id="SCI_GETLINESELSTARTPOSITION">SCI_GETLINESELSTARTPOSITION(int line)</b><br />
     <b id="SCI_GETLINESELENDPOSITION">SCI_GETLINESELENDPOSITION(int line)</b><br />
     Retrieve the position of the start and end of the selection at the given line with
-    INVALID_POSITION returned if no selection on this line.</p>
+    <code>INVALID_POSITION</code> returned if no selection on this line.</p>
 
     <p><b id="SCI_MOVECARETINSIDEVIEW">SCI_MOVECARETINSIDEVIEW</b><br />
      If the caret is off the top or bottom of the view, it is moved to the nearest line that is
@@ -6321,13 +6324,23 @@ exception options.</p>
 
 <p>
 To allow lexers to determine the end position of a line and thus more easily support Unicode line ends
-<code>IDocument</code> is extended to <code>IDocumentWithLineEnd</code>.
+<code>IDocument</code> is extended to <code>IDocumentWithLineEnd</code>.</p>
+<p><code>GetRelativePosition</code> navigates the document by whole characters,
+returning <code>INVALID_POSITION</code> for movement beyond the start and end of the document.</p>
+<p><code>GetCharacterAndWidth</code> provides a standard
+conversion from UTF-8 bytes to a UTF-32 character or from DBCS to a 16 bit value.
+Bytes in invalid UTF-8 are reported individually with values 0xDC80+byteValue, which are
+not valid Unicode code points.
+The <code>pWidth</code> argument can be NULL if the caller does not need to know the number of
+bytes in the character.
 </p>
 
 <div class="highlighted">
 <span class="S5">class</span><span class="S0"> </span>IDocumentWithLineEnd<span class="S0"> </span><span class="S10">:</span><span class="S0"> </span><span class="S5">public</span><span class="S0"> </span>IDocument<span class="S0"> </span><span class="S10">{</span><br />
 <span class="S5">public</span><span class="S10">:</span><br />
 <span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">virtual</span><span class="S0"> </span><span class="S5">int</span><span class="S0"> </span>SCI_METHOD<span class="S0"> </span>LineEnd<span class="S10">(</span><span class="S5">int</span><span class="S0"> </span>line<span class="S10">)</span><span class="S0"> </span><span class="S5">const</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S4">0</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">virtual</span><span class="S0"> </span><span class="S5">int</span><span class="S0"> </span>SCI_METHOD<span class="S0"> </span>GetRelativePosition<span class="S10">(</span><span class="S5">int</span><span class="S0"> </span>positionStart<span class="S10">,</span><span class="S0"> </span><span class="S5">int</span><span class="S0"> </span>characterOffset<span class="S10">)</span><span class="S0"> </span><span class="S5">const</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S4">0</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">virtual</span><span class="S0"> </span><span class="S5">int</span><span class="S0"> </span>SCI_METHOD<span class="S0"> </span>GetCharacterAndWidth<span class="S10">(</span><span class="S5">int</span><span class="S0"> </span>position<span class="S10">,</span><span class="S0"> </span><span class="S5">int</span><span class="S0"> </span><span class="S10">*</span>pWidth<span class="S10">)</span><span class="S0"> </span><span class="S5">const</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S4">0</span><span class="S10">;</span><br />
 <span class="S10">};</span><br />
 </div>
 
@@ -6602,9 +6615,7 @@ href="#SCI_POSITIONFROMLINE">SCI_POSITIONFROMLINE</a>(lineNumber);
 
           <td align="left">Valid for text changes, not for style changes. If we are collecting undo
           information this holds a pointer to the text that is handed to the Undo system, otherwise
-          it is zero. For user performed SC_MOD_BEFOREDELETE the text field is 0 and
-                  for user performed SC_MOD_BEFOREINSERT the text field points to an array of cells,
-                   not bytes and the length is the number of cells.</td>
+          it is zero. For user performed SC_MOD_BEFOREDELETE the text field is 0.</td>
         </tr>
 
         <tr>

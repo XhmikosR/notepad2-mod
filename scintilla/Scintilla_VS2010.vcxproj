@@ -155,6 +155,7 @@
     <ClCompile Include="lexers\LexVB.cxx" />
     <ClCompile Include="lexers\LexYAML.cxx" />
     <ClCompile Include="lexlib\Accessor.cxx" />
+    <ClCompile Include="lexlib\CharacterCategory.cxx" />
     <ClCompile Include="lexlib\CharacterSet.cxx" />
     <ClCompile Include="lexlib\LexerBase.cxx" />
     <ClCompile Include="lexlib\LexerModule.cxx" />
@@ -165,6 +166,8 @@
     <ClCompile Include="lexlib\WordList.cxx" />
     <ClCompile Include="src\AutoComplete.cxx" />
     <ClCompile Include="src\CallTip.cxx" />
+    <ClCompile Include="src\CaseConvert.cxx" />
+    <ClCompile Include="src\CaseFolder.cxx" />
     <ClCompile Include="src\Catalogue.cxx" />
     <ClCompile Include="src\CellBuffer.cxx" />
     <ClCompile Include="src\CharClassify.cxx" />
@@ -195,6 +198,7 @@
     <ClInclude Include="include\SciLexer.h" />
     <ClInclude Include="include\Scintilla.h" />
     <ClInclude Include="lexlib\Accessor.h" />
+    <ClInclude Include="lexlib\CharacterCategory.h" />
     <ClInclude Include="lexlib\CharacterSet.h" />
     <ClInclude Include="lexlib\LexAccessor.h" />
     <ClInclude Include="lexlib\LexerBase.h" />
@@ -209,6 +213,8 @@
     <ClInclude Include="lexlib\WordList.h" />
     <ClInclude Include="src\AutoComplete.h" />
     <ClInclude Include="src\CallTip.h" />
+    <ClInclude Include="src\CaseConvert.h" />
+    <ClInclude Include="src\CaseFolder.h" />
     <ClInclude Include="src\Catalogue.h" />
     <ClInclude Include="src\CellBuffer.h" />
     <ClInclude Include="src\CharClassify.h" />

@@ -96,6 +96,9 @@
     <ClCompile Include="lexlib\Accessor.cxx">
       <Filter>lexlib</Filter>
     </ClCompile>
+    <ClCompile Include="lexlib\CharacterCategory.cxx">
+      <Filter>lexlib</Filter>
+    </ClCompile>
     <ClCompile Include="lexlib\CharacterSet.cxx">
       <Filter>lexlib</Filter>
     </ClCompile>
@@ -124,6 +127,12 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\CallTip.cxx">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CaseConvert.cxx">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CaseFolder.cxx">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Catalogue.cxx">
@@ -212,6 +221,9 @@
     <ClInclude Include="lexlib\Accessor.h">
       <Filter>lexlib</Filter>
     </ClInclude>
+    <ClInclude Include="lexlib\CharacterCategory.h">
+      <Filter>lexlib</Filter>
+    </ClInclude>
     <ClInclude Include="lexlib\CharacterSet.h">
       <Filter>lexlib</Filter>
     </ClInclude>
@@ -252,6 +264,12 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\CallTip.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CaseConvert.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CaseFolder.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Catalogue.h">

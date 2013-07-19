@@ -85,9 +85,9 @@ int Scintilla_LinkLexers() {
 	//LINK_LEXER(lmAbaqus);
 	//LINK_LEXER(lmAda);
 	LINK_LEXER(lmAHK);
-	//LINK_LEXER(lmAns1);
 	//LINK_LEXER(lmAPDL);
 	LINK_LEXER(lmAsm);
+	//LINK_LEXER(lmAsn1);
 	//LINK_LEXER(lmASY);
 	LINK_LEXER(lmAU3);
 	//LINK_LEXER(lmAVE);

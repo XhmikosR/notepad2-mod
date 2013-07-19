@@ -68,6 +68,10 @@ $(SCI_LIB_OBJDIR)\Accessor.obj: \
     $(SCI_LIB)\WordList.h \
     $(SCI_LIB)\LexAccessor.h
 
+$(SCI_LIB_OBJDIR)\CharacterCategory.obj: \
+    $(SCI_LIB)\CharacterCategory.cxx \
+    $(SCI_LIB)\CharacterCategory.h
+
 $(SCI_LIB_OBJDIR)\CharacterSet.obj: \
     $(SCI_LIB)\CharacterSet.cxx \
     $(SCI_LIB)\CharacterSet.h
@@ -140,6 +144,18 @@ $(SCI_SRC_OBJDIR)\CallTip.obj: \
     $(SCI_INC)\Platform.h \
     $(SCI_INC)\Scintilla.h \
     $(SCI_SRC)\CallTip.h
+
+$(SCI_SRC_OBJDIR)\CaseConvert.obj: \
+    $(SCI_SRC)\CaseConvert.cxx \
+    $(SCI_SRC)\CaseConvert.h \
+    $(SCI_SRC)\UniConversion.h \
+    $(SCI_SRC)\UnicodeFromUTF8.h
+
+$(SCI_SRC_OBJDIR)\CaseFolder.obj: \
+    $(SCI_SRC)\CaseFolder.cxx \
+    $(SCI_SRC)\CaseConvert.h \
+    $(SCI_SRC)\UniConversion.h \
+    $(SCI_SRC)\CaseFolder.h
 
 $(SCI_SRC_OBJDIR)\Catalogue.obj: \
     $(SCI_SRC)\Catalogue.cxx \
