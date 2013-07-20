@@ -171,6 +171,7 @@ ul,
 ol,
 dl {
     margin-bottom: 20px;
+    padding-left: 10px;
 }
 
 
@@ -411,6 +412,7 @@ dl dd {
         -webkit-border-radius: 5px;
            -moz-border-radius: 5px;
                 border-radius: 5px;
+        border: 2px solid #7eb0cc;
         color: #2879d0;
         display: inline-block;
         font-size: 13px;
