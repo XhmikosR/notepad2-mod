@@ -27,7 +27,7 @@ IF /I "%~1" == "/?"     GOTO SHOWHELP
 
 rem Check for the first switch
 IF "%~1" == "" (
-  SET "COMPILER=WDK"
+  SET "COMPILER=VS2012"
 ) ELSE (
   IF /I "%~1" == "WDK"      (SET "COMPILER=WDK"    & GOTO START)
   IF /I "%~1" == "/WDK"     (SET "COMPILER=WDK"    & GOTO START)

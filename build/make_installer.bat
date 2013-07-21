@@ -34,7 +34,7 @@ CALL :SubDetectInnoSetup
 
 rem Check for the first switch
 IF "%~1" == "" (
-  SET "COMPILER=WDK"
+  SET "COMPILER=VS2012"
 ) ELSE (
   IF /I "%~1" == "ICL13"    SET "COMPILER=ICL13"  & GOTO START
   IF /I "%~1" == "/ICL13"   SET "COMPILER=ICL13"  & GOTO START
