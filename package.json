@@ -1,6 +1,6 @@
 {
   "name": "notepad2-mod-gh-pages",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "XhmikosR (https://github.com/XhmikosR)",
   "description": "The dependencies to build Notepad2-mod's GitHub pages",
   "homepage": "https://github.com/XhmikosR/notepad2-mod/tree/gh-pages",
@@ -21,7 +21,7 @@
   "dependencies": {
     "clean-css": "~1.0.10",
     "csslint": "~0.9.10",
-    "jshint": "~2.1.4",
+    "jshint": "~2.1.5",
     "shelljs": "~0.1.4",
     "uglify-js": "~2.3.6"
   },
