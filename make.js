@@ -8,13 +8,13 @@
  */
 
 (function () {
-    'use strict';
+    "use strict";
 
-    require('shelljs/make');
-    var fs = require('fs'),
-        cleanCSS = require('clean-css'),
-        UglifyJS = require('uglify-js'),
-        ROOT_DIR = __dirname + '/';     // absolute path to project's root
+    require("shelljs/make");
+    var fs = require("fs"),
+        cleanCSS = require("clean-css"),
+        UglifyJS = require("uglify-js"),
+        ROOT_DIR = __dirname + "/";     // absolute path to project's root
 
     //
     // make minify
@@ -25,8 +25,8 @@
         echo("### Minifying css files...");
 
         // jquery.fancybox.min.css
-        var inCss = cat(['css/jquery.fancybox.css',
-                         'css/jquery.fancybox-thumbs.css'
+        var inCss = cat(["css/jquery.fancybox.css",
+                         "css/jquery.fancybox-thumbs.css"
         ]);
 
         var fancyboxMinCss = cleanCSS.process(inCss, {
@@ -34,15 +34,15 @@
             keepSpecialComments: 1
         });
 
-        fs.writeFileSync('css/jquery.fancybox.min.css', fancyboxMinCss, 'utf8');
+        fs.writeFileSync("css/jquery.fancybox.min.css", fancyboxMinCss, "utf8");
 
         echo();
-        echo('### Finished' + ' ' + 'css/jquery.fancybox.min.css' + '.');
+        echo("### Finished" + " " + "css/jquery.fancybox.min.css" + ".");
 
         // pack.css
 
-        var inCss2 = cat(['css/stylesheet.css',
-                          'css/normalize.css'
+        var inCss2 = cat(["css/stylesheet.css",
+                          "css/normalize.css"
         ]);
 
         var packCss = cleanCSS.process(inCss2, {
@@ -50,17 +50,17 @@
             keepSpecialComments: 0
         });
 
-        fs.writeFileSync('css/pack.css', packCss, 'utf8');
+        fs.writeFileSync("css/pack.css", packCss, "utf8");
 
         echo();
-        echo('### Finished' + ' ' + 'css/pack.css' + '.');
+        echo("### Finished" + " " + "css/pack.css" + ".");
 
         echo();
         echo("### Minifying js files...");
 
-        var inJs = cat(['js/jquery.mousewheel.js',
-                        'js/jquery.fancybox.js',
-                        'js/jquery.fancybox-thumbs.js']);
+        var inJs = cat(["js/jquery.mousewheel.js",
+                        "js/jquery.fancybox.js",
+                        "js/jquery.fancybox-thumbs.js"]);
 
         var minifiedJs = UglifyJS.minify(inJs, {
             compress: true,
@@ -69,10 +69,10 @@
             warnings: false
         });
 
-        fs.writeFileSync('js/pack.js', minifiedJs.code, 'utf8');
+        fs.writeFileSync("js/pack.js", minifiedJs.code, "utf8");
 
         echo();
-        echo('### Finished' + ' ' + 'js/pack.js' + '.');
+        echo("### Finished" + " " + "js/pack.js" + ".");
     };
 
 
