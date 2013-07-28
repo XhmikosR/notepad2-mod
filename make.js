@@ -37,7 +37,7 @@
         fs.writeFileSync("css/jquery.fancybox.min.css", fancyboxMinCss, "utf8");
 
         echo();
-        echo("### Finished" + " " + "css/jquery.fancybox.min.css" + ".");
+        echo("### Finished css/jquery.fancybox.min.css.");
 
         // pack.css
 
@@ -53,7 +53,7 @@
         fs.writeFileSync("css/pack.css", packCss, "utf8");
 
         echo();
-        echo("### Finished" + " " + "css/pack.css" + ".");
+        echo("### Finished css/pack.css.");
 
         echo();
         echo("### Minifying js files...");
@@ -72,7 +72,7 @@
         fs.writeFileSync("js/pack.js", minifiedJs.code, "utf8");
 
         echo();
-        echo("### Finished" + " " + "js/pack.js" + ".");
+        echo("### Finished js/pack.js.");
     };
 
 
