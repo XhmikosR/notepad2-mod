@@ -54,6 +54,8 @@ IF "%~1" == "" (
 
 
 :START
+IF EXIST "%~dp0..\signinfo_notepad2-mod.txt" SET "SIGN=True"
+
 SET INPUTDIRx86=bin\%COMPILER%\Release_x86
 SET INPUTDIRx64=bin\%COMPILER%\Release_x64
 IF /I NOT "%COMPILER%" == "VS2012" SET SUFFIX=_%COMPILER%
@@ -63,6 +65,9 @@ IF NOT EXIST "..\%INPUTDIRx86%\Notepad2.exe" CALL :SUBMSG "ERROR" "Compile Notep
 IF NOT EXIST "..\%INPUTDIRx64%\Notepad2.exe" CALL :SUBMSG "ERROR" "Compile Notepad2 x64 first!"
 
 CALL :SubGetVersion
+
+IF /I "%SIGN%" == "True" CALL :SubSign %INPUTDIRx86%
+IF /I "%SIGN%" == "True" CALL :SubSign %INPUTDIRx64%
 
 CALL :SubZipFiles %INPUTDIRx86% x86
 CALL :SubZipFiles %INPUTDIRx64% x64
@@ -137,6 +142,18 @@ FOR /F "tokens=3,4 delims= " %%K IN (
   'FINDSTR /I /L /C:"define VERSION_REV " "..\src\VersionRev.h"') DO (SET "VerRev=%%K")
 
 SET NP2_VER=%VerMajor%.%VerMinor%.%VerBuild%.%VerRev%
+EXIT /B
+
+
+:SubSign
+IF %ERRORLEVEL% NEQ 0 EXIT /B
+REM %1 is the subfolder
+
+CALL "%~dp0sign.bat" "..\%1\Notepad2.exe" || (CALL :SUBMSG "ERROR" "Problem signing ..\%1\Notepad2.exe" & GOTO Break)
+
+CALL :SUBMSG "INFO" "..\%1\Notepad2.exe signed successfully."
+
+:Break
 EXIT /B
 
 

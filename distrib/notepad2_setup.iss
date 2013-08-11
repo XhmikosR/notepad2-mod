@@ -113,6 +113,9 @@ MinVersion=5.1.2600sp3
 #endif
 ArchitecturesAllowed=x86 x64
 ArchitecturesInstallIn64BitMode=x64
+#ifexist "..\signinfo_notepad2-mod.txt"
+SignTool=MySignTool
+#endif
 
 
 [Languages]

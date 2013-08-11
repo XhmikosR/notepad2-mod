@@ -8,6 +8,7 @@
 /distrib/Notepad2-mod.*.exe
 /res/Notepad2.exe.manifest
 /scintilla/*.user
+/signinfo_notepad2-mod.txt
 /src/*.aps
 /src/*.user
 /src/VersionRev.h
