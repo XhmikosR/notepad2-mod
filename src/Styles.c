@@ -643,7 +643,7 @@ KEYWORDLIST KeyWords_JAVA = {
 "generic goto if implements import inner instanceof int interface long "
 "native new null outer package private protected public rest return "
 "short static super switch synchronized this throw throws transient try "
-"var void volatile while"
+"var void volatile while "
 "@Deprecated @Documented @FlaskyTest @Inherited @JavascriptInterface "
 "@LargeTest @MediumTest @Override @Retention "
 "@SmallTest @Smoke @Supress @SupressLint @SupressWarnings @Target @TargetApi "
