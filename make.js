@@ -41,8 +41,8 @@
 
         // pack.css
 
-        var inCss2 = cat(["css/stylesheet.css",
-                          "css/normalize.css"
+        var inCss2 = cat(["css/normalize.css",
+                          "css/stylesheet.css"
         ]);
 
         var packCss = cleanCSS.process(inCss2, {

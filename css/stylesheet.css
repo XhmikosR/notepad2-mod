@@ -6,7 +6,6 @@ body {
     background-color: #fafafa;
     color: #666;
     font: 15px/1.5 "Helvetica Neue", Helvetica, Arial, serif;
-    margin: 0;
 }
 
 h1,
@@ -135,10 +134,6 @@ header a.button {
     top: 0;
     width: 202px;
     height: 80px;
-}
-
-img {
-    border: 0;
 }
 
 code,
