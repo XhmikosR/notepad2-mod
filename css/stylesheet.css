@@ -1,4 +1,4 @@
-/*csslint box-sizing: false, font-sizes: false, important: false,
+/*csslint box-sizing: false, font-sizes: false,
   qualified-headings: false, unique-headings: false*/
 
 /* LAYOUT STYLES */
@@ -75,7 +75,7 @@ section {
 }
 
 aside {
-    background-position: 0 0 !important;
+    background: transparent url("../img/sidebar-bg.jpg") 0 0 no-repeat;
     -webkit-box-sizing: border-box;
        -moz-box-sizing: border-box;
             box-sizing: border-box;
@@ -115,7 +115,7 @@ a.button {
 }
 
 aside a.button {
-    background-position: -220px -80px;
+    background-position: 0 0;
     -webkit-box-sizing: border-box;
        -moz-box-sizing: border-box;
             box-sizing: border-box;
@@ -124,16 +124,14 @@ aside a.button {
     margin-bottom: 20px;
     padding-left: 64px;
     width: 202px;
-    height: 78px;
+    height: 80px;
 }
 
 header a.button {
-    background-position: -220px 0;
+    background-position: 0 -88px;
     position: absolute;
     right: 0;
     top: 0;
-    width: 202px;
-    height: 80px;
 }
 
 code,
@@ -434,7 +432,7 @@ dl dd {
     }
 
     aside {
-        background-image: none !important;
+        background-image: none;
         border-top: solid 1px #ddd;
         margin-top: 20px;
         min-height: 0;
