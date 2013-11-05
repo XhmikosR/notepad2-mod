@@ -1,6 +1,6 @@
 {
   "name": "notepad2-mod-gh-pages",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "author": "XhmikosR (https://github.com/XhmikosR)",
   "description": "The dependencies to build Notepad2-mod's GitHub pages",
   "homepage": "https://github.com/XhmikosR/notepad2-mod/tree/gh-pages",
@@ -12,14 +12,11 @@
     "url": "https://github.com/XhmikosR/notepad2-mod/issues"
   },
   "license": "MIT",
-  "main": "make.js",
-  "readmeFilename": "Readme.md",
   "scripts": {
-    "check": "node run-tests",
     "lint": "node run-tests"
   },
   "dependencies": {
-    "clean-css": "~1.1.7",
+    "clean-css": "~2.0.0",
     "csslint": "~0.9.10",
     "jshint": "~2.3.0",
     "shelljs": "~0.2.6",
@@ -40,13 +37,12 @@
     "noempty": true,
     "plusplus": false,
     "quotmark": "double",
-    "regexp": true,
     "shelljs": true,
     "strict": false,
     "trailing": true,
     "unused": true
   },
   "engines": {
-    "node": "~0.8.0"
+    "node": ">=0.10.1"
   }
 }

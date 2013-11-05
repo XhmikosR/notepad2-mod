@@ -12,7 +12,7 @@
 
     require("shelljs/make");
     var fs = require("fs"),
-        cleanCSS = require("clean-css"),
+        CleanCSS = require("clean-css"),
         UglifyJS = require("uglify-js"),
         ROOT_DIR = __dirname + "/";     // absolute path to project's root
 
@@ -29,12 +29,12 @@
                          "css/jquery.fancybox-thumbs.css"
         ]);
 
-        var fancyboxMinCss = cleanCSS.process(inCss, {
-            removeEmpty: true,
-            keepSpecialComments: 1
-        });
+        var minifier1 = new CleanCSS({
+                keepSpecialComments: 1,
+                selectorsMergeMode: "ie8"
+            });
 
-        fs.writeFileSync("css/jquery.fancybox.min.css", fancyboxMinCss, "utf8");
+        fs.writeFileSync("css/jquery.fancybox.min.css", minifier1.minify(inCss), "utf8");
 
         echo();
         echo("### Finished css/jquery.fancybox.min.css.");
@@ -45,12 +45,12 @@
                           "css/stylesheet.css"
         ]);
 
-        var packCss = cleanCSS.process(inCss2, {
-            removeEmpty: true,
-            keepSpecialComments: 0
-        });
+        var minifier2 = new CleanCSS({
+                keepSpecialComments: 0,
+                selectorsMergeMode: "ie8"
+            });
 
-        fs.writeFileSync("css/pack.css", packCss, "utf8");
+        fs.writeFileSync("css/pack.css", minifier2.minify(inCss2), "utf8");
 
         echo();
         echo("### Finished css/pack.css.");
