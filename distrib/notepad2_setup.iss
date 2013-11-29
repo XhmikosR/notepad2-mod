@@ -88,7 +88,7 @@ UninstallDisplayName={#app_name} {#app_version} ({#compiler})
 DefaultDirName={pf}\Notepad2
 LicenseFile=license.txt
 OutputDir=.
-#if defined(VS2012)
+#if defined(VS2013)
 OutputBaseFilename={#app_name}.{#app_version}
 #else
 OutputBaseFilename={#app_name}.{#app_version}_{#compiler}

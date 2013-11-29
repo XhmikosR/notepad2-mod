@@ -34,7 +34,7 @@ CALL :SubDetectInnoSetup
 
 rem Check for the first switch
 IF "%~1" == "" (
-  SET "COMPILER=VS2012"
+  SET "COMPILER=VS2013"
 ) ELSE (
   IF /I "%~1" == "ICL13"    SET "COMPILER=ICL13"  & GOTO START
   IF /I "%~1" == "/ICL13"   SET "COMPILER=ICL13"  & GOTO START
@@ -69,7 +69,7 @@ IF EXIST "%~dp0..\signinfo_notepad2-mod.txt" SET "SIGN=True"
 
 SET INPUTDIRx86=bin\%COMPILER%\Release_x86
 SET INPUTDIRx64=bin\%COMPILER%\Release_x64
-IF /I NOT "%COMPILER%" == "VS2012" SET SUFFIX=_%COMPILER%
+IF /I NOT "%COMPILER%" == "VS2013" SET SUFFIX=_%COMPILER%
 SET "TEMP_NAME=temp_zip%SUFFIX%"
 
 IF NOT EXIST "..\%INPUTDIRx86%\Notepad2.exe" CALL :SUBMSG "ERROR" "Compile Notepad2 x86 first!"
