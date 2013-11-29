@@ -17,7 +17,7 @@ SETLOCAL ENABLEEXTENSIONS
 CD /D %~dp0
 
 rem Check the building environment
-IF NOT DEFINED VS110COMNTOOLS CALL :SUBMSG "ERROR" "Visual Studio 2012 wasn't found!"
+IF NOT DEFINED VS120COMNTOOLS CALL :SUBMSG "ERROR" "Visual Studio 2013 wasn't found!"
 
 
 rem Check for the help switches
