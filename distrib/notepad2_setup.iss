@@ -84,7 +84,11 @@ VersionInfoProductName={#app_name}
 VersionInfoProductVersion={#app_version}
 VersionInfoProductTextVersion={#app_version}
 UninstallDisplayIcon={app}\Notepad2.exe
+#if defined(VS2013)
+UninstallDisplayName={#app_name} {#app_version}
+#else
 UninstallDisplayName={#app_name} {#app_version} ({#compiler})
+#endif
 DefaultDirName={pf}\Notepad2
 LicenseFile=license.txt
 OutputDir=.
