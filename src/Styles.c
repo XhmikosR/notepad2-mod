@@ -638,12 +638,16 @@ EDITLEXER lexJS = { SCLEX_CPP, 63010, L"JavaScript", L"js; jse; jsm; json; as", 
 
 
 KEYWORDLIST KeyWords_JAVA = {
-"abstract assert boolean break byte case catch char class const "
-"continue default do double else extends final finally float for future "
+"@interface abstract assert boolean break byte case catch char class const "
+"continue default do double else enum extends final finally float for future "
 "generic goto if implements import inner instanceof int interface long "
 "native new null outer package private protected public rest return "
 "short static super switch synchronized this throw throws transient try "
-"var void volatile while",
+"var void volatile while "
+"@Deprecated @Documented @FlaskyTest @Inherited @JavascriptInterface "
+"@LargeTest @MediumTest @Override @Retention "
+"@SmallTest @Smoke @Supress @SupressLint @SupressWarnings @Target @TargetApi "
+"@TestTarget @TestTargetClass @UiThreadTest",
 "", "", "", "", "", "", "", "" };
 
 
