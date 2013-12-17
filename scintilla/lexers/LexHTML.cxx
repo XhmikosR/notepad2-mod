@@ -339,9 +339,9 @@ static void classifyWordHTJS(unsigned int start, unsigned int end,
 static int classifyWordHTVB(unsigned int start, unsigned int end, WordList &keywords, Accessor &styler, script_mode inScriptType) {
 	char chAttr = SCE_HB_IDENTIFIER;
 	bool wordIsNumber = IsADigit(styler[start]) || (styler[start] == '.');
-	if (wordIsNumber)
+	if (wordIsNumber) {
 		chAttr = SCE_HB_NUMBER;
-	else {
+	} else {
 		char s[100];
 		GetTextSegment(styler, start, end, s, sizeof(s));
 		if (keywords.InList(s)) {
@@ -385,9 +385,9 @@ static void classifyWordHTPy(unsigned int start, unsigned int end, WordList &key
 static void classifyWordHTPHP(unsigned int start, unsigned int end, WordList &keywords, Accessor &styler) {
 	char chAttr = SCE_HPHP_DEFAULT;
 	bool wordIsNumber = IsADigit(styler[start]) || (styler[start] == '.' && start+1 <= end && IsADigit(styler[start+1]));
-	if (wordIsNumber)
+	if (wordIsNumber) {
 		chAttr = SCE_HPHP_NUMBER;
-	else {
+	} else {
 		char s[100];
 		GetTextSegment(styler, start, end, s, sizeof(s));
 		if (keywords.InList(s))
@@ -823,14 +823,14 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 		if (isMako && ch == '#' && chNext == '#') {
 			makoComment = 1;
 		}
-		
+
 		// handle end of Mako comment line
 		else if (isMako && makoComment && (ch == '\r' || ch == '\n')) {
 			makoComment = 0;
 			styler.ColourTo(i, SCE_HP_COMMENTLINE);
 			state = SCE_HP_DEFAULT;
 		}
-		
+
 		// Allow falling through to mako handling code if newline is going to end a block
 		if (((ch == '\r' && chNext != '\n') || (ch == '\n')) &&
 			(!isMako || (0 != strcmp(makoBlockType, "%")))) {

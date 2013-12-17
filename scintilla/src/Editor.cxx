@@ -1988,7 +1988,7 @@ void Editor::PaintSelMargin(Surface *surfWindow, PRectangle &rc) {
 								}
 							} else if (levelNum > SC_FOLDLEVELBASE) {
 								marks |= 1 << SC_MARKNUM_FOLDERSUB;
- 							}
+							}
 						} else {
 							if (levelNum < levelNextNum) {
 								if (cs.GetExpanded(lineDoc)) {
@@ -1998,7 +1998,7 @@ void Editor::PaintSelMargin(Surface *surfWindow, PRectangle &rc) {
 								}
 							} else if (levelNum > SC_FOLDLEVELBASE) {
 								marks |= 1 << SC_MARKNUM_FOLDERSUB;
- 							}
+							}
 						}
 						needWhiteClosure = false;
 						int firstFollowupLine = cs.DocFromDisplay(cs.DisplayFromDoc(lineDoc + 1));
@@ -2300,7 +2300,7 @@ void Editor::LayoutLine(int line, Surface *surface, ViewStyle &vstyle, LineLayou
 							posCache.MeasureWidths(surface, vstyle, STYLE_CONTROLCHAR, ts.representation->stringRep.c_str(),
 								static_cast<unsigned int>(ts.representation->stringRep.length()), positionsRepr, pdoc);
 							representationWidth = positionsRepr[ts.representation->stringRep.length()-1] + vstyle.ctrlCharPadding;
- 						}
+						}
 					}
 					for (int ii=0; ii < ts.length; ii++)
 						ll->positions[ts.start + 1 + ii] = representationWidth;
@@ -3464,7 +3464,7 @@ void Editor::DrawCarets(Surface *surface, ViewStyle &vsDraw, int lineDoc, int xS
 				int caretWidthOffset = 0;
 				PRectangle rcCaret = rcLine;
 
-				if (posCaret.Position() == pdoc->Length())	{   // At end of document
+				if (posCaret.Position() == pdoc->Length()) {   // At end of document
 					caretAtEOF = true;
 					widthOverstrikeCaret = vsDraw.aveCharWidth;
 				} else if ((posCaret.Position() - posLineStart) >= ll->numCharsInLine) {	// At end of line
@@ -4206,7 +4206,7 @@ void Editor::ClearSelection(bool retainMultipleSelections) {
 				sel.Range(r).End().Position())) {
 				pdoc->DeleteChars(sel.Range(r).Start().Position(),
 					sel.Range(r).Length());
-				sel.Range(r) = sel.Range(r).Start();
+				sel.Range(r) = SelectionRange(sel.Range(r).Start());
 			}
 		}
 	}
@@ -4324,9 +4324,9 @@ void Editor::Clear() {
 			if (!RangeContainsProtected(sel.Range(r).caret.Position(), sel.Range(r).caret.Position() + 1)) {
 				if (sel.Range(r).Start().VirtualSpace()) {
 					if (sel.Range(r).anchor < sel.Range(r).caret)
-						sel.Range(r) = SelectionPosition(InsertSpace(sel.Range(r).anchor.Position(), sel.Range(r).anchor.VirtualSpace()));
+						sel.Range(r) = SelectionRange(InsertSpace(sel.Range(r).anchor.Position(), sel.Range(r).anchor.VirtualSpace()));
 					else
-						sel.Range(r) = SelectionPosition(InsertSpace(sel.Range(r).caret.Position(), sel.Range(r).caret.VirtualSpace()));
+						sel.Range(r) = SelectionRange(InsertSpace(sel.Range(r).caret.Position(), sel.Range(r).caret.VirtualSpace()));
 				}
 				if ((sel.Count() == 1) || !pdoc->IsPositionInLineEnd(sel.Range(r).caret.Position())) {
 					pdoc->DelChar(sel.Range(r).caret.Position());
@@ -4960,7 +4960,7 @@ void Editor::NotifyMacroRecord(unsigned int iMessage, uptr_t wParam, sptr_t lPar
 	case SCI_NEWLINE:
 	default:
 		//		printf("Filtered out %ld of macro recording\n", iMessage);
-		return ;
+		return;
 	}
 
 	// Send notification
@@ -5773,8 +5773,7 @@ int Editor::KeyDefault(int key, int modifiers) {
 	// possible hotkey combo--remember the Ctrl modifier for child nodes--is
 	// unwieldy, and manually handling the Windows messages would mean that we
 	// have to duplicate all the processing work that Scintilla does
-	if (modifiers & SCI_ALT && key >= SCK_DOWN && key <= SCK_RIGHT)
-	{
+	if (modifiers & SCI_ALT && key >= SCK_DOWN && key <= SCK_RIGHT) {
 		SCNotification scn = {0};
 		scn.nmhdr.code = SCN_KEY;
 		scn.ch = key;
@@ -6346,6 +6345,8 @@ void Editor::ButtonDownWithModifiers(Point pt, unsigned int curTime, int modifie
 	const bool alt = (modifiers & SCI_ALT) != 0;
 	SelectionPosition newPos = SPositionFromLocation(pt, false, false, AllowVirtualSpace(virtualSpaceOptions, alt));
 	newPos = MovePositionOutsideChar(newPos, sel.MainCaret() - newPos.Position());
+	SelectionPosition newCharPos = SPositionFromLocation(pt, false, true, false);
+	newCharPos = MovePositionOutsideChar(newCharPos, -1);
 	inDragDrop = ddNone;
 	sel.SetMoveExtends(false);
 
@@ -6436,8 +6437,8 @@ void Editor::ButtonDownWithModifiers(Point pt, unsigned int curTime, int modifie
 		//Platform::DebugPrintf("Double click: %d - %d\n", anchor, currentPos);
 		if (doubleClick) {
 			NotifyDoubleClick(pt, modifiers);
-			if (PositionIsHotspot(newPos.Position()))
-				NotifyHotSpotDoubleClicked(newPos.Position(), modifiers);
+			if (PositionIsHotspot(newCharPos.Position()))
+				NotifyHotSpotDoubleClicked(newCharPos.Position(), modifiers);
 		}
 	} else {	// Single click
 		if (inSelMargin) {
@@ -6466,8 +6467,8 @@ void Editor::ButtonDownWithModifiers(Point pt, unsigned int curTime, int modifie
 			SetMouseCapture(true);
 		} else {
 			if (PointIsHotspot(pt)) {
-				NotifyHotSpotClicked(newPos.Position(), modifiers);
-				hotSpotClickPos = PositionFromLocation(pt,true,false);
+				NotifyHotSpotClicked(newCharPos.Position(), modifiers);
+				hotSpotClickPos = newCharPos.Position();
 			}
 			if (!shift) {
 				if (PointInSelection(pt) && !SelectionEmpty())
@@ -6520,7 +6521,7 @@ bool Editor::PositionIsHotspot(int position) const {
 }
 
 bool Editor::PointIsHotspot(Point pt) {
-	int pos = PositionFromLocation(pt, true);
+	int pos = PositionFromLocation(pt, true, true);
 	if (pos == INVALID_POSITION)
 		return false;
 	return PositionIsHotspot(pos);
@@ -6528,7 +6529,7 @@ bool Editor::PointIsHotspot(Point pt) {
 
 void Editor::SetHotSpotRange(Point *pt) {
 	if (pt) {
-		int pos = PositionFromLocation(*pt);
+		int pos = PositionFromLocation(*pt, false, true);
 
 		// If we don't limit this to word characters then the
 		// range can encompass more than the run range and then
@@ -6648,10 +6649,10 @@ void Editor::ButtonMoveWithModifiers(Point pt, int modifiers) {
 		}
 		EnsureCaretVisible(false, false, true);
 
-		if (hsStart != -1 && !PositionIsHotspot(movePos.Position()))
+		if (hsStart != -1 && !PointIsHotspot(pt))
 			SetHotSpotRange(NULL);
 
-		if (hotSpotClickPos != INVALID_POSITION && PositionFromLocation(pt,true,false) != hotSpotClickPos) {
+		if (hotSpotClickPos != INVALID_POSITION && PositionFromLocation(pt,true,true) != hotSpotClickPos) {
 			if (inDragDrop == ddNone) {
 				DisplayCursor(Window::cursorText);
 			}
@@ -6696,7 +6697,9 @@ void Editor::ButtonUp(Point pt, unsigned int curTime, bool ctrl) {
 	}
 	if (hotSpotClickPos != INVALID_POSITION && PointIsHotspot(pt)) {
 		hotSpotClickPos = INVALID_POSITION;
-		NotifyHotSpotReleaseClick(newPos.Position(), ctrl ? SCI_CTRL : 0);
+		SelectionPosition newCharPos = SPositionFromLocation(pt, false, true, false);
+		newCharPos = MovePositionOutsideChar(newCharPos, -1);
+		NotifyHotSpotReleaseClick(newCharPos.Position(), ctrl ? SCI_CTRL : 0);
 	}
 	if (HaveMouseCapture()) {
 		if (PointInSelMargin(pt)) {
@@ -7031,7 +7034,7 @@ void Editor::SetFoldExpanded(int lineDoc, bool expanded) {
 void Editor::FoldLine(int line, int action) {
 	if (line >= 0) {
 		if (action == SC_FOLDACTION_TOGGLE) {
- 			if ((pdoc->GetLevel(line) & SC_FOLDLEVELHEADERFLAG) == 0) {
+			if ((pdoc->GetLevel(line) & SC_FOLDLEVELHEADERFLAG) == 0) {
 				line = pdoc->GetFoldParent(line);
 				if (line < 0)
 					return;
@@ -8458,7 +8461,7 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 		if (wParam <= MARKER_MAX) {
 			vs.markers[wParam].SetXPM(CharPtrFromSPtr(lParam));
 			vs.CalcLargestMarkerHeight();
-		};
+		}
 		InvalidateStyleData();
 		RedrawSelMargin();
 		break;
@@ -8479,7 +8482,7 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 		if (wParam <= MARKER_MAX) {
 			vs.markers[wParam].SetRGBAImage(sizeRGBAImage, scaleRGBAImage / 100.0, reinterpret_cast<unsigned char *>(lParam));
 			vs.CalcLargestMarkerHeight();
-		};
+		}
 		InvalidateStyleData();
 		RedrawSelMargin();
 		break;

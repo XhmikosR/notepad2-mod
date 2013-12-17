@@ -54,7 +54,7 @@ class LexerLibrary {
 	LexerMinder		*last;
 
 public:
-	LexerLibrary(const char *ModuleName);
+	explicit LexerLibrary(const char *ModuleName);
 	~LexerLibrary();
 	void Release();
 

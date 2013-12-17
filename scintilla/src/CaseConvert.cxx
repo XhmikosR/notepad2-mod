@@ -510,7 +510,7 @@ void SetupConversions(enum CaseConversion conversion) {
 		int upper = symmetricCaseConversionRanges[i++];
 		int length = symmetricCaseConversionRanges[i++];
 		int pitch = symmetricCaseConversionRanges[i++];
-		for (int j=0;j<length*pitch;j+=pitch) {
+		for (int j=0; j<length*pitch; j+=pitch) {
 			AddSymmetric(conversion, lower+j, upper+j);
 		}
 	}

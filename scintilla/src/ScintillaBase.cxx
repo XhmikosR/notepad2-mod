@@ -209,7 +209,7 @@ void ScintillaBase::AutoCompleteStart(int lenEntered, const char *list) {
 	if (ac.chooseSingle && (listType == 0)) {
 		if (list && !strchr(list, ac.GetSeparator())) {
 			const char *typeSep = strchr(list, ac.GetTypesep());
-			int lenInsert = typeSep ? 
+			int lenInsert = typeSep ?
 				static_cast<int>(typeSep-list) : static_cast<int>(strlen(list));
 			if (ac.ignoreCase) {
 				// May need to convert the case before invocation, so remove lenEntered characters
@@ -486,7 +486,7 @@ class LexState : public LexInterface {
 public:
 	int lexLanguage;
 
-	LexState(Document *pdoc_);
+	explicit LexState(Document *pdoc_);
 	virtual ~LexState();
 	void SetLexer(uptr_t wParam);
 	void SetLexerLanguage(const char *languageName);

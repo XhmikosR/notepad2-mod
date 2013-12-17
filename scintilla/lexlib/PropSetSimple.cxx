@@ -61,7 +61,7 @@ void PropSetSimple::Set(const char *keyVal) {
 		endVal++;
 	const char *eqAt = strchr(keyVal, '=');
 	if (eqAt) {
-		Set(keyVal, eqAt + 1, static_cast<int>(eqAt-keyVal), 
+		Set(keyVal, eqAt + 1, static_cast<int>(eqAt-keyVal),
 			static_cast<int>(endVal - eqAt - 1));
 	} else if (*keyVal) {	// No '=' so assume '=1'
 		Set(keyVal, "1", static_cast<int>(endVal-keyVal), 1);

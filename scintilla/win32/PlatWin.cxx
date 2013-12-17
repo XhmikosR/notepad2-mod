@@ -172,7 +172,7 @@ bool LoadD2D() {
 				else
 					gamma = defaultRenderingParams->GetGamma();
 
-				pIDWriteFactory->CreateCustomRenderingParams(gamma, defaultRenderingParams->GetEnhancedContrast(), defaultRenderingParams->GetClearTypeLevel(), 
+				pIDWriteFactory->CreateCustomRenderingParams(gamma, defaultRenderingParams->GetEnhancedContrast(), defaultRenderingParams->GetClearTypeLevel(),
 					defaultRenderingParams->GetPixelGeometry(), defaultRenderingParams->GetRenderingMode(), &customClearTypeRenderingParams);
 			}
 		}
@@ -334,7 +334,7 @@ class FontCached : Font {
 	LOGFONTA lf;
 	int technology;
 	int hash;
-	FontCached(const FontParameters &fp);
+	explicit FontCached(const FontParameters &fp);
 	~FontCached() {}
 	bool SameAs(const FontParameters &fp);
 	virtual void Release();
@@ -490,7 +490,7 @@ class VarBuffer {
 	VarBuffer &operator=(const VarBuffer &);
 public:
 	T *buffer;
-	VarBuffer(size_t length) : buffer(0) {
+	explicit VarBuffer(size_t length) : buffer(0) {
 		if (length > lengthStandard) {
 			buffer = new T[length];
 		} else {
@@ -729,7 +729,7 @@ void SurfaceGDI::Polygon(Point *pts, int npts, ColourDesired fore, ColourDesired
 	PenColour(fore);
 	BrushColor(back);
 	std::vector<POINT> outline;
-	for (int i=0;i<npts;i++) {
+	for (int i=0; i<npts; i++) {
 		POINT pt = {static_cast<LONG>(pts[i].x), static_cast<LONG>(pts[i].y)};
 		outline.push_back(pt);
 	}
@@ -834,12 +834,12 @@ void SurfaceGDI::AlphaRectangle(PRectangle rc, int cornerSize, ColourDesired fil
 					}
 				}
 			}
-			for (int c=0;c<cornerSize; c++) {
-				for (int x=0;x<c+1; x++) {
+			for (int c=0; c<cornerSize; c++) {
+				for (int x=0; x<c+1; x++) {
 					AllFour(pixels, width, height, x, c-x, valEmpty);
 				}
 			}
-			for (int x=1;x<cornerSize; x++) {
+			for (int x=1; x<cornerSize; x++) {
 				AllFour(pixels, width, height, x, cornerSize-x, valOutline);
 			}
 
@@ -974,7 +974,7 @@ void SurfaceGDI::DrawTextClipped(PRectangle rc, Font &font_, XYPOSITION ybase, c
 void SurfaceGDI::DrawTextTransparent(PRectangle rc, Font &font_, XYPOSITION ybase, const char *s, int len,
 	ColourDesired fore) {
 	// Avoid drawing spaces in transparent mode
-	for (int i=0;i<len;i++) {
+	for (int i=0; i<len; i++) {
 		if (s[i] != ' ') {
 			::SetTextColor(hdc, fore.AsLong());
 			::SetBkMode(hdc, TRANSPARENT);
@@ -1056,10 +1056,10 @@ void SurfaceGDI::MeasureWidths(Font &font_, const char *s, int len, XYPOSITION *
 				// Not all the positions are filled in so make them equal to end.
 				if (fit == 0)
 					poses.buffer[fit++] = 0;
-				for (int i = fit;i<lenBlock;i++)
+				for (int i = fit; i<lenBlock; i++)
 					poses.buffer[i] = poses.buffer[fit-1];
 			}
-			for (int i=0;i<lenBlock;i++)
+			for (int i=0; i<lenBlock; i++)
 				positions[i] = poses.buffer[i] + startOffset;
 			startOffset = poses.buffer[lenBlock-1];
 			len -= lenBlock;
@@ -1076,7 +1076,7 @@ void SurfaceGDI::MeasureWidths(Font &font_, const char *s, int len, XYPOSITION *
 		}
 
 		int ui = 0;
-		for (int i=0;i<len;) {
+		for (int i=0; i<len;) {
 			if (Platform::IsDBCSLeadByte(codePage, s[i])) {
 				positions[i] = poses.buffer[ui];
 				positions[i+1] = poses.buffer[ui];
@@ -1669,7 +1669,7 @@ void SurfaceD2D::DrawTextClipped(PRectangle rc, Font &font_, XYPOSITION ybase, c
 void SurfaceD2D::DrawTextTransparent(PRectangle rc, Font &font_, XYPOSITION ybase, const char *s, int len,
 	ColourDesired fore) {
 	// Avoid drawing spaces in transparent mode
-	for (int i=0;i<len;i++) {
+	for (int i=0; i<len; i++) {
 		if (s[i] != ' ') {
 			if (pRenderTarget) {
 				D2DPenColour(fore);
@@ -1719,7 +1719,7 @@ void SurfaceD2D::MeasureWidths(Font &font_, const char *s, int len, XYPOSITION *
 			return;
 		FLOAT position = 0.0f;
 		size_t ti=0;
-		for (size_t ci=0;ci<count;ci++) {
+		for (size_t ci=0; ci<count; ci++) {
 			position += clusterMetrics[ci].width;
 			for (size_t inCluster=0; inCluster<clusterMetrics[ci].length; inCluster++) {
 				//poses.buffer[ti++] = int(position + 0.5);
@@ -1760,7 +1760,7 @@ void SurfaceD2D::MeasureWidths(Font &font_, const char *s, int len, XYPOSITION *
 
 		// One character per position
 		PLATFORM_ASSERT(len == tbuf.tlen);
-		for (size_t kk=0;kk<static_cast<size_t>(len);kk++) {
+		for (size_t kk=0; kk<static_cast<size_t>(len); kk++) {
 			positions[kk] = poses.buffer[kk];
 		}
 
@@ -1769,7 +1769,7 @@ void SurfaceD2D::MeasureWidths(Font &font_, const char *s, int len, XYPOSITION *
 		// May be more than one byte per position
 		unsigned int ui = 0;
 		FLOAT position = 0.0f;
-		for (int i=0;i<len;) {
+		for (int i=0; i<len;) {
 			if (ui < count)
 				position = poses.buffer[ui];
 			if (Platform::IsDBCSLeadByte(codePageText, s[i])) {
@@ -2175,7 +2175,7 @@ class ListBoxX : public ListBox {
 	void ResizeToCursor();
 	void StartResize(WPARAM);
 	int NcHitTest(WPARAM, LPARAM) const;
-	void CentreItem(int);
+	void CentreItem(int n);
 	void Paint(HDC);
 	static LRESULT PASCAL ControlWndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);
 
@@ -3058,7 +3058,7 @@ class DynamicLibraryImpl : public DynamicLibrary {
 protected:
 	HMODULE h;
 public:
-	DynamicLibraryImpl(const char *modulePath) {
+	explicit DynamicLibraryImpl(const char *modulePath) {
 		h = ::LoadLibraryA(modulePath);
 	}
 
@@ -3077,8 +3077,9 @@ public:
 			} fnConv;
 			fnConv.fp = ::GetProcAddress(h, name);
 			return fnConv.f;
-		} else
+		} else {
 			return NULL;
+		}
 	}
 
 	virtual bool IsValid() {

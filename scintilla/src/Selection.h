@@ -88,9 +88,9 @@ struct SelectionRange {
 
 	SelectionRange() : caret(), anchor() {
 	}
-	SelectionRange(SelectionPosition single) : caret(single), anchor(single) {
+	explicit SelectionRange(SelectionPosition single) : caret(single), anchor(single) {
 	}
-	SelectionRange(int single) : caret(single), anchor(single) {
+	explicit SelectionRange(int single) : caret(single), anchor(single) {
 	}
 	SelectionRange(SelectionPosition caret_, SelectionPosition anchor_) : caret(caret_), anchor(anchor_) {
 	}

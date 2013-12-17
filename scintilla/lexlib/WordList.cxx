@@ -70,7 +70,7 @@ WordList::WordList(bool onlyLineEnds_) :
 	words(0), list(0), len(0), onlyLineEnds(onlyLineEnds_) {
 }
 
-WordList::~WordList() { 
+WordList::~WordList() {
 	Clear();
 }
 
