@@ -9,8 +9,8 @@ rem *   Originally taken and adapted from  https://github.com/mpc-hc/mpc-hc
 rem *
 rem * See License.txt for details about distribution and modification.
 rem *
-rem *                                       (c) XhmikosR 2013
-rem *                                       https://github.com/XhmikosR/notepad2-mod
+rem *                                     (c) XhmikosR 2013
+rem *                                     https://github.com/XhmikosR/notepad2-mod
 rem *
 rem ******************************************************************************
 

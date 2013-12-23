@@ -9,8 +9,8 @@ rem *   and creating the installer/zip packages
 rem *
 rem * See License.txt for details about distribution and modification.
 rem *
-rem *                                       (c) XhmikosR 2010-2012
-rem *                                       https://github.com/XhmikosR/notepad2-mod
+rem *                                     (c) XhmikosR 2010-2013
+rem *                                     https://github.com/XhmikosR/notepad2-mod
 rem *
 rem ******************************************************************************
 
