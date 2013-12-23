@@ -3,6 +3,9 @@
 /build/*.opensdf
 /build/*.sdf
 /build/*.suo
+/build/cov-int
+/build/Notepad2-mod.tar
+/build/Notepad2-mod.tgz
 /build/packages
 /build/temp_zip*
 /distrib/Notepad2-mod.*.exe

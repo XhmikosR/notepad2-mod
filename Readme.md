@@ -1,5 +1,9 @@
 _A modified version (fork) of Notepad2 based on Kai Liu's and other people's patches._
 
+<a href="https://scan.coverity.com/projects/1113">
+  <img alt="Coverity Scan Build Status" src="https://scan.coverity.com/projects/1113/badge.svg"/>
+</a>
+
 ## Changes compared to the official Notepad2:
 
 * Code folding
