@@ -280,7 +280,7 @@ KEYWORDLIST KeyWords_CSS = {
 "speak-header speak-numeral speak-punctuation speech-rate src stemh stemv stress string-set table-layout "
 "target target-name target-new target-position text-align text-align-last text-decoration "
 "text-decoration-color text-decoration-line text-decoration-style text-emphasis text-height text-indent "
-"text-justify text-outline text-replace text-shadow text-transform text-wrap top topline transform "
+"text-justify text-outline text-overflow text-replace text-shadow text-transform text-wrap top topline transform "
 "transform-origin transform-style transition transition-delay transition-duration transition-property "
 "transition-timing-function unicode-bidi unicode-range units-per-em vertical-align visibility "
 "voice-balance voice-duration voice-family voice-pitch voice-pitch-range voice-rate voice-stress "
