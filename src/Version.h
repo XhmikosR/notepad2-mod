@@ -76,11 +76,7 @@
 #elif defined(_MSC_VER)
     #if _MSC_VER == 1800
         #if (_MSC_FULL_VER >= 180021005)
-            #if (_MSC_BUILD > 0)
-                #define VERSION_COMPILER    L"MSVC 2013 Update " STRINGIFY(_MSC_BUILD)
-            #else
-                #define VERSION_COMPILER    L"MSVC 2013"
-            #endif
+            #define VERSION_COMPILER    L"MSVC 2013"
         #elif (_MSC_FULL_VER < 180021005)
             #define VERSION_COMPILER    L"MSVC 2013 Preview/Beta/RC"
         #endif
