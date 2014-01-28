@@ -146,7 +146,7 @@ int PropSetSimple::GetExpanded(const char *key, char *result) const {
 	ExpandAllInPlace(*this, val, 100, VarChain(key));
 	const int n = static_cast<int>(val.size());
 	if (result) {
-		strcpy(result, val.c_str());
+		memcpy(result, val.c_str(), n+1);
 	}
 	return n;	// Not including NUL
 }

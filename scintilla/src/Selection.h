@@ -167,6 +167,7 @@ public:
 	void SetSelection(SelectionRange range);
 	void AddSelection(SelectionRange range);
 	void AddSelectionWithoutTrim(SelectionRange range);
+	void DropSelection(size_t r);
 	void TentativeSelection(SelectionRange range);
 	void CommitTentative();
 	int CharacterInSelection(int posCharacter) const;

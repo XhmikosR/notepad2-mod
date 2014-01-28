@@ -237,6 +237,7 @@
     <ClInclude Include="lexlib\OptionSet.h" />
     <ClInclude Include="lexlib\PropSetSimple.h" />
     <ClInclude Include="lexlib\SparseState.h" />
+    <ClInclude Include="lexlib\StringCopy.h" />
     <ClInclude Include="lexlib\StyleContext.h" />
     <ClInclude Include="lexlib\SubStyles.h" />
     <ClInclude Include="lexlib\WordList.h" />

@@ -39,7 +39,7 @@ $(SCI_LEX_OBJDIR)\LexConf.obj: $(SCI_LEX)\LexConf.cxx $(LEX_HEADERS)
 $(SCI_LEX_OBJDIR)\LexCPP.obj: $(SCI_LEX)\LexCPP.cxx $(LEX_HEADERS) $(SCI_LIB)\OptionSet.h \
                               $(SCI_LIB)\SparseState.h $(SCI_LIB)\SubStyles.h
 $(SCI_LEX_OBJDIR)\LexCSS.obj: $(SCI_LEX)\LexCSS.cxx $(LEX_HEADERS)
-$(SCI_LEX_OBJDIR)\LexHTML.obj: $(SCI_LEX)\LexHTML.cxx $(LEX_HEADERS)
+$(SCI_LEX_OBJDIR)\LexHTML.obj: $(SCI_LEX)\LexHTML.cxx $(LEX_HEADERS) $(SCI_LIB)\StringCopy.h
 $(SCI_LEX_OBJDIR)\LexInno.obj: $(SCI_LEX)\LexInno.cxx $(LEX_HEADERS)
 $(SCI_LEX_OBJDIR)\LexLua.obj: $(SCI_LEX)\LexLaTeX.cxx $(LEX_HEADERS)
 $(SCI_LEX_OBJDIR)\LexLua.obj: $(SCI_LEX)\LexLua.cxx $(LEX_HEADERS)
@@ -149,7 +149,8 @@ $(SCI_SRC_OBJDIR)\CaseConvert.obj: \
     $(SCI_SRC)\CaseConvert.cxx \
     $(SCI_SRC)\CaseConvert.h \
     $(SCI_SRC)\UniConversion.h \
-    $(SCI_SRC)\UnicodeFromUTF8.h
+    $(SCI_SRC)\UnicodeFromUTF8.h \
+    $(SCI_LIB)\StringCopy.h
 
 $(SCI_SRC_OBJDIR)\CaseFolder.obj: \
     $(SCI_SRC)\CaseFolder.cxx \
@@ -373,6 +374,7 @@ $(SCI_SRC_OBJDIR)\XPM.obj: \
 $(SCI_WIN_OBJDIR)\PlatWin.obj: \
     $(SCI_WIN)\PlatWin.cxx \
     $(SCI_INC)\Platform.h \
+    $(SCI_LIB)\StringCopy.h \
     $(SCI_SRC)\UniConversion.h \
     $(SCI_SRC)\XPM.h \
     $(SCI_SRC)\FontQuality.h
@@ -382,6 +384,7 @@ $(SCI_WIN_OBJDIR)\ScintillaWin.obj: \
     $(SCI_INC)\Platform.h \
     $(SCI_INC)\ILexer.h \
     $(SCI_INC)\Scintilla.h \
+    $(SCI_LIB)\StringCopy.h \
     $(SCI_SRC)\ContractionState.h \
     $(SCI_SRC)\SplitVector.h \
     $(SCI_SRC)\Partitioning.h \

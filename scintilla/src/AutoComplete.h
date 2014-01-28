@@ -16,8 +16,8 @@ namespace Scintilla {
  */
 class AutoComplete {
 	bool active;
-	char stopChars[256];
-	char fillUpChars[256];
+	std::string stopChars;
+	std::string fillUpChars;
 	char separator;
 	char typesep; // Type seperator
 	enum { maxItemLen=1000 };

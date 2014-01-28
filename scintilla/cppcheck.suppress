@@ -40,3 +40,6 @@ variableScope:scintilla/lexers/LexVHDL.cxx
 
 // Suppress C-style pointer casting for Qt code as won't be changing
 cstyleCast:scintilla/qt/ScintillaEdit/ScintillaDocument.cpp
+
+// Suppress everything in catch.hpp as won't be changing
+*:scintilla/test/unit/catch.hpp

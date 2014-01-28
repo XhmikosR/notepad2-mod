@@ -36,8 +36,9 @@
 #endif
 
 #include "Platform.h"
-#include "UniConversion.h"
+#include "StringCopy.h"
 #include "XPM.h"
+#include "UniConversion.h"
 #include "FontQuality.h"
 
 #ifndef IDC_HAND
@@ -48,42 +49,13 @@
 #define SPI_GETFONTSMOOTHINGCONTRAST	0x200C
 #endif
 
-// Take care of 32/64 bit pointers
-#ifdef GetWindowLongPtr
 static void *PointerFromWindow(HWND hWnd) {
 	return reinterpret_cast<void *>(::GetWindowLongPtr(hWnd, 0));
 }
+
 static void SetWindowPointer(HWND hWnd, void *ptr) {
 	::SetWindowLongPtr(hWnd, 0, reinterpret_cast<LONG_PTR>(ptr));
 }
-#else
-static void *PointerFromWindow(HWND hWnd) {
-	return reinterpret_cast<void *>(::GetWindowLong(hWnd, 0));
-}
-static void SetWindowPointer(HWND hWnd, void *ptr) {
-	::SetWindowLong(hWnd, 0, reinterpret_cast<LONG>(ptr));
-}
-
-#ifndef GWLP_USERDATA
-#define GWLP_USERDATA GWL_USERDATA
-#endif
-
-#ifndef GWLP_WNDPROC
-#define GWLP_WNDPROC GWL_WNDPROC
-#endif
-
-#ifndef LONG_PTR
-#define LONG_PTR LONG
-#endif
-
-static LONG_PTR SetWindowLongPtr(HWND hWnd, int nIndex, LONG_PTR dwNewLong) {
-	return ::SetWindowLong(hWnd, nIndex, dwNewLong);
-}
-
-static LONG_PTR GetWindowLongPtr(HWND hWnd, int nIndex) {
-	return ::GetWindowLong(hWnd, nIndex);
-}
-#endif
 
 extern UINT CodePageFromCharSet(DWORD characterSet, UINT documentCodePage);
 
@@ -300,15 +272,14 @@ static D2D1_TEXT_ANTIALIAS_MODE DWriteMapFontQuality(int extraFontFlag) {
 #endif
 
 static void SetLogFont(LOGFONTA &lf, const char *faceName, int characterSet, float size, int weight, bool italic, int extraFontFlag) {
-	memset(&lf, 0, sizeof(lf));
+	lf = LOGFONTA();
 	// The negative is to allow for leading
 	lf.lfHeight = -(abs(static_cast<int>(size + 0.5)));
 	lf.lfWeight = weight;
 	lf.lfItalic = static_cast<BYTE>(italic ? 1 : 0);
 	lf.lfCharSet = static_cast<BYTE>(characterSet);
 	lf.lfQuality = Win32MapFontQuality(extraFontFlag);
-	strncpy(lf.lfFaceName, faceName, sizeof(lf.lfFaceName));
-	lf.lfFaceName[sizeof(lf.lfFaceName)-1] = '\0';
+	StringCopy(lf.lfFaceName, faceName);
 }
 
 /**
@@ -1042,7 +1013,7 @@ void SurfaceGDI::MeasureWidths(Font &font_, const char *s, int len, XYPOSITION *
 		}
 	} else if (IsNT() || (codePage==0) || win9xACPSame) {
 		// Zero positions to avoid random behaviour on failure.
-		memset(positions, 0, len * sizeof(*positions));
+		std::fill(positions, positions + len, 0.0f);
 		// len may be larger than platform supports so loop over segments small enough for platform
 		int startOffset = 0;
 		while (len > 0) {
@@ -1513,13 +1484,13 @@ void SurfaceD2D::RoundedRectangle(PRectangle rc, ColourDesired fore, ColourDesir
 	if (pRenderTarget) {
 		D2D1_ROUNDED_RECT roundedRectFill = {
 			D2D1::RectF(rc.left+1.0, rc.top+1.0, rc.right-1.0, rc.bottom-1.0),
-			8, 8};
+			4, 4};
 		D2DPenColour(back);
 		pRenderTarget->FillRoundedRectangle(roundedRectFill, pBrush);
 
 		D2D1_ROUNDED_RECT roundedRect = {
 			D2D1::RectF(rc.left + 0.5, rc.top+0.5, rc.right - 0.5, rc.bottom-0.5),
-			8, 8};
+			4, 4};
 		D2DPenColour(fore);
 		pRenderTarget->DrawRoundedRectangle(roundedRect, pBrush);
 	}
@@ -1592,7 +1563,7 @@ void SurfaceD2D::DrawRGBAImage(PRectangle rc, int width, int height, const unsig
 
 void SurfaceD2D::Ellipse(PRectangle rc, ColourDesired fore, ColourDesired back) {
 	if (pRenderTarget) {
-		FLOAT radius = rc.Width() / 2.0f - 1.0f;
+		FLOAT radius = rc.Width() / 2.0f;
 		D2D1_ELLIPSE ellipse = {
 			D2D1::Point2F((rc.left + rc.right) / 2.0f, (rc.top + rc.bottom) / 2.0f),
 			radius,radius};
@@ -3214,7 +3185,7 @@ bool Platform::ShowAssertionPopUps(bool assertionPopUps_) {
 
 void Platform::Assert(const char *c, const char *file, int line) {
 	char buffer[2000];
-	sprintf(buffer, "Assertion [%s] failed at %s %d", c, file, line);
+	sprintf(buffer, "Assertion [%s] failed at %s %d%s", c, file, line, assertionPopUps ? "" : "\r\n");
 	if (assertionPopUps) {
 		int idButton = ::MessageBoxA(0, buffer, "Assertion failure",
 			MB_ABORTRETRYIGNORE|MB_ICONHAND|MB_SETFOREGROUND|MB_TASKMODAL);
@@ -3226,7 +3197,6 @@ void Platform::Assert(const char *c, const char *file, int line) {
 			abort();
 		}
 	} else {
-		strcat(buffer, "\r\n");
 		Platform::DebugDisplay(buffer);
 		::DebugBreak();
 		abort();

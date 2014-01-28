@@ -381,7 +381,7 @@ int ScintillaBase::AutoCompleteGetCurrentText(char *buffer) const {
 		if (item != -1) {
 			const std::string selected = ac.GetValue(item);
 			if (buffer != NULL)
-				strcpy(buffer, selected.c_str());
+				memcpy(buffer, selected.c_str(), selected.length()+1);
 			return static_cast<int>(selected.length());
 		}
 	}
@@ -892,6 +892,10 @@ sptr_t ScintillaBase::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lPara
 
 	case SCI_CALLTIPPOSSTART:
 		return ct.posStartCallTip;
+
+	case SCI_CALLTIPSETPOSSTART:
+		ct.posStartCallTip = wParam;
+		break;
 
 	case SCI_CALLTIPSETHLT:
 		ct.SetHighlight(wParam, lParam);
