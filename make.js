@@ -31,7 +31,7 @@
 
         var minifier1 = new CleanCSS({
                 keepSpecialComments: 1,
-                selectorsMergeMode: "ie8"
+                compatibility: "ie8"
             });
 
         fs.writeFileSync("css/jquery.fancybox.min.css", minifier1.minify(inCss), "utf8");
@@ -47,7 +47,7 @@
 
         var minifier2 = new CleanCSS({
                 keepSpecialComments: 0,
-                selectorsMergeMode: "ie8"
+                compatibility: "ie8"
             });
 
         fs.writeFileSync("css/pack.css", minifier2.minify(inCss2), "utf8");
