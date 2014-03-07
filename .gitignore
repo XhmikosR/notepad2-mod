@@ -1,8 +1,11 @@
+*.aps
+*.opensdf
+*.pyc
+*.sdf
+*.suo
+*.user
 /bin
 /build.user.bat
-/build/*.opensdf
-/build/*.sdf
-/build/*.suo
 /build/cov-int
 /build/Notepad2-mod.tar
 /build/Notepad2-mod.tgz
@@ -10,8 +13,5 @@
 /build/temp_zip*
 /distrib/Notepad2-mod.*.exe
 /res/Notepad2.exe.manifest
-/scintilla/*.user
 /signinfo_notepad2-mod.txt
-/src/*.aps
-/src/*.user
 /src/VersionRev.h
