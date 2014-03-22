@@ -12,15 +12,12 @@ useInitializationList:scintilla/lexers/LexBasic.cxx
 noCopyConstructor:scintilla/lexers/LexBash.cxx
 variableScope:scintilla/lexers/LexBash.cxx
 variableScope:scintilla/lexers/LexCmake.cxx
-variableScope:scintilla/lexers/LexCoffeeScript.cxx
 variableScope:scintilla/lexers/LexCSS.cxx
 useInitializationList:scintilla/lexers/LexD.cxx
 variableScope:scintilla/lexers/LexErlang.cxx
-variableScope:scintilla/lexers/LexFortran.cxx
 variableScope:scintilla/lexers/LexGui4Cli.cxx
 variableScope:scintilla/lexers/LexInno.cxx
 variableScope:scintilla/lexers/LexLaTeX.cxx
-variableScope:scintilla/lexers/LexMarkdown.cxx
 variableScope:scintilla/lexers/LexMetapost.cxx
 variableScope:scintilla/lexers/LexModula.cxx
 variableScope:scintilla/lexers/LexNimrod.cxx
@@ -35,7 +32,6 @@ variableScope:scintilla/lexers/LexSpecman.cxx
 unreadVariable:scintilla/lexers/LexSpice.cxx
 invalidscanf:scintilla/lexers/LexTCMD.cxx
 variableScope:scintilla/lexers/LexTeX.cxx
-variableScope:scintilla/lexers/LexTxt2tags.cxx
 variableScope:scintilla/lexers/LexVHDL.cxx
 
 // Suppress C-style pointer casting for Qt code as won't be changing

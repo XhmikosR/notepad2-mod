@@ -115,6 +115,30 @@ def FindPropertyDocumentation(lexFile):
             del documents[name]
     return documents
 
+def FindCredits(historyFile):
+    credits = []
+    stage = 0
+    with open(historyFile) as f:
+        for l in f.readlines():
+            l = l.strip()
+            if stage == 0 and l == "<table>":
+                stage = 1
+            elif stage == 1 and l == "</table>":
+                stage = 2
+            if stage == 1 and l.startswith("<td>"):
+                credit = l[4:-5]
+                if "<a" in l:
+                    title, a, rest = credit.partition("<a href=")
+                    urlplus, bracket, end = rest.partition(">")
+                    name = end.split("<")[0]
+                    url = urlplus[1:-1]
+                    credit = title.strip()
+                    if credit:
+                        credit += " "
+                    credit += name + " " + url
+                credits.append(credit.decode("utf-8"))
+    return credits
+
 def ciCompare(a,b):
     return cmp(a.lower(), b.lower())
 
@@ -173,6 +197,8 @@ class ScintillaData:
         self.lexerProperties = list(lexerProperties)
         SortListInsensitive(self.lexerProperties)
 
+        self.credits = FindCredits(scintillaRoot + "doc/ScintillaHistory.html")
+
 def printWrapped(text):
     print(textwrap.fill(text, subsequent_indent="    "))
 
@@ -191,3 +217,6 @@ if __name__=="__main__":
         print("    " + k)
         print(textwrap.fill(sci.propertyDocuments[k], initial_indent="        ",
             subsequent_indent="        "))
+    print("Credits:")
+    for c in sci.credits:
+        print("    " + c.encode("utf-8"))

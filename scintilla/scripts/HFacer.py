@@ -22,11 +22,13 @@ def printLexHFile(f):
 def printHFile(f):
 	out = []
 	previousCategory = ""
+	anyProvisional = False
 	for name in f.order:
 		v = f.features[name]
 		if v["Category"] != "Deprecated":
 			if v["Category"] == "Provisional" and previousCategory != "Provisional":
 				out.append("#ifndef SCI_DISABLE_PROVISIONAL")
+				anyProvisional = True
 			previousCategory = v["Category"]
 			if v["FeatureType"] in ["fun", "get", "set"]:
 				featureDefineName = "SCI_" + name.upper()
@@ -37,7 +39,8 @@ def printHFile(f):
 			elif v["FeatureType"] in ["val"]:
 				if not ("SCE_" in name or "SCLEX_" in name):
 					out.append("#define " + name + " " + v["Value"])
-	out.append("#endif")
+	if anyProvisional:
+		out.append("#endif")
 	return out
 
 def RegenerateAll(root, showMaxID):
