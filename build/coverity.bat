@@ -9,7 +9,7 @@ rem *   Originally taken and adapted from  https://github.com/mpc-hc/mpc-hc
 rem *
 rem * See License.txt for details about distribution and modification.
 rem *
-rem *                                     (c) XhmikosR 2013
+rem *                                     (c) XhmikosR 2013-2014
 rem *                                     https://github.com/XhmikosR/notepad2-mod
 rem *
 rem ******************************************************************************
@@ -19,7 +19,7 @@ SETLOCAL
 
 PUSHD %~dp0
 
-IF NOT DEFINED COVDIR SET "COVDIR=H:\progs\thirdparty\cov-analysis-win64-6.6.1"
+IF NOT DEFINED COVDIR SET "COVDIR=H:\progs\thirdparty\cov-analysis-win64-7.0.2"
 IF DEFINED COVDIR IF NOT EXIST "%COVDIR%" (
   ECHO.
   ECHO ERROR: Coverity not found in "%COVDIR%"
@@ -27,35 +27,54 @@ IF DEFINED COVDIR IF NOT EXIST "%COVDIR%" (
 )
 
 
-CALL "%VS110COMNTOOLS%..\..\VC\vcvarsall.bat" x86
+CALL "%VS120COMNTOOLS%..\..\VC\vcvarsall.bat" x86
 IF %ERRORLEVEL% NEQ 0 (
   ECHO vcvarsall.bat call failed.
   GOTO End
 )
 
+
+:Cleanup
 IF EXIST "cov-int" RD /q /s "cov-int"
+IF EXIST "Notepad2-mod.lzma" DEL "Notepad2-mod.lzma"
+IF EXIST "Notepad2-mod.tar"  DEL "Notepad2-mod.tar"
+IF EXIST "Notepad2-mod.tgz"  DEL "Notepad2-mod.tgz"
 
-"%COVDIR%\bin\cov-build.exe" --dir cov-int "build_vs2012.bat" Rebuild All Release
 
-IF EXIST "Notepad2-mod.tar" DEL "Notepad2-mod.tar"
-IF EXIST "Notepad2-mod.tgz" DEL "Notepad2-mod.tgz"
+:Main
+"%COVDIR%\bin\cov-build.exe" --dir cov-int "build_vs2013.bat" Rebuild All Release
 
 
 :tar
 tar --version 1>&2 2>NUL || (ECHO. & ECHO ERROR: tar not found & GOTO SevenZip)
-tar czvf "Notepad2-mod.tgz" "cov-int"
+tar caf "Notepad2-mod.lzma" "cov-int"
 GOTO End
 
 
 :SevenZip
-IF NOT EXIST "%PROGRAMFILES%\7za.exe" (
-  ECHO.
-  ECHO ERROR: "%PROGRAMFILES%\7za.exe" not found
+CALL :SubDetectSevenzipPath
+
+rem Coverity is totally bogus with lzma...
+rem And since I cannot replicate the arguments with 7-Zip, just use tar/gzip.
+IF EXIST "%SEVENZIP%" (
+  "%SEVENZIP%" a -ttar "Notepad2-mod.tar" "cov-int"
+  "%SEVENZIP%" a -tgzip "Notepad2-mod.tgz" "Notepad2-mod.tar"
+  IF EXIST "Notepad2-mod.tar" DEL "Notepad2-mod.tar"
   GOTO End
 )
-"%PROGRAMFILES%\7za.exe" a -ttar "Notepad2-mod.tar" "cov-int"
-"%PROGRAMFILES%\7za.exe" a -tgzip "Notepad2-mod.tgz" "Notepad2-mod.tar"
-IF EXIST "Notepad2-mod.tar" DEL "Notepad2-mod.tar"
+
+
+:SubDetectSevenzipPath
+FOR %%G IN (7z.exe) DO (SET "SEVENZIP_PATH=%%~$PATH:G")
+IF EXIST "%SEVENZIP_PATH%" (SET "SEVENZIP=%SEVENZIP_PATH%" & EXIT /B)
+
+FOR %%G IN (7za.exe) DO (SET "SEVENZIP_PATH=%%~$PATH:G")
+IF EXIST "%SEVENZIP_PATH%" (SET "SEVENZIP=%SEVENZIP_PATH%" & EXIT /B)
+
+FOR /F "tokens=2*" %%A IN (
+  'REG QUERY "HKLM\SOFTWARE\7-Zip" /v "Path" 2^>NUL ^| FIND "REG_SZ" ^|^|
+   REG QUERY "HKLM\SOFTWARE\Wow6432Node\7-Zip" /v "Path" 2^>NUL ^| FIND "REG_SZ"') DO SET "SEVENZIP=%%B\7z.exe"
+EXIT /B
 
 
 :End
