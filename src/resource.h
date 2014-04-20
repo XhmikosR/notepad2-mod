@@ -355,6 +355,7 @@
 #define IDM_HELP_ABOUT                  40500
 #define IDM_TRAY_RESTORE                40600
 #define IDM_TRAY_EXIT                   40601
+#define IDM_VIEW_CHECKWRITEPERMISSION   40602
 #define IDT_FILE_NEW                    40700
 #define IDT_FILE_OPEN                   40701
 #define IDT_FILE_BROWSE                 40702
