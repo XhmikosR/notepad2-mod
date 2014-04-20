@@ -6955,7 +6955,10 @@ BOOL FileLoad(BOOL bDontSave,BOOL bNew,BOOL bReload,BOOL bNoEncDetect,LPCWSTR lp
               shExecInfo.hInstApp = NULL;
 
               if(ShellExecuteEx(&shExecInfo))
+              {
                   SendMessage(hwndMain, WM_DESTROY, 0, 0);
+                  return FALSE;
+              }
           }
       }
 
