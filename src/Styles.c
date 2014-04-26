@@ -1252,7 +1252,7 @@ KEYWORDLIST KeyWords_RUBY = {
 "undef unless until when while yield",
 "", "", "", "", "", "", "", "" };
 
-EDITLEXER lexRUBY = { SCLEX_RUBY, 63304, L"Ruby Script", L"rb; ruby; rbw; rake; rjs; Rakefile", L"", &KeyWords_RUBY, {
+EDITLEXER lexRUBY = { SCLEX_RUBY, 63304, L"Ruby Script", L"rb; ruby; rbw; rake; rjs; Rakefile; gemspec", L"", &KeyWords_RUBY, {
                     { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
                     //{ SCE_P_DEFAULT, L"Default", L"", L"" },
                     { MULTI_STYLE(SCE_RB_COMMENTLINE,SCE_P_COMMENTBLOCK,0,0), 63127, L"Comment", L"fore:#008000", L"" },
