@@ -179,6 +179,7 @@
     <ClCompile Include="lexers\LexTCL.cxx" />
     <ClCompile Include="lexers\LexVB.cxx" />
     <ClCompile Include="lexers\LexYAML.cxx" />
+    <ClCompile Include="lexers\LexVHDL.cxx" />
     <ClCompile Include="lexlib\Accessor.cxx" />
     <ClCompile Include="lexlib\CharacterCategory.cxx" />
     <ClCompile Include="lexlib\CharacterSet.cxx" />
