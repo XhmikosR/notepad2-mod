@@ -34,7 +34,8 @@
     "lmVB",
     "lmVBScript",
     "lmXML",
-    "lmYAML"
+    "lmYAML",
+    "lmVHDL"
   );
 
   var fso = new ActiveXObject("Scripting.FileSystemObject");
