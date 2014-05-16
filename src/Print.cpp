@@ -106,9 +106,9 @@ extern "C" BOOL EditPrint(HWND hwnd,LPCWSTR pszDocTitle,LPCWSTR pszPageFormat)
 
   DOCINFO di = {sizeof(DOCINFO), 0, 0, 0, 0};
 
-  LONG lengthDoc;
-  LONG lengthDocMax;
-  LONG lengthPrinted;
+  int lengthDoc;
+  int lengthDocMax;
+  int lengthPrinted;
 
   struct RangeToFormat frPrint;
 
@@ -133,8 +133,8 @@ extern "C" BOOL EditPrint(HWND hwnd,LPCWSTR pszDocTitle,LPCWSTR pszPageFormat)
   pdlg.hDevMode = hDevMode;
   pdlg.hDevNames = hDevNames;
 
-  startPos = SendMessage(hwnd,SCI_GETSELECTIONSTART,0,0);;
-  endPos = SendMessage(hwnd,SCI_GETSELECTIONEND,0,0);
+  startPos = (int)SendMessage(hwnd,SCI_GETSELECTIONSTART,0,0);
+  endPos = (int)SendMessage(hwnd,SCI_GETSELECTIONEND,0,0);
 
   if (startPos == endPos) {
     pdlg.Flags |= PD_NOSELECTION;
@@ -298,7 +298,7 @@ extern "C" BOOL EditPrint(HWND hwnd,LPCWSTR pszDocTitle,LPCWSTR pszPageFormat)
   // Set print zoom...
   SendMessage(hwnd,SCI_SETPRINTMAGNIFICATION,(WPARAM)iPrintZoom,0);
 
-  lengthDoc = SendMessage(hwnd,SCI_GETLENGTH,0,0);
+  lengthDoc = (int)SendMessage(hwnd,SCI_GETLENGTH,0,0);
   lengthDocMax = lengthDoc;
   lengthPrinted = 0;
 
@@ -391,7 +391,7 @@ extern "C" BOOL EditPrint(HWND hwnd,LPCWSTR pszDocTitle,LPCWSTR pszPageFormat)
     frPrint.chrg.cpMin = lengthPrinted;
     frPrint.chrg.cpMax = lengthDoc;
 
-    lengthPrinted = SendMessage(hwnd,SCI_FORMATRANGE,printPage,(LPARAM)&frPrint);
+    lengthPrinted = (int)SendMessage(hwnd, SCI_FORMATRANGE, printPage, (LPARAM)&frPrint);
 
     if (printPage) {
       SetTextColor(hdc, RGB(0,0,0));
@@ -515,15 +515,15 @@ extern "C" UINT_PTR CALLBACK PageSetupHook(HWND hwnd, UINT uiMsg, WPARAM wParam,
     case WM_COMMAND:
       if (LOWORD(wParam) == IDOK)
       {
-        LONG lPos = SendDlgItemMessage(hwnd,31,UDM_GETPOS,0,0);
-        if (HIWORD(lPos) == 0)
-          iPrintZoom = (int)(short)LOWORD(lPos);
+        int iPos = (int)SendDlgItemMessage(hwnd,31,UDM_GETPOS,0,0);
+        if (HIWORD(iPos) == 0)
+          iPrintZoom = (int)(short)LOWORD(iPos);
         else
           iPrintZoom = 0;
 
-        iPrintHeader = SendDlgItemMessage(hwnd,32,CB_GETCURSEL,0,0);
-        iPrintFooter = SendDlgItemMessage(hwnd,33,CB_GETCURSEL,0,0);
-        iPrintColor  = SendDlgItemMessage(hwnd,34,CB_GETCURSEL,0,0);
+        iPrintHeader = (int)SendDlgItemMessage(hwnd, 32, CB_GETCURSEL, 0, 0);
+        iPrintFooter = (int)SendDlgItemMessage(hwnd, 33, CB_GETCURSEL, 0, 0);
+        iPrintColor = (int)SendDlgItemMessage(hwnd, 34, CB_GETCURSEL, 0, 0);
       }
       break;
 
