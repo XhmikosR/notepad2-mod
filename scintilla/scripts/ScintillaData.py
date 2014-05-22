@@ -30,7 +30,7 @@
 
 from __future__ import with_statement
 
-import datetime, glob, os, textwrap
+import codecs, datetime, glob, os, sys, textwrap
 
 import FileGenerator
 
@@ -118,7 +118,7 @@ def FindPropertyDocumentation(lexFile):
 def FindCredits(historyFile):
     credits = []
     stage = 0
-    with open(historyFile) as f:
+    with codecs.open(historyFile, "r", "utf-8") as f:
         for l in f.readlines():
             l = l.strip()
             if stage == 0 and l == "<table>":
@@ -136,7 +136,7 @@ def FindCredits(historyFile):
                     if credit:
                         credit += " "
                     credit += name + " " + url
-                credits.append(credit.decode("utf-8"))
+                credits.append(credit)
     return credits
 
 def ciCompare(a,b):
@@ -219,4 +219,7 @@ if __name__=="__main__":
             subsequent_indent="        "))
     print("Credits:")
     for c in sci.credits:
-        print("    " + c.encode("utf-8"))
+        if sys.version_info[0] == 2:
+            print("    " + c.encode("utf-8"))
+        else:
+            sys.stdout.buffer.write(b"    " + c.encode("utf-8") + b"\n")
