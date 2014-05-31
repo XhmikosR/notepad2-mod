@@ -8,10 +8,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <ctype.h>
 #include <stdarg.h>
 #include <time.h>
 #include <math.h>
+#include <ctype.h>
 #include <limits.h>
 
 #include <vector>
@@ -3280,31 +3280,33 @@ void Platform_Initialise(void *hInstance) {
 #pragma warning(default: 4996)
 #endif
 
-void Platform_Finalise() {
+void Platform_Finalise(bool fromDllMain) {
 #if defined(USE_D2D)
-	if (defaultRenderingParams) {
-		defaultRenderingParams->Release();
-		defaultRenderingParams = 0;
-	}
-	if (customClearTypeRenderingParams) {
-		customClearTypeRenderingParams->Release();
-		customClearTypeRenderingParams = 0;
-	}
-	if (pIDWriteFactory) {
-		pIDWriteFactory->Release();
-		pIDWriteFactory = 0;
-	}
-	if (pD2DFactory) {
-		pD2DFactory->Release();
-		pD2DFactory = 0;
-	}
-	if (hDLLDWrite) {
-		FreeLibrary(hDLLDWrite);
-		hDLLDWrite = NULL;
-	}
-	if (hDLLD2D) {
-		FreeLibrary(hDLLD2D);
-		hDLLD2D = NULL;
+	if (!fromDllMain) {
+		if (defaultRenderingParams) {
+			defaultRenderingParams->Release();
+			defaultRenderingParams = 0;
+		}
+		if (customClearTypeRenderingParams) {
+			customClearTypeRenderingParams->Release();
+			customClearTypeRenderingParams = 0;
+		}
+		if (pIDWriteFactory) {
+			pIDWriteFactory->Release();
+			pIDWriteFactory = 0;
+		}
+		if (pD2DFactory) {
+			pD2DFactory->Release();
+			pD2DFactory = 0;
+		}
+		if (hDLLDWrite) {
+			FreeLibrary(hDLLDWrite);
+			hDLLDWrite = NULL;
+		}
+		if (hDLLD2D) {
+			FreeLibrary(hDLLD2D);
+			hDLLD2D = NULL;
+		}
 	}
 #endif
 	if (reverseArrowCursor != NULL)

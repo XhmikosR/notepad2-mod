@@ -8,8 +8,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <ctype.h>
 #include <assert.h>
+#include <ctype.h>
 #include <limits.h>
 
 #include <new>
@@ -26,6 +26,8 @@
 #include <commctrl.h>
 #include <richedit.h>
 #include <windowsx.h>
+#include <zmouse.h>
+#include <ole2.h>
 
 #if defined(NTDDI_WIN7) && !defined(DISABLE_D2D)
 #define USE_D2D 1
@@ -43,9 +45,11 @@
 
 #ifdef SCI_LEXER
 #include "SciLexer.h"
-#include "LexerModule.h"
 #endif
 #include "StringCopy.h"
+#ifdef SCI_LEXER
+#include "LexerModule.h"
+#endif
 #include "SplitVector.h"
 #include "Partitioning.h"
 #include "RunStyles.h"
@@ -57,24 +61,25 @@
 #include "XPM.h"
 #include "LineMarker.h"
 #include "Style.h"
-#include "AutoComplete.h"
 #include "ViewStyle.h"
 #include "CharClassify.h"
 #include "Decoration.h"
 #include "CaseFolder.h"
 #include "Document.h"
+#include "CaseConvert.h"
+#include "UniConversion.h"
 #include "Selection.h"
 #include "PositionCache.h"
 #include "Editor.h"
-#include "ScintillaBase.h"
-#include "UniConversion.h"
-#include "CaseConvert.h"
 
-#include "PlatWin.h"
+#include "AutoComplete.h"
+#include "ScintillaBase.h"
 
 #ifdef SCI_LEXER
 #include "ExternalLexer.h"
 #endif
+
+#include "PlatWin.h"
 
 #ifndef SPI_GETWHEELSCROLLLINES
 #define SPI_GETWHEELSCROLLLINES   104
@@ -87,10 +92,6 @@
 #ifndef UNICODE_NOCHAR
 #define UNICODE_NOCHAR                  0xFFFF
 #endif
-
-#include <commctrl.h>
-#include <zmouse.h>
-#include <ole2.h>
 
 #ifndef MK_ALT
 #define MK_ALT 32
@@ -1338,6 +1339,7 @@ void ScintillaWin::SetTrackMouseLeaveEvent(bool on) {
 		tme.cbSize = sizeof(tme);
 		tme.dwFlags = TME_LEAVE;
 		tme.hwndTrack = MainHWND();
+		tme.dwHoverTime = HOVER_DEFAULT;	// Unused but triggers Dr. Memory if not initialized
 		TrackMouseEventFn(&tme);
 	}
 	trackedMouseLeave = on;
@@ -2907,25 +2909,31 @@ int Scintilla_RegisterClasses(void *hInstance) {
 	return result;
 }
 
-// This function is externally visible so it can be called from container when building statically.
-int Scintilla_ReleaseResources() {
+static int ResourcesRelease(bool fromDllMain) {
 	bool result = ScintillaWin::Unregister();
 	if (commctrl32) {
 		FreeLibrary(commctrl32);
 		commctrl32 = NULL;
 	}
-	Platform_Finalise();
+	Platform_Finalise(fromDllMain);
 	return result;
 }
 
+// This function is externally visible so it can be called from container when building statically.
+int Scintilla_ReleaseResources() {
+	return ResourcesRelease(false);
+}
+
 #ifndef STATIC_BUILD
-extern "C" int APIENTRY DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID) {
+extern "C" int APIENTRY DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpvReserved) {
 	//Platform::DebugPrintf("Scintilla::DllMain %d %d\n", hInstance, dwReason);
 	if (dwReason == DLL_PROCESS_ATTACH) {
 		if (!Scintilla_RegisterClasses(hInstance))
 			return FALSE;
 	} else if (dwReason == DLL_PROCESS_DETACH) {
-		Scintilla_ReleaseResources();
+		if (lpvReserved == NULL) {
+			ResourcesRelease(true);
+		}
 	}
 	return TRUE;
 }

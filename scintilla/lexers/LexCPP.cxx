@@ -8,10 +8,10 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <assert.h>
+#include <ctype.h>
 
 #include <string>
 #include <vector>
@@ -821,10 +821,18 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 							((lenS == 1) && ((s[0] == 'L') || (s[0] == 'u') || (s[0] == 'U'))) ||
 							((lenS == 2) && literalString && (s[0] == 'u') && (s[1] == '8'));
 						if (valid) {
-							if (literalString)
-								sc.ChangeState((raw ? SCE_C_STRINGRAW : SCE_C_STRING)|activitySet);
-							else
+							if (literalString) {
+								if (raw) {
+									// Set the style of the string prefix to SCE_C_STRINGRAW but then change to
+									// SCE_C_DEFAULT as that allows the raw string start code to run.
+									sc.ChangeState(SCE_C_STRINGRAW|activitySet);
+									sc.SetState(SCE_C_DEFAULT|activitySet);
+								} else {
+									sc.ChangeState(SCE_C_STRING|activitySet);
+								}
+							} else {
 								sc.ChangeState(SCE_C_CHARACTER|activitySet);
+							}
 						} else {
 							sc.SetState(SCE_C_DEFAULT | activitySet);
 						}
@@ -1203,7 +1211,7 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 								while ((endName < restOfLine.length()) && setWord.Contains(static_cast<unsigned char>(restOfLine[endName])))
 									endName++;
 								std::string key = restOfLine.substr(startName, endName-startName);
-								if (restOfLine[endName] == '(') {
+								if ((endName < restOfLine.length()) && (restOfLine.at(endName) == '(')) {
 									// Macro
 									size_t endArgs = endName;
 									while ((endArgs < restOfLine.length()) && (restOfLine[endArgs] != ')'))

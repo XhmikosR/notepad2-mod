@@ -206,7 +206,6 @@ private:
 	CellBuffer cb;
 	CharClassify charClass;
 	CaseFolder *pcf;
-	char stylingMask;
 	int endStyled;
 	int styleClock;
 	int enteredModification;
@@ -228,9 +227,6 @@ private:
 public:
 
 	LexInterface *pli;
-
-	int stylingBits;
-	int stylingBitsMask;
 
 	int eolMode;
 	/// Can also be SC_CP_UTF8 to enable UTF-8 mode
@@ -369,7 +365,6 @@ public:
 	void SetDefaultCharClasses(bool includeWordClass);
 	void SetCharClasses(const unsigned char *chars, CharClassify::cc newCharClass);
 	int GetCharsOfClass(CharClassify::cc charClass, unsigned char *buffer);
-	void SetStylingBits(int bits);
 	void SCI_METHOD StartStyling(int position, char mask);
 	bool SCI_METHOD SetStyleFor(int length, char style);
 	bool SCI_METHOD SetStyles(int length, const char *styles);

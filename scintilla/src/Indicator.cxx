@@ -11,8 +11,8 @@
 #include "Platform.h"
 
 #include "Scintilla.h"
-#include "XPM.h"
 #include "Indicator.h"
+#include "XPM.h"
 
 #ifdef SCI_NAMESPACE
 using namespace Scintilla;

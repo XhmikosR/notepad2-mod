@@ -39,8 +39,6 @@ public:
 	int edgeColumn;
 	char *chars;
 	unsigned char *styles;
-	int styleBitsSet;
-	char *indicators;
 	XYPOSITION *positions;
 	char bracePreviousStyles[2];
 
