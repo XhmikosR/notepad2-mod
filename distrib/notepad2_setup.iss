@@ -75,14 +75,7 @@ AppSupportURL=https://github.com/XhmikosR/notepad2-mod
 AppUpdatesURL=https://github.com/XhmikosR/notepad2-mod
 AppContact=https://github.com/XhmikosR/notepad2-mod
 AppCopyright={#app_copyright}
-VersionInfoCompany=XhmikosR
-VersionInfoCopyright={#app_copyright}
-VersionInfoDescription={#app_name} {#app_version} Setup
-VersionInfoTextVersion={#app_version}
 VersionInfoVersion={#app_version}
-VersionInfoProductName={#app_name}
-VersionInfoProductVersion={#app_version}
-VersionInfoProductTextVersion={#app_version}
 UninstallDisplayIcon={app}\Notepad2.exe
 #if defined(VS2013)
 UninstallDisplayName={#app_name} {#app_version}
@@ -116,7 +109,7 @@ MinVersion=6.0
 #elif defined(WDK)
 MinVersion=5.0
 #else
-MinVersion=5.1.2600sp3
+MinVersion=5.1sp3
 #endif
 ArchitecturesAllowed=x86 x64
 ArchitecturesInstallIn64BitMode=x64
