@@ -5247,7 +5247,7 @@ LRESULT MsgNotify(HWND hwnd,WPARAM wParam,LPARAM lParam)
             //int iLexer = (int)SendMessage(hwndEdit,SCI_GETLEXER,0,0);
             if (/*iLexer == SCLEX_HTML || iLexer == SCLEX_XML*/ 1)
             {
-              char tchBuf[512];
+              char tchBuf[512] = { 0 };
               char tchIns[516] = "</";
               int  cchIns = 2;
               int  iCurPos = (int)SendMessage(hwndEdit,SCI_GETCURRENTPOS,0,0);
