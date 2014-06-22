@@ -1069,12 +1069,12 @@ KEYWORDLIST KeyWords_PS = {
 "get-transaction get-uiculture get-unique get-variable get-verb get-winevent get-wmiobject "
 "get-wsmancredssp get-wsmaninstance group-object import-alias import-clixml import-counter "
 "import-csv import-localizeddata import-module import-pssession invoke-command invoke-expression "
-"invoke-history invoke-item invoke-wmimethod invoke-wsmanaction join-path limit-eventlog "
-"measure-command measure-object move-item move-itemproperty new-alias new-event new-eventlog "
-"new-item new-itemproperty new-module new-modulemanifest new-object new-psdrive new-pssession "
-"new-pssessionoption new-service new-timespan new-variable new-webserviceproxy new-wsmaninstance "
-"new-wsmansessionoption out-default out-file out-gridview out-host out-null out-printer "
-"out-string pop-location push-location read-host receive-job register-engineevent "
+"invoke-history invoke-item invoke-webrequest invoke-wmimethod invoke-wsmanaction join-path "
+"limit-eventlog measure-command measure-object move-item move-itemproperty new-alias new-event "
+"new-eventlog new-item new-itemproperty new-module new-modulemanifest new-object new-psdrive "
+"new-pssession new-pssessionoption new-service new-timespan new-variable new-webserviceproxy "
+"new-wsmaninstance new-wsmansessionoption out-default out-file out-gridview out-host out-null "
+"out-printer out-string pop-location push-location read-host receive-job register-engineevent "
 "register-objectevent register-pssessionconfiguration register-wmievent remove-computer "
 "remove-event remove-eventlog remove-item remove-itemproperty remove-job remove-module "
 "remove-psbreakpoint remove-psdrive remove-pssession remove-pssnapin remove-variable "
@@ -1097,7 +1097,7 @@ KEYWORDLIST KeyWords_PS = {
 "ipmo ipsn ise iwmi kill lp ls man md measure mi mkdir more mount move mp mv nal ndr ni nmo nsn "
 "nv ogv oh popd ps pushd pwd r rbp rcjb rd rdr ren ri rjb rm rmdir rmo rni rnp rp rsn rsnp rv "
 "rvpa rwmi sajb sal saps sasv sbp sc select set si sl sleep sort sp spjb spps spsv start sv swmi "
-"tee type where wjb write",
+"tee type wget where wjb write",
 "importsystemmodules prompt psedit tabexpansion",
 "", "", "", "", "" };
 
