@@ -3669,6 +3669,10 @@ void EditPadWithSpaces(HWND hwnd,BOOL bSkipEmpty,BOOL bNoUndoGroup)
       SendMessage(hwnd,SCI_SETTARGETEND,(WPARAM)iPos,0);
       SendMessage(hwnd,SCI_REPLACETARGET,(WPARAM)iPadLen,(LPARAM)pmszPadStr);
     }
+
+    if (pmszPadStr)
+      LocalFree(pmszPadStr);
+
     if (!bNoUndoGroup)
       SendMessage(hwnd,SCI_ENDUNDOACTION,0,0);
   }
@@ -4918,6 +4922,7 @@ INT_PTR CALLBACK EditFindReplaceDlgProcW(HWND hwnd,UINT umsg,WPARAM wParam,LPARA
                     lpszSelection = GlobalAlloc(GPTR,lstrlenA( pClip )+2);
                     lstrcpynA( lpszSelection , pClip , 500 );
                 }
+                LocalFree(pClip);
             }
             bFirstTime = FALSE;
 #endif
