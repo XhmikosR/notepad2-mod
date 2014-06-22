@@ -1741,7 +1741,7 @@ int MRU_Enum(LPMRULIST pmru,int iIndex,LPWSTR pszItem,int cchItem) {
 
   if (pszItem == NULL || cchItem == 0) {
     int i = 0;
-    while (pmru->pszItems[i] && i < pmru->iSize)
+    while (i < pmru->iSize && pmru->pszItems[i])
       i++;
     return(i);
   }
