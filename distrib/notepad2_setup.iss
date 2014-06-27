@@ -1,6 +1,6 @@
 ;* Notepad2-mod - Installer script
 ;*
-;* Copyright (C) 2010-2013 XhmikosR
+;* Copyright (C) 2010-2014 XhmikosR
 ;*
 ;* This file is part of Notepad2-mod.
 ;*
@@ -60,7 +60,7 @@
 #expr ParseVersion(bindir + "\Release_x86\Notepad2.exe", VerMajor, VerMinor, VerBuild, VerRevision)
 #define app_version   str(VerMajor) + "." + str(VerMinor) + "." + str(VerBuild) + "." + str(VerRevision)
 #define app_name      "Notepad2-mod"
-#define app_copyright "Copyright © 2004-2013, Florian Balmer et al."
+#define app_copyright "Copyright © 2004-2014, Florian Balmer et al."
 #define quick_launch  "{userappdata}\Microsoft\Internet Explorer\Quick Launch"
 
 

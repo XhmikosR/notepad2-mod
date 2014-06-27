@@ -6,7 +6,7 @@
 *
 * See License.txt for details about distribution and modification.
 *
-*                                       (c) XhmikosR 2010-2013
+*                                       (c) XhmikosR 2010-2014
 *                                       https://github.com/XhmikosR/notepad2-mod
 *
 *
@@ -37,8 +37,8 @@
 #define VERSION_FILEVERSION_NUM      VERSION_MAJOR,VERSION_MINOR,VERSION_BUILD,VERSION_REV
 #define VERSION_FILEVERSION          STRINGIFY(VERSION_MAJOR) "." STRINGIFY(VERSION_MINOR) "." \
                                      STRINGIFY(VERSION_BUILD) "." STRINGIFY(VERSION_REV)
-#define VERSION_LEGALCOPYRIGHT_SHORT L"Copyright © 2004-2013"
-#define VERSION_LEGALCOPYRIGHT_LONG  L"© Florian Balmer 2004-2013"
+#define VERSION_LEGALCOPYRIGHT_SHORT L"Copyright © 2004-2014"
+#define VERSION_LEGALCOPYRIGHT_LONG  L"© Florian Balmer 2004-2014"
 #define VERSION_AUTHORNAME           L"Florian Balmer"
 #define VERSION_WEBPAGEDISPLAY       L"flo's freeware - http://www.flos-freeware.ch"
 #define VERSION_EMAILDISPLAY         L"florian.balmer@gmail.com"
