@@ -553,6 +553,31 @@ static int KeyTranslate(int keyIn) {
 	}
 }
 
+static bool BoundsContains(PRectangle rcBounds, HRGN hRgnBounds, PRectangle rcCheck) {
+	bool contains = true;
+	if (!rcCheck.Empty()) {
+		if (!rcBounds.Contains(rcCheck)) {
+			contains = false;
+		} else if (hRgnBounds) {
+			// In bounding rectangle so check more accurately using region
+			HRGN hRgnCheck = ::CreateRectRgn(static_cast<int>(rcCheck.left), static_cast<int>(rcCheck.top),
+				static_cast<int>(rcCheck.right), static_cast<int>(rcCheck.bottom));
+			if (hRgnCheck) {
+				HRGN hRgnDifference = ::CreateRectRgn(0, 0, 0, 0);
+				if (hRgnDifference) {
+					int combination = ::CombineRgn(hRgnDifference, hRgnCheck, hRgnBounds, RGN_DIFF);
+					if (combination != NULLREGION) {
+						contains = false;
+					}
+					::DeleteRgn(hRgnDifference);
+				}
+				::DeleteRgn(hRgnCheck);
+			}
+		}
+	}
+	return contains;
+}
+
 LRESULT ScintillaWin::WndPaint(uptr_t wParam) {
 	//ElapsedTime et;
 
@@ -576,7 +601,7 @@ LRESULT ScintillaWin::WndPaint(uptr_t wParam) {
 	}
 	rcPaint = PRectangle::FromInts(pps->rcPaint.left, pps->rcPaint.top, pps->rcPaint.right, pps->rcPaint.bottom);
 	PRectangle rcClient = GetClientRectangle();
-	paintingAllText = rcPaint.Contains(rcClient);
+	paintingAllText = BoundsContains(rcPaint, hRgnUpdate, rcClient);
 	if (technology == SC_TECHNOLOGY_DEFAULT) {
 		AutoSurface surfaceWindow(pps->hdc, this);
 		if (surfaceWindow) {
@@ -1346,27 +1371,10 @@ void ScintillaWin::SetTrackMouseLeaveEvent(bool on) {
 }
 
 bool ScintillaWin::PaintContains(PRectangle rc) {
-	bool contains = true;
-	if ((paintState == painting) && (!rc.Empty())) {
-		if (!rcPaint.Contains(rc)) {
-			contains = false;
-		} else {
-			// In bounding rectangle so check more accurately using region
-			HRGN hRgnRange = ::CreateRectRgn(static_cast<int>(rc.left), static_cast<int>(rc.top), static_cast<int>(rc.right), static_cast<int>(rc.bottom));
-			if (hRgnRange) {
-				HRGN hRgnDest = ::CreateRectRgn(0, 0, 0, 0);
-				if (hRgnDest) {
-					int combination = ::CombineRgn(hRgnDest, hRgnRange, hRgnUpdate, RGN_DIFF);
-					if (combination != NULLREGION) {
-						contains = false;
-					}
-					::DeleteRgn(hRgnDest);
-				}
-				::DeleteRgn(hRgnRange);
-			}
-		}
+	if (paintState == painting) {
+		return BoundsContains(rcPaint, hRgnUpdate, rc);
 	}
-	return contains;
+	return true;
 }
 
 void ScintillaWin::ScrollText(int /* linesToMove */) {

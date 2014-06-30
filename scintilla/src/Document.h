@@ -39,6 +39,10 @@ public:
 		start(start_), end(end_) {
 	}
 
+	bool operator==(const Range &other) const {
+		return (start == other.start) && (end == other.end);
+	}
+
 	bool Valid() const {
 		return (start != invalidPosition) && (end != invalidPosition);
 	}

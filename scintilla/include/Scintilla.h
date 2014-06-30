@@ -1021,7 +1021,7 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
  * CHARRANGE, TEXTRANGE, FINDTEXTEX, FORMATRANGE, and NMHDR structs.
  * So older code that treats Scintilla as a RichEdit will work. */
 
-#ifdef SCI_NAMESPACE
+#if defined(__cplusplus) && defined(SCI_NAMESPACE)
 namespace Scintilla {
 #endif
 
@@ -1113,7 +1113,7 @@ struct SCNotification {
 	int updated;	/* SCN_UPDATEUI */
 };
 
-#ifdef SCI_NAMESPACE
+#if defined(__cplusplus) && defined(SCI_NAMESPACE)
 }
 #endif
 

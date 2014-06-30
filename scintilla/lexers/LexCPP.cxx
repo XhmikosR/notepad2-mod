@@ -1220,7 +1220,9 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 									size_t startValue = endArgs+1;
 									while ((startValue < restOfLine.length()) && IsSpaceOrTab(restOfLine[startValue]))
 										startValue++;
-									std::string value = restOfLine.substr(startValue);
+									std::string value;
+									if (startValue < restOfLine.length())
+										value = restOfLine.substr(startValue);
 									preprocessorDefinitions[key] = SymbolValue(value, args);
 									ppDefineHistory.push_back(PPDefinition(lineCurrent, key, value, false, args));
 									definitionsChanged = true;
