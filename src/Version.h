@@ -56,10 +56,7 @@
 #endif
 
 // Compiler specific
-#if defined(__INTEL_COMPILER)
-    #define VERSION_COMPILER    L"ICL " STRINGIFY(__INTEL_COMPILER) L" Build " \
-                                STRINGIFY(__INTEL_COMPILER_BUILD_DATE)
-#elif defined(WDK_BUILD)
+#if defined(WDK_BUILD)
     #if _MSC_VER == 1600
         #if (_MSC_FULL_VER >= 160040219)
             #define VERSION_COMPILER    L"WDK (MSVC 2010 SP1)"
