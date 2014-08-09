@@ -2174,7 +2174,7 @@ void MsgInitMenu(HWND hwnd,WPARAM wParam,LPARAM lParam)
       i == SCLEX_SQL || i == SCLEX_PERL || i == SCLEX_PYTHON || i == SCLEX_PROPERTIES ||i == SCLEX_CONF ||
       i == SCLEX_POWERSHELL || i == SCLEX_BATCH || i == SCLEX_DIFF || i == SCLEX_BASH || i == SCLEX_TCL ||
       i == SCLEX_AU3 || i == SCLEX_LATEX || i == SCLEX_AHK || i == SCLEX_RUBY || i == SCLEX_CMAKE || i == SCLEX_MARKDOWN ||
-      i == SCLEX_YAML));
+      i == SCLEX_YAML || i == SCLEX_REGISTRY));
 
   EnableCmd(hmenu,IDM_EDIT_INSERT_ENCODING,*mEncoding[iEncoding].pszParseNames);
 
@@ -3424,6 +3424,11 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
           EditToggleLineComments(hwndEdit,L";",TRUE);
           EndWaitCursor();
           break;
+        case SCLEX_REGISTRY:
+          BeginWaitCursor();
+          EditToggleLineComments(hwndEdit,L";;",TRUE);
+          EndWaitCursor();
+          break;
         case SCLEX_SQL:
         case SCLEX_LUA:
         case SCLEX_VHDL:
@@ -3469,6 +3474,7 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
         case SCLEX_CMAKE:
         case SCLEX_MARKDOWN:
         case SCLEX_YAML:
+        case SCLEX_REGISTRY:
           break;
         case SCLEX_HTML:
         case SCLEX_XML:

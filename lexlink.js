@@ -29,6 +29,7 @@
     "lmPowerShell",
     "lmProps",
     "lmPython",
+    "lmRegistry",
     "lmRuby",
     "lmSQL",
     "lmTCL",
