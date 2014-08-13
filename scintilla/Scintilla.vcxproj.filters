@@ -156,7 +156,13 @@
     <ClCompile Include="src\Document.cxx">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\EditModel.cxx">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="src\Editor.cxx">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EditView.cxx">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\ExternalLexer.cxx">
@@ -169,6 +175,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\LineMarker.cxx">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MarginView.cxx">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\PerLine.cxx">
@@ -254,6 +263,9 @@
     <ClInclude Include="lexlib\SparseState.h">
       <Filter>lexlib</Filter>
     </ClInclude>
+    <ClInclude Include="lexlib\StringCopy.h">
+      <Filter>lexlib</Filter>
+    </ClInclude>
     <ClInclude Include="lexlib\StyleContext.h">
       <Filter>lexlib</Filter>
     </ClInclude>
@@ -293,7 +305,13 @@
     <ClInclude Include="src\Document.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\EditModel.h">
+      <Filter>src</Filter>
+    </ClInclude>
     <ClInclude Include="src\Editor.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EditView.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\ExternalLexer.h">
@@ -309,6 +327,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\LineMarker.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MarginView.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Partitioning.h">
@@ -338,6 +359,9 @@
     <ClInclude Include="src\Style.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\UnicodeFromUTF8.h">
+      <Filter>src</Filter>
+    </ClInclude>
     <ClInclude Include="src\UniConversion.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -349,9 +373,6 @@
     </ClInclude>
     <ClInclude Include="win32\PlatWin.h">
       <Filter>win32</Filter>
-    </ClInclude>
-    <ClInclude Include="lexlib\StringCopy.h">
-      <Filter>lexlib</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

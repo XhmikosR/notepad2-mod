@@ -70,6 +70,9 @@
 #include "UniConversion.h"
 #include "Selection.h"
 #include "PositionCache.h"
+#include "EditModel.h"
+#include "MarginView.h"
+#include "EditView.h"
 #include "Editor.h"
 
 #include "AutoComplete.h"
@@ -100,6 +103,8 @@
 #define SC_WIN_IDLE 5001
 
 typedef BOOL (WINAPI *TrackMouseEventSig)(LPTRACKMOUSEEVENT);
+typedef UINT_PTR (WINAPI *SetCoalescableTimerSig)(HWND hwnd, UINT_PTR nIDEvent,
+	UINT uElapse, TIMERPROC lpTimerFunc, ULONG uToleranceDelay);
 
 // GCC has trouble with the standard COM ABI so do it the old C way with explicit vtables.
 
@@ -180,6 +185,7 @@ class ScintillaWin :
 	bool capturedMouse;
 	bool trackedMouseLeave;
 	TrackMouseEventSig TrackMouseEventFn;
+	SetCoalescableTimerSig SetCoalescableTimerFn;
 
 	unsigned int linesPerScroll;	///< Intellimouse support
 	int wheelDelta; ///< Wheel delta from roll
@@ -224,17 +230,23 @@ class ScintillaWin :
 	static sptr_t PASCAL CTWndProc(
 		    HWND hWnd, UINT iMessage, WPARAM wParam, sptr_t lParam);
 
-	enum { invalidTimerID, standardTimerID, idleTimerID };
+	enum { invalidTimerID, standardTimerID, idleTimerID, fineTimerStart };
 
 	virtual bool DragThreshold(Point ptStart, Point ptNow);
 	virtual void StartDrag();
 	sptr_t WndPaint(uptr_t wParam);
 	sptr_t HandleComposition(uptr_t wParam, sptr_t lParam);
+	static bool KoreanIME();
+	sptr_t HandleCompositionKoreanIME(uptr_t wParam, sptr_t lParam);
 	UINT CodePageOfDocument();
 	virtual bool ValidCodePage(int codePage) const;
 	virtual sptr_t DefWndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam);
 	virtual bool SetIdle(bool on);
-	virtual void SetTicking(bool on);
+	UINT_PTR timers[tickDwell+1];
+	virtual bool FineTickerAvailable();
+	virtual bool FineTickerRunning(TickReason reason);
+	virtual void FineTickerStart(TickReason reason, int millis, int tolerance);
+	virtual void FineTickerCancel(TickReason reason);
 	virtual void SetMouseCapture(bool on);
 	virtual bool HaveMouseCapture();
 	virtual void SetTrackMouseLeaveEvent(bool on);
@@ -331,6 +343,7 @@ ScintillaWin::ScintillaWin(HWND hwnd) {
 	capturedMouse = false;
 	trackedMouseLeave = false;
 	TrackMouseEventFn = 0;
+	SetCoalescableTimerFn = 0;
 
 	linesPerScroll = 0;
 	wheelDelta = 0;   // Wheel delta from roll
@@ -386,8 +399,10 @@ void ScintillaWin::Initialise() {
 
 	// Find TrackMouseEvent which is available on Windows > 95
 	HMODULE user32 = ::GetModuleHandle(TEXT("user32.dll"));
-	if (user32)
+	if (user32) {
 		TrackMouseEventFn = (TrackMouseEventSig)::GetProcAddress(user32, "TrackMouseEvent");
+		SetCoalescableTimerFn = (SetCoalescableTimerSig)::GetProcAddress(user32, "SetCoalescableTimer");
+	}
 	if (TrackMouseEventFn == NULL) {
 		// Windows 95 has an emulation in comctl32.dll:_TrackMouseEvent
 		if (!commctrl32)
@@ -397,11 +412,16 @@ void ScintillaWin::Initialise() {
 				::GetProcAddress(commctrl32, "_TrackMouseEvent");
 		}
 	}
+	for (TickReason tr = tickCaret; tr <= tickDwell; tr = static_cast<TickReason>(tr + 1)) {
+		timers[tr] = 0;
+	}
 }
 
 void ScintillaWin::Finalise() {
 	ScintillaBase::Finalise();
-	SetTicking(false);
+	for (TickReason tr = tickCaret; tr <= tickDwell; tr = static_cast<TickReason>(tr + 1)) {
+		FineTickerCancel(tr);
+	}
 	SetIdle(false);
 #if defined(USE_D2D)
 	DropRenderTarget();
@@ -652,7 +672,6 @@ sptr_t ScintillaWin::HandleComposition(uptr_t wParam, sptr_t lParam) {
 	if (lParam & GCS_RESULTSTR) {
 		HIMC hIMC = ::ImmGetContext(MainHWND());
 		if (hIMC) {
-			const int maxLenInputIME = 200;
 			wchar_t wcs[maxLenInputIME];
 			LONG bytes = ::ImmGetCompositionStringW(hIMC,
 				GCS_RESULTSTR, wcs, (maxLenInputIME-1)*2);
@@ -683,6 +702,99 @@ sptr_t ScintillaWin::HandleComposition(uptr_t wParam, sptr_t lParam) {
 		return 0;
 	}
 	return ::DefWindowProc(MainHWND(), WM_IME_COMPOSITION, wParam, lParam);
+}
+
+bool ScintillaWin::KoreanIME() {
+	const int codePage = InputCodePage();
+	return codePage == 949 || codePage == 1361;
+}
+
+sptr_t ScintillaWin::HandleCompositionKoreanIME(uptr_t, sptr_t lParam) {
+
+	// copy & paste by johnsonj
+	// Great thanks to
+	// jiniya from http://www.jiniya.net/tt/494  for DBCS input with AddCharUTF()
+	// BLUEnLIVE from http://zockr.tistory.com/1118 for UNDO and inOverstrike
+
+	HIMC hIMC = ::ImmGetContext(MainHWND());
+	if (!hIMC) {
+		return 0;
+	}
+
+	wchar_t wcs[maxLenInputIME];
+	int wides = 0;
+	bool compstrExist = false;
+
+	if (pdoc->TentativeActive()) {
+		pdoc->TentativeUndo();
+	} else {
+		// No tentative undo means start of this composition so
+		// fill in any virtual spaces.
+		bool tmpOverstrike = inOverstrike;
+		inOverstrike = false;         // not allow to be deleted twice.
+		AddCharUTF("", 0);
+		inOverstrike = tmpOverstrike;
+	}
+
+	view.imeCaretBlockOverride = false;
+	if (lParam & GCS_COMPSTR) {
+		long bytes = ::ImmGetCompositionStringW
+						   (hIMC, GCS_COMPSTR, wcs, maxLenInputIME);
+		wides = bytes / 2;
+		compstrExist = (wides != 0);
+	} else if (lParam & GCS_RESULTSTR) {
+		long bytes = ::ImmGetCompositionStringW
+						(hIMC, GCS_RESULTSTR, wcs, maxLenInputIME);
+		wides = bytes / 2;
+		compstrExist = (wides == 0);
+	}
+
+	if (wides >= 1) {
+
+		char hanval[maxLenInputIME];
+		unsigned int hanlen = 0;
+
+		if (IsUnicodeMode()) {
+			hanlen = UTF8Length(wcs, wides);
+			UTF8FromUTF16(wcs, wides, hanval, hanlen);
+			hanval[hanlen] = '\0';
+		} else {
+			hanlen = ::WideCharToMultiByte(InputCodePage(), 0,
+						wcs, wides, hanval, sizeof(hanval) - 1, 0, 0);
+			hanval[hanlen] = '\0';
+		}
+
+		if (compstrExist) {
+			view.imeCaretBlockOverride = true;
+
+			bool tmpRecordingMacro = recordingMacro;
+			recordingMacro = false;
+			pdoc->TentativeStart();
+			AddCharUTF(hanval, hanlen);
+			recordingMacro = tmpRecordingMacro;
+
+			for (size_t r = 0; r < sel.Count(); r++) { // for block caret
+				int positionInsert = sel.Range(r).Start().Position();
+				sel.Range(r).caret.SetPosition(positionInsert - hanlen);
+				sel.Range(r).anchor.SetPosition(positionInsert - hanlen);
+			}
+		} else {
+			AddCharUTF(hanval, hanlen);
+		}
+	}
+
+	// set the candidate window position for HANJA while composing.
+	Point pos = PointMainCaret();
+	CANDIDATEFORM CandForm;
+	CandForm.dwIndex = 0;
+	CandForm.dwStyle = CFS_CANDIDATEPOS;
+	CandForm.ptCurrentPos.x = static_cast<int>(pos.x);
+	CandForm.ptCurrentPos.y = static_cast<int>(pos.y + vs.lineHeight);
+	::ImmSetCandidateWindow(hIMC, &CandForm);
+
+	ShowCaretAtCurrentPosition();
+	::ImmReleaseContext(MainHWND(), hIMC);
+	return 0;
 }
 
 // Translate message IDs from WM_* and EM_* to SCI_* so can partly emulate Windows Edit control
@@ -909,12 +1021,10 @@ sptr_t ScintillaWin::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam
 			return 0;
 
 		case WM_TIMER:
-			if (wParam == standardTimerID && timer.ticking) {
-				Tick();
-			} else if (wParam == idleTimerID && idler.state) {
+			if (wParam == idleTimerID && idler.state) {
 				SendMessage(MainHWND(), SC_WIN_IDLE, 0, 1);
 			} else {
-				return 1;
+				TickFor(static_cast<TickReason>(wParam - fineTimerStart));
 			}
 			break;
 
@@ -1103,6 +1213,12 @@ sptr_t ScintillaWin::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam
 					SetFocusState(false);
 					DestroySystemCaret();
 				}
+				// Explicitly complete any IME composition
+				HIMC hIMC = ImmGetContext(MainHWND());
+				if (hIMC) {
+					::ImmNotifyIME(hIMC, NI_COMPOSITIONSTR, CPS_COMPLETE, 0);
+					::ImmReleaseContext(MainHWND(), hIMC);
+				}
 			}
 			break;
 
@@ -1118,6 +1234,9 @@ sptr_t ScintillaWin::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam
 			break;
 
 		case WM_IME_STARTCOMPOSITION: 	// dbcs
+			if (KoreanIME()) {
+				return 0;
+			}
 			ImeStartComposition();
 			return ::DefWindowProc(MainHWND(), iMessage, wParam, lParam);
 
@@ -1126,7 +1245,11 @@ sptr_t ScintillaWin::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam
 			return ::DefWindowProc(MainHWND(), iMessage, wParam, lParam);
 
 		case WM_IME_COMPOSITION:
-			return HandleComposition(wParam, lParam);
+			if (KoreanIME()) {
+				return HandleCompositionKoreanIME(wParam, lParam);
+			} else {
+				return HandleComposition(wParam, lParam);
+			}
 
 		case WM_IME_CHAR: {
 				AddCharBytes(HIBYTE(wParam), LOBYTE(wParam));
@@ -1162,6 +1285,16 @@ sptr_t ScintillaWin::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam
 			capturedMouse = false;
 			return 0;
 
+		case WM_IME_SETCONTEXT:
+			if (KoreanIME()) {
+				if (wParam) {
+					LPARAM NoImeWin = lParam;
+					NoImeWin = NoImeWin & (~ISC_SHOWUICOMPOSITIONWINDOW);
+					return ::DefWindowProc(MainHWND(), iMessage, wParam, NoImeWin);
+				}
+			}
+			return ::DefWindowProc(MainHWND(), iMessage, wParam, lParam);
+
 		// These are not handled in Scintilla and its faster to dispatch them here.
 		// Also moves time out to here so profile doesn't count lots of empty message calls.
 
@@ -1172,7 +1305,6 @@ sptr_t ScintillaWin::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam
 		case WM_NCPAINT:
 		case WM_NCMOUSEMOVE:
 		case WM_NCLBUTTONDOWN:
-		case WM_IME_SETCONTEXT:
 		case WM_IME_NOTIFY:
 		case WM_SYSCOMMAND:
 		case WM_WINDOWPOSCHANGING:
@@ -1310,19 +1442,33 @@ sptr_t ScintillaWin::DefWndProc(unsigned int iMessage, uptr_t wParam, sptr_t lPa
 	return ::DefWindowProc(MainHWND(), iMessage, wParam, lParam);
 }
 
-void ScintillaWin::SetTicking(bool on) {
-	if (timer.ticking != on) {
-		timer.ticking = on;
-		if (timer.ticking) {
-			timer.tickerID = ::SetTimer(MainHWND(), standardTimerID, timer.tickSize, NULL)
-				? reinterpret_cast<TickerID>(standardTimerID) : 0;
-		} else {
-			::KillTimer(MainHWND(), reinterpret_cast<uptr_t>(timer.tickerID));
-			timer.tickerID = 0;
-		}
-	}
-	timer.ticksToWait = caret.period;
+/**
+* Report that this Editor subclass has a working implementation of FineTickerStart.
+*/
+bool ScintillaWin::FineTickerAvailable() {
+	return true;
 }
+
+bool ScintillaWin::FineTickerRunning(TickReason reason) {
+	return timers[reason] != 0;
+}
+
+void ScintillaWin::FineTickerStart(TickReason reason, int millis, int tolerance) {
+	FineTickerCancel(reason);
+	if (SetCoalescableTimerFn && tolerance) {
+		timers[reason] = SetCoalescableTimerFn(MainHWND(), fineTimerStart + reason, millis, NULL, tolerance);
+	} else {
+		timers[reason] = ::SetTimer(MainHWND(), fineTimerStart + reason, millis, NULL);
+	}
+}
+
+void ScintillaWin::FineTickerCancel(TickReason reason) {
+	if (timers[reason]) {
+		::KillTimer(MainHWND(), timers[reason]);
+		timers[reason] = 0;
+	}
+}
+
 
 bool ScintillaWin::SetIdle(bool on) {
 	// On Win32 the Idler is implemented as a Timer on the Scintilla window.  This

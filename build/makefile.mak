@@ -7,7 +7,7 @@
 #*
 #* See License.txt for details about distribution and modification.
 #*
-#*                                       (c) XhmikosR 2010-2013
+#*                                       (c) XhmikosR 2010-2014
 #*                                       https://github.com/XhmikosR/notepad2-mod
 #*
 #* Use build_wdk.bat and set there your WDK directory.
@@ -171,11 +171,14 @@ SCI_SRC_OBJ = \
     $(SCI_SRC_OBJDIR)\ContractionState.obj \
     $(SCI_SRC_OBJDIR)\Decoration.obj \
     $(SCI_SRC_OBJDIR)\Document.obj \
+    $(SCI_SRC_OBJDIR)\EditModel.obj \
     $(SCI_SRC_OBJDIR)\Editor.obj \
+    $(SCI_SRC_OBJDIR)\EditView.obj \
     $(SCI_SRC_OBJDIR)\ExternalLexer.obj \
     $(SCI_SRC_OBJDIR)\Indicator.obj \
     $(SCI_SRC_OBJDIR)\KeyMap.obj \
     $(SCI_SRC_OBJDIR)\LineMarker.obj \
+    $(SCI_SRC_OBJDIR)\MarginView.obj \
     $(SCI_SRC_OBJDIR)\PerLine.obj \
     $(SCI_SRC_OBJDIR)\PositionCache.obj \
     $(SCI_SRC_OBJDIR)\RESearch.obj \
