@@ -17,7 +17,7 @@
 
 body {
     background-color: #fafafa;
-    color: #666;
+    color: #565656;
     font: 15px/1.5 "Helvetica Neue", Helvetica, Arial, serif;
 }
 
@@ -29,11 +29,13 @@ a.button {
 }
 
 a:link {
-    color: #2879d0;
+    color: #0354ab;
 }
 
 a:hover {
-    color: #2268b2;
+    color: #0354ab;
+    text-decoration: underline;
+    text-shadow: 1px 0 #0354ab;
 }
 
 a:visited {
