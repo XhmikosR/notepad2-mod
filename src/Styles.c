@@ -2415,7 +2415,7 @@ KEYWORDLIST KeyWords_VHDL = {
 
 EDITLEXER lexVHDL = { SCLEX_VHDL, 63370, L"VHDL", L"vhdl; vhd", L"", &KeyWords_VHDL, {
                        { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
-                       { MULTI_STYLE(SCE_VHDL_COMMENTLINEBANG, SCE_VHDL_COMMENT, 0, 0), 63127, L"Comment", L"fore:#008800", L"" },
+                       { MULTI_STYLE(SCE_VHDL_COMMENTLINEBANG, SCE_VHDL_COMMENT, SCE_VHDL_BLOCK_COMMENT, 0), 63127, L"Comment", L"fore:#008800", L"" },
                        { SCE_VHDL_NUMBER, 63130, L"Number", L"fore:#FF0000", L"" },
                        { MULTI_STYLE(SCE_VHDL_STRING, SCE_VHDL_STRINGEOL, 0, 0), 63131, L"String", L"fore:#008000", L"" },
                        { SCE_VHDL_OPERATOR, 63132, L"Operator", L"fore:#B000B0", L"" },
