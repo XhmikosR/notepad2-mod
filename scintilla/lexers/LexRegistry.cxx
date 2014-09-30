@@ -10,13 +10,13 @@
  *
  */
 
+#include <cstdlib>
 #include <cassert>
 #include <cctype>
 #include <cstdio>
-#include <cstdlib>
-#include <map>
 #include <string>
 #include <vector>
+#include <map>
 
 #include "ILexer.h"
 #include "Scintilla.h"

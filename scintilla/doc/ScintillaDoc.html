@@ -82,7 +82,7 @@
 
     <h1>Scintilla Documentation</h1>
 
-    <p>Last edited 24 May 2014 NH</p>
+    <p>Last edited 25 September 2014 NH</p>
 
     <p>There is <a class="jump" href="Design.html">an overview of the internal design of
     Scintilla</a>.<br />
@@ -3171,6 +3171,8 @@ struct Sci_TextToFind {
      <a class="message" href="#SCI_GETFONTQUALITY">SCI_GETFONTQUALITY</a><br />
      <a class="message" href="#SCI_SETCODEPAGE">SCI_SETCODEPAGE(int codePage)</a><br />
      <a class="message" href="#SCI_GETCODEPAGE">SCI_GETCODEPAGE</a><br />
+     <a class="message" href="#SCI_SETIMEINTERACTION">SCI_SETIMEINTERACTION(int imeInteraction)</a><br />
+     <a class="message" href="#SCI_GETIMEINTERACTION">SCI_GETIMEINTERACTION</a><br />
      <a class="message" href="#SCI_SETKEYSUNICODE">SCI_SETKEYSUNICODE(bool keysUnicode)</a><br />
      <a class="message" href="#SCI_GETKEYSUNICODE">SCI_GETKEYSUNICODE</a><br />
      <a class="message" href="#SCI_SETWORDCHARS">SCI_SETWORDCHARS(&lt;unused&gt;, const char *characters)</a><br />
@@ -3240,10 +3242,16 @@ struct Sci_TextToFind {
      <b id="SCI_GETTECHNOLOGY">SCI_GETTECHNOLOGY</b><br />
     The technology property allows choosing between different drawing APIs and options.
     On most platforms, the only choice is <code>SC_TECHNOLOGY_DEFAULT</code> (0).
-    On Windows Vista or later, <code>SC_TECHNOLOGY_DIRECTWRITE</code> (1)
+    On Windows Vista or later, <code>SC_TECHNOLOGY_DIRECTWRITE</code> (1) or
+    <code class="provisional">SC_TECHNOLOGY_DIRECTWRITERETAIN</code> (2)
     can be chosen to use the Direct2D and DirectWrite APIs for higher quality antialiased drawing.
+    <code class="provisional">SC_TECHNOLOGY_DIRECTWRITERETAIN</code> differs from
+    <code>SC_TECHNOLOGY_DIRECTWRITE</code> by requesting that the frame
+    is retained after being presented which may prevent drawing failures on some cards and drivers.
     Since Direct2D buffers drawing, Scintilla's buffering can be turned off with
-    <code>SCI_SETBUFFEREDDRAW(0)</code>.</p>
+    <code>SCI_SETBUFFEREDDRAW(0)</code>.
+    <span class="provisional">Since <code>SC_TECHNOLOGY_DIRECTWRITERETAIN</code>
+    is provisional, it may be changed or removed in a future release if a better solution is found.</span></p>
 
     <p><b id="SCI_SETFONTQUALITY">SCI_SETFONTQUALITY(int fontQuality)</b><br />
      <b id="SCI_GETFONTQUALITY">SCI_GETFONTQUALITY</b><br />
@@ -3276,6 +3284,19 @@ struct Sci_TextToFind {
     <p>Code page can be set to 932 (Japanese Shift-JIS), 936 (Simplified Chinese GBK),
     949 (Korean Unified Hangul Code), 950 (Traditional Chinese Big5), or 1361 (Korean Johab)
     although these may require installation of language specific support.</p>
+
+    <p><b id="SCI_SETIMEINTERACTION">SCI_SETIMEINTERACTION(int imeInteraction)</b><br />
+     <b id="SCI_GETIMEINTERACTION">SCI_GETIMEINTERACTION</b><br />
+     When entering text in Chinese, Japanese, or Korean an Input Method Editor (IME) may be displayed.
+     The IME may be an extra window appearing above Scintilla or may be displayed by Scintilla itself
+     as text. On some platforms there is a choice between the two techniques.
+     A windowed IME <code>SC_IME_WINDOWED</code> (0) may be more similar in appearance and
+     behaviour to the IME in other applications.
+     An inline IME <code>SC_IME_INLINE</code> (1) may work better with some Scintilla features such as
+     rectangular and multiple selection.</p>
+     <p>The windowed behaviour can be chosen with <code>SCI_SETIMEINTERACTION(SC_IME_WINDOWED)</code>
+     and the inline behaviour with <code>SCI_SETIMEINTERACTION(SC_IME_INLINE)</code>.
+     Scintilla may ignore this call in some cases. For example, the inline behaviour might only be supported for some languages.</p>
 
     <p><b id="SCI_SETKEYSUNICODE">SCI_SETKEYSUNICODE(bool keysUnicode)</b><br />
      <b id="SCI_GETKEYSUNICODE">SCI_GETKEYSUNICODE</b><br />
@@ -3425,8 +3446,8 @@ struct Sci_TextToFind {
      <b id="SCI_GETNEXTTABSTOP">SCI_GETNEXTTABSTOP(int line, int x)</b><br />
      <code>SCI_CLEARTABSTOPS</code> clears explicit tabstops on a line. <code>SCI_ADDTABSTOP</code>
     adds an explicit tabstop at the specified distance from the left (in pixels), and
-    <code>SCI_GETNEXTTABSTOP</code> gets the next explicit tabstop position, or zero if there
-    aren't any.
+    <code>SCI_GETNEXTTABSTOP</code> gets the next explicit tabstop position set after the given x position,
+    or zero if there aren't any.
     Changing tab stops produces a <a class="message" href="#SC_MOD_CHANGETABSTOPS">SC_MOD_CHANGETABSTOPS</a> notification.
     </p>
 
@@ -7408,7 +7429,9 @@ for line = lineStart to lineEnd do SCI_ENSUREVISIBLE(line) next
 
     <p>Provisional features are displayed in this document with <span class="provisional">a distinctive background colour</span>.</p>
 
-    <p>There are currently no provisional features.</p>
+    <p>There are currently no provisional messages.
+    The <code class="provisional">SC_TECHNOLOGY_DIRECTWRITERETAIN</code> value for
+    <a class="message" href="#SCI_SETTECHNOLOGY">SCI_SETTECHNOLOGY</a> is provisional.</p>
 
     <p>Some developers may want to only use features that are stable and have graduated from
     provisional status. To avoid using provisional messages compile with the symbol

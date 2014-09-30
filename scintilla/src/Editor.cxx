@@ -2132,14 +2132,6 @@ void Editor::Redo() {
 	}
 }
 
-void Editor::DelChar() {
-	if (!RangeContainsProtected(sel.MainCaret(), sel.MainCaret() + 1)) {
-		pdoc->DelChar(sel.MainCaret());
-	}
-	// Avoid blinking during rapid typing:
-	ShowCaretAtCurrentPosition();
-}
-
 void Editor::DelCharBack(bool allowLineStartDeletion) {
 	RefreshStyleData();
 	if (!sel.IsRectangular())
@@ -4300,7 +4292,7 @@ void Editor::ButtonDown(Point pt, unsigned int curTime, bool shift, bool ctrl, b
 }
 
 bool Editor::PositionIsHotspot(int position) const {
-	return vs.styles[pdoc->StyleAt(position)].hotspot;
+	return vs.styles[static_cast<unsigned char>(pdoc->StyleAt(position))].hotspot;
 }
 
 bool Editor::PointIsHotspot(Point pt) {
@@ -6275,6 +6267,13 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 	case SCI_GETCODEPAGE:
 		return pdoc->dbcsCodePage;
 
+	case SCI_SETIMEINTERACTION:
+		imeInteraction = static_cast<EditModel::IMEInteraction>(wParam);
+		break;
+
+	case SCI_GETIMEINTERACTION:
+		return imeInteraction;
+		
 #ifdef INCLUDE_DEPRECATED_FEATURES
 	case SCI_SETUSEPALETTE:
 		InvalidateStyleRedraw();
