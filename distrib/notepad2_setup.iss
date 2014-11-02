@@ -150,8 +150,8 @@ Name: remove_default;     Description: {cm:tsk_RemoveDefault};     GroupDescript
 
 
 [Files]
-Source: {#bindir}\Release_x64\Notepad2.exe; DestDir: {app};                  Flags: ignoreversion;                         Check: Is64BitInstallMode()
-Source: {#bindir}\Release_x86\Notepad2.exe; DestDir: {app};                  Flags: ignoreversion;                         Check: not Is64BitInstallMode()
+Source: {#bindir}\Release_x64\Notepad2.exe; DestDir: {app};                  Flags: ignoreversion 64bit; Components: x64
+Source: {#bindir}\Release_x86\Notepad2.exe; DestDir: {app};                  Flags: ignoreversion 32bit; Components: x86
 Source: ..\License.txt;                     DestDir: {app};                  Flags: ignoreversion
 Source: ..\Notepad2.txt;                    DestDir: {app};                  Flags: ignoreversion
 Source: ..\Readme-mod.txt;                  DestDir: {app};                  Flags: ignoreversion
@@ -186,6 +186,13 @@ Type: files;      Name: {app}\Readme.txt
 Type: files;      Name: {app}\Notepad2.ini
 Type: dirifempty; Name: {app}
 
+[Types]
+Name: "x86"; Description: "Install 32-bit package"
+Name: "x64"; Description: "Install 64-bit package"; Check: IsWin64
+
+[Components]
+Name: "x86"; Description: "Install 32-bit package (x86)"; Types: x86
+Name: "x64"; Description: "Install 64-bit package (x64)"; Types: x64
 
 [Code]
 const
