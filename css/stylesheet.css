@@ -30,6 +30,7 @@ a.button {
 
 a:link {
     color: #0354ab;
+    text-decoration: none;
 }
 
 a:hover {
@@ -71,6 +72,11 @@ header a:link,
 header a:hover,
 header a:visited {
     color: white;
+}
+
+header a:hover {
+    text-decoration: none;
+    text-shadow: none;
 }
 
 .inner {
@@ -117,6 +123,11 @@ a.button {
 .button small {
     display: block;
     font-size: 11px;
+}
+
+.button:hover {
+    text-decoration: none;
+    text-shadow: none;
 }
 
 .sprite {
@@ -199,12 +210,12 @@ form {
 }*/
 
 /* GENERAL ELEMENT TYPE STYLES */
-section h1 {
+section h2 {
     color: #474747;
     font-size: 2.0em;
 }
 
-section h1:before {
+section h2:before {
     color: #9ddcff;
     content: "/";
     padding-right: 0.2em;
@@ -277,10 +288,6 @@ h6:before {
 
 p {
     margin-bottom: 20px;
-}
-
-a {
-    text-decoration: none;
 }
 
 
@@ -359,8 +366,8 @@ dl dd {
         width: 490px;
     }
 
-    section h1:before/*,
-    section h2:before,
+    section h1:before,
+    section h2:before/*,
     section h3:before,
     section h4:before,
     section h5:before,
@@ -436,8 +443,8 @@ dl dd {
         padding: 20px 0;
     }
 
-    section h1:before/*,
-    section h2:before,
+    section h1:before,
+    section h2:before/*,
     section h3:before,
     section h4:before,
     section h5:before,
