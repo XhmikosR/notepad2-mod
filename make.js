@@ -13,14 +13,13 @@
     require("shelljs/make");
     var fs = require("fs"),
         CleanCSS = require("clean-css"),
-        UglifyJS = require("uglify-js"),
-        ROOT_DIR = __dirname + "/";     // absolute path to project's root
+        UglifyJS = require("uglify-js");
 
     //
     // make minify
     //
     target.minify = function () {
-        cd(ROOT_DIR);
+        cd(__dirname);
         echo();
         echo("### Minifying css files...");
 
