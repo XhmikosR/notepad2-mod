@@ -33,7 +33,7 @@
                 compatibility: "ie8"
             });
 
-        fs.writeFileSync("css/jquery.fancybox.min.css", minifier1.minify(inCss), "utf8");
+        fs.writeFileSync("css/jquery.fancybox.min.css", minifier1.minify(inCss).styles, "utf8");
 
         echo();
         echo("### Finished css/jquery.fancybox.min.css.");
@@ -49,7 +49,7 @@
                 compatibility: "ie8"
             });
 
-        fs.writeFileSync("css/pack.css", minifier2.minify(inCss2), "utf8");
+        fs.writeFileSync("css/pack.css", minifier2.minify(inCss2).styles, "utf8");
 
         echo();
         echo("### Finished css/pack.css.");
