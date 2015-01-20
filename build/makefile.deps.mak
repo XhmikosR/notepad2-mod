@@ -219,7 +219,8 @@ $(SCI_SRC_OBJDIR)\Document.obj: \
     $(SCI_SRC)\CaseFolder.h \
     $(SCI_SRC)\Document.h \
     $(SCI_SRC)\RESearch.h \
-    $(SCI_SRC)\UniConversion.h
+    $(SCI_SRC)\UniConversion.h \
+    $(SCI_SRC)\UnicodeFromUTF8.h
 
 $(SCI_SRC_OBJDIR)\EditModel.obj: \
     $(SCI_SRC)\EditModel.cxx \

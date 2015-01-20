@@ -20,6 +20,7 @@
 #include <cstring>
 #include <cctype>
 #include <cstdio>
+#include <cmath>
 
 // C++ standard library
 #include <stdexcept>
