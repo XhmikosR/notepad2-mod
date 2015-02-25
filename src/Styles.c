@@ -4055,7 +4055,7 @@ void Style_SetStyles(HWND hwnd,int iStyle,LPCWSTR lpszStyle)
   // Font
   if (Style_StrGetFont(lpszStyle,tch,COUNTOF(tch))) {
     char mch[256];
-    WideCharToMultiByte(CP_ACP,0,tch,-1,mch,COUNTOF(mch),NULL,NULL);
+    WideCharToMultiByte(CP_UTF8,0,tch,-1,mch,COUNTOF(mch),NULL,NULL);
     SendMessage(hwnd,SCI_STYLESETFONT,iStyle,(LPARAM)mch);
   }
 
