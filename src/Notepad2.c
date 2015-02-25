@@ -3409,6 +3409,7 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
         case SCLEX_CMAKE:
         case SCLEX_AVS:
         case SCLEX_YAML:
+        case SCLEX_COFFEESCRIPT:
           BeginWaitCursor();
           EditToggleLineComments(hwndEdit,L"#",TRUE);
           EndWaitCursor();
@@ -3484,6 +3485,9 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
           break;
         case SCLEX_LUA:
           EditEncloseSelection(hwndEdit,L"--[[",L"]]");
+          break;
+        case SCLEX_COFFEESCRIPT:
+          EditEncloseSelection(hwndEdit,L"###",L"###");
       }
       break;
 
@@ -6244,7 +6248,7 @@ void ParseCommandLine()
             LocalFree(lpSchemeArg);
             lpSchemeArg = NULL;
           }
-          iInitialLexer = 33;
+          iInitialLexer = 34;
           flagLexerSpecified = 1;
           break;
 
@@ -6253,7 +6257,7 @@ void ParseCommandLine()
             LocalFree(lpSchemeArg);
             lpSchemeArg = NULL;
           }
-          iInitialLexer = 34;
+          iInitialLexer = 35;
           flagLexerSpecified = 1;
           break;
 
