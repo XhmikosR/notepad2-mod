@@ -213,6 +213,9 @@
     <ClCompile Include="src\XPM.cxx">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="win32\HanjaDic.cxx">
+      <Filter>win32</Filter>
+    </ClCompile>
     <ClCompile Include="win32\PlatWin.cxx">
       <Filter>win32</Filter>
     </ClCompile>
@@ -373,6 +376,9 @@
     </ClInclude>
     <ClInclude Include="src\XPM.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="win32\HanjaDic.h">
+      <Filter>win32</Filter>
     </ClInclude>
     <ClInclude Include="win32\PlatWin.h">
       <Filter>win32</Filter>
