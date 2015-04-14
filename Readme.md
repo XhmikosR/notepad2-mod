@@ -1,7 +1,7 @@
 Getting started
 ---------------
 
-* Install [node.js](http://nodejs.org/download/)
+* Install [node.js](https://nodejs.org/download/)
 * Install the node.js dependencies: `npm install`
 * Run `node make` or `node make minify`
 
