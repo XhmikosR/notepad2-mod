@@ -19,7 +19,7 @@
 ## Supported Operating Systems:
 * XP (SP3, SP2 might or might not work), Vista, 7, 8 and 8.1 both 32-bit and 64-bit
 
-## [Screenshots](http://xhmikosr.github.io/notepad2-mod/screenshots)
+## [Screenshots](https://xhmikosr.github.io/notepad2-mod/screenshots)
 
 ## Notes:
 * If you find any bugs or have any suggestions for the implemented lexers (and **not** only)
