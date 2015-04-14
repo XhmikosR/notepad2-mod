@@ -1,8 +1,13 @@
+markdown:       kramdown
+highlighter:    false
+#permalink:      pretty
+
 exclude:
-- "LICENSE.md"
-- "make.js"
-- "node_modules"
-- "package.json"
-- "params.json"
-- "Readme.md"
-- "run-tests.js"
+  - "img/old/"
+  - "LICENSE.md"
+  - "make.js"
+  - "node_modules/"
+  - "package.json"
+  - "params.json"
+  - "Readme.md"
+  - "run-tests.js"
