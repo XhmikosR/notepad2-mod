@@ -65,6 +65,9 @@ IF NOT EXIST "..\%INPUTDIRx86%\Notepad2.exe" CALL :SUBMSG "ERROR" "Compile Notep
 IF NOT EXIST "..\%INPUTDIRx64%\Notepad2.exe" CALL :SUBMSG "ERROR" "Compile Notepad2 x64 first!"
 
 CALL :SubGetVersion
+CALL :SubDetectSevenzipPath
+
+IF /I "%SEVENZIP%" == "" CALL :SUBMSG "ERROR" "7za wasn't found!"
 
 IF /I "%SIGN%" == "True" CALL :SubSign %INPUTDIRx86%
 IF /I "%SIGN%" == "True" CALL :SubSign %INPUTDIRx64%
@@ -83,7 +86,7 @@ IF EXIST "Notepad2-mod.%NP2_VER%*.zip" COPY /Y /V "Notepad2-mod.%NP2_VER%*.zip" 
 
 PUSHD "%TEMP_NAME%"
 
-START "" /B /WAIT "..\..\..\distrib\7za.exe" a -tzip -mx=9 Notepad2-mod.zip * >NUL
+"%SEVENZIP%" a -tzip -mx=9 Notepad2-mod.zip * >NUL
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
 CALL :SUBMSG "INFO" "Notepad2-mod.zip created successfully!"
@@ -117,7 +120,7 @@ FOR %%A IN ("..\License.txt" "..\%1\Notepad2.exe"^
 ) DO COPY /Y /V "%%A" "%TEMP_NAME%\"
 
 PUSHD "%TEMP_NAME%"
-START "" /B /WAIT "..\..\distrib\7za.exe" a -tzip -mx=9^
+"%SEVENZIP%" a -tzip -mx=9^
  "%ZIP_NAME%.zip" "License.txt" "Notepad2.exe"^
  "Notepad2.ini" "Notepad2.txt" "Readme-mod.txt" >NUL
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
@@ -127,6 +130,19 @@ CALL :SUBMSG "INFO" "%ZIP_NAME%.zip created successfully!"
 MOVE /Y "%ZIP_NAME%.zip" "..\packages" >NUL
 POPD
 IF EXIST "%TEMP_NAME%" RD /S /Q "%TEMP_NAME%"
+EXIT /B
+
+
+:SubDetectSevenzipPath
+FOR %%G IN (7z.exe) DO (SET "SEVENZIP_PATH=%%~$PATH:G")
+IF EXIST "%SEVENZIP_PATH%" (SET "SEVENZIP=%SEVENZIP_PATH%" & EXIT /B)
+
+FOR %%G IN (7za.exe) DO (SET "SEVENZIP_PATH=%%~$PATH:G")
+IF EXIST "%SEVENZIP_PATH%" (SET "SEVENZIP=%SEVENZIP_PATH%" & EXIT /B)
+
+FOR /F "tokens=2*" %%A IN (
+  'REG QUERY "HKLM\SOFTWARE\7-Zip" /v "Path" 2^>NUL ^| FIND "REG_SZ" ^|^|
+   REG QUERY "HKLM\SOFTWARE\Wow6432Node\7-Zip" /v "Path" 2^>NUL ^| FIND "REG_SZ"') DO SET "SEVENZIP=%%B\7z.exe"
 EXIT /B
 
 
