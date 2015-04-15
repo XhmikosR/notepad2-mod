@@ -8,7 +8,7 @@ rem *   Batch file used to build Notepad2 with MSVC2010
 rem *
 rem * See License.txt for details about distribution and modification.
 rem *
-rem *                                     (c) XhmikosR 2010-2013
+rem *                                     (c) XhmikosR 2010-2015
 rem *                                     https://github.com/XhmikosR/notepad2-mod
 rem *
 rem ******************************************************************************
@@ -130,9 +130,8 @@ EXIT /B
 :SUBMSVC
 ECHO.
 TITLE Building Notepad2-mod with MSVC2010 - %~1 "%~2|%~3"...
-"%WINDIR%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo Notepad2_VS2010.sln^
- /t:%~1 /p:Configuration=%~2;Platform=%~3 /consoleloggerparameters:Verbosity=minimal^
- /maxcpucount /nodeReuse:true
+"MSBuild.exe" /nologo Notepad2_VS2010.sln /t:%~1 /p:Configuration=%~2;Platform=%~3^
+ /consoleloggerparameters:Verbosity=minimal /maxcpucount /nodeReuse:true
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 EXIT /B
 
