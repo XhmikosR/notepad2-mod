@@ -1,0 +1,21 @@
+version: "{build}"
+
+clone_depth: 10
+
+environment:
+  matrix:
+    - MSVC_VERSION: "2013"
+#    - MSVC_VERSION: "2012"
+#    - MSVC_VERSION: "2010"
+#    - MSVC_VERSION: "WDK"
+
+# Disable build since we do this in test_script
+build: off
+
+# Actual test command
+test_script:
+  - IF /I "%MSVC_VERSION%" == "WDK" (SET BAT_NAME=build_wdk.bat) ELSE (SET BAT_NAME=build_vs%MSVC_VERSION%.bat)
+  - CALL "build\%BAT_NAME%" Build All Release
+
+matrix:
+  fast_finish: true
