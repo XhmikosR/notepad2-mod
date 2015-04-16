@@ -481,6 +481,70 @@
       </li>
     </ul>
     <h3>
+       <a href="http://prdownloads.sourceforge.net/scintilla/scite355.zip?download">Release 3.5.5</a>
+    </h3>
+    <ul>
+	<li>
+	Released 17 April 2015.
+	</li>
+	<li>
+	Scintilla on Windows is now always a wide character window so SCI_SETKEYSUNICODE has no effect
+	and SCI_GETKEYSUNICODE always returns true. These APIs are deprecated and should not be called.
+	</li>
+	<li>
+	The wxWidgets-specific ascent member of Font has been removed which breaks
+	compatibility with current wxStyledTextCtrl.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1682/">Bug #1682</a>.
+	</li>
+	<li>
+	IME on Qt supports multiple carets and behaves more like other platforms.
+	</li>
+	<li>
+	Always use inline IME on GTK+ for Korean.
+	</li>
+	<li>
+	SQL lexer fixes handling of '+' and '-' in numbers so the '-' in '1-1' is seen as an operator and for
+	'1--comment' the comment is recognized.
+	</li>
+	<li>
+	TCL lexer reverts change to string handling.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1642/">Bug #1642</a>.
+	</li>
+	<li>
+	Verilog lexer fixes bugs with macro styling.
+	Verilog folder fixes bugs with `end completing an `if* instead of `endif and fold.at.else, and implements
+	folding at preprocessor `else.
+	</li>
+	<li>
+	VHDL lexer supports extended identifiers.
+	</li>
+	<li>
+	Fix bug on Cocoa where the calltip would display incorrectly when
+	switching calltips and the new calltip required a taller window.
+	</li>
+	<li>
+	Fix leak on Cocoa with autocompletion lists.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1706/">Bug #1706</a>.
+	</li>
+	<li>
+	Fix potential crash on Cocoa with drag and drop.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1709/">Bug #1709</a>.
+	</li>
+	<li>
+	Fix bug on Windows when compiling with MinGW-w64 which caused text to not be drawn
+	when in wrap mode.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1705/">Bug #1705</a>.
+	</li>
+	<li>
+	Fix SciTE bug with missing file open filters and add hex to excluded set of properties files so that its
+	settings don't appear.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1707/">Bug #1707</a>.
+	</li>
+	<li>
+	Fix SciTE bug where files without extensions like "makefile" were not highlighted correctly.
+	</li>
+    </ul>
+    <h3>
        <a href="http://prdownloads.sourceforge.net/scintilla/scite354.zip?download">Release 3.5.4</a>
     </h3>
     <ul>
@@ -545,6 +609,9 @@
 	<li>
 	Fix adaptive scrolling speed for GTK+ on OS X with GTK Quartz backend (as opposed to X11 backend).
 	<a href="http://sourceforge.net/p/scintilla/bugs/1696/">Bug #1696</a>.
+	</li>
+	<li>
+	Fix position of autocompletion and calltips on Cocoa when there were two screens stacked vertically.
 	</li>
 	<li>
 	Fix crash in SciTE when saving large files in background when closing application.
