@@ -587,14 +587,14 @@ struct Sci_TextRange {
 };
 </pre>
 
-    <h3 id="EncodedAccess">Specific to GTK+ and Cocoa only: Access to encoded text</h3>
+    <h3 id="EncodedAccess">Specific to GTK+, Cocoa and Windows only: Access to encoded text</h3>
 
     <p><b id="SCI_TARGETASUTF8">SCI_TARGETASUTF8(&lt;unused&gt;, char *s)</b><br />
      This method retrieves the value of the target encoded as UTF-8 which is the default
      encoding of GTK+ so is useful for retrieving text for use in other parts of the user interface,
      such as find and replace dialogs. The length of the encoded text in bytes is returned.
      Cocoa uses UTF-16 which is easily converted from UTF-8 so this method can be used to perform the
-     more complex work of transcoding from the various of encodings supported.
+     more complex work of transcoding from the various encodings supported.
     </p>
 
     <p><b id="SCI_ENCODEDFROMUTF8">SCI_ENCODEDFROMUTF8(const char *utf8, char *encoded)</b><br />

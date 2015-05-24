@@ -12,7 +12,7 @@
 #include "HanjaDic.h"
 
 #ifdef SCI_NAMESPACE
-using namespace Scintilla;
+namespace Scintilla {
 #endif
 
 namespace HanjaDict {
@@ -124,3 +124,6 @@ int GetHangulOfHanja(wchar_t *inout) {
 }
 
 }
+#ifdef SCI_NAMESPACE
+}
+#endif

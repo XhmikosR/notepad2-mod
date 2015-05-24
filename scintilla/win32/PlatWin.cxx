@@ -634,11 +634,14 @@ void SurfaceGDI::Init(SurfaceID sid, WindowID) {
 
 void SurfaceGDI::InitPixMap(int width, int height, Surface *surface_, WindowID) {
 	Release();
-	hdc = ::CreateCompatibleDC(static_cast<SurfaceGDI *>(surface_)->hdc);
+	SurfaceGDI *psurfOther = static_cast<SurfaceGDI *>(surface_);
+	hdc = ::CreateCompatibleDC(psurfOther->hdc);
 	hdcOwned = true;
-	bitmap = ::CreateCompatibleBitmap(static_cast<SurfaceGDI *>(surface_)->hdc, width, height);
+	bitmap = ::CreateCompatibleBitmap(psurfOther->hdc, width, height);
 	bitmapOld = static_cast<HBITMAP>(::SelectObject(hdc, bitmap));
 	::SetTextAlign(reinterpret_cast<HDC>(hdc), TA_BASELINE);
+	SetUnicodeMode(psurfOther->unicodeMode);
+	SetDBCSMode(psurfOther->codePage);
 }
 
 void SurfaceGDI::PenColour(ColourDesired fore) {
@@ -1287,6 +1290,8 @@ void SurfaceD2D::InitPixMap(int width, int height, Surface *surface_, WindowID) 
 		pRenderTarget->BeginDraw();
 		ownRenderTarget = true;
 	}
+	SetUnicodeMode(psurfOther->unicodeMode);
+	SetDBCSMode(psurfOther->codePage);
 }
 
 void SurfaceD2D::PenColour(ColourDesired fore) {
