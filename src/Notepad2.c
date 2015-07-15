@@ -672,6 +672,8 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInst,LPSTR lpCmdLine,int n
   if (!(hwnd = InitInstance(hInstance,lpCmdLine,nCmdShow)))
     return FALSE;
 
+  SciCall_SetTechnology(SC_TECHNOLOGY_DIRECTWRITE);
+
   hAccMain = LoadAccelerators(hInstance,MAKEINTRESOURCE(IDR_MAINWND));
   hAccFindReplace = LoadAccelerators(hInstance,MAKEINTRESOURCE(IDR_ACCFINDREPLACE));
 
@@ -3657,9 +3659,9 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
         }
         else
         {
-            // define (behöver bara göra detta en gång egentligen)
-            //SendMessage( hwndEdit , SCI_MARKERSETBACK , 0 , 74 | (203 << 8) | (0 << 16) ); //behöver bara göra detta en gång egentligen
-            //SendMessage( hwndEdit , SCI_MARKERDEFINE , 0 , SC_MARK_ARROWS );    //behöver bara göra detta en gång egentligen
+            // define (behÃ¶ver bara gÃ¶ra detta en gÃ¥ng egentligen)
+            //SendMessage( hwndEdit , SCI_MARKERSETBACK , 0 , 74 | (203 << 8) | (0 << 16) ); //behÃ¶ver bara gÃ¶ra detta en gÃ¥ng egentligen
+            //SendMessage( hwndEdit , SCI_MARKERDEFINE , 0 , SC_MARK_ARROWS );    //behÃ¶ver bara gÃ¶ra detta en gÃ¥ng egentligen
 
             if( bShowSelectionMargin )
             {
@@ -3673,8 +3675,8 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
             }
 
 
-            //SendMessage( hwndEdit , SCI_MARKERSETBACK , 0 , 180 | (255 << 8) | (180 << 16) ); //behöver bara göra detta en gång egentligen
-            //SendMessage( hwndEdit , SCI_MARKERDEFINE , 0 , SC_MARK_BACKGROUND );    //behöver bara göra detta en gång egentligen
+            //SendMessage( hwndEdit , SCI_MARKERSETBACK , 0 , 180 | (255 << 8) | (180 << 16) ); //behÃ¶ver bara gÃ¶ra detta en gÃ¥ng egentligen
+            //SendMessage( hwndEdit , SCI_MARKERDEFINE , 0 , SC_MARK_BACKGROUND );    //behÃ¶ver bara gÃ¶ra detta en gÃ¥ng egentligen
 
             // set
             SendMessage( hwndEdit , SCI_MARKERADD , iLine , 0 );
