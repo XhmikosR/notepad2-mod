@@ -2459,12 +2459,12 @@ PEDITLEXER pLexArray[NUMLEXERS] =
   &lexDefault,
   &lexANSI,
   &lexAVS,
-  &lexCOFFEESCRIPT,
   &lexCONF, //Apache Config Scripts
   &lexASM,
   &lexAHK,
   &lexAU3,
   &lexBAT,
+  &lexCOFFEESCRIPT,
   &lexINI,
   &lexCPP,
   &lexCS,
