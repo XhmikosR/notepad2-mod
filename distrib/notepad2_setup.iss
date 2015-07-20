@@ -1,6 +1,6 @@
 ;* Notepad2-mod - Installer script
 ;*
-;* Copyright (C) 2010-2014 XhmikosR
+;* Copyright (C) 2010-2015 XhmikosR
 ;*
 ;* This file is part of Notepad2-mod.
 ;*
@@ -16,8 +16,8 @@
 ;#define WDK
 
 ; Preprocessor related stuff
-#if VER < EncodeVer(5,5,4)
-  #error Update your Inno Setup version (5.5.4 or newer)
+#if VER < EncodeVer(5,5,6)
+  #error Update your Inno Setup version (5.5.6 or newer)
 #endif
 
 #if !defined(VS2010) && !defined(VS2012) && !defined(VS2013) && !defined(WDK)
@@ -107,6 +107,7 @@ ArchitecturesInstallIn64BitMode=x64
 SignTool=MySignTool
 #endif
 CloseApplications=true
+SetupMutex='{#app_name}' + '_setup_mutex'
 
 
 [Languages]
@@ -123,7 +124,6 @@ SetupWindowTitle =Setup - {#app_name}
 en.msg_AppIsRunning          =Setup has detected that {#app_name} is currently running.%n%nPlease close all instances of it now, then click OK to continue, or Cancel to exit.
 en.msg_AppIsRunningUninstall =Uninstall has detected that {#app_name} is currently running.%n%nPlease close all instances of it now, then click OK to continue, or Cancel to exit.
 en.msg_DeleteSettings        =Do you also want to delete {#app_name}'s settings?%n%nIf you plan on installing {#app_name} again then you do not have to delete them.
-en.msg_SetupIsRunningWarning ={#app_name} setup is already running!
 #if defined(sse_required)
 en.msg_simd_sse              =This build of {#app_name} requires a CPU with SSE extension support.%n%nYour CPU does not have those capabilities.
 #elif defined(sse2_required)
@@ -188,9 +188,7 @@ Type: dirifempty; Name: {app}
 
 
 [Code]
-const
-  installer_mutex = '{#app_name}' + '_setup_mutex';
-  IFEO            = 'SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe';
+const IFEO = 'SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe';
 
 #if defined(sse_required) || defined(sse2_required)
 function IsProcessorFeaturePresent(Feature: Integer): Boolean;
@@ -400,14 +398,7 @@ end;
 
 function InitializeSetup(): Boolean;
 begin
-  // Create a mutex for the installer and if it's already running then show a message and stop installation
-  if CheckForMutexes(installer_mutex) and not WizardSilent() then begin
-    SuppressibleMsgBox(CustomMessage('msg_SetupIsRunningWarning'), mbError, MB_OK, MB_OK);
-    Result := False;
-  end
-  else begin
     Result := True;
-    CreateMutex(installer_mutex);
 
 #if defined(sse2_required)
     if not IsSSE2Supported() then begin
@@ -415,25 +406,10 @@ begin
       Result := False;
     end;
 #elif defined(sse_required)
-    if not IsSSESupported() then begin
+    if IsSSESupported() then begin
       SuppressibleMsgBox(CustomMessage('msg_simd_sse'), mbCriticalError, MB_OK, MB_OK);
       Result := False;
     end;
 #endif
 
-  end;
-end;
-
-
-function InitializeUninstall(): Boolean;
-begin
-  if CheckForMutexes(installer_mutex) then begin
-    SuppressibleMsgBox(CustomMessage('msg_SetupIsRunningWarning'), mbError, MB_OK, MB_OK);
-    Result := False;
-  end
-  else begin
-    Result := True;
-    CreateMutex(installer_mutex);
-
-  end;
 end;
