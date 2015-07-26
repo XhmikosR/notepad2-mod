@@ -406,7 +406,7 @@ begin
       Result := False;
     end;
 #elif defined(sse_required)
-    if IsSSESupported() then begin
+    if not IsSSESupported() then begin
       SuppressibleMsgBox(CustomMessage('msg_simd_sse'), mbCriticalError, MB_OK, MB_OK);
       Result := False;
     end;
