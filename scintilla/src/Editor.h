@@ -326,6 +326,7 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	bool SelectionContainsProtected();
 	int MovePositionOutsideChar(int pos, int moveDir, bool checkLineEnd=true) const;
 	SelectionPosition MovePositionOutsideChar(SelectionPosition pos, int moveDir, bool checkLineEnd=true) const;
+	void MovedCaret(SelectionPosition newPos, SelectionPosition previousPos, bool ensureVisible);
 	void MovePositionTo(SelectionPosition newPos, Selection::selTypes selt=Selection::noSel, bool ensureVisible=true);
 	void MovePositionTo(int newPos, Selection::selTypes selt=Selection::noSel, bool ensureVisible=true);
 	SelectionPosition MovePositionSoVisible(SelectionPosition pos, int moveDir);
@@ -458,9 +459,15 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	void Duplicate(bool forLine);
 	virtual void CancelModes();
 	void NewLine();
+	SelectionPosition PositionUpOrDown(SelectionPosition spStart, int direction, int lastX);
 	void CursorUpOrDown(int direction, Selection::selTypes selt);
 	void ParaUpOrDown(int direction, Selection::selTypes selt);
 	int StartEndDisplayLine(int pos, bool start);
+	int VCHomeDisplayPosition(int position);
+	int VCHomeWrapPosition(int position);
+	int LineEndWrapPosition(int position);
+	int HorizontalMove(unsigned int iMessage);
+	int DelWordOrLine(unsigned int iMessage);
 	virtual int KeyCommand(unsigned int iMessage);
 	virtual int KeyDefault(int /* key */, int /*modifiers*/);
 	int KeyDownWithModifiers(int key, int modifiers, bool *consumed);

@@ -472,6 +472,7 @@
 	<td>Stefan Küng</td>
       </tr><tr>
 	<td>Jiří Techet</td>
+	<td>Jonathan Hunt</td>
     </tr>
     </table>
     <p>
@@ -484,7 +485,89 @@
       </li>
     </ul>
     <h3>
-       <a href="http://prdownloads.sourceforge.net/scintilla/scite356.zip?download">Release 3.5.7</a>
+       <a href="http://prdownloads.sourceforge.net/scintilla/scite360.zip?download">Release 3.6.0</a>
+    </h3>
+    <ul>
+	<li>
+	Released 3 August 2015.
+	</li>
+	<li>
+	External interfaces use the Sci_Position and Sci_PositionU typedefs instead of int and unsigned int
+	to allow for changes to a 64-bit interface on 64-bit plactforms in the future.
+	Applications and external lexers should start using the new type names so that
+	they will be compatible when the 64-bit change occurs.
+	There is also Sci_PositionCR (long) for use in the Sci_CharacterRange struct which will
+	also eventually become 64-bit.
+	</li>
+	<li>
+	Multiple selection now works over more key commands.
+	The new multiple-selection handling commands include horizontal movement and selection commands,
+	line up and down movement and selection commands, word and line deletion commands, and
+	line end insertion.
+	This change in behaviours is conditional on setting the SCI_SETADDITIONALSELECTIONTYPING property.
+	</li>
+	<li>
+	Autocompletion lists send an SCN_AUTOCCOMPLETED notification after the text has been inserted.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/1109/">Feature #1109.</a>
+	</li>
+	<li>
+	The case mode style attribute can now be SC_CASE_CAMEL.
+	</li>
+	<li>
+	The Python lexer supports substyles for identifiers.
+	</li>
+	<li>
+	SciTE adds support for substyles.
+	</li>
+	<li>
+	SciTE's Export as RTF and Copy as RTF commands support UTF-8.
+	</li>
+	<li>
+	SciTE can display autocompletion on all IME input with ime.autocomplete property.
+	</li>
+	<li>
+	SciTE properties files now discard trailing white space on variable names.
+	</li>
+	<li>
+	Calling SCI_SETIDENTIFIERS resets styling to ensure any added identifier are highlighted.
+	</li>
+	<li>
+	Avoid candidate box randomly popping up away from edit pane with (especially
+	Japanese) IME input.
+	</li>
+	<li>
+	On Cocoa fix problems with positioning of autocompletion lists near screen edge
+	or under dock. Cancel autocompletion when window moved.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1740/">Bug #1740</a>.
+	</li>
+	<li>
+	Fix drawing problem when control characters are in a hidden style as they then
+	have a zero width rectangle to draw but modify that rectangle in a way that
+	clears some pixels.
+	</li>
+	<li>
+	Report error when attempt to resize buffer to more than 2GB with SC_STATUS_FAILURE.
+	</li>
+	<li>
+	Fix bug on GTK+ with scroll bars leaking.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1742/">Bug #1742</a>.
+	</li>
+	<li>
+	LexOthers.cxx file split into one file per lexer: LexBatch, LexDiff,
+	LexErrorList, LexMake, LexNull, and LexProps.
+	</li>
+	<li>
+	SciTE exporters handle styles &gt; 127 correctly now.
+	</li>
+	<li>
+	SciTE on Windows can scale window element sizes based on the system DPI setting.
+	</li>
+	<li>
+	SciTE implements find.in.files.close.on.find on all platforms, not just Windows.
+	</li>
+    </ul>
+    <h3>
+       <a href="http://prdownloads.sourceforge.net/scintilla/scite357.zip?download">Release 3.5.7</a>
     </h3>
     <ul>
 	<li>

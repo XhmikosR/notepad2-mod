@@ -128,21 +128,26 @@ SCI_LEX_OBJ = \
     $(SCI_LEX_OBJDIR)\LexAU3.obj \
     $(SCI_LEX_OBJDIR)\LexAVS.obj \
     $(SCI_LEX_OBJDIR)\LexBash.obj \
+    $(SCI_LEX_OBJDIR)\LexBatch.obj \
     $(SCI_LEX_OBJDIR)\LexCmake.obj \
     $(SCI_LEX_OBJDIR)\LexCoffeeScript.obj \
     $(SCI_LEX_OBJDIR)\LexConf.obj \
     $(SCI_LEX_OBJDIR)\LexCPP.obj \
     $(SCI_LEX_OBJDIR)\LexCSS.obj \
+    $(SCI_LEX_OBJDIR)\LexDiff.obj \
+    $(SCI_LEX_OBJDIR)\LexErrorList.obj \
     $(SCI_LEX_OBJDIR)\LexHTML.obj \
     $(SCI_LEX_OBJDIR)\LexInno.obj \
     $(SCI_LEX_OBJDIR)\LexLaTeX.obj \
     $(SCI_LEX_OBJDIR)\LexLua.obj \
+    $(SCI_LEX_OBJDIR)\LexMake.obj \
     $(SCI_LEX_OBJDIR)\LexMarkdown.obj \
     $(SCI_LEX_OBJDIR)\LexNsis.obj \
-    $(SCI_LEX_OBJDIR)\LexOthers.obj \
+    $(SCI_LEX_OBJDIR)\LexNull.obj \
     $(SCI_LEX_OBJDIR)\LexPascal.obj \
     $(SCI_LEX_OBJDIR)\LexPerl.obj \
     $(SCI_LEX_OBJDIR)\LexPowerShell.obj \
+    $(SCI_LEX_OBJDIR)\LexProps.obj \
     $(SCI_LEX_OBJDIR)\LexPython.obj \
     $(SCI_LEX_OBJDIR)\LexRuby.obj \
     $(SCI_LEX_OBJDIR)\LexSQL.obj \

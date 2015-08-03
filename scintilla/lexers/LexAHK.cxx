@@ -84,8 +84,8 @@ static void HighlightKeyword(
 }
 
 static void ColouriseAHKDoc(
-	unsigned int startPos,
-	int length,
+	Sci_PositionU startPos,
+	Sci_Position length,
 	int initStyle,
 	WordList *keywordlists[],
 	Accessor &styler) {
@@ -398,11 +398,11 @@ static void ColouriseAHKDoc(
 	sc.Complete();
 }
 
-static void FoldAHKDoc(unsigned int startPos, int length, int initStyle,
+static void FoldAHKDoc(Sci_PositionU startPos, Sci_Position length, int initStyle,
                             WordList *[], Accessor &styler) {
 	bool foldComment = styler.GetPropertyInt("fold.comment") != 0;
 	bool foldCompact = styler.GetPropertyInt("fold.compact", 1) != 0;
-	unsigned int endPos = startPos + length;
+	Sci_PositionU endPos = startPos + length;
 	bool bOnlySpaces = true;
 	int lineCurrent = styler.GetLine(startPos);
 	int levelCurrent = SC_FOLDLEVELBASE;
@@ -413,7 +413,7 @@ static void FoldAHKDoc(unsigned int startPos, int length, int initStyle,
 	char chNext = styler[startPos];
 	int styleNext = styler.StyleAt(startPos);
 	int style = initStyle;
-	for (unsigned int i = startPos; i < endPos; i++) {
+	for (Sci_PositionU i = startPos; i < endPos; i++) {
 		char ch = chNext;
 		chNext = styler.SafeGetCharAt(i + 1);
 		int stylePrev = style;

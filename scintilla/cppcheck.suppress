@@ -17,6 +17,7 @@ useInitializationList:scintilla/lexers/LexAsm.cxx
 useInitializationList:scintilla/lexers/LexBasic.cxx
 noCopyConstructor:scintilla/lexers/LexBash.cxx
 variableScope:scintilla/lexers/LexBash.cxx
+variableScope:scintilla/lexers/LexBatch.cxx
 variableScope:scintilla/lexers/LexCmake.cxx
 variableScope:scintilla/lexers/LexCSS.cxx
 useInitializationList:scintilla/lexers/LexD.cxx
@@ -29,7 +30,6 @@ variableScope:scintilla/lexers/LexModula.cxx
 variableScope:scintilla/lexers/LexNimrod.cxx
 variableScope:scintilla/lexers/LexNsis.cxx
 variableScope:scintilla/lexers/LexOpal.cxx
-variableScope:scintilla/lexers/LexOthers.cxx
 variableScope:scintilla/lexers/LexPB.cxx
 noCopyConstructor:scintilla/lexers/LexPerl.cxx
 variableScope:scintilla/lexers/LexRuby.cxx
