@@ -9,7 +9,7 @@ rem *   Originally taken and adapted from  https://github.com/mpc-hc/mpc-hc
 rem *
 rem * See License.txt for details about distribution and modification.
 rem *
-rem *                                     (c) XhmikosR 2013-2014
+rem *                                     (c) XhmikosR 2013-2015
 rem *                                     https://github.com/XhmikosR/notepad2-mod
 rem *
 rem ******************************************************************************
@@ -19,7 +19,7 @@ SETLOCAL
 
 PUSHD %~dp0
 
-IF NOT DEFINED COVDIR SET "COVDIR=H:\progs\thirdparty\cov-analysis-win64-7.5.0"
+IF NOT DEFINED COVDIR SET "COVDIR=H:\progs\thirdparty\cov-analysis-win64"
 IF DEFINED COVDIR IF NOT EXIST "%COVDIR%" (
   ECHO.
   ECHO ERROR: Coverity not found in "%COVDIR%"
