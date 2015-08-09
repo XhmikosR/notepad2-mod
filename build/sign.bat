@@ -9,7 +9,7 @@ rem *   Originally taken and adapted from  https://github.com/mpc-hc/mpc-hc
 rem *
 rem * See License.txt for details about distribution and modification.
 rem *
-rem *                                     (c) XhmikosR 2013-2014
+rem *                                     (c) XhmikosR 2013-2015
 rem *                                     https://github.com/XhmikosR/notepad2-mod
 rem *
 rem ******************************************************************************
@@ -23,8 +23,8 @@ IF "%~1" == "" (
   GOTO END
 )
 
-IF NOT DEFINED VS120COMNTOOLS (
-  ECHO %~nx0: Visual Studio 2013 does not seem to be installed...
+IF NOT DEFINED VS140COMNTOOLS (
+  ECHO %~nx0: Visual Studio 2015 does not seem to be installed...
   SET SIGN_ERROR=True
   GOTO END
 )
@@ -41,7 +41,7 @@ SET /P SIGN_CMD=<%~dp0..\signinfo_notepad2-mod.txt
 TITLE Signing "%~1"...
 ECHO. & ECHO Signing "%~1"...
 
-signtool /? 2>NUL || CALL "%VS120COMNTOOLS%..\..\VC\vcvarsall.bat" 2>NUL
+signtool /? 2>NUL || CALL "%VS140COMNTOOLS%..\..\VC\vcvarsall.bat" 2>NUL
 IF %ERRORLEVEL% NEQ 0 (
   ECHO vcvarsall.bat call failed.
   GOTO End

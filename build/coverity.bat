@@ -27,7 +27,7 @@ IF DEFINED COVDIR IF NOT EXIST "%COVDIR%" (
 )
 
 
-CALL "%VS120COMNTOOLS%..\..\VC\vcvarsall.bat" x86
+CALL "%VS140COMNTOOLS%..\..\VC\vcvarsall.bat" x86
 IF %ERRORLEVEL% NEQ 0 (
   ECHO vcvarsall.bat call failed.
   GOTO End
@@ -42,7 +42,7 @@ IF EXIST "Notepad2-mod.tgz"  DEL "Notepad2-mod.tgz"
 
 
 :Main
-"%COVDIR%\bin\cov-build.exe" --dir cov-int "build_vs2013.bat" Rebuild All Release
+"%COVDIR%\bin\cov-build.exe" --dir cov-int "build_vs2015.bat" Rebuild All Release
 
 
 :tar

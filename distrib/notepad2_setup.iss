@@ -13,6 +13,7 @@
 ;#define VS2010
 ;#define VS2012
 ;#define VS2013
+;#define VS2015
 ;#define WDK
 
 ; Preprocessor related stuff
@@ -20,8 +21,8 @@
   #error Update your Inno Setup version (5.5.6 or newer)
 #endif
 
-#if !defined(VS2010) && !defined(VS2012) && !defined(VS2013) && !defined(WDK)
-  #error You need to define the compiler used; VS2010, VS2012, VS2013 or WDK
+#if !defined(VS2010) && !defined(VS2012) && !defined(VS2013) && !defined(VS2015) && !defined(WDK)
+  #error You need to define the compiler used; VS2010, VS2012, VS2013, VS2015 or WDK
 #endif
 
 #if defined(VS2010)
@@ -30,6 +31,8 @@
   #define compiler "VS2012"
 #elif defined(VS2013)
   #define compiler "VS2013"
+#elif defined(VS2015)
+  #define compiler "VS2015"
 #elif defined(WDK)
   #define compiler "WDK"
 #endif
@@ -69,7 +72,7 @@ AppContact=https://github.com/XhmikosR/notepad2-mod
 AppCopyright={#app_copyright}
 VersionInfoVersion={#app_version}
 UninstallDisplayIcon={app}\Notepad2.exe
-#if defined(VS2013)
+#if defined(VS2015)
 UninstallDisplayName={#app_name} {#app_version}
 #else
 UninstallDisplayName={#app_name} {#app_version} ({#compiler})
@@ -77,7 +80,7 @@ UninstallDisplayName={#app_name} {#app_version} ({#compiler})
 DefaultDirName={pf}\Notepad2
 LicenseFile=license.txt
 OutputDir=.
-#if defined(VS2013)
+#if defined(VS2015)
 OutputBaseFilename={#app_name}.{#app_version}
 #else
 OutputBaseFilename={#app_name}.{#app_version}_{#compiler}
