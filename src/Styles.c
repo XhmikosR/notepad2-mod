@@ -1274,6 +1274,29 @@ EDITLEXER lexRUBY = { SCLEX_RUBY, 63304, L"Ruby Script", L"rb; ruby; rbw; rake; 
                     { -1, 00000, L"", L"", L"" } } };
 
 
+KEYWORDLIST KeyWords_RUST = {
+"as break crate else enum extern false fn for if impl in let loop match mod move mut "
+"pub ref return static self Self struct super true trait type unsafe use virtual "
+"while continue box const where proc alignof become offsetof priv pure sizeof "
+"typeof unsized yield do abstract final override macro",
+"", "", "", "", "", "", "", "" };
+
+EDITLEXER lexRUST = { SCLEX_RUST, 63363, L"Rust Source Code", L"rs", L"", &KeyWords_RUST, {
+                    { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
+                    //{ SCE_P_DEFAULT, L"Default", L"", L"" },
+                    { MULTI_STYLE(SCE_RUST_COMMENTLINE,SCE_RUST_COMMENTBLOCK,SCE_P_COMMENTLINE,SCE_P_COMMENTBLOCK), 63127, L"Comment", L"fore:#008000", L"" },
+                    { MULTI_STYLE(SCE_RUST_COMMENTLINEDOC,SCE_RUST_COMMENTBLOCKDOC,0,0), 63223, L"Doc Comment", L"fore:#008000", L"" },
+                    { SCE_RUST_WORD, 63128, L"Keyword", L"fore:#00007F", L"" },
+                    { SCE_RUST_IDENTIFIER, 63129, L"Identifier", L"", L"" },
+                    { SCE_RUST_NUMBER, 63130, L"Number", L"fore:#008080", L"" },
+                    { SCE_RUST_OPERATOR, 63132, L"Operator", L"", L"" },
+                    { MULTI_STYLE(SCE_RUST_STRING,SCE_RUST_STRINGR,SCE_RUST_BYTESTRING,SCE_RUST_BYTESTRINGR), 63131, L"String", L"fore:#FF8000", L"" },
+                    { MULTI_STYLE(SCE_RUST_CHARACTER,SCE_RUST_BYTECHARACTER,0,0), 63135, L"Character", L"fore:#FF8000", L"" },
+                    { SCE_RUST_LIFETIME, 63316, L"Lifetime", L"fore:#C0A030", L"" },
+                    { SCE_RUST_MACRO, 63133, L"Macro", L"fore:#0000FF", L"" },
+                    { -1, 00000, L"", L"", L"" } } };
+
+
 KEYWORDLIST KeyWords_LUA = {
 "and break do else elseif end false for function goto if "
 "in local nil not or repeat return then true until while",
@@ -2485,6 +2508,7 @@ PEDITLEXER pLexArray[NUMLEXERS] =
   &lexPY,
   &lexRC,
   &lexRUBY,
+  &lexRUST,
   &lexBASH,
   &lexSQL,
   &lexTCL,
