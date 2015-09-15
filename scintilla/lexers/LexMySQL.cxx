@@ -267,10 +267,13 @@ static void ColouriseMySQLDoc(Sci_PositionU startPos, Sci_Position length, int i
               {
                 sc.SetState(SCE_MYSQL_COMMENT | activeState);
 
-                // Skip comment introducer and check for hidden command.
-                sc.Forward(2);
-                if (sc.ch == '!')
+                // Skip first char of comment introducer and check for hidden command.
+                // The second char is skipped by the outer loop.
+                sc.Forward();
+                if (sc.GetRelativeCharacter(1) == '!')
                 {
+                  // Version comment found. Skip * now.
+                  sc.Forward();
                   activeState = HIDDENCOMMAND_STATE;
                   sc.ChangeState(SCE_MYSQL_HIDDENCOMMAND);
                 }

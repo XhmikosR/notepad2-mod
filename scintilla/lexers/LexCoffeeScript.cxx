@@ -58,8 +58,7 @@ static bool FollowsPostfixOperator(StyleContext &sc, Accessor &styler) {
 	return false;
 }
 
-static bool followsReturnKeyword(StyleContext &sc, Accessor &styler) {
-    // Don't look at styles, so no need to flush.
+static bool followsKeyword(StyleContext &sc, Accessor &styler) {
 	Sci_Position pos = (Sci_Position) sc.currentPos;
 	Sci_Position currentLine = styler.GetLine(pos);
 	Sci_Position lineStartPos = styler.LineStart(currentLine);
@@ -69,15 +68,8 @@ static bool followsReturnKeyword(StyleContext &sc, Accessor &styler) {
 			break;
 		}
 	}
-	const char *retBack = "nruter";
-	const char *s = retBack;
-	while (*s
-	       && pos >= lineStartPos
-	       && styler.SafeGetCharAt(pos) == *s) {
-		s++;
-		pos--;
-	}
-	return !*s;
+	styler.Flush();
+	return styler.StyleAt(pos) == SCE_COFFEESCRIPT_WORD;
 }
 
 static void ColouriseCoffeeScriptDoc(Sci_PositionU startPos, Sci_Position length, int initStyle, WordList *keywordlists[],
@@ -146,6 +138,8 @@ static void ColouriseCoffeeScriptDoc(Sci_PositionU startPos, Sci_Position length
 						sc.ChangeState(SCE_COFFEESCRIPT_WORD2);
 					} else if (keywords4.InList(s)) {
 						sc.ChangeState(SCE_COFFEESCRIPT_GLOBALCLASS);
+					} else if (sc.LengthCurrent() > 0 && s[0] == '@') {
+						sc.ChangeState(SCE_COFFEESCRIPT_INSTANCEPROPERTY);
 					}
 					sc.SetState(SCE_COFFEESCRIPT_DEFAULT);
 				}
@@ -153,6 +147,7 @@ static void ColouriseCoffeeScriptDoc(Sci_PositionU startPos, Sci_Position length
 			case SCE_COFFEESCRIPT_WORD:
 			case SCE_COFFEESCRIPT_WORD2:
 			case SCE_COFFEESCRIPT_GLOBALCLASS:
+			case SCE_COFFEESCRIPT_INSTANCEPROPERTY:
 				if (!setWord.Contains(sc.ch)) {
 					sc.SetState(SCE_COFFEESCRIPT_DEFAULT);
 				}
@@ -239,7 +234,7 @@ static void ColouriseCoffeeScriptDoc(Sci_PositionU startPos, Sci_Position length
 				sc.Forward();
 			} else if (sc.ch == '/'
 				   && (setOKBeforeRE.Contains(chPrevNonWhite)
-				       || followsReturnKeyword(sc, styler))
+				       || followsKeyword(sc, styler))
 				   && (!setCouldBePostOp.Contains(chPrevNonWhite)
 				       || !FollowsPostfixOperator(sc, styler))) {
 				sc.SetState(SCE_COFFEESCRIPT_REGEX);	// JavaScript's RegEx

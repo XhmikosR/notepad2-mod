@@ -2694,7 +2694,7 @@ struct Sci_TextToFind {
     <code>SC_CHARSET_TURKISH</code>, and <code>SC_CHARSET_VIETNAMESE</code>.</p>
 
     <p>The character sets supported on GTK+ are:<br />
-     <code>SC_CHARSET_ANSI</code>, <code>SC_CHARSET_CYRILLIC</code> (code page 1251),
+     <code>SC_CHARSET_ANSI</code>, <code>SC_CHARSET_OEM866</code> (code page 866), <code>SC_CHARSET_CYRILLIC</code> (code page 1251),
      <code>SC_CHARSET_EASTEUROPE</code>,
     <code>SC_CHARSET_GB2312</code>, <code>SC_CHARSET_HANGUL</code>,
     <code>SC_CHARSET_RUSSIAN</code> (KOI8-R), <code>SC_CHARSET_SHIFTJIS</code>, and
@@ -7678,8 +7678,8 @@ EM_SETTARGETDEVICE
 
     <p>To build Scintilla or SciTE, see the README file present in both the Scintilla and SciTE
     directories. For Windows, GCC 4.7 or Microsoft Visual C++ 2010 can be used
-    for building. For GTK+, GCC 4.1 or newer should be used. GTK+ 2.8+ and 3.x are
-    supported. The version of GTK+ installed should be detected automatically.
+    for building. For GTK+, GCC 4.4 or newer should be used. GTK+ 2.18+ and 3.x are
+    supported with glib 2.22+. The version of GTK+ installed should be detected automatically.
     When both GTK+ 2 and GTK+ 3 are present, building for GTK+ 3.x requires defining GTK3
     on the command line.</p>
 

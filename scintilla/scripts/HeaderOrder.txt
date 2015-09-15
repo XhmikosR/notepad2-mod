@@ -33,6 +33,7 @@
 #include <algorithm>
 #include <memory>
 #include <regex>
+#include <sstream>
 
 // GTK+ headers
 #include <glib.h>
