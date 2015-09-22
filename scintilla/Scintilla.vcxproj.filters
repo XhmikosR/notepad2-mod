@@ -404,5 +404,6 @@
     <ClInclude Include="win32\PlatWin.h">
       <Filter>win32</Filter>
     </ClInclude>
+    <ClInclude Include="include\Sci_Position.h" />
   </ItemGroup>
 </Project>

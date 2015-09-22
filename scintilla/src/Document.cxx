@@ -1325,8 +1325,6 @@ int Document::CountCharacters(int startPos, int endPos) const {
 	int i = startPos;
 	while (i < endPos) {
 		count++;
-		if (IsCrLf(i))
-			i++;
 		i = NextPosition(i, 1);
 	}
 	return count;

@@ -473,6 +473,8 @@
       </tr><tr>
 	<td>Jiří Techet</td>
 	<td>Jonathan Hunt</td>
+	<td>Serg Stetsuk</td>
+	<td>Jordan Jueckstock</td>
     </tr>
     </table>
     <p>
@@ -483,6 +485,82 @@
         <a href="http://sourceforge.net/projects/icon-collection/">
         Icons</a> Copyright(C) 1998 by Dean S. Jones<br />
       </li>
+    </ul>
+    <h3>
+       <a href="http://prdownloads.sourceforge.net/scintilla/scite361.zip?download">Release 3.6.1</a>
+    </h3>
+    <ul>
+	<li>
+	Released 15 September 2015.
+	</li>
+	<li>
+	The oldest version of GTK+ supported now is 2.18 and for glib it is 2.22.
+	</li>
+	<li>
+	On GTK+, SC_CHARSET_OEM866 added to allow editing Russian files encoded in code page 866.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/1019/">Feature #1019.</a>
+	</li>
+	<li>
+	On Windows, reconversion is performed when requested by the IME.
+	</li>
+	<li>
+	CoffeeScript lexer adds lexical class for instance properties and fixes some cases of regex highlighting.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1749/">Bug #1749</a>.
+	</li>
+	<li>
+	The errorlist lexer understands some ANSI escape sequences to change foreground colour and intensity.
+	This is sufficient to colour diagnotic output from gcc and clang when -fdiagnostics-color set.
+	</li>
+	<li>
+	The errorlist lexer allows the line number to be 0 in GCC errors as some tools report whole file
+	errors as line 0.
+	</li>
+	<li>
+	MySql lexer fixes empty comments /**/ so the comment state does not continue.
+	</li>
+	<li>
+	VHDL folder supports "protected" keyword.
+	</li>
+	<li>
+	Treat CRLF line end as two characters in SCI_COUNTCHARACTERS.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1757/">Bug #1757</a>.
+	</li>
+	<li>
+	On GTK+ 3.x, fix height of lines in autocompletion lists to match the font.
+	Switch from deprecated style calls to CSS styling.
+	Removed setting list colours on GTK+ 3.16+ as no longer appears needed.
+	</li>
+	<li>
+	On GTK+, avoid "Invalid rectangle passed" warning messages by never reporting the client
+	rectangle with a negative width or height.
+	</li>
+	<li>
+	On Cocoa, copy Sci_Position.h into the framework so clients can build.
+	</li>
+	<li>
+	On Cocoa fix bug with drag and drop that could lead to crashes.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1751/">Bug #1751</a>.
+	</li>
+	<li>
+	Fix SciTE disk exhaustion bug by reporting failures when writing files.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1760/">Bug #1760</a>.
+	</li>
+	<li>
+	Fix find strip in SciTE on Windows XP to be visible.
+	</li>
+	<li>
+	SciTE on Windows changes the way it detects that a tool has finished executing to ensure all output data
+	from the process is read.
+	</li>
+	<li>
+	SciTE on Windows improves the time taken to read output from tools that produce a large amount
+	of output by a factor of around 10.
+	</li>
+	<li>
+	On GTK+ the keyboard command for View | End of Line was changed to Ctrl+Shift+N
+	to avoid clash with Search | Selection Add Next.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1750/">Bug #1750</a>.
+	</li>
     </ul>
     <h3>
        <a href="http://prdownloads.sourceforge.net/scintilla/scite360.zip?download">Release 3.6.0</a>

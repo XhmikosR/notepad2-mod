@@ -216,7 +216,7 @@ static void FoldNoBoxVHDLDoc(
   // don't check if the style for the keywords that I use to adjust the levels.
   char words[] =
     "architecture begin block case component else elsif end entity generate loop package process record then "
-    "procedure function when units";
+    "procedure protected function when units";
   WordList keywords;
   keywords.Set(words);
 
@@ -381,6 +381,7 @@ static void FoldNoBoxVHDLDoc(
             strcmp(s, "loop") == 0          ||
             strcmp(s, "package") ==0        ||
             strcmp(s, "process") == 0       ||
+            strcmp(s, "protected") == 0     ||
             strcmp(s, "record") == 0        ||
             strcmp(s, "then") == 0          ||
             strcmp(s, "units") == 0)
