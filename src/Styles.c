@@ -298,7 +298,7 @@ KEYWORDLIST KeyWords_CSS = {
 "" };
 
 
-EDITLEXER lexCSS = { SCLEX_CSS, 63003, L"CSS Style Sheets", L"css", L"", &KeyWords_CSS, {
+EDITLEXER lexCSS = { SCLEX_CSS, 63003, L"CSS Style Sheets", L"css; less; sass; scss", L"", &KeyWords_CSS, {
                      { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
                      //{ SCE_CSS_DEFAULT, L"Default", L"", L"" },
                      { SCE_CSS_COMMENT, 63127, L"Comment", L"fore:#646464", L"" },
@@ -2795,6 +2795,10 @@ void Style_SetLexer(HWND hwnd,PEDITLEXER pLexNew)
   }
   else if (pLexNew->iLexer == SCLEX_NSIS)
     SciCall_SetProperty("nsis.ignorecase", "1");
+  else if (pLexNew->iLexer == SCLEX_CSS) {
+    SciCall_SetProperty("lexer.css.scss.language", "1");
+    SciCall_SetProperty("lexer.css.less.language", "1");
+  }
 
   // Code folding
   SciCall_SetProperty("fold", "1");
