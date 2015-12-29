@@ -1217,8 +1217,8 @@ KEYWORDLIST KeyWords_INNO = {
 "updateuninstalllogappname usepreviousappdir usepreviousgroup usepreviouslanguage useprevioussetuptype useprevioustasks "
 "verb versioninfoproductname useprevioususerinfo userinfopage usesetupldr versioninfocompany versioninfocopyright "
 "versioninfodescription versioninfoproductversion versioninfotextversion versioninfoversion versioninfoproducttextversion "
-"welcomefontname welcomefontsize windowshowcaption windowstartmaximized windowresizable windowvisible wizardimagebackcolor "
-"wizardimagefile wizardimagestretch wizardsmallimagefile",
+"welcomefontname welcomefontsize windowshowcaption windowstartmaximized windowresizable windowvisible wizardimagealphaformat "
+"wizardimagebackcolor wizardimagefile wizardimagestretch wizardsmallimagefile",
 "appusermodelid afterinstall attribs beforeinstall check comment components copymode description destdir destname excludes "
 "extradiskspacerequired filename flags fontinstall groupdescription hotkey infoafterfile infobeforefile iconfilename "
 "iconindex key languages licensefile messagesfile minversion name onlybelowversion parameters permissions root runonceid "
