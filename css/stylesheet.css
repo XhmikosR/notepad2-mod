@@ -36,7 +36,6 @@ a:link {
 a:hover {
     color: #0354ab;
     text-decoration: underline;
-    text-shadow: 1px 0 #0354ab;
 }
 
 a:visited {
@@ -110,7 +109,7 @@ aside {
     font-weight: bold;
 }
 
-a.button {
+.button {
     color: white;
     font-size: 24px;
     line-height: 1.2;
@@ -134,8 +133,9 @@ a.button {
     background: transparent url("../img/sprite.png") no-repeat;
 }
 
-aside a.button {
+aside .button {
     background-position: 0 0;
+    color: white;
     display: block;
     font-size: 18px;
     margin-bottom: 20px;
@@ -144,7 +144,7 @@ aside a.button {
     height: 80px;
 }
 
-header a.button {
+header .button {
     background-position: 0 -88px;
     position: absolute;
     right: 0;
@@ -427,7 +427,7 @@ dl dd {
         font-size: 24px;
     }
 
-    header a.button {
+    header .button {
         background-color: #9ddcff;
         background-image: none;
         -webkit-border-radius: 5px;
