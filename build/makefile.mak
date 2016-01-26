@@ -53,6 +53,7 @@ NP2_RES        = ..\res
 DEFINES       = /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE" /D "_STL70_" \
                 /D "_STATIC_CPPLIB" /D "_CRT_SECURE_NO_WARNINGS" /D "BOOKMARK_EDITION" \
                 /D "WDK_BUILD"
+                # _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES is causing build errors
 INCLUDEDIRS   = /I "$(SCI_INC)" /I "$(SCI_LEX)" /I "$(SCI_LIB)" /I "$(SCI_SRC)" \
                 /I "$(SCI_WIN)"
 CXXFLAGS      = /nologo /c /W3 /WX /EHsc /MD /O2 /GL /MP $(DEFINES) $(INCLUDEDIRS)
@@ -127,21 +128,26 @@ SCI_LEX_OBJ = \
     $(SCI_LEX_OBJDIR)\LexAU3.obj \
     $(SCI_LEX_OBJDIR)\LexAVS.obj \
     $(SCI_LEX_OBJDIR)\LexBash.obj \
+    $(SCI_LEX_OBJDIR)\LexBatch.obj \
     $(SCI_LEX_OBJDIR)\LexCmake.obj \
     $(SCI_LEX_OBJDIR)\LexCoffeeScript.obj \
     $(SCI_LEX_OBJDIR)\LexConf.obj \
     $(SCI_LEX_OBJDIR)\LexCPP.obj \
     $(SCI_LEX_OBJDIR)\LexCSS.obj \
+    $(SCI_LEX_OBJDIR)\LexDiff.obj \
+    $(SCI_LEX_OBJDIR)\LexErrorList.obj \
     $(SCI_LEX_OBJDIR)\LexHTML.obj \
     $(SCI_LEX_OBJDIR)\LexInno.obj \
     $(SCI_LEX_OBJDIR)\LexLaTeX.obj \
     $(SCI_LEX_OBJDIR)\LexLua.obj \
+    $(SCI_LEX_OBJDIR)\LexMake.obj \
     $(SCI_LEX_OBJDIR)\LexMarkdown.obj \
     $(SCI_LEX_OBJDIR)\LexNsis.obj \
-    $(SCI_LEX_OBJDIR)\LexOthers.obj \
+    $(SCI_LEX_OBJDIR)\LexNull.obj \
     $(SCI_LEX_OBJDIR)\LexPascal.obj \
     $(SCI_LEX_OBJDIR)\LexPerl.obj \
     $(SCI_LEX_OBJDIR)\LexPowerShell.obj \
+    $(SCI_LEX_OBJDIR)\LexProps.obj \
     $(SCI_LEX_OBJDIR)\LexPython.obj \
     $(SCI_LEX_OBJDIR)\LexRuby.obj \
     $(SCI_LEX_OBJDIR)\LexSQL.obj \

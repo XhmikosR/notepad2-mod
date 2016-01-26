@@ -5666,7 +5666,7 @@ BOOL EditReplace(HWND hwnd,LPCEDITFINDREPLACE lpefr)
 //  CompleteWord()
 //  Auto-complete words (by Aleksandar Lekov)
 //
-typedef struct WLIST{
+struct WLIST {
   char* word;
   struct WLIST* next;
 };

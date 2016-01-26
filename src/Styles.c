@@ -238,10 +238,10 @@ EDITLEXER lexXML = { SCLEX_XML, 63002, L"XML Document", L"xml; xsl; rss; svg; xu
 
 
 KEYWORDLIST KeyWords_CSS = {
-"alignment-adjust alignment-baseline animation animation-delay "
+"align-content align-items align-self alignment-adjust alignment-baseline animation animation-delay "
 "animation-direction animation-duration animation-fill-mode animation-iteration-count animation-name "
 "animation-play-state animation-timing-function appearance ascent azimuth backface-visibility "
-"background background-attachment background-break background-clip background-color "
+"background background-attachment background-blend-mode background-break background-clip background-color "
 "background-image background-origin background-position background-repeat background-size "
 "baseline baseline-shift bbox binding bleed bookmark-label bookmark-level bookmark-state "
 "bookmark-target border border-bottom border-bottom-color border-bottom-left-radius "
@@ -259,32 +259,32 @@ KEYWORDLIST KeyWords_CSS = {
 "content counter-increment counter-reset crop cue cue-after cue-before cursor definition-src descent "
 "direction display dominant-baseline drop-initial-after-adjust drop-initial-after-align "
 "drop-initial-before-adjust drop-initial-before-align drop-initial-size drop-initial-value "
-"elevation empty-cells fit fit-position flex flex-basis flex-direction flex-flow flex-grow flex-shrink "
-"flex-wrap float float-offset flow-from flow-into font font-family font-feature-settings font-size "
+"elevation empty-cells fill fit fit-position flex flex-basis flex-direction flex-flow flex-grow flex-shrink "
+"flex-wrap float float-offset flow-from flow-into font font-family font-feature-settings font-kerning font-size "
 "font-size-adjust font-stretch font-style font-synthesis font-variant font-weight grid-columns grid-rows "
 "hanging-punctuation height hyphenate-after hyphenate-before hyphenate-character hyphenate-limit-chars "
-"hyphenate-limit-last hyphenate-limit-zone hyphenate-lines hyphenate-resource hyphens icon "
-"image-orientation  image-resolution inline-box-align insert-position interpret-as left letter-spacing "
+"hyphenate-limit-last hyphenate-limit-zone hyphenate-lines hyphenate-resource hyphens icon image-orientation "
+"image-resolution ime-mode inline-box-align insert-position interpret-as justify-content left letter-spacing "
 "line-height line-stacking line-stacking-ruby line-stacking-shift line-stacking-strategy list-style "
 "list-style-image list-style-position list-style-type make-element margin margin-bottom margin-left "
-"margin-right margin-top mark mark-after mark-before marker-offset marks marquee-direction "
-"marquee-play-count marquee-speed marquee-style mathline max-height max-width media min-height min-width "
+"margin-right margin-top mark mark-after mark-before marker-offset marks marquee-direction marquee-play-count "
+"marquee-speed marquee-style mask mask-type mathline max-height max-width media min-height min-width "
 "move-to nav-down nav-index nav-left nav-right nav-up object-fit object-position opacity order orphans "
 "outline outline-color outline-offset outline-style outline-width overflow overflow-style overflow-wrap "
 "overflow-x overflow-y padding padding-bottom padding-left padding-right padding-top page page-break-after "
 "page-break-before page-break-inside page-policy panose-1 pause pause-after pause-before perspective "
-"perspective-origin phonemes pitch pitch-range play-during position presentation-level prototype "
+"perspective-origin phonemes pitch pitch-range play-during pointer-events position presentation-level prototype "
 "prototype-insert-policy prototype-insert-position punctuation-trim quotes region-overflow "
 "rendering-intent resize rest rest-after rest-before richness right rotation rotation-point ruby-align "
 "ruby-overhang ruby-position ruby-span shape-image-threshold shape-inside shape-outside size slope speak "
-"speak-header speak-numeral speak-punctuation speech-rate src stemh stemv stress string-set table-layout "
-"target target-name target-new target-position text-align text-align-last text-decoration "
-"text-decoration-color text-decoration-line text-decoration-style text-emphasis text-height text-indent "
-"text-justify text-outline text-overflow text-replace text-shadow text-transform text-wrap top topline transform "
-"transform-origin transform-style transition transition-delay transition-duration transition-property "
+"speak-header speak-numeral speak-punctuation speech-rate src stemh stemv stress string-set tab-size table-layout "
+"target target-name target-new target-position text-align text-align-last text-decoration text-decoration-color "
+"text-decoration-line text-decoration-style text-emphasis text-height text-indent text-justify text-outline "
+"text-overflow text-rendering text-replace text-shadow text-transform text-underline-position text-wrap top topline "
+"transform transform-origin transform-style transition transition-delay transition-duration transition-property "
 "transition-timing-function unicode-bidi unicode-range units-per-em vertical-align visibility "
 "voice-balance voice-duration voice-family voice-pitch voice-pitch-range voice-rate voice-stress "
-"voice-volume volume white-space white-space-collapse widows width widths word-break word-spacing "
+"voice-volume volume white-space white-space-collapse widows width widths will-change word-break word-spacing "
 "word-wrap wrap wrap-flow wrap-margin wrap-padding wrap-through writing-mode x-height z-index",
 "active after before checked choices default disabled empty enabled first first-child first-letter "
 "first-line first-of-type focus hover indeterminate in-range invalid lang last-child last-of-type left "
@@ -1210,15 +1210,15 @@ KEYWORDLIST KeyWords_INNO = {
 "languagecodepage languageid languagename licensefile lzmaalgorithm lzmablocksize lzmadictionarysize lzmamatchfinder "
 "lzmanumblockthreads lzmanumfastbytes lzmauseseparateprocess mergeduplicatefiles minversion onlybelowversion "
 "outputbasefilename outputdir outputmanifestfile password privilegesrequired reservebytes restartapplications "
-"restartifneededbyrun righttoleft setupiconfile setuplogging showcomponentsizes showlanguagedialog showtaskstreelines "
+"restartifneededbyrun righttoleft setupiconfile setuplogging setupmutex showcomponentsizes showlanguagedialog showtaskstreelines "
 "showundisplayablelanguages signeduninstaller signeduninstallerdir signtool signtoolretrycount slicesperdisk solidcompression "
 "sourcedir strongassemblyname timestamprounding timestampsinutc titlefontname titlefontsize touchdate touchtime uninstallable "
 "uninstalldisplayicon uninstalldisplayname uninstallfilesdir uninstalldisplaysize uninstalllogmode uninstallrestartcomputer "
 "updateuninstalllogappname usepreviousappdir usepreviousgroup usepreviouslanguage useprevioussetuptype useprevioustasks "
 "verb versioninfoproductname useprevioususerinfo userinfopage usesetupldr versioninfocompany versioninfocopyright "
 "versioninfodescription versioninfoproductversion versioninfotextversion versioninfoversion versioninfoproducttextversion "
-"welcomefontname welcomefontsize windowshowcaption windowstartmaximized windowresizable windowvisible wizardimagebackcolor "
-"wizardimagefile wizardimagestretch wizardsmallimagefile",
+"welcomefontname welcomefontsize windowshowcaption windowstartmaximized windowresizable windowvisible wizardimagealphaformat "
+"wizardimagebackcolor wizardimagefile wizardimagestretch wizardsmallimagefile",
 "appusermodelid afterinstall attribs beforeinstall check comment components copymode description destdir destname excludes "
 "extradiskspacerequired filename flags fontinstall groupdescription hotkey infoafterfile infobeforefile iconfilename "
 "iconindex key languages licensefile messagesfile minversion name onlybelowversion parameters permissions root runonceid "
@@ -2459,12 +2459,12 @@ PEDITLEXER pLexArray[NUMLEXERS] =
   &lexDefault,
   &lexANSI,
   &lexAVS,
-  &lexCOFFEESCRIPT,
   &lexCONF, //Apache Config Scripts
   &lexASM,
   &lexAHK,
   &lexAU3,
   &lexBAT,
+  &lexCOFFEESCRIPT,
   &lexINI,
   &lexCPP,
   &lexCS,

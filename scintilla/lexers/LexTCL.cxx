@@ -45,7 +45,7 @@ static inline bool IsANumberChar(int ch) {
 	        ch == '.' || ch == '-' || ch == '+');
 }
 
-static void ColouriseTCLDoc(unsigned int startPos, int length, int , WordList *keywordlists[], Accessor &styler) {
+static void ColouriseTCLDoc(Sci_PositionU startPos, Sci_Position length, int , WordList *keywordlists[], Accessor &styler) {
 #define  isComment(s) (s==SCE_TCL_COMMENT || s==SCE_TCL_COMMENTLINE || s==SCE_TCL_COMMENT_BOX || s==SCE_TCL_BLOCK_COMMENT)
 	bool foldComment = styler.GetPropertyInt("fold.comment") != 0;
 	bool commentLevel = false;
@@ -58,7 +58,7 @@ static void ColouriseTCLDoc(unsigned int startPos, int length, int , WordList *k
 	bool expected = 0;
 	bool subParen = 0;
 
-	int currentLine = styler.GetLine(startPos);
+	Sci_Position currentLine = styler.GetLine(startPos);
 	if (currentLine > 0)
 		currentLine--;
 	length += startPos - styler.LineStart(currentLine);
@@ -257,7 +257,7 @@ next:
 				sc.ForwardSetState(SCE_TCL_DEFAULT);
 				visibleChars = true; // necessary if a " is the first and only character on a line
 				goto next;
-			} else if (sc.ch == '[' || sc.ch == ']' || sc.ch == '$' || sc.ch == '(') {
+			} else if (sc.ch == '[' || sc.ch == ']' || sc.ch == '$') {
 				sc.SetState(SCE_TCL_OPERATOR);
 				expected = sc.ch == '[';
 				sc.ForwardSetState(SCE_TCL_IN_QUOTE);
@@ -324,10 +324,7 @@ next:
 					break;
 				case '$':
 					subParen = 0;
-					if (sc.chNext == '(') {
-						//$("") jquery selector?!
-						sc.SetState(SCE_TCL_OPERATOR);
-					} else if (sc.chNext != '{') {
+					if (sc.chNext != '{') {
 						sc.SetState(SCE_TCL_SUBSTITUTION);
 					} else {
 						sc.SetState(SCE_TCL_OPERATOR);  // $
