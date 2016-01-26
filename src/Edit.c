@@ -36,6 +36,7 @@
 #include "helpers.h"
 #include "resource.h"
 #include "SciCall.h"
+#include "../crypto/crypto.h"
 
 
 extern HWND  hwndMain;
@@ -1242,7 +1243,9 @@ BOOL EditLoadFile(
   }
 
   lpData = GlobalAlloc(GPTR,dwBufSize);
-  bReadSuccess = ReadFile(hFile,lpData,(DWORD)GlobalSize(lpData)-2,&cbData,NULL);
+/* notepad2-mod custom code start */
+   bReadSuccess = ReadAndDecryptFile(hwnd, hFile, (DWORD)GlobalSize(lpData) - 2, &lpData, &cbData);
+/* notepad2-mod custom code end */
   dwLastIOError = GetLastError();
   CloseHandle(hFile);
 
@@ -1489,7 +1492,9 @@ BOOL EditSaveFile(
 
   // get text
   cbData = (int)SendMessage(hwnd,SCI_GETLENGTH,0,0);
-  lpData = GlobalAlloc(GPTR,cbData + 1);
+  /* notepad2-mod custom code start */
+  lpData = GlobalAlloc(GPTR, cbData + 4); //fix: +bom
+  /* notepad2-mod custom code end */
   SendMessage(hwnd,SCI_GETTEXT,GlobalSize(lpData),(LPARAM)lpData);
 
   if (cbData == 0) {
@@ -1528,22 +1533,24 @@ BOOL EditSaveFile(
       LPWSTR lpDataWide;
       int    cbDataWide;
 
+      /* notepad2-mod custom code start */
+
+      const char* bom = "\xFF\xFE";
+      int bomoffset = 0;
+
       SetEndOfFile(hFile);
 
-      lpDataWide = GlobalAlloc(GPTR,cbData * 2 + 16);
-      cbDataWide = MultiByteToWideChar(CP_UTF8,0,lpData,cbData,lpDataWide,(int)GlobalSize(lpDataWide)/sizeof(WCHAR));
+      lpDataWide = GlobalAlloc(GPTR, cbData * 2 + 16);
 
       if (mEncoding[iEncoding].uFlags & NCP_UNICODE_BOM) {
-        if (mEncoding[iEncoding].uFlags & NCP_UNICODE_REVERSE)
-          WriteFile(hFile,(LPCVOID)"\xFE\xFF",2,&dwBytesWritten,NULL);
-        else
-          WriteFile(hFile,(LPCVOID)"\xFF\xFE",2,&dwBytesWritten,NULL);
+        CopyMemory((char*)lpDataWide, bom, 2);
+        bomoffset = 1;
       }
-
-      if (mEncoding[iEncoding].uFlags & NCP_UNICODE_REVERSE)
-        _swab((char*)lpDataWide,(char*)lpDataWide,cbDataWide * sizeof(WCHAR));
-
-      bWriteSuccess = WriteFile(hFile,lpDataWide,cbDataWide * sizeof(WCHAR),&dwBytesWritten,NULL);
+      cbDataWide = bomoffset + MultiByteToWideChar(CP_UTF8, 0, lpData, cbData, &lpDataWide[bomoffset], (int)GlobalSize(lpDataWide) / sizeof(WCHAR) - bomoffset);
+      if (mEncoding[iEncoding].uFlags & NCP_UNICODE_REVERSE) {
+        _swab((char*)lpDataWide, (char*)lpDataWide, cbDataWide * sizeof(WCHAR));
+      }
+      bWriteSuccess = EncryptAndWriteFile(hwnd, hFile, (BYTE*)lpDataWide, cbDataWide * sizeof(WCHAR), &dwBytesWritten);
       dwLastIOError = GetLastError();
 
       GlobalFree(lpDataWide);
@@ -1554,11 +1561,18 @@ BOOL EditSaveFile(
     {
       SetEndOfFile(hFile);
 
-      if (mEncoding[iEncoding].uFlags & NCP_UTF8_SIGN)
-        WriteFile(hFile,(LPCVOID)"\xEF\xBB\xBF",3,&dwBytesWritten,NULL);
-
-      bWriteSuccess = WriteFile(hFile,lpData,cbData,&dwBytesWritten,NULL);
+      if (mEncoding[iEncoding].uFlags & NCP_UTF8_SIGN) {
+        const char* bom = "\xEF\xBB\xBF";
+        DWORD bomoffset = 3;
+        MoveMemory(&lpData[bomoffset], lpData, cbData);
+        CopyMemory(lpData, bom, bomoffset);
+        cbData += bomoffset;
+    }
+      bWriteSuccess = //WriteFile(hFile,lpData,cbData,&dwBytesWritten,NULL);
+        EncryptAndWriteFile(hwnd, hFile, lpData, cbData, &dwBytesWritten);
       dwLastIOError = GetLastError();
+
+      /* notepad2-mod custom code end */
 
       GlobalFree(lpData);
     }
@@ -1592,7 +1606,11 @@ BOOL EditSaveFile(
 
       if (!bCancelDataLoss || InfoBox(MBOKCANCEL,L"MsgConv3",IDS_ERR_UNICODE2) == IDOK) {
         SetEndOfFile(hFile);
-        bWriteSuccess = WriteFile(hFile,lpData,cbData,&dwBytesWritten,NULL);
+
+        /* notepad2-mod custom code start */
+        bWriteSuccess = EncryptAndWriteFile(hwnd, hFile, lpData, cbData, &dwBytesWritten);
+        /* notepad2-mod custom code end */
+
         dwLastIOError = GetLastError();
       }
       else {
@@ -1605,7 +1623,11 @@ BOOL EditSaveFile(
 
     else {
       SetEndOfFile(hFile);
-      bWriteSuccess = WriteFile(hFile,lpData,cbData,&dwBytesWritten,NULL);
+
+        /* notepad2-mod custom code start */
+        bWriteSuccess = EncryptAndWriteFile(hwnd, hFile, lpData, cbData, &dwBytesWritten);
+        /* notepad2-mod custom code end */
+
       dwLastIOError = GetLastError();
       GlobalFree(lpData);
     }
@@ -2237,7 +2259,7 @@ void EditHex2Char(HWND hwnd) {
           bTrySelExpand = TRUE;
         }
 
-        if (sscanf(ch,"%x",&i) == 1) {
+        if (sscanf_s(ch, "%x", &i, sizeof(i)) == 1) {
           int cch;
           if (i == 0) {
             ch[0] = 0;
@@ -2289,7 +2311,7 @@ void EditModifyNumber(HWND hwnd,BOOL bIncrease) {
         if (StrChrIA(chNumber,'-'))
           return;
 
-        if (!StrChrIA(chNumber,'x') && sscanf(chNumber,"%d",&iNumber) == 1) {
+        if (!StrChrIA(chNumber, 'x') && sscanf_s(chNumber, "%d", &iNumber, sizeof(iNumber)) == 1) {
           iWidth = lstrlenA(chNumber);
           if (iNumber >= 0) {
             if (bIncrease && iNumber < INT_MAX)
@@ -2302,7 +2324,7 @@ void EditModifyNumber(HWND hwnd,BOOL bIncrease) {
             SendMessage(hwnd,SCI_SETSEL,iSelStart,iSelStart+lstrlenA(chNumber));
           }
         }
-        else if (sscanf(chNumber,"%x",&iNumber) == 1) {
+        else if (sscanf_s(chNumber, "%x", &iNumber, sizeof(iNumber)) == 1) {
           int i;
           BOOL bUppercase = FALSE;
           iWidth = lstrlenA(chNumber) - 2;
@@ -5835,25 +5857,27 @@ void EditMarkAll(HWND hwnd, int iMarkOccurrences, BOOL bMarkOccurrencesMatchCase
       (int)SendMessage(hwnd, SCI_LINEFROMPOSITION, iSelEnd, 0))
     return;
 
+  /* notepad2-mod custom code start */
+  // fixing 64bit issue
 
-  pszText = LocalAlloc(LPTR,iSelCount + 1);
-  (int)SendMessage(hwnd,SCI_GETSELTEXT,0,(LPARAM)pszText);
-
+  pszText = LocalAlloc(LPTR, iSelCount + 4);
+  (int)SendMessage(hwnd, SCI_GETSELTEXT, 0, (LPARAM)pszText);
 
   // exit if selection is not a word and Match whole words only is enabled
   if (bMarkOccurrencesMatchWords)
   {
-    iSelStart = 0;
-    while (pszText[iSelStart])
+    int i = 0;
+    while ((i <= iSelCount) && pszText[i])
     {
-      if (StrChrIA(" \t\r\n@#$%^&*~-=+()[]{}\\/:;'\"", pszText[iSelStart]))
+      if (StrChrIA(" \t\r\n@#$%^&*~-=+()[]{}\\/:;'\"", pszText[i]))
       {
         LocalFree(pszText);
         return;
       }
-      iSelStart++;
+      i++;
     }
   }
+  /* notepad2-mod custom code start */
 
   ZeroMemory(&ttf,sizeof(ttf));
 
@@ -7128,7 +7152,7 @@ BOOL FileVars_ParseInt(char* pszData,char* pszName,int* piValue) {
     *pvEnd = 0;
     StrTrimA(tch," \t:=\"'");
 
-    itok = sscanf(tch,"%i",piValue);
+    itok = sscanf_s(tch, "%i", &piValue, sizeof(piValue));
     if (itok == 1)
       return(TRUE);
 
