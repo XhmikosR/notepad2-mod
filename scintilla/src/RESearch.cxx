@@ -202,9 +202,11 @@
 
 #include <stdlib.h>
 
+#include <stdexcept>
 #include <string>
 #include <algorithm>
 
+#include "Position.h"
 #include "CharClassify.h"
 #include "RESearch.h"
 
@@ -303,7 +305,7 @@ void RESearch::ChSetWithCase(unsigned char c, bool caseSensitive) {
 	}
 }
 
-unsigned char escapeValue(unsigned char ch) {
+static unsigned char escapeValue(unsigned char ch) {
 	switch (ch) {
 	case 'a':	return '\a';
 	case 'b':	return '\b';
@@ -342,8 +344,8 @@ static int GetHexaChar(unsigned char hd1, unsigned char hd2) {
 /**
  * Called when the parser finds a backslash not followed
  * by a valid expression (like \( in non-Posix mode).
- * @param pattern: pointer on the char after the backslash.
- * @param incr: (out) number of chars to skip after expression evaluation.
+ * @param pattern : pointer on the char after the backslash.
+ * @param incr : (out) number of chars to skip after expression evaluation.
  * @return the char if it resolves to a simple char,
  * or -1 for a char class. In this case, bittab is changed.
  */

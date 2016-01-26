@@ -8,7 +8,7 @@ rem *   Batch file for creating the zip packages
 rem *
 rem * See License.txt for details about distribution and modification.
 rem *
-rem *                                     (c) XhmikosR 2010-2014
+rem *                                     (c) XhmikosR 2010-2015
 rem *                                     https://github.com/XhmikosR/notepad2-mod
 rem *
 rem ******************************************************************************
@@ -27,7 +27,7 @@ IF /I "%~1" == "/?"     GOTO SHOWHELP
 
 rem Check for the first switch
 IF "%~1" == "" (
-  SET "COMPILER=VS2013"
+  SET "COMPILER=VS2015"
 ) ELSE (
   IF /I "%~1" == "WDK"      (SET "COMPILER=WDK"    & GOTO START)
   IF /I "%~1" == "/WDK"     (SET "COMPILER=WDK"    & GOTO START)
@@ -45,6 +45,10 @@ IF "%~1" == "" (
   IF /I "%~1" == "/VS2013"  (SET "COMPILER=VS2013" & GOTO START)
   IF /I "%~1" == "-VS2013"  (SET "COMPILER=VS2013" & GOTO START)
   IF /I "%~1" == "--VS2013" (SET "COMPILER=VS2013" & GOTO START)
+  IF /I "%~1" == "VS2015"   (SET "COMPILER=VS2015" & GOTO START)
+  IF /I "%~1" == "/VS2015"  (SET "COMPILER=VS2015" & GOTO START)
+  IF /I "%~1" == "-VS2015"  (SET "COMPILER=VS2015" & GOTO START)
+  IF /I "%~1" == "--VS2015" (SET "COMPILER=VS2015" & GOTO START)
 
   ECHO.
   ECHO Unsupported commandline switch!
@@ -58,13 +62,16 @@ IF EXIST "%~dp0..\signinfo_notepad2-mod.txt" SET "SIGN=True"
 
 SET INPUTDIRx86=bin\%COMPILER%\Release_x86
 SET INPUTDIRx64=bin\%COMPILER%\Release_x64
-IF /I NOT "%COMPILER%" == "VS2013" SET SUFFIX=_%COMPILER%
+IF /I NOT "%COMPILER%" == "VS2015" SET SUFFIX=_%COMPILER%
 SET "TEMP_NAME=temp_zip%SUFFIX%"
 
 IF NOT EXIST "..\%INPUTDIRx86%\Notepad2.exe" CALL :SUBMSG "ERROR" "Compile Notepad2 x86 first!"
 IF NOT EXIST "..\%INPUTDIRx64%\Notepad2.exe" CALL :SUBMSG "ERROR" "Compile Notepad2 x64 first!"
 
 CALL :SubGetVersion
+CALL :SubDetectSevenzipPath
+
+IF /I "%SEVENZIP%" == "" CALL :SUBMSG "ERROR" "7za wasn't found!"
 
 IF /I "%SIGN%" == "True" CALL :SubSign %INPUTDIRx86%
 IF /I "%SIGN%" == "True" CALL :SubSign %INPUTDIRx64%
@@ -83,7 +90,7 @@ IF EXIST "Notepad2-mod.%NP2_VER%*.zip" COPY /Y /V "Notepad2-mod.%NP2_VER%*.zip" 
 
 PUSHD "%TEMP_NAME%"
 
-START "" /B /WAIT "..\..\..\distrib\7za.exe" a -tzip -mx=9 Notepad2-mod.zip * >NUL
+"%SEVENZIP%" a -tzip -mx=9 Notepad2-mod.zip * >NUL
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
 CALL :SUBMSG "INFO" "Notepad2-mod.zip created successfully!"
@@ -117,7 +124,7 @@ FOR %%A IN ("..\License.txt" "..\%1\Notepad2.exe"^
 ) DO COPY /Y /V "%%A" "%TEMP_NAME%\"
 
 PUSHD "%TEMP_NAME%"
-START "" /B /WAIT "..\..\distrib\7za.exe" a -tzip -mx=9^
+"%SEVENZIP%" a -tzip -mx=9^
  "%ZIP_NAME%.zip" "License.txt" "Notepad2.exe"^
  "Notepad2.ini" "Notepad2.txt" "Readme-mod.txt" >NUL
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
@@ -127,6 +134,19 @@ CALL :SUBMSG "INFO" "%ZIP_NAME%.zip created successfully!"
 MOVE /Y "%ZIP_NAME%.zip" "..\packages" >NUL
 POPD
 IF EXIST "%TEMP_NAME%" RD /S /Q "%TEMP_NAME%"
+EXIT /B
+
+
+:SubDetectSevenzipPath
+FOR %%G IN (7z.exe) DO (SET "SEVENZIP_PATH=%%~$PATH:G")
+IF EXIST "%SEVENZIP_PATH%" (SET "SEVENZIP=%SEVENZIP_PATH%" & EXIT /B)
+
+FOR %%G IN (7za.exe) DO (SET "SEVENZIP_PATH=%%~$PATH:G")
+IF EXIST "%SEVENZIP_PATH%" (SET "SEVENZIP=%SEVENZIP_PATH%" & EXIT /B)
+
+FOR /F "tokens=2*" %%A IN (
+  'REG QUERY "HKLM\SOFTWARE\7-Zip" /v "Path" 2^>NUL ^| FIND "REG_SZ" ^|^|
+   REG QUERY "HKLM\SOFTWARE\Wow6432Node\7-Zip" /v "Path" 2^>NUL ^| FIND "REG_SZ"') DO SET "SEVENZIP=%%B\7z.exe"
 EXIT /B
 
 
@@ -160,7 +180,7 @@ EXIT /B
 :SHOWHELP
 TITLE %~nx0 %1
 ECHO. & ECHO.
-ECHO Usage:  %~nx0 [VS2010^|VS2012^|VS2013^|WDK]
+ECHO Usage:  %~nx0 [VS2010^|VS2012^|VS2013^|VS2015^|WDK]
 ECHO.
 ECHO Notes:  You can also prefix the commands with "-", "--" or "/".
 ECHO         The arguments are not case sensitive.

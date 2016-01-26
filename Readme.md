@@ -1,6 +1,8 @@
-_A modified version (fork) of Notepad2 based on Kai Liu's and other people's patches._
+# Notepad2-mod
 
-[![Coverity Scan Build Status](https://scan.coverity.com/projects/1113/badge.svg)](https://scan.coverity.com/projects/1113)
+> *A modified version (fork) of Notepad2 based on Kai Liu's and other people's patches.*
+
+[![Coverity Scan Build Status](https://img.shields.io/coverity/scan/1113.svg)](https://scan.coverity.com/projects/1113)
 
 ## Changes compared to the official Notepad2:
 
@@ -17,7 +19,7 @@ _A modified version (fork) of Notepad2 based on Kai Liu's and other people's pat
 ## Supported Operating Systems:
 * XP (SP3, SP2 might or might not work), Vista, 7, 8 and 8.1 both 32-bit and 64-bit
 
-## [Screenshots](http://xhmikosr.github.io/notepad2-mod/screenshots)
+## [Screenshots](https://xhmikosr.github.io/notepad2-mod/screenshots)
 
 ## Notes:
 * If you find any bugs or have any suggestions for the implemented lexers (and **not** only)
@@ -36,8 +38,8 @@ _A modified version (fork) of Notepad2 based on Kai Liu's and other people's pat
 * [Code folding usage guide](https://github.com/XhmikosR/notepad2-mod/wiki/Code-Folding-Usage)
 
 ## Changed keyboard shortcuts compared to Notepad2:
-* `Ctrl+Alt+F2`       Expand selection to next match.
-* `Ctrl+Alt+Shift+F2` Expand selection to previous match.
-* `Ctrl+Shift+Enter`  New line with toggled auto indent option.
+* <kbd>Ctrl+Alt+F2</kbd>       Expand selection to next match.
+* <kbd>Ctrl+Alt+Shift+F2</kbd> Expand selection to previous match.
+* <kbd>Ctrl+Shift+Enter</kbd>  New line with toggled auto indent option.
 
 You can use WDK 7.1, MSVC 2010, MSVC 2012 Update 1(+), MSVC 2013 to build Notepad2-mod.

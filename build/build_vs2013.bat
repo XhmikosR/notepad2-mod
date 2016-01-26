@@ -3,12 +3,12 @@ rem ****************************************************************************
 rem *
 rem * Notepad2-mod
 rem *
-rem * build_vs2012.bat
+rem * build_vs2013.bat
 rem *   Batch file used to build Notepad2 with MSVC2013
 rem *
 rem * See License.txt for details about distribution and modification.
 rem *
-rem *                                     (c) XhmikosR 2010-2013
+rem *                                     (c) XhmikosR 2010-2015
 rem *                                     https://github.com/XhmikosR/notepad2-mod
 rem *
 rem ******************************************************************************

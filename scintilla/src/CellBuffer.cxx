@@ -10,11 +10,13 @@
 #include <stdio.h>
 #include <stdarg.h>
 
+#include <stdexcept>
 #include <algorithm>
 
 #include "Platform.h"
 
 #include "Scintilla.h"
+#include "Position.h"
 #include "SplitVector.h"
 #include "Partitioning.h"
 #include "CellBuffer.h"
@@ -494,6 +496,25 @@ void CellBuffer::SetLineEndTypes(int utf8LineEnds_) {
 	}
 }
 
+bool CellBuffer::ContainsLineEnd(const char *s, int length) const {
+	unsigned char chBeforePrev = 0;
+	unsigned char chPrev = 0;
+	for (int i = 0; i < length; i++) {
+		const unsigned char ch = s[i];
+		if ((ch == '\r') || (ch == '\n')) {
+			return true;
+		} else if (utf8LineEnds) {
+			unsigned char back3[3] = { chBeforePrev, chPrev, ch };
+			if (UTF8IsSeparator(back3) || UTF8IsNEL(back3 + 1)) {
+				return true;
+			}
+		}
+		chBeforePrev = chPrev;
+		chPrev = ch;
+	}
+	return false;
+}
+
 void CellBuffer::SetPerLine(PerLine *pl) {
 	lv.SetPerLine(pl);
 }
@@ -786,6 +807,10 @@ const Action &CellBuffer::GetUndoStep() const {
 void CellBuffer::PerformUndoStep() {
 	const Action &actionStep = uh.GetUndoStep();
 	if (actionStep.at == insertAction) {
+		if (substance.Length() < actionStep.lenData) {
+			throw std::runtime_error(
+				"CellBuffer::PerformUndoStep: deletion must be less than document length.");
+		}
 		BasicDeleteChars(actionStep.position, actionStep.lenData);
 	} else if (actionStep.at == removeAction) {
 		BasicInsertString(actionStep.position, actionStep.data, actionStep.lenData);
