@@ -2551,7 +2551,7 @@ void Style_Load()
     wsprintf(tch,L"%02i",i+1);
     if (IniSectionGetString(pIniSection,tch,L"",wch,COUNTOF(wch))) {
       if (wch[0] == L'#') {
-        itok = swscanf(CharNext(wch),L"%x",&irgb);
+        itok = swscanf_s(CharNext(wch), L"%x", &irgb);
         if (itok == 1)
           crCustom[i] = RGB((irgb&0xFF0000) >> 16,(irgb&0xFF00) >> 8,irgb&0xFF);
       }
@@ -3636,7 +3636,7 @@ BOOL Style_StrGetCharSet(LPCWSTR lpszStyle,int *i)
     if (p = StrChr(tch,L';'))
       *p = L'\0';
     TrimString(tch);
-    itok = swscanf(tch,L"%i",&iValue);
+    itok = swscanf_s(tch, L"%i", &iValue);
     if (itok == 1)
     {
       *i = iValue;
@@ -3675,7 +3675,7 @@ BOOL Style_StrGetSize(LPCWSTR lpszStyle,int *i)
     if (p = StrChr(tch,L';'))
       *p = L'\0';
     TrimString(tch);
-    itok = swscanf(tch,L"%i",&iValue);
+    itok = swscanf_s(tch, L"%i", &iValue);
     if (itok == 1)
     {
       if (iSign == 0)
@@ -3731,7 +3731,7 @@ BOOL Style_StrGetColor(BOOL bFore,LPCWSTR lpszStyle,int *rgb)
     if (p = StrChr(tch,L';'))
       *p = L'\0';
     TrimString(tch);
-    itok = swscanf(tch,L"%x",&iValue);
+    itok = swscanf_s(tch, L"%x", &iValue);
     if (itok == 1)
     {
       *rgb = RGB((iValue&0xFF0000) >> 16,(iValue&0xFF00) >> 8,iValue&0xFF);
@@ -3787,7 +3787,7 @@ BOOL Style_StrGetAlpha(LPCWSTR lpszStyle,int *i)
     if (p = StrChr(tch,L';'))
       *p = L'\0';
     TrimString(tch);
-    itok = swscanf(tch,L"%i",&iValue);
+    itok = swscanf_s(tch, L"%i", &iValue);
     if (itok == 1)
     {
       *i = min(max(SC_ALPHA_TRANSPARENT,iValue),SC_ALPHA_OPAQUE);

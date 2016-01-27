@@ -18,8 +18,13 @@
 *
 ******************************************************************************/
 #if !defined(_WIN32_WINNT)
-#define _WIN32_WINNT 0x501
+#define _WIN32_WINNT 0x501  /*_WIN32_WINNT_WINXP*/
 #endif
+
+#if !defined(NTDDI_VERSION)
+#define NTDDI_VERSION 0x05010100  /*NTDDI_WINXPSP1*/
+#endif
+
 #include <windows.h>
 #include <commctrl.h>
 #include <shlobj.h>
@@ -38,6 +43,7 @@
 #include "helpers.h"
 #include "SciCall.h"
 #include "resource.h"
+#include "../crypto/crypto.h"
 
 
 
@@ -2522,7 +2528,7 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
         ZeroMemory(&sei,sizeof(SHELLEXECUTEINFO));
 
         sei.cbSize = sizeof(SHELLEXECUTEINFO);
-        sei.fMask = /*SEE_MASK_NOZONECHECKS*/0x00800000;
+        sei.fMask = SEE_MASK_NOASYNC | SEE_MASK_NOZONECHECKS;
         sei.hwnd = hwnd;
         sei.lpVerb = NULL;
         sei.lpFile = szModuleName;
@@ -2530,6 +2536,7 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
         sei.lpDirectory = g_wchWorkingDirectory;
         sei.nShow = SW_SHOWNORMAL;
 
+        CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_SPEED_OVER_MEMORY);
         ShellExecuteEx(&sei);
       }
       break;
@@ -2869,7 +2876,7 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
     case IDM_EDIT_SWAP:
       if (SendMessage(hwndEdit,SCI_GETSELECTIONEND,0,0) -
           SendMessage(hwndEdit,SCI_GETSELECTIONSTART,0,0) == 0) {
-        int iNewPos;
+        int iNewPos = -1;
         int iPos = (int)SendMessage(hwndEdit,SCI_GETCURRENTPOS,0,0);
         SendMessage(hwndEdit,SCI_PASTE,0,0);
         iNewPos = (int)SendMessage(hwndEdit,SCI_GETCURRENTPOS,0,0);
@@ -4350,6 +4357,9 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
         hwnd,AboutDlgProc);
       break;
 
+    case IDM_SETPASS:
+      GetFileKey(hwndEdit);
+      break;
 
     case CMD_ESCAPE:
       //close the autocomplete box
@@ -6133,7 +6143,7 @@ void ParseCommandLine()
             }
             else if (ExtractFirstArgument(lp2,lp1,lp2)) {
               int itok =
-                swscanf(lp1,L"%i,%i,%i,%i,%i",&wi.x,&wi.y,&wi.cx,&wi.cy,&wi.max);
+                swscanf_s(lp1, L"%i,%i,%i,%i,%i", &wi.x, &wi.y, &wi.cx,  &wi.cy, &wi.max);
               if (itok == 4 || itok == 5) { // scan successful
                 flagPosParam = 1;
                 flagDefaultPos = 0;
@@ -6172,7 +6182,7 @@ void ParseCommandLine()
         case L'G':
           if (ExtractFirstArgument(lp2,lp1,lp2)) {
             int itok =
-              swscanf(lp1,L"%i,%i",&iInitialLine,&iInitialColumn);
+              swscanf_s(lp1, L"%i,%i", &iInitialLine, &iInitialColumn);
             if (itok == 1 || itok == 2) { // scan successful
               flagJumpTo = 1;
             }
@@ -6840,6 +6850,8 @@ BOOL FileLoad(BOOL bDontSave,BOOL bNew,BOOL bReload,BOOL bNoEncDetect,LPCWSTR lp
     if (!FileSave(FALSE,TRUE,FALSE,FALSE))
       return FALSE;
   }
+
+  if (!bReload) { ResetEncryption(); }
 
   if (bNew) {
     lstrcpy(szCurFile,L"");
