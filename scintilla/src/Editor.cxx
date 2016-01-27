@@ -2593,8 +2593,8 @@ void Editor::NotifyModified(Document *, DocModification mh, void *) {
 					if (lineLast < lineMaxSubord) {
 						lineLast = lineMaxSubord;
 						endNeedShown = pdoc->LineEnd(lineLast);
-			}
-		}
+					}
+				}
 			}
 			NeedShown(mh.position, endNeedShown - mh.position);
 		}
@@ -3116,7 +3116,7 @@ void Editor::CursorUpOrDown(int direction, Selection::selTypes selt) {
 			const SelectionPosition spCaretNow = sel.Range(r).caret;
 			const SelectionPosition posNew = MovePositionSoVisible(
 				PositionUpOrDown(spCaretNow, direction, lastX), direction);
-			sel.Range(r) = selt == Selection::selStream ? 
+			sel.Range(r) = selt == Selection::selStream ?
 				SelectionRange(posNew, sel.Range(r).anchor) : SelectionRange(posNew);
 		}
 		sel.RemoveDuplicates();
@@ -3482,7 +3482,7 @@ int Editor::DelWordOrLine(unsigned int iMessage) {
 	// which means 2 actions so wrap in an undo group.
 
 	// Rightwards and leftwards deletions differ in treatment of virtual space.
-	// Clear virtual space for leftwards, realise for rightwards. 
+	// Clear virtual space for leftwards, realise for rightwards.
 	const bool leftwards = (iMessage == SCI_DELWORDLEFT) || (iMessage == SCI_DELLINELEFT);
 
 	if (!additionalSelectionTyping) {
@@ -3501,7 +3501,7 @@ int Editor::DelWordOrLine(unsigned int iMessage) {
 			sel.Range(r) = SelectionRange(
 				InsertSpace(sel.Range(r).caret.Position(), sel.Range(r).caret.VirtualSpace()));
 		}
-		
+
 		Range rangeDelete;
 		switch (iMessage) {
 		case SCI_DELWORDLEFT:
@@ -3811,7 +3811,7 @@ int Editor::KeyDefault(int key, int modifiers) {
 		scn.ch = key;
 		scn.modifiers = modifiers;
 		NotifyParent(scn);
-}
+	}
 /* notepad2-mod custom code end */
 
 	return 0;
@@ -5025,7 +5025,7 @@ int Editor::PositionAfterMaxStyling(int posMax, bool scrolling) const {
 	if ((idleStyling == SC_IDLESTYLING_NONE) || (idleStyling == SC_IDLESTYLING_AFTERVISIBLE)) {
 		// Both states do not limit styling
 		return posMax;
-}
+	}
 
 	// Try to keep time taken by styling reasonable so interaction remains smooth.
 	// When scrolling, allow less time to ensure responsive
@@ -5044,10 +5044,10 @@ void Editor::StartIdleStyling(bool truncatedLastStyling) {
 		if (pdoc->GetEndStyled() < pdoc->Length()) {
 			// Style remainder of document in idle time
 			needIdleStyling = true;
-	}
+		}
 	} else if (truncatedLastStyling) {
 		needIdleStyling = true;
-}
+	}
 
 	if (needIdleStyling) {
 		SetIdle(true);
@@ -5065,9 +5065,9 @@ void Editor::StyleAreaBounded(PRectangle rcArea, bool scrolling) {
 	} else {
 		// Can style all wanted now.
 		StyleToPositionInView(posAfterArea);
-		}
+	}
 	StartIdleStyling(posAfterMax < posAfterArea);
-		}
+}
 
 void Editor::IdleStyling() {
 	const int posAfterArea = PositionAfterArea(GetClientRectangle());
@@ -5077,41 +5077,41 @@ void Editor::IdleStyling() {
 	pdoc->StyleToAdjustingLineDuration(posAfterMax);
 	if (pdoc->GetEndStyled() >= endGoal) {
 		needIdleStyling = false;
-		}
 	}
+}
 
 void Editor::IdleWork() {
 	// Style the line after the modification as this allows modifications that change just the
 	// line of the modification to heal instead of propagating to the rest of the window.
 	if (workNeeded.items & WorkNeeded::workStyle) {
 		StyleToPositionInView(pdoc->LineStart(pdoc->LineFromPosition(workNeeded.upTo) + 2));
-}
+	}
 	NotifyUpdateUI();
 	workNeeded.Reset();
-		}
+}
 
 void Editor::QueueIdleWork(WorkNeeded::workItems items, int upTo) {
 	workNeeded.Need(items, upTo);
-		}
+}
 
 bool Editor::PaintContains(PRectangle rc) {
 	if (rc.Empty()) {
 		return true;
 	} else {
 		return rcPaint.Contains(rc);
-		}
 	}
+}
 
 bool Editor::PaintContainsMargin() {
 	if (wMargin.GetID()) {
 		// With separate margin view, paint of text view
 		// never contains margin.
 		return false;
-}
+	}
 	PRectangle rcSelMargin = GetClientRectangle();
 	rcSelMargin.right = static_cast<XYPOSITION>(vs.textStart);
 	return PaintContains(rcSelMargin);
-				}
+}
 
 void Editor::CheckForChangeOutsidePaint(Range r) {
 	if (paintState == painting && !paintingAllText) {
@@ -5123,7 +5123,7 @@ void Editor::CheckForChangeOutsidePaint(Range r) {
 		PRectangle rcText = GetTextRectangle();
 		if (rcRange.top < rcText.top) {
 			rcRange.top = rcText.top;
-			}
+		}
 		if (rcRange.bottom > rcText.bottom) {
 			rcRange.bottom = rcText.bottom;
 		}
@@ -5141,18 +5141,18 @@ void Editor::SetBraceHighlight(Position pos0, Position pos1, int matchStyle) {
 			CheckForChangeOutsidePaint(Range(braces[0]));
 			CheckForChangeOutsidePaint(Range(pos0));
 			braces[0] = pos0;
-	}
+		}
 		if ((braces[1] != pos1) || (matchStyle != bracesMatchStyle)) {
 			CheckForChangeOutsidePaint(Range(braces[1]));
 			CheckForChangeOutsidePaint(Range(pos1));
 			braces[1] = pos1;
-}
+		}
 		bracesMatchStyle = matchStyle;
 		if (paintState == notPainting) {
 			Redraw();
-				}
-			}
 		}
+	}
+}
 
 void Editor::SetAnnotationHeights(int start, int end) {
 	if (vs.annotationVisible) {
@@ -5166,11 +5166,11 @@ void Editor::SetAnnotationHeights(int start, int end) {
 				if (surface && ll) {
 					view.LayoutLine(*this, line, surface, vs, ll, wrapWidth);
 					linesWrapped = ll->lines;
-	}
-}
+				}
+			}
 			if (cs.SetHeight(line, pdoc->AnnotationLines(line) + linesWrapped))
 				changedHeight = true;
-			}
+		}
 		if (changedHeight) {
 			Redraw();
 		}
@@ -5227,8 +5227,8 @@ void Editor::SetAnnotationVisible(int visible) {
 				int annotationLines = pdoc->AnnotationLines(line);
 				if (annotationLines > 0) {
 					cs.SetHeight(line, cs.GetHeight(line) + annotationLines * dir);
+				}
 			}
-		}
 		}
 		Redraw();
 	}
@@ -5238,7 +5238,7 @@ void Editor::SetAnnotationVisible(int visible) {
  * Recursively expand a fold, making lines visible except where they have an unexpanded parent.
  */
 int Editor::ExpandLine(int line) {
-			int lineMaxSubord = pdoc->GetLastChild(line);
+	int lineMaxSubord = pdoc->GetLastChild(line);
 	line++;
 	while (line <= lineMaxSubord) {
 		cs.SetVisible(line, line, true);
@@ -5248,12 +5248,12 @@ int Editor::ExpandLine(int line) {
 				line = ExpandLine(line);
 			} else {
 				line = pdoc->GetLastChild(line);
-				}
 			}
-		line++;
-			}
-	return lineMaxSubord;
 		}
+		line++;
+	}
+	return lineMaxSubord;
+}
 
 void Editor::SetFoldExpanded(int lineDoc, bool expanded) {
 	if (cs.SetExpanded(lineDoc, expanded)) {
@@ -5263,12 +5263,12 @@ void Editor::SetFoldExpanded(int lineDoc, bool expanded) {
 
 void Editor::FoldLine(int line, int action) {
 	if (line >= 0) {
-	if (action == SC_FOLDACTION_TOGGLE) {
+		if (action == SC_FOLDACTION_TOGGLE) {
 			if ((pdoc->GetLevel(line) & SC_FOLDLEVELHEADERFLAG) == 0) {
 				line = pdoc->GetFoldParent(line);
 				if (line < 0)
 					return;
-	}
+			}
 			action = (cs.GetExpanded(line)) ? SC_FOLDACTION_CONTRACT : SC_FOLDACTION_EXPAND;
 		}
 
@@ -5282,28 +5282,28 @@ void Editor::FoldLine(int line, int action) {
 				if (lineCurrent > line && lineCurrent <= lineMaxSubord) {
 					// This does not re-expand the fold
 					EnsureCaretVisible();
-	}
-}
+				}
+			}
 
 		} else {
 			if (!(cs.GetVisible(line))) {
 				EnsureLineVisible(line, false);
 				GoToLine(line);
-	}
+			}
 			cs.SetExpanded(line, 1);
 			ExpandLine(line);
-}
+		}
 
 		SetScrollBars();
 		Redraw();
-		}
-		}
+	}
+}
 
 void Editor::FoldExpand(int line, int action, int level) {
 	bool expanding = action == SC_FOLDACTION_EXPAND;
 	if (action == SC_FOLDACTION_TOGGLE) {
 		expanding = !cs.GetExpanded(line);
-			}
+	}
 	SetFoldExpanded(line, expanding);
 	if (expanding && (cs.HiddenLines() == 0))
 		// Nothing to do
@@ -5318,9 +5318,9 @@ void Editor::FoldExpand(int line, int action, int level) {
 		}
 		line++;
 	}
-		SetScrollBars();
-		Redraw();
-	}
+	SetScrollBars();
+	Redraw();
+}
 
 int Editor::ContractedFoldNext(int lineStart) const {
 	for (int line = lineStart; line<pdoc->LinesTotal();) {
@@ -5329,10 +5329,10 @@ int Editor::ContractedFoldNext(int lineStart) const {
 		line = cs.ContractedNext(line+1);
 		if (line < 0)
 			return -1;
-			}
+	}
 
 	return -1;
-			}
+}
 
 /**
  * Recurse up from this line to find any folds that prevent this line from being visible
@@ -5355,18 +5355,18 @@ void Editor::EnsureLineVisible(int lineDoc, bool enforcePolicy) {
 		if (lineParent < 0) {
 			// Backed up to a top level line, so try to find parent of initial line
 			lineParent = pdoc->GetFoldParent(lineDoc);
-	}
+		}
 		if (lineParent >= 0) {
 			if (lineDoc != lineParent)
 				EnsureLineVisible(lineParent, enforcePolicy);
 			if (!cs.GetExpanded(lineParent)) {
 				cs.SetExpanded(lineParent, 1);
 				ExpandLine(lineParent);
-}
 			}
+		}
 		SetScrollBars();
 		Redraw();
-		}
+	}
 	if (enforcePolicy) {
 		int lineDisplay = cs.DisplayFromDoc(lineDoc);
 		if (visiblePolicy & VISIBLE_SLOP) {
@@ -5379,16 +5379,16 @@ void Editor::EnsureLineVisible(int lineDoc, bool enforcePolicy) {
 				SetTopLine(Platform::Clamp(lineDisplay - LinesOnScreen() + 1 + visibleSlop, 0, MaxScrollPos()));
 				SetVerticalScrollPos();
 				Redraw();
-	}
-	} else {
+			}
+		} else {
 			if ((topLine > lineDisplay) || (lineDisplay > topLine + LinesOnScreen() - 1) || (visiblePolicy & VISIBLE_STRICT)) {
 				SetTopLine(Platform::Clamp(lineDisplay - LinesOnScreen() / 2 + 1, 0, MaxScrollPos()));
 				SetVerticalScrollPos();
 				Redraw();
-				}
 			}
 		}
 	}
+}
 
 void Editor::FoldAll(int action) {
 	pdoc->EnsureStyledTo(pdoc->Length());
@@ -5400,9 +5400,9 @@ void Editor::FoldAll(int action) {
 			if (pdoc->GetLevel(lineSeek) & SC_FOLDLEVELHEADERFLAG) {
 				expanding = !cs.GetExpanded(lineSeek);
 				break;
-}
 			}
 		}
+	}
 	if (expanding) {
 		cs.SetVisible(0, maxLine-1, true);
 		for (int line = 0; line < maxLine; line++) {
@@ -5420,7 +5420,7 @@ void Editor::FoldAll(int action) {
 				int lineMaxSubord = pdoc->GetLastChild(line, -1);
 				if (lineMaxSubord > line) {
 					cs.SetVisible(line + 1, lineMaxSubord, false);
-	}
+				}
 			}
 		}
 	}
@@ -5434,18 +5434,18 @@ void Editor::FoldChanged(int line, int levelNow, int levelPrev) {
 			// Adding a fold point.
 			if (cs.SetExpanded(line, true)) {
 				RedrawSelMargin();
-		}
+			}
 			FoldExpand(line, SC_FOLDACTION_EXPAND, levelPrev);
-	}
+		}
 	} else if (levelPrev & SC_FOLDLEVELHEADERFLAG) {
 		if (!cs.GetExpanded(line)) {
 			// Removing the fold from one that has been contracted so should expand
 			// otherwise lines are left invisible with no way to make them visible
 			if (cs.SetExpanded(line, true)) {
 				RedrawSelMargin();
-}
+			}
 			FoldExpand(line, SC_FOLDACTION_EXPAND, levelPrev);
-	}
+		}
 	}
 	if (!(levelNow & SC_FOLDLEVELWHITEFLAG) &&
 	        ((levelPrev & SC_FOLDLEVELNUMBERMASK) > (levelNow & SC_FOLDLEVELNUMBERMASK))) {
@@ -5456,7 +5456,7 @@ void Editor::FoldChanged(int line, int levelNow, int levelPrev) {
 				cs.SetVisible(line, line, true);
 				SetScrollBars();
 				Redraw();
-}
+			}
 		}
 	}
 }
@@ -5467,11 +5467,11 @@ void Editor::NeedShown(int pos, int len) {
 		int lineEnd = pdoc->LineFromPosition(pos+len);
 		for (int line = lineStart; line <= lineEnd; line++) {
 			EnsureLineVisible(line, false);
-}
+		}
 	} else {
 		NotifyNeedShown(pos, len);
-}
 	}
+}
 
 int Editor::GetTag(char *tagValue, int tagNumber) {
 	const char *text = 0;
@@ -5481,7 +5481,7 @@ int Editor::GetTag(char *tagValue, int tagNumber) {
 		name[1] = static_cast<char>(tagNumber + '0');
 		length = 2;
 		text = pdoc->SubstituteByPosition(name, &length);
-}
+	}
 	if (tagValue) {
 		if (text)
 			memcpy(tagValue, text, length + 1);
@@ -5489,7 +5489,7 @@ int Editor::GetTag(char *tagValue, int tagNumber) {
 			*tagValue = '\0';
 	}
 	return length;
-	}
+}
 
 int Editor::ReplaceTarget(bool replacePatterns, const char *text, int length) {
 	UndoGroup ug(pdoc);
@@ -5499,8 +5499,8 @@ int Editor::ReplaceTarget(bool replacePatterns, const char *text, int length) {
 		text = pdoc->SubstituteByPosition(text, &length);
 		if (!text) {
 			return 0;
-}
-}
+		}
+	}
 	if (targetStart != targetEnd)
 		pdoc->DeleteChars(targetStart, targetEnd - targetStart);
 	targetEnd = targetStart;
@@ -5511,14 +5511,14 @@ int Editor::ReplaceTarget(bool replacePatterns, const char *text, int length) {
 
 bool Editor::IsUnicodeMode() const {
 	return pdoc && (SC_CP_UTF8 == pdoc->dbcsCodePage);
-		}
+}
 
 int Editor::CodePage() const {
 	if (pdoc)
 		return pdoc->dbcsCodePage;
 	else
 		return 0;
-	}
+}
 
 int Editor::WrapCount(int line) {
 	AutoSurface surface(this);
@@ -5529,7 +5529,7 @@ int Editor::WrapCount(int line) {
 		return ll->lines;
 	} else {
 		return 1;
-}
+	}
 }
 
 void Editor::AddStyledText(char *buffer, int appendLength) {
@@ -6683,7 +6683,7 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 
 	case SCI_GETIMEINTERACTION:
 		return imeInteraction;
-		
+
 #ifdef INCLUDE_DEPRECATED_FEATURES
 	case SCI_SETUSEPALETTE:
 		InvalidateStyleRedraw();

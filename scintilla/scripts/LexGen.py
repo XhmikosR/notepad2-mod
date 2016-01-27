@@ -48,11 +48,11 @@ def RegenerateAll(root):
     sci = ScintillaData.ScintillaData(root)
 
     Regenerate(root + "src/Catalogue.cxx", "//", sci.lexerModules)
-    Regenerate(root + "win32/scintilla.mak", "#", sci.lexFiles)
+#    Regenerate(root + "win32/scintilla.mak", "#", sci.lexFiles)    #commented out
 
-    UpdateVersionNumbers(sci, root)
+#    UpdateVersionNumbers(sci, root)    #commented out
 
-    HFacer.RegenerateAll(root, False)
+#    HFacer.RegenerateAll(root, False)    #commented out
 
 if __name__=="__main__":
     RegenerateAll("../")
