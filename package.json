@@ -20,8 +20,7 @@
     "clean-css": "~3.4.9",
     "csslint": "~0.10.0",
     "jshint": "~2.9.1",
-    "shelljs": "~0.6.0",
-    "uglify-js": "~2.6.2"
+    "shelljs": "~0.6.0"
   },
   "jshintConfig": {
     "bitwise": true,
