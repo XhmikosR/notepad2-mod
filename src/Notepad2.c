@@ -94,6 +94,7 @@ TBBUTTON  tbbMainWnd[] = { {0,IDT_FILE_NEW,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0},
 
 WCHAR      szIniFile[MAX_PATH] = L"";
 WCHAR      szIniFile2[MAX_PATH] = L"";
+WCHAR      szBufferFile[MAX_PATH] = L"";
 BOOL      bSaveSettings;
 BOOL      bSaveRecentFiles;
 BOOL      bSaveFindReplace;
@@ -373,6 +374,7 @@ int flagQuietCreate        = 0;
 int flagUseSystemMRU       = 0;
 int flagRelaunchElevated   = 0;
 int flagDisplayHelp        = 0;
+int flagBufferFile         = 0;
 
 
 
@@ -875,8 +877,16 @@ HWND InitInstance(HINSTANCE hInstance,LPSTR pszCmdLine,int nCmdShow)
       if (OpenFileDlg(hwndMain,tchFile,COUNTOF(tchFile),lpFileArg))
         bOpened = FileLoad(FALSE,FALSE,FALSE,FALSE,tchFile);
     }
-    else {
-      if (bOpened = FileLoad(FALSE,FALSE,FALSE,FALSE,lpFileArg)) {
+    else
+    {
+      LPCWSTR lpFileToOpen = flagBufferFile ? szBufferFile : lpFileArg;
+      if (bOpened = FileLoad(FALSE, FALSE, FALSE, FALSE, lpFileToOpen)) {
+        if (flagBufferFile) {
+          lstrcpy(szCurFile, lpFileArg);
+          bModified = TRUE;
+          SetWindowTitle(hwndMain, uidsAppTitle, fIsElevated, IDS_UNTITLED, lpFileArg,
+            iPathNameFormat, bModified, IDS_READONLY, bReadOnly, szTitleExcerpt);
+        }
         if (flagJumpTo) { // Jump to position
           EditJumpTo(hwndEdit,iInitialLine,iInitialColumn);
           EditEnsureSelectionVisible(hwndEdit);
@@ -6030,6 +6040,14 @@ void ParseCommandLine()
           flagUseSystemMRU = 2;
         else
           flagUseSystemMRU = 1;
+      }
+      else if (StrCmpNI(lp1,L"buffer",CSTRLEN(L"buffer")) == 0) {
+        if (ExtractFirstArgument(lp2, lp1, lp2)) {
+          StrCpyN(szBufferFile, lp1, COUNTOF(szBufferFile));
+          TrimString(szBufferFile);
+          PathUnquoteSpaces(szBufferFile);
+          flagBufferFile = 1;
+        }
       }
 
       else switch (*CharUpper(lp1))
