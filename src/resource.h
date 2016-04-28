@@ -423,6 +423,7 @@
 #define IDS_WRITEINI_FAIL               50038
 #define IDS_SETTINGSNOTSAVED            50039
 #define IDS_EXPORT_FAIL                 50040
+#define IDS_ERR_ACCESSDENIED            50041
 #define IDS_CMDLINEHELP                 60000
 
 // Next default values for new objects
