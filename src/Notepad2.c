@@ -883,6 +883,8 @@ HWND InitInstance(HINSTANCE hInstance,LPSTR pszCmdLine,int nCmdShow)
       if (bOpened = FileLoad(FALSE, FALSE, FALSE, FALSE, lpFileToOpen)) {
         if (flagBufferFile) {
           lstrcpy(szCurFile, lpFileArg);
+          if (!flagLexerSpecified)
+            Style_SetLexerFromFile(hwndEdit, szCurFile);
           bModified = TRUE;
           SetWindowTitle(hwndMain, uidsAppTitle, fIsElevated, IDS_UNTITLED, lpFileArg,
             iPathNameFormat, bModified, IDS_READONLY, bReadOnly, szTitleExcerpt);
@@ -7154,11 +7156,10 @@ BOOL FileSave(BOOL bSaveAlways,BOOL bAsk,BOOL bSaveAs,BOOL bSaveCopy)
             ExtractFirstArgument(lpCmdLine, lpExe, lpArgs);
             
             wsprintf(szArguments, L"/buffer %s %s", szTempFileName, lpArgs);
-            if (szCurFile) 
+            if (lstrlen(tchFile))
             {
-              if (!StrStr(szArguments, szCurFile)) {
-                PathQuoteSpaces(szCurFile);
-                wsprintf(szArguments, L"%s %s", szArguments, szCurFile);
+              if (!StrStrI(szArguments, tchFile)) {
+                wsprintf(szArguments, L"%s %s", szArguments, tchFile);
               }
             }
 
@@ -7632,7 +7633,7 @@ BOOL RelaunchMultiInst() {
 //  RelaunchElevated()
 //
 //
-BOOL RelaunchElevated(LPCWSTR lpArgs) {
+BOOL RelaunchElevated(LPWSTR lpArgs) {
 
   if (!IsVista() || fIsElevated || !flagRelaunchElevated || flagDisplayHelp)
     return(FALSE);
