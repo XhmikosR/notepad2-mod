@@ -7,7 +7,7 @@
 #*
 #* See License.txt for details about distribution and modification.
 #*
-#*                                       (c) XhmikosR 2010-2014
+#*                                       (c) XhmikosR 2010-2016
 #*                                       https://github.com/XhmikosR/notepad2-mod
 #*
 #* Use build_wdk.bat and set there your WDK directory.
@@ -52,7 +52,7 @@ NP2_RES        = ..\res
 
 DEFINES       = /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE" /D "_STL70_" \
                 /D "_STATIC_CPPLIB" /D "_CRT_SECURE_NO_WARNINGS" /D "BOOKMARK_EDITION" \
-                /D "WDK_BUILD"
+                /D "WDK_BUILD" /D "NO_CXX11_REGEX"
                 # _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES is causing build errors
 INCLUDEDIRS   = /I "$(SCI_INC)" /I "$(SCI_LEX)" /I "$(SCI_LIB)" /I "$(SCI_SRC)" \
                 /I "$(SCI_WIN)"
