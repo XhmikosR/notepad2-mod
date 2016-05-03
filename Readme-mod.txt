@@ -13,7 +13,7 @@ Notable changes:
 * Other various minor changes and tweaks
 
 Supported Operating Systems:
-* XP (SP3, SP2 might or might not work), Vista, 7, 8 and 8.1 both 32-bit and 64-bit
+* XP (SP3, SP2 might or might not work), Vista, 7, 8, 8.1 and 10 both 32-bit and 64-bit
 
 Contributors:
 * Kai Liu

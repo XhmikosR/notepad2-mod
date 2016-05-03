@@ -6,6 +6,7 @@
 *.user
 /bin
 /build.user.bat
+/build/*.db
 /build/.vs
 /build/cov-int
 /build/Notepad2-mod.lzma

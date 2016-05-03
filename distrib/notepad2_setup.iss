@@ -10,9 +10,6 @@
 ; Inno Setup: http://www.jrsoftware.org/isdl.php
 
 
-;#define VS2010
-;#define VS2012
-;#define VS2013
 ;#define VS2015
 ;#define WDK
 
@@ -21,17 +18,11 @@
   #error Update your Inno Setup version (5.5.9 or newer)
 #endif
 
-#if !defined(VS2010) && !defined(VS2012) && !defined(VS2013) && !defined(VS2015) && !defined(WDK)
-  #error You need to define the compiler used; VS2010, VS2012, VS2013, VS2015 or WDK
+#if !defined(VS2015) && !defined(WDK)
+  #error You need to define the compiler used; VS2015 or WDK
 #endif
 
-#if defined(VS2010)
-  #define compiler "VS2010"
-#elif defined(VS2012)
-  #define compiler "VS2012"
-#elif defined(VS2013)
-  #define compiler "VS2013"
-#elif defined(VS2015)
+#if defined(VS2015)
   #define compiler "VS2015"
 #elif defined(WDK)
   #define compiler "WDK"

@@ -8,7 +8,7 @@ rem *   Batch file for creating the zip packages
 rem *
 rem * See License.txt for details about distribution and modification.
 rem *
-rem *                                     (c) XhmikosR 2010-2015
+rem *                                     (c) XhmikosR 2010-2016
 rem *                                     https://github.com/XhmikosR/notepad2-mod
 rem *
 rem ******************************************************************************
@@ -29,26 +29,14 @@ rem Check for the first switch
 IF "%~1" == "" (
   SET "COMPILER=VS2015"
 ) ELSE (
-  IF /I "%~1" == "WDK"      (SET "COMPILER=WDK"    & GOTO START)
-  IF /I "%~1" == "/WDK"     (SET "COMPILER=WDK"    & GOTO START)
-  IF /I "%~1" == "-WDK"     (SET "COMPILER=WDK"    & GOTO START)
-  IF /I "%~1" == "--WDK"    (SET "COMPILER=WDK"    & GOTO START)
-  IF /I "%~1" == "VS2010"   (SET "COMPILER=VS2010" & GOTO START)
-  IF /I "%~1" == "/VS2010"  (SET "COMPILER=VS2010" & GOTO START)
-  IF /I "%~1" == "-VS2010"  (SET "COMPILER=VS2010" & GOTO START)
-  IF /I "%~1" == "--VS2010" (SET "COMPILER=VS2010" & GOTO START)
-  IF /I "%~1" == "VS2012"   (SET "COMPILER=VS2012" & GOTO START)
-  IF /I "%~1" == "/VS2012"  (SET "COMPILER=VS2012" & GOTO START)
-  IF /I "%~1" == "-VS2012"  (SET "COMPILER=VS2012" & GOTO START)
-  IF /I "%~1" == "--VS2012" (SET "COMPILER=VS2012" & GOTO START)
-  IF /I "%~1" == "VS2013"   (SET "COMPILER=VS2013" & GOTO START)
-  IF /I "%~1" == "/VS2013"  (SET "COMPILER=VS2013" & GOTO START)
-  IF /I "%~1" == "-VS2013"  (SET "COMPILER=VS2013" & GOTO START)
-  IF /I "%~1" == "--VS2013" (SET "COMPILER=VS2013" & GOTO START)
   IF /I "%~1" == "VS2015"   (SET "COMPILER=VS2015" & GOTO START)
   IF /I "%~1" == "/VS2015"  (SET "COMPILER=VS2015" & GOTO START)
   IF /I "%~1" == "-VS2015"  (SET "COMPILER=VS2015" & GOTO START)
   IF /I "%~1" == "--VS2015" (SET "COMPILER=VS2015" & GOTO START)
+  IF /I "%~1" == "WDK"      (SET "COMPILER=WDK"    & GOTO START)
+  IF /I "%~1" == "/WDK"     (SET "COMPILER=WDK"    & GOTO START)
+  IF /I "%~1" == "-WDK"     (SET "COMPILER=WDK"    & GOTO START)
+  IF /I "%~1" == "--WDK"    (SET "COMPILER=WDK"    & GOTO START)
 
   ECHO.
   ECHO Unsupported commandline switch!
@@ -180,7 +168,7 @@ EXIT /B
 :SHOWHELP
 TITLE %~nx0 %1
 ECHO. & ECHO.
-ECHO Usage:  %~nx0 [VS2010^|VS2012^|VS2013^|VS2015^|WDK]
+ECHO Usage:  %~nx0 [VS2015^|WDK]
 ECHO.
 ECHO Notes:  You can also prefix the commands with "-", "--" or "/".
 ECHO         The arguments are not case sensitive.
