@@ -828,6 +828,7 @@ void Editor::MovedCaret(SelectionPosition newPos, SelectionPosition previousPos,
 	}
 
 	ShowCaretAtCurrentPosition();
+	NotifyCaretMove();
 
 	ClaimSelection();
 	SetHoverIndicatorPosition(sel.MainCaret());
@@ -1435,6 +1436,9 @@ void Editor::InvalidateCaret() {
 		}
 	}
 	UpdateSystemCaret();
+}
+
+void Editor::NotifyCaretMove() {
 }
 
 void Editor::UpdateSystemCaret() {

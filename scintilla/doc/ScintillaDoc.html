@@ -82,7 +82,7 @@
 
     <h1>Scintilla Documentation</h1>
 
-    <p>Last edited 6 January 2016 NH</p>
+    <p>Last edited 8 May 2016 NH</p>
 
     <p>There is <a class="jump" href="Design.html">an overview of the internal design of
     Scintilla</a>.<br />
@@ -1145,8 +1145,6 @@ struct Sci_TextToFind {
     <code><a class="message" href="#SCI_GETTEXTLENGTH">SCI_GETTEXTLENGTH</a><br />
      <a class="message" href="#SCI_GETLENGTH">SCI_GETLENGTH</a><br />
      <a class="message" href="#SCI_GETLINECOUNT">SCI_GETLINECOUNT</a><br />
-     <a class="message" href="#SCI_SETFIRSTVISIBLELINE">SCI_SETFIRSTVISIBLELINE(int lineDisplay)</a><br />
-     <a class="message" href="#SCI_GETFIRSTVISIBLELINE">SCI_GETFIRSTVISIBLELINE</a><br />
      <a class="message" href="#SCI_LINESONSCREEN">SCI_LINESONSCREEN</a><br />
      <a class="message" href="#SCI_GETMODIFY">SCI_GETMODIFY</a><br />
      <a class="message" href="#SCI_SETSEL">SCI_SETSEL(int anchorPos, int currentPos)</a><br />
@@ -1213,11 +1211,6 @@ struct Sci_TextToFind {
     <p><b id="SCI_GETLINECOUNT">SCI_GETLINECOUNT</b><br />
      This returns the number of lines in the document. An empty document contains 1 line. A
     document holding only an end of line sequence has 2 lines.</p>
-
-    <p><b id="SCI_SETFIRSTVISIBLELINE">SCI_SETFIRSTVISIBLELINE(int lineDisplay)</b><br />
-     <b id="SCI_GETFIRSTVISIBLELINE">SCI_GETFIRSTVISIBLELINE</b><br />
-     These messages retrieve and set the line number of the first visible line in the Scintilla view. The first line
-    in the document is numbered 0. The value is a visible line rather than a document line.</p>
 
     <p><b id="SCI_LINESONSCREEN">SCI_LINESONSCREEN</b><br />
      This returns the number of complete lines visible on the screen. With a constant line height,
@@ -1834,7 +1827,12 @@ struct Sci_TextToFind {
      </p>
 
     <h2 id="ScrollingAndAutomaticScrolling">Scrolling and automatic scrolling</h2>
-    <code><a class="message" href="#SCI_LINESCROLL">SCI_LINESCROLL(int column, int line)</a><br />
+    <code>
+     <a class="message" href="#SCI_SETFIRSTVISIBLELINE">SCI_SETFIRSTVISIBLELINE(int lineDisplay)</a><br />
+     <a class="message" href="#SCI_GETFIRSTVISIBLELINE">SCI_GETFIRSTVISIBLELINE</a><br />
+     <a class="message" href="#SCI_SETXOFFSET">SCI_SETXOFFSET(int xOffset)</a><br />
+     <a class="message" href="#SCI_GETXOFFSET">SCI_GETXOFFSET</a><br />
+     <a class="message" href="#SCI_LINESCROLL">SCI_LINESCROLL(int column, int line)</a><br />
      <a class="message" href="#SCI_SCROLLCARET">SCI_SCROLLCARET</a><br />
      <a class="message" href="#SCI_SCROLLRANGE">SCI_SCROLLRANGE(int secondary, int primary)</a><br />
      <a class="message" href="#SCI_SETXCARETPOLICY">SCI_SETXCARETPOLICY(int caretPolicy, int
@@ -1847,8 +1845,6 @@ struct Sci_TextToFind {
      <a class="message" href="#SCI_GETHSCROLLBAR">SCI_GETHSCROLLBAR</a><br />
      <a class="message" href="#SCI_SETVSCROLLBAR">SCI_SETVSCROLLBAR(bool visible)</a><br />
      <a class="message" href="#SCI_GETVSCROLLBAR">SCI_GETVSCROLLBAR</a><br />
-     <a class="message" href="#SCI_GETXOFFSET">SCI_GETXOFFSET</a><br />
-     <a class="message" href="#SCI_SETXOFFSET">SCI_SETXOFFSET(int xOffset)</a><br />
      <a class="message" href="#SCI_SETSCROLLWIDTH">SCI_SETSCROLLWIDTH(int pixelWidth)</a><br />
      <a class="message" href="#SCI_GETSCROLLWIDTH">SCI_GETSCROLLWIDTH</a><br />
      <a class="message" href="#SCI_SETSCROLLWIDTHTRACKING">SCI_SETSCROLLWIDTHTRACKING(bool tracking)</a><br />
@@ -1857,6 +1853,17 @@ struct Sci_TextToFind {
     endAtLastLine)</a><br />
      <a class="message" href="#SCI_GETENDATLASTLINE">SCI_GETENDATLASTLINE</a><br />
     </code>
+
+    <p><b id="SCI_SETFIRSTVISIBLELINE">SCI_SETFIRSTVISIBLELINE(int lineDisplay)</b><br />
+     <b id="SCI_GETFIRSTVISIBLELINE">SCI_GETFIRSTVISIBLELINE</b><br />
+     These messages retrieve and set the line number of the first visible line in the Scintilla view. The first line
+    in the document is numbered 0. The value is a visible line rather than a document line.</p>
+
+    <p><b id="SCI_SETXOFFSET">SCI_SETXOFFSET(int xOffset)</b><br />
+     <b id="SCI_GETXOFFSET">SCI_GETXOFFSET</b><br />
+     The <code>xOffset</code> is the horizontal scroll position in pixels of the start of the text
+    view. A value of 0 is the normal position with the first text column visible at the left of the
+    view.</p>
 
     <p><b id="SCI_LINESCROLL">SCI_LINESCROLL(int column, int line)</b><br />
      This will attempt to scroll the display by the number of columns and lines that you specify.
@@ -2153,12 +2160,6 @@ struct Sci_TextToFind {
      By default, the vertical scroll bar is always displayed when required. You can choose to hide
     or show it with <code>SCI_SETVSCROLLBAR</code> and get the current state with
     <code>SCI_GETVSCROLLBAR</code>.</p>
-
-    <p><b id="SCI_SETXOFFSET">SCI_SETXOFFSET(int xOffset)</b><br />
-     <b id="SCI_GETXOFFSET">SCI_GETXOFFSET</b><br />
-     The <code>xOffset</code> is the horizontal scroll position in pixels of the start of the text
-    view. A value of 0 is the normal position with the first text column visible at the left of the
-    view.</p>
 
     <p>See also: <a class="message" href="#SCI_LINESCROLL"><code>SCI_LINESCROLL</code></a></p>
 
