@@ -5,9 +5,7 @@ highlighter:    false
 exclude:
   - "img/old/"
   - "LICENSE.md"
-  - "make.js"
   - "node_modules/"
   - "package.json"
   - "params.json"
   - "Readme.md"
-  - "run-tests.js"
