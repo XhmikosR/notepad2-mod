@@ -2168,7 +2168,7 @@ void MsgInitMenu(HWND hwnd,WPARAM wParam,LPARAM lParam)
 
   i = (int)SendMessage(hwndEdit,SCI_GETLEXER,0,0);
   EnableCmd(hmenu,IDM_EDIT_LINECOMMENT,
-    !(i == SCLEX_NULL || i == SCLEX_CSS || i == SCLEX_DIFF));
+    !(i == SCLEX_NULL || i == SCLEX_CSS || i == SCLEX_DIFF || SCLEX_MARKDOWN));
   EnableCmd(hmenu,IDM_EDIT_STREAMCOMMENT,
     !(i == SCLEX_NULL || i == SCLEX_VBSCRIPT || i == SCLEX_MAKEFILE || i == SCLEX_VB || i == SCLEX_ASM ||
       i == SCLEX_SQL || i == SCLEX_PERL || i == SCLEX_PYTHON || i == SCLEX_PROPERTIES ||i == SCLEX_CONF ||
@@ -3383,6 +3383,7 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
         case SCLEX_CSS:
         case SCLEX_DIFF:
         case SCLEX_MARKDOWN:
+        case SCLEX_JSON:
           break;
         case SCLEX_HTML:
         case SCLEX_XML:
@@ -3469,6 +3470,7 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
         case SCLEX_CMAKE:
         case SCLEX_MARKDOWN:
         case SCLEX_YAML:
+        case SCLEX_JSON:
           break;
         case SCLEX_HTML:
         case SCLEX_XML:
@@ -6248,7 +6250,7 @@ void ParseCommandLine()
             LocalFree(lpSchemeArg);
             lpSchemeArg = NULL;
           }
-          iInitialLexer = 34;
+          iInitialLexer = 35;
           flagLexerSpecified = 1;
           break;
 
@@ -6257,7 +6259,7 @@ void ParseCommandLine()
             LocalFree(lpSchemeArg);
             lpSchemeArg = NULL;
           }
-          iInitialLexer = 35;
+          iInitialLexer = 36;
           flagLexerSpecified = 1;
           break;
 

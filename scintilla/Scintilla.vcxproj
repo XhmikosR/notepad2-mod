@@ -149,6 +149,7 @@
     <ClCompile Include="lexers\LexErrorList.cxx" />
     <ClCompile Include="lexers\LexHTML.cxx" />
     <ClCompile Include="lexers\LexInno.cxx" />
+    <ClCompile Include="lexers\LexJSON.cxx" />
     <ClCompile Include="lexers\LexLaTeX.cxx" />
     <ClCompile Include="lexers\LexLua.cxx" />
     <ClCompile Include="lexers\LexMake.cxx" />

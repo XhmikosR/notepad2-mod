@@ -622,7 +622,7 @@ KEYWORDLIST KeyWords_JS = {
 "", "", "", "", "", "", "", "" };
 
 
-EDITLEXER lexJS = { SCLEX_CPP, 63010, L"JavaScript", L"js; jse; jsm; json; as", L"", &KeyWords_JS, {
+EDITLEXER lexJS = { SCLEX_CPP, 63010, L"JavaScript", L"js; jse; jsm; as", L"", &KeyWords_JS, {
                     { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
                     //{ SCE_C_DEFAULT, L"Default", L"", L"" },
                     { SCE_C_COMMENT, 63127, L"Comment", L"fore:#646464", L"" },
@@ -638,6 +638,51 @@ EDITLEXER lexJS = { SCLEX_CPP, 63010, L"JavaScript", L"js; jse; jsm; json; as", 
                     //{ SCE_C_GLOBALCLASS, L"Global Class", L"", L"" },
                     { -1, 00000, L"", L"", L"" } } };
 
+
+KEYWORDLIST KeyWords_JSON = {
+"false true null",
+"@id @context @type @value @language @container @list @set @reverse @index @base @vocab @graph",
+"", "", "", "", "", "", "" };
+
+
+EDITLEXER lexJSON = { SCLEX_JSON, 63382, L"JSON", L"json; eslintrc; jshintrc; jsonld", L"", &KeyWords_JSON, {
+                    { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
+                    //{ SCE_C_DEFAULT, L"Default", L"", L"" },
+                    { SCE_C_COMMENT, 63127, L"Comment", L"fore:#646464", L"" },
+                    { SCE_C_WORD, 63128, L"Keyword", L"bold; fore:#A46000", L"" },
+                    { SCE_C_IDENTIFIER, 63129, L"Identifier", L"", L"" },
+                    { SCE_JSON_STRING, 63131, L"String", L"fore:#008000", L"" },
+                    { SCE_C_REGEX, 63135, L"Regex", L"fore:#006633; back:#FFF1A8", L"" },
+                    { SCE_JSON_NUMBER, 63130, L"Number", L"fore:#FF0000", L"" },
+                    { SCE_C_OPERATOR, 63132, L"Operator", L"fore:#B000B0", L"" },
+                    { -1, 00000, L"", L"", L"" } } };
+
+/*
+# String
+style.json.2=fore:#7F0000
+# Unclosed string       SCE_JSON_STRINGEOL
+style.json.3=fore:#FFFFFF,back:#FF0000,eolfilled
+# Property name         SCE_JSON_PROPERTYNAME
+style.json.4=fore:#880AE8
+# Escape sequence       SCE_JSON_ESCAPESEQUENCE
+style.json.5=fore:#0B982E
+# Line comment          SCE_JSON_LINECOMMENT
+style.json.6=fore:#05BBAE,italics
+# Block comment         SCE_JSON_BLOCKCOMMENT
+style.json.7=$(style.json.6)
+# Operator              SCE_JSON_OPERATOR
+style.json.8=fore:#18644A
+# URL/IRI               SCE_JSON_URI
+style.json.9=fore:#0000FF
+# JSON-LD compact IRI   SCE_JSON_COMPACTIRI
+style.json.10=fore:#D137C1
+# JSON keyword          SCE_JSON_KEYWORD
+style.json.11=fore:#0BCEA7,bold
+# JSON-LD keyword       SCE_JSON_LDKEYWORD
+style.json.12=fore:#EC2806
+# Parsing error         SCE_JSON_ERROR
+style.json.13=fore:#FFFFFF,back:#FF0000
+*/
 
 KEYWORDLIST KeyWords_JAVA = {
 "@interface abstract assert boolean break byte case catch char class const "
@@ -2538,6 +2583,7 @@ PEDITLEXER pLexArray[NUMLEXERS] =
   &lexINNO,
   &lexJAVA,
   &lexJS,
+  &lexJSON,
   &lexMAK,
   &lexMARKDOWN,
   &lexLATEX,
@@ -2556,8 +2602,8 @@ PEDITLEXER pLexArray[NUMLEXERS] =
   &lexVB,
   &lexHTML,
   &lexXML,
-  &lexYAML,
-  &lexVHDL
+  &lexVHDL,
+  &lexYAML
 };
 
 
@@ -2859,6 +2905,10 @@ void Style_SetLexer(HWND hwnd,PEDITLEXER pLexNew)
   }
   else if (pLexNew->iLexer == SCLEX_NSIS)
     SciCall_SetProperty("nsis.ignorecase", "1");
+  else if (pLexNew->iLexer == SCLEX_JSON) {
+    SciCall_SetProperty("json.allow.comments", "1");
+    SciCall_SetProperty("json.escape.sequence", "1");
+  }
 
   // Code folding
   SciCall_SetProperty("fold", "1");
