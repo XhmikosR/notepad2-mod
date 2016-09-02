@@ -210,7 +210,9 @@ BEGIN
             MENUITEM SEPARATOR
             MENUITEM "&Filename\tCtrl+F9",          IDM_EDIT_INSERT_FILENAME
             MENUITEM "&Path and Filename\tCtrl+Shift+F9",
-                                                    IDM_EDIT_INSERT_PATHNAME
+                                                     IDM_EDIT_INSERT_PATHNAME
+	    MENUITEM SEPARATOR
+	    MENUITEM "&GUID\tCtrl+Shift+."          IDM_EDIT_INSERT_GUID
         END
         POPUP "Spec&ial"
         BEGIN
@@ -615,6 +617,7 @@ BEGIN
     VK_F3,          IDACC_SAVEFIND,         VIRTKEY, ALT, NOINVERT
     VK_F3,          IDACC_FINDPREV,         VIRTKEY, SHIFT, NOINVERT
     VK_F4,          IDACC_REPLACENEXT,      VIRTKEY, NOINVERT
+    VK_OEM_PERIOD,  IDM_EDIT_INSERT_GUID,   VIRTKEY, SHIFT, CONTROL, NOINVERT
 END
 
 

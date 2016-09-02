@@ -3376,6 +3376,28 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
       }
       break;
 
+	
+    case IDM_EDIT_INSERT_GUID:
+      {
+        UINT uCP;
+        GUID guid;
+        WCHAR wszGuid[40];
+        WCHAR *pwszGuid;
+        char mszGuid[40 * 4]; // UTF-8 max of 4 bytes per char
+
+        if (SUCCEEDED(CoCreateGuid(&guid))) {          
+          if (StringFromGUID2(&guid,wszGuid,COUNTOF(wszGuid))) {
+            pwszGuid = wszGuid + 1; // trim first brace char
+            wszGuid[wcslen(wszGuid) - 1] = L'\0'; // trim last brace char 
+            uCP = (SendMessage(hwndEdit,SCI_GETCODEPAGE,0,0) == SC_CP_UTF8) ? CP_UTF8 : CP_ACP;            
+            if (WideCharToMultiByte(uCP,0,pwszGuid,-1,mszGuid,COUNTOF(mszGuid),NULL,NULL)) {
+              SendMessage(hwndEdit,SCI_REPLACESEL,0,(LPARAM)mszGuid);
+            }
+          }
+        }
+      }
+      break;
+
 
     case IDM_EDIT_LINECOMMENT:
       switch (SendMessage(hwndEdit,SCI_GETLEXER,0,0)) {
