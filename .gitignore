@@ -16,5 +16,5 @@
 /build/temp_zip*
 /distrib/Notepad2-mod.*.exe
 /res/Notepad2.exe.manifest
-/signinfo_notepad2-mod.txt
+/signinfo.txt
 /src/VersionRev.h

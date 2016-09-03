@@ -53,7 +53,7 @@ IF "%~1" == "" (
 
 
 :START
-IF EXIST "%~dp0..\signinfo_notepad2-mod.txt" SET "SIGN=True"
+IF EXIST "%~dp0..\signinfo.txt" SET "SIGN=True"
 
 SET INPUTDIRx86=bin\%COMPILER%\Release_x86
 SET INPUTDIRx64=bin\%COMPILER%\Release_x64

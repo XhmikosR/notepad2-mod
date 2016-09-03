@@ -97,7 +97,7 @@ MinVersion=5.1sp3
 #endif
 ArchitecturesAllowed=x86 x64
 ArchitecturesInstallIn64BitMode=x64
-#ifexist "..\signinfo_notepad2-mod.txt"
+#ifexist "..\signinfo.txt"
 SignTool=MySignTool
 #endif
 CloseApplications=true
