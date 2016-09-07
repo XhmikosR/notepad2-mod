@@ -1182,16 +1182,16 @@ EDITLEXER lexPS = { SCLEX_POWERSHELL, 63021, L"PowerShell Script", L"ps1; psd1; 
 
 KEYWORDLIST KeyWords_NSIS = {
 "!addincludedir !addplugindir !appendfile !cd !define !delfile !echo !else !endif !error "
-"!execute !if !ifdef !ifmacrodef !ifmacrondef !ifndef !include !insertmacro !macro !macroend "
-"!packhdr !searchparse !searchreplace !system !tempfile !undef !verbose !warning .onguiend .onguiinit "
-".oninit .oninstfailed .oninstsuccess .onmouseoversection .onrebootfailed .onselchange .onuserabort "
-".onverifyinstdir un.onguiend un.onguiinit un.oninit un.onrebootfailed un.onuninstfailed un.onuninstsuccess "
+"!execute !finalize !getdllversion !if !ifdef !ifmacrodef !ifmacrondef !ifndef !include !insertmacro !macro "
+"!macroend !macroundef !makensis !packhdr !searchparse !searchreplace !system !tempfile !undef !verbose !warning "
+".onguiend .onguiinit .oninit .oninstfailed .oninstsuccess .onmouseoversection .onrebootfailed .onselchange "
+".onuserabort .onverifyinstdir un.onguiend un.onguiinit un.oninit un.onrebootfailed un.onuninstfailed un.onuninstsuccess "
 "un.onuserabort abort addbrandingimage addsize allowrootdirinstall allowskipfiles autoclosewindow "
 "bannertrimpath bgfont bggradient brandingtext bringtofront call callinstdll caption changeui checkbitmap "
 "clearerrors completedtext componenttext copyfiles crccheck createdirectory createfont createshortcut "
 "delete deleteinisec deleteinistr deleteregkey deleteregvalue detailprint detailsbuttontext dirstate dirtext "
 "dirvar dirverify enablewindow enumregkey enumregvalue exch exec execshell execwait expandenvstrings "
-"file filebufsize fileclose fileerrortext fileopen fileread filereadbyte filereadutf16le filereadword "
+"file filebufsize fileclose fileerrortext fileexists fileopen fileread filereadbyte filereadutf16le filereadword "
 "fileseek filewrite filewritebyte filewriteutf16le filewriteword findclose findfirst findnext findproc "
 "findwindow flushini getcurinsttype getcurrentaddress getdlgitem getdllversion getdllversionlocal "
 "geterrorlevel getfiletime getfiletimelocal getfontname getfontnamelocal getfontversion getfontversionlocal "
@@ -1199,17 +1199,17 @@ KEYWORDLIST KeyWords_NSIS = {
 "ifabort iferrors iffileexists ifrebootflag ifsilent initpluginsdir installbuttontext installcolors installdir "
 "installdirregkey instprogressflags insttype insttypegettext insttypesettext intcmp intcmpu intfmt intop "
 "iswindow langstring licensebkcolor licensedata licenseforceselection licenselangstring licensetext "
-"loadlanguagefile lockwindow logset logtext messagebox miscbuttontext name nop outfile page pagecallbacks pop "
-"push quit readenvstr readinistr readregdword readregstr reboot regdll rename requestexecutionlevel reservefile "
-"return rmdir searchpath sectiongetflags sectiongetinsttypes sectiongetsize sectiongettext sectionin "
+"loadlanguagefile lockwindow logset logtext manifestsupportedos messagebox miscbuttontext name nop outfile page "
+"pagecallbacks pop push quit readenvstr readinistr readregdword readregstr reboot regdll rename requestexecutionlevel "
+"reservefile return rmdir searchpath sectiongetflags sectiongetinsttypes sectiongetsize sectiongettext sectionin "
 "sectionsetflags sectionsetinsttypes sectionsetsize sectionsettext sendmessage setautoclose setbrandingimage "
 "setcompress setcompressionlevel setcompressor setcompressordictsize setctlcolors setcurinsttype "
 "setdatablockoptimize setdatesave setdetailsprint setdetailsview seterrorlevel seterrors setfileattributes "
 "setfont setoutpath setoverwrite setpluginunload setrebootflag setregview setshellvarcontext setsilent "
 "showinstdetails showuninstdetails showwindow silentinstall silentuninstall sleep spacetexts strcmp strcmps "
-"strcpy strlen subcaption uninstallbuttontext uninstallcaption uninstallicon uninstallsubcaption uninstalltext "
-"uninstpage unregdll var viaddversionkey viproductversion windowicon writeinistr writeregbin writeregdword "
-"writeregexpandstr writeregstr writeuninstaller xpstyle",
+"strcpy strlen subcaption unicode uninstallbuttontext uninstallcaption uninstallicon uninstallsubcaption uninstalltext "
+"uninstpage unregdll var viaddversionkey vifileversion viproductversion windowicon writeinistr writeregbin "
+"writeregdword writeregexpandstr writeregstr writeuninstaller xpstyle",
 "${nsisdir} $0 $1 $2 $3 $4 $5 $6 $7 $8 $9 $r0 $r1 $r2 $r3 $r4 $r5 $r6 $r7 $r8 $r9 $instdir $outdir $cmdline "
 "$language $programfiles $programfiles32 $programfiles64 $commonfiles $commonfiles32 $commonfiles64 "
 "$desktop $exedir $exefile $exepath $windir $sysdir $temp $startmenu $smprograms $smstartup $quicklaunch "
@@ -1217,7 +1217,7 @@ KEYWORDLIST KeyWords_NSIS = {
 "$localappdata $printhood $internet_cache $cookies $history $profile $admintools $resources $resources_localized "
 "$cdburn_area $hwndparent $pluginsdir ${__date__} ${__file__} ${__function__} ${__global__} ${__line__} "
 "${__pageex__} ${__section__} ${__time__} ${__timestamp__} ${__uninstall__}",
-"alt colored control cur date end global ignorecase leave shift smooth utcdate sw_hide sw_showmaximized "
+"alt charset colored control cur date end global ignorecase leave shift smooth utcdate sw_hide sw_showmaximized "
 "sw_showminimized sw_shownormal archive auto oname rebootok nonfatal ifempty nounload filesonly short mb_ok "
 "mb_okcancel mb_abortretryignore mb_retrycancel mb_yesno mb_yesnocancel mb_iconexclamation mb_iconinformation "
 "mb_iconquestion mb_iconstop mb_usericon mb_topmost mb_setforeground mb_right mb_rtlreading mb_defbutton1 "
@@ -1230,7 +1230,7 @@ KEYWORDLIST KeyWords_NSIS = {
 "zlib bzip2 lzma try ifnewer ifdiff lastused manual alwaysoff normal file_attribute_normal file_attribute_archive "
 "hidden file_attribute_hidden offline file_attribute_offline readonly file_attribute_readonly system "
 "file_attribute_system temporary file_attribute_temporary custom license components directory instfiles "
-"uninstconfirm 32 64 enablecancel",
+"uninstconfirm 32 64 enablecancel noworkingdir plugin rawnl winvista win7 win8 win8.1 win10",
 "", "", "", "", "", "" };
 
 
