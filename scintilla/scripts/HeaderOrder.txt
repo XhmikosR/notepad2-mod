@@ -21,6 +21,7 @@
 #include <cstring>
 #include <cctype>
 #include <cstdio>
+#include <cstdarg>
 #include <cmath>
 
 // C++ standard library
@@ -43,6 +44,7 @@
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
+#include <gtk/gtk-a11y.h>
 
 // Windows headers
 #include <windows.h>
@@ -98,6 +100,7 @@
 #include "SplitVector.h"
 #include "Partitioning.h"
 #include "RunStyles.h"
+#include "SparseVector.h"
 #include "ContractionState.h"
 #include "CellBuffer.h"
 #include "PerLine.h"
@@ -136,7 +139,9 @@
 #include "HanjaDic.h"
 
 // gtk
+#include "ScintillaGTK.h"
 #include "scintilla-marshal.h"
+#include "ScintillaGTKAccessible.h"
 #include "Converter.h"
 
 // cocoa
@@ -148,3 +153,7 @@
 #import "ScintillaView.h"
 #import "ScintillaCocoa.h"
 #import "PlatCocoa.h"
+
+// Catch testing framework
+#include "catch.hpp"
+
