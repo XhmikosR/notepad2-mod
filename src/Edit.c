@@ -546,7 +546,8 @@ BOOL EditCopyAppend(HWND hwnd)
         (int)SendMessage(hwnd,SCI_GETSELECTIONEND,0,0) -
         (int)SendMessage(hwnd,SCI_GETSELECTIONSTART,0,0);
 
-      pszText = LocalAlloc(LPTR,iSelCount + 1);
+      // fixing 64bit issue #37
+      pszText = LocalAlloc(LPTR,iSelCount + 4);
       (int)SendMessage(hwnd,SCI_GETSELTEXT,0,(LPARAM)pszText);
     }
   }
@@ -1227,7 +1228,7 @@ BOOL EditLoadFile(
 
   // calculate buffer limit
   dwFileSize = GetFileSize(hFile,NULL);
-  dwBufSize  = dwFileSize + 10;
+  dwBufSize = dwFileSize + 16;
 
   // Check if a warning message should be displayed for large files
   dwFileSizeLimit = IniGetInt(L"Settings2",L"FileLoadWarningMB",1);
@@ -1650,8 +1651,8 @@ void EditInvertCase(HWND hwnd)
       int iSelCount = (int)SendMessage(hwnd,SCI_GETSELECTIONEND,0,0) -
                         (int)SendMessage(hwnd,SCI_GETSELECTIONSTART,0,0);
 
-      char*  pszText  = GlobalAlloc(GPTR,(iSelCount)+2);
-      LPWSTR pszTextW = GlobalAlloc(GPTR,(iSelCount*2)+2);
+      char*  pszText  = GlobalAlloc(GPTR,(iSelCount)+4);
+      LPWSTR pszTextW = GlobalAlloc(GPTR,(iSelCount*2)+8);
 
       if (pszText == NULL || pszTextW == NULL) {
         GlobalFree(pszText);
@@ -1726,8 +1727,8 @@ void EditTitleCase(HWND hwnd)
       int iSelCount = (int)SendMessage(hwnd,SCI_GETSELECTIONEND,0,0) -
                         (int)SendMessage(hwnd,SCI_GETSELECTIONSTART,0,0);
 
-      char*  pszText  = GlobalAlloc(GPTR,(iSelCount)+2);
-      LPWSTR pszTextW = GlobalAlloc(GPTR,(iSelCount*2)+2);
+      char*  pszText  = GlobalAlloc(GPTR,(iSelCount)+4);
+      LPWSTR pszTextW = GlobalAlloc(GPTR,(iSelCount*2)+8);
 
       if (pszText == NULL || pszTextW == NULL) {
         GlobalFree(pszText);
@@ -1864,8 +1865,8 @@ void EditSentenceCase(HWND hwnd)
       int iSelCount = (int)SendMessage(hwnd,SCI_GETSELECTIONEND,0,0) -
                         (int)SendMessage(hwnd,SCI_GETSELECTIONSTART,0,0);
 
-      char*  pszText  = GlobalAlloc(GPTR,(iSelCount)+2);
-      LPWSTR pszTextW = GlobalAlloc(GPTR,(iSelCount*2)+2);
+      char*  pszText  = GlobalAlloc(GPTR,(iSelCount)+4);
+      LPWSTR pszTextW = GlobalAlloc(GPTR,(iSelCount*2)+8);
 
       if (pszText == NULL || pszTextW == NULL) {
         GlobalFree(pszText);
@@ -1951,12 +1952,12 @@ void EditURLEncode(HWND hwnd)
       DWORD  cchEscapedW;
       LPWSTR pszEscapedW;
 
-      pszText = LocalAlloc(LPTR,(iSelCount)+2);
+      pszText = LocalAlloc(LPTR,(iSelCount)+4);
       if (pszText == NULL) {
         return;
       }
 
-      pszTextW = LocalAlloc(LPTR,(iSelCount*2)+2);
+      pszTextW = LocalAlloc(LPTR,(iSelCount*2)+8);
       if (pszTextW == NULL) {
         LocalFree(pszText);
         return;
@@ -2037,12 +2038,12 @@ void EditURLDecode(HWND hwnd)
       DWORD  cchUnescapedW;
       LPWSTR pszUnescapedW;
 
-      pszText = LocalAlloc(LPTR,(iSelCount)+2);
+      pszText = LocalAlloc(LPTR,(iSelCount)+4);
       if (pszText == NULL) {
         return;
       }
 
-      pszTextW = LocalAlloc(LPTR,(iSelCount*2)+2);
+      pszTextW = LocalAlloc(LPTR,(iSelCount*2)+8);
       if (pszTextW == NULL) {
         LocalFree(pszText);
         return;
@@ -5835,8 +5836,10 @@ void EditMarkAll(HWND hwnd, int iMarkOccurrences, BOOL bMarkOccurrencesMatchCase
       (int)SendMessage(hwnd, SCI_LINEFROMPOSITION, iSelEnd, 0))
     return;
 
+  /* notepad2-mod custom code start */
+  // fixing 64bit issue
 
-  pszText = LocalAlloc(LPTR,iSelCount + 1);
+  pszText = LocalAlloc(LPTR, iSelCount + 4);
   (int)SendMessage(hwnd,SCI_GETSELTEXT,0,(LPARAM)pszText);
 
 
@@ -5844,7 +5847,7 @@ void EditMarkAll(HWND hwnd, int iMarkOccurrences, BOOL bMarkOccurrencesMatchCase
   if (bMarkOccurrencesMatchWords)
   {
     iSelStart = 0;
-    while (pszText[iSelStart])
+    while ((iSelStart <= iSelCount) && pszText[iSelStart])
     {
       if (StrChrIA(" \t\r\n@#$%^&*~-=+()[]{}\\/:;'\"", pszText[iSelStart]))
       {
@@ -5854,6 +5857,7 @@ void EditMarkAll(HWND hwnd, int iMarkOccurrences, BOOL bMarkOccurrencesMatchCase
       iSelStart++;
     }
   }
+  /* notepad2-mod custom code start */
 
   ZeroMemory(&ttf,sizeof(ttf));
 
