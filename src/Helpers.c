@@ -991,15 +991,18 @@ void PathRelativeToApp(
 //
 void PathAbsoluteFromApp(LPWSTR lpszSrc,LPWSTR lpszDest,int cchDest,BOOL bExpandEnv) {
 
-  WCHAR wchPath[MAX_PATH];
-  WCHAR wchResult[MAX_PATH];
+  WCHAR wchPath[MAX_PATH] = { 0 };
+  WCHAR wchResult[MAX_PATH] = { 0 };
 
   if (StrCmpNI(lpszSrc,L"%CSIDL:MYDOCUMENTS%",CSTRLEN("%CSIDL:MYDOCUMENTS%")) == 0) {
     SHGetFolderPath(NULL,CSIDL_PERSONAL,NULL,SHGFP_TYPE_CURRENT,wchPath);
     PathAppend(wchPath,lpszSrc+CSTRLEN("%CSIDL:MYDOCUMENTS%"));
   }
-  else
-    lstrcpyn(wchPath,lpszSrc,COUNTOF(wchPath));
+  else {
+    if (lpszSrc) {
+      lstrcpyn(wchPath, lpszSrc, COUNTOF(wchPath));
+    }
+  }
 
   if (bExpandEnv)
     ExpandEnvironmentStringsEx(wchPath,COUNTOF(wchPath));
