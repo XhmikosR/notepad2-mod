@@ -79,8 +79,7 @@ private:
 
     inline void ReleaseContext()
     {
-        if (m_pContext != nullptr)
-        {
+        if (m_pContext != nullptr) {
             m_RegExpr.ReleaseContext(m_pContext);
             m_pContext = nullptr;
         }
@@ -88,8 +87,7 @@ private:
 
     inline void ReleaseSubstitutionBuffer()
     {
-        if (m_SubstitutionBuffer)
-        {
+        if (m_SubstitutionBuffer) {
             m_RegExpr.ReleaseString(m_SubstitutionBuffer);
             m_SubstitutionBuffer = nullptr;
         }
@@ -123,6 +121,7 @@ RegexSearchBase *CreateRegexSearch(CharClassify *charClassTable)
 /**
  * forward declaration of utility functions
  */
+std::string& translateRegExpr(std::string& regExprStr, bool wholeWord, bool wordStart);
 std::string& convertReplExpr(std::string& replStr);
 
 
@@ -140,14 +139,12 @@ long DeelxRegexSearch::FindText(Document* doc, int minPos, int maxPos, const cha
     int startPos, endPos;
     bool left2right;
 
-    if (minPos <= maxPos)
-    {
+    if (minPos <= maxPos) {
         left2right = true;
         startPos = minPos;
         endPos = maxPos;
     }
-    else
-    { // backward search
+    else { // backward search
         left2right = false;
         startPos = maxPos;
         endPos = minPos;
@@ -157,17 +154,17 @@ long DeelxRegexSearch::FindText(Document* doc, int minPos, int maxPos, const cha
     startPos = doc->MovePositionOutsideChar(startPos, 1, false);
     endPos = doc->MovePositionOutsideChar(endPos, 1, false);
 
-    int compileFlags(deelx::MULTILINE | deelx::GLOBAL | deelx::EXTENDED);
-    //int compileFlags(deelx::SINGLELINE | deelx::MULTILINE | deelx::GLOBAL | deelx::EXTENDED);
+    int compileFlags(deelx::MULTILINE | deelx::GLOBAL | deelx::EXTENDED); // the .(dot) does not match line-breaks
+    //int compileFlags(deelx::SINGLELINE | deelx::MULTILINE | deelx::GLOBAL | deelx::EXTENDED);  // the .(dot) also matches line-breaks
     compileFlags |= (caseSensitive) ? deelx::NO_FLAG : deelx::IGNORECASE;
     compileFlags |= (left2right) ? deelx::NO_FLAG : deelx::RIGHTTOLEFT;
 
-    try
-    {
-        m_RegExpr.Compile(pattern, compileFlags);
+    std::string sRegExprStrg = translateRegExpr(std::string(pattern, *length), word, wordStart);
+
+    try {
+        m_RegExpr.Compile(sRegExprStrg.c_str(), compileFlags);
     }
-    catch (...)
-    {
+    catch (...) {
         return -2;  // -1 is normally used for not found, -2 is used here for invalid regex
     }
 
@@ -180,8 +177,7 @@ long DeelxRegexSearch::FindText(Document* doc, int minPos, int maxPos, const cha
 
     m_MatchPos = -1; // not found
     m_MatchLength = 0;
-    if (m_Match.IsMatched())
-    {
+    if (m_Match.IsMatched()) {
         m_MatchPos = startPos + m_Match.GetStart();
         m_MatchLength = (m_Match.GetEnd() - m_Match.GetStart());
     }
@@ -195,8 +191,7 @@ long DeelxRegexSearch::FindText(Document* doc, int minPos, int maxPos, const cha
 
 const char* DeelxRegexSearch::SubstituteByPosition(Document* doc, const char* text, int* length)
 {
-    if (!m_Match.IsMatched() || (m_MatchPos < 0))
-    {
+    if (!m_Match.IsMatched() || (m_MatchPos < 0)) {
         *length = 0;
         return nullptr;
     }
@@ -215,68 +210,117 @@ const char* DeelxRegexSearch::SubstituteByPosition(Document* doc, const char* te
 
     return m_SubstitutionBuffer;
 }
+// ============================================================================
+
+
+
+
+// ============================================================================
+//   Some Helpers
+// ============================================================================
+
+
+void replaceAll(std::string& source, const std::string& from, const std::string& to)
+{
+    std::string newString;
+    newString.reserve(source.length() * 2);  // avoids a few memory allocations
+
+    std::string::size_type lastPos = 0;
+    std::string::size_type findPos;
+
+    while (std::string::npos != (findPos = source.find(from, lastPos))) {
+        newString.append(source, lastPos, findPos - lastPos);
+        newString += to;
+        lastPos = findPos + from.length();
+    }
+    // Care for the rest after last occurrence
+    newString += source.substr(lastPos);
+
+    source.swap(newString);
+}
 // ----------------------------------------------------------------------------
+
+
+
+std::string& translateRegExpr(std::string& regExprStr, bool wholeWord, bool wordStart)
+{
+    std::string	tmpStr;
+
+    if (wholeWord || wordStart) {      // push '\b' at the begin of regexpr
+        tmpStr.push_back('\\');
+        tmpStr.push_back('b');
+        tmpStr.append(regExprStr);
+        if (wholeWord) {               // push '\b' at the end of regexpr
+            tmpStr.push_back('\\');
+            tmpStr.push_back('b');
+        }
+        replaceAll(tmpStr, ".", "\\w");
+    }
+    else {
+        tmpStr.append(regExprStr);
+    }
+    std::swap(regExprStr, tmpStr);
+    return regExprStr;
+}
+// ----------------------------------------------------------------------------
+
+
 
 std::string& convertReplExpr(std::string& replStr)
 {
-    std::string	temp;
-    for (size_t i = 0; i < replStr.length(); ++i)
-    {
+    std::string	tmpStr;
+    for (size_t i = 0; i < replStr.length(); ++i) {
         char ch = replStr[i];
-        if (ch == '\\')
-        {
+        if (ch == '\\') {
             ch = replStr[++i]; // next char
-            if (ch == '\\')
-            {
+            if (ch == '\\') {
                 // skip 2nd backslash ("\\")
                 if (i < replStr.length()) { ch = replStr[++i]; }
                 else { break; }
             }
-            // convenience change "\\<n>" to deelx's group replacement ($<n>)
-            if (ch >= '1' && ch <= '9')
-            {
-                temp.push_back('$'); 
+            if (ch >= '1' && ch <= '9') {
+                // former behavior convenience: 
+                // change "\\<n>" to deelx's group reference ($<n>)
+                tmpStr.push_back('$');
             } 
-            switch (ch)
-            {
+            switch (ch) {
                 // check for escape seq:
             case 'a':
-                temp.push_back('\a');
+                tmpStr.push_back('\a');
                 break;
             case 'b':
-                temp.push_back('\b');
+                tmpStr.push_back('\b');
                 break;
             case 'f':
-                temp.push_back('\f');
+                tmpStr.push_back('\f');
                 break;
             case 'n':
-                temp.push_back('\n');
+                tmpStr.push_back('\n');
                 break;
             case 'r':
-                temp.push_back('\r');
+                tmpStr.push_back('\r');
                 break;
             case 't':
-                temp.push_back('\t');
+                tmpStr.push_back('\t');
                 break;
             case 'v':
-                temp.push_back('\v');
+                tmpStr.push_back('\v');
                 break;
             case '\\':
-                temp.push_back('\\');
+                tmpStr.push_back('\\');
                 break;
             default:
                 // unknown ctrl seq
-                temp.push_back(ch);
+                tmpStr.push_back(ch);
                 break;
             }
         }
-        else
-        {
-            temp.push_back(ch);
+        else {
+            tmpStr.push_back(ch);
         }
     } //for
 
-    std::swap(replStr, temp);
+    std::swap(replStr, tmpStr);
     return replStr;
 }
 // ============================================================================
