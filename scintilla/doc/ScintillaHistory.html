@@ -505,6 +505,7 @@
       </tr><tr>
 	<td>Roberto Rossi</td>
 	<td>Kenny Liu</td>
+	<td>Iain Clarke</td>
     </tr>
     </table>
     <p>
@@ -521,16 +522,67 @@
     </h3>
     <ul>
 	<li>
-	Released 16 October 2016.
+	Released 4 December 2016.
 	</li>
 	<li>
-	Accessibility supported on GTK+.
+	The Scintilla namespace is no longer applied to struct definitions in Scintilla.h even
+	when SCI_NAMESPACE defined.
+	Client code should not define SCI_NAMESPACE.
 	</li>
 	<li>
-	Baan folder accomodates main sections and lexer fixes definition of SCE_BAAN_FUNCDEF.
+	Structure names in Scintilla.h without prefixes are deprecated and will now only
+	be usable with INCLUDE_DEPRECATED_FEATURES defined.<br />
+	Use the newer names with the "Sci_" prefix:<br />
+	CharacterRange &rarr; Sci_CharacterRange<br />
+	TextRange &rarr; Sci_TextRange<br />
+	TextToFind &rarr; Sci_TextToFind<br />
+	RangeToFormat &rarr; Sci_RangeToFormat<br />
+	NotifyHeader &rarr; Sci_NotifyHeader
+	</li>
+	<li>
+	Previously deprecated features SC_CP_DBCS, SCI_SETUSEPALETTE. and SCI_GETUSEPALETTE
+	have been removed and can no longer be used in client code.
+	</li>
+	<li>
+	Accessibility support allowing screen readers to work added on GTK+ and Cocoa.
+	</li>
+	<li>
+	Textual tags may be displayed to the right on folded lines with SCI_TOGGLEFOLDSHOWTEXT.
+	This is commonly something like "{ ... }" or "&lt;tr&gt;...&lt;/tr&gt;".
+	It is displayed with the STYLE_FOLDDISPLAYTEXT style and may have a box drawn around it
+	with SCI_FOLDDISPLAYTEXTSETSTYLE.
+	</li>
+	<li>
+	A mouse right-click over the margin may send an SCN_MARGINRIGHTCLICK event.
+	This only occurs when popup menus are turned off.
+	SCI_USEPOPUP now has three states: SC_POPUP_NEVER, SC_POPUP_ALL, or SC_POPUP_TEXT.
+	</li>
+	<li>
+	INDIC_POINT and INDIC_POINTCHARACTER indicators added to display small arrows
+	underneath positions or characters.
+	</li>
+	<li>
+	Added alternate appearance for visible tabs which looks like a horizontal line.
+	Controlled with SCI_SETTABDRAWMODE.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/1165/">Feature #1165.</a>
+	</li>
+	<li>
+	On Cocoa, a modulemap file is included to allow Scintilla to be treated as a module.
+	This makes it easier to use Scintilla from the Swift language.
+	</li>
+	<li>
+	Baan folder accommodates sections and lexer fixes definition of SCE_BAAN_FUNCDEF.
+	</li>
+	<li>
+	EDIFACT lexer and folder added.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/1166/">Feature #1166.</a>
 	</li>
 	<li>
 	JSON folder fixed where it didn't resume folding with the correct fold level.
+	</li>
+	<li>
+	Matlab folder based on syntax instead of indentation so more accurate.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1692/">Bug #1692</a>.
 	</li>
 	<li>
 	YAML lexer fixed style of references and keywords when followed by a comment.
@@ -548,7 +600,24 @@
 	target Scintilla instance was destroyed.
 	</li>
 	<li>
+	Cocoa IME made more compliant with documented behaviour to avoid bugs that caused
+	huge allocations.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1881/">Bug #1881</a>.
+	</li>
+	<li>
+	On Win32 fix EM_SETSEL to match Microsoft documentation..
+	<a href="http://sourceforge.net/p/scintilla/bugs/1886/">Bug #1886</a>.
+	</li>
+	<li>
+	SciTE on GTK+ allows localising tool bar tool tips.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/1167/">Feature #1167.</a>
+	</li>
+	<li>
 	SciTE on Windows restores focus to edit pane after closing user strip.
+	</li>
+	<li>
+	SciTE measures files larger that 2 GB which allows it to refuse to open huge files more consistently
+	and to show better warning messages.
 	</li>
     </ul>
     <h3>

@@ -55,7 +55,7 @@ static bool KeywordAtChar(char* lineBuffer, char* startComment, const WordList &
 	char* endValue = startComment - 1;
 	while (endValue >= lineBuffer && *endValue == ' ')
 		endValue--;
-	Sci_PositionU len = endValue - lineBuffer + 1;
+	Sci_PositionU len = static_cast<Sci_PositionU>(endValue - lineBuffer) + 1;
 	char s[100];
 	if (len > (sizeof(s) / sizeof(s[0]) - 1))
 		return false;

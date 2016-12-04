@@ -110,7 +110,7 @@ extern "C" BOOL EditPrint(HWND hwnd,LPCWSTR pszDocTitle,LPCWSTR pszPageFormat)
   int lengthDocMax;
   int lengthPrinted;
 
-  struct RangeToFormat frPrint;
+  struct Sci_RangeToFormat frPrint;
 
   int pageNum;
   BOOL printPage;
