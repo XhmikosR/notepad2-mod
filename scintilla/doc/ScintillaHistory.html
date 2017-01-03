@@ -518,6 +518,51 @@
       </li>
     </ul>
     <h3>
+       <a href="http://www.scintilla.org/scite373.zip">Release 3.7.3</a>
+    </h3>
+    <ul>
+	<li>
+	Released 30 December 2016.
+	</li>
+	<li>
+	The Python lexer partly supports f-strings, allows Unicode identifiers, and no longer allows @1 to be a decorator.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1848/">Bug #1848</a>.
+	</li>
+    </ul>
+    <h3>
+       <a href="http://www.scintilla.org/scite372.zip">Release 3.7.2</a>
+    </h3>
+    <ul>
+	<li>
+	Released 30 December 2016.
+	</li>
+	<li>
+	Minimize redrawing for SCI_SETSELECTIONN* APIs.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1888/">Bug #1888</a>.
+	</li>
+	<li>
+	Use more precision to allow selecting individual lines in files with
+	more than 16.7 million lines.
+	</li>
+	<li>
+	For Qt 5, define QT_WS_MAC or QT_WS_X11 on those platforms.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1887/">Bug #1887</a>.
+	</li>
+	<li>
+	For Cocoa, fix crash on view destruction with macOS 10.12.2.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1891/">Bug #1891</a>.
+	</li>
+	<li>
+	Fix crash on GTK+ &lt;3.8 due to incorrect lifetime of accessibility object.
+	More accurate reporting of attribute ranges and deletion lengths for accessibility.
+	</li>
+	<li>
+	In SciTE, if a Lua script causes a Scintilla failure exception, display error
+	message in output pane instead of exiting.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1773/">Bug #1773</a>.
+	</li>
+    </ul>
+    <h3>
        <a href="http://www.scintilla.org/scite371.zip">Release 3.7.1</a>
     </h3>
     <ul>
