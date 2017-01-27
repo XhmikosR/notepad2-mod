@@ -6,6 +6,12 @@
  ** The License.txt file describes the conditions under which this software may be distributed.
  **/
 
+// Previous releases of this lexer included support for marking token starts with
+// a style byte indicator. This was used by the wxGhostscript IDE/debugger.
+// Style byte indicators were removed in version 3.4.3.
+// Anyone wanting to restore this functionality for wxGhostscript using 'modern'
+// indicators can examine the earlier source in the Mercurial repository.
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -58,8 +64,8 @@ static inline bool IsABase85Char(const int ch) {
 }
 
 static void ColourisePSDoc(
-    unsigned int startPos,
-    int length,
+    Sci_PositionU startPos,
+    Sci_Position length,
     int initStyle,
     WordList *keywordlists[],
     Accessor &styler) {
@@ -72,9 +78,8 @@ static void ColourisePSDoc(
 
     StyleContext sc(startPos, length, initStyle, styler);
 
-    bool tokenizing = styler.GetPropertyInt("ps.tokenize") != 0;
     int pslevel = styler.GetPropertyInt("ps.level", 3);
-    int lineCurrent = styler.GetLine(startPos);
+    Sci_Position lineCurrent = styler.GetLine(startPos);
     int nestTextCurrent = 0;
     if (lineCurrent > 0 && initStyle == SCE_PS_TEXT)
         nestTextCurrent = styler.GetLineState(lineCurrent - 1);
@@ -82,15 +87,6 @@ static void ColourisePSDoc(
     bool numHasPoint = false;
     bool numHasExponent = false;
     bool numHasSign = false;
-
-    // Clear out existing tokenization
-    if (tokenizing && length > 0) {
-        styler.StartAt(startPos, static_cast<char>(INDIC2_MASK));
-        styler.ColourTo(startPos + length-1, 0);
-        styler.Flush();
-        styler.StartAt(startPos);
-        styler.StartSegment(startPos);
-    }
 
     for (; sc.More(); sc.Forward()) {
         if (sc.atLineStart)
@@ -196,7 +192,6 @@ static void ColourisePSDoc(
 
         // Determine if a new state should be entered.
         if (sc.state == SCE_C_DEFAULT) {
-            unsigned int tokenpos = sc.currentPos;
 
             if (sc.ch == '[' || sc.ch == ']') {
                 sc.SetState(SCE_PS_PAREN_ARRAY);
@@ -262,17 +257,6 @@ static void ColourisePSDoc(
             } else if (!IsAWhitespaceChar(sc.ch)) {
                 sc.SetState(SCE_PS_NAME);
             }
-
-            // Mark the start of tokens
-            if (tokenizing && sc.state != SCE_C_DEFAULT && sc.state != SCE_PS_COMMENT &&
-                sc.state != SCE_PS_DSC_COMMENT && sc.state != SCE_PS_DSC_VALUE) {
-                styler.Flush();
-                styler.StartAt(tokenpos, static_cast<char>(INDIC2_MASK));
-                styler.ColourTo(tokenpos, INDIC2_MASK);
-                styler.Flush();
-                styler.StartAt(tokenpos);
-                styler.StartSegment(tokenpos);
-            }
         }
 
         if (sc.atLineEnd)
@@ -282,13 +266,13 @@ static void ColourisePSDoc(
     sc.Complete();
 }
 
-static void FoldPSDoc(unsigned int startPos, int length, int, WordList *[],
+static void FoldPSDoc(Sci_PositionU startPos, Sci_Position length, int, WordList *[],
                        Accessor &styler) {
     bool foldCompact = styler.GetPropertyInt("fold.compact", 1) != 0;
     bool foldAtElse = styler.GetPropertyInt("fold.at.else", 0) != 0;
-    unsigned int endPos = startPos + length;
+    Sci_PositionU endPos = startPos + length;
     int visibleChars = 0;
-    int lineCurrent = styler.GetLine(startPos);
+    Sci_Position lineCurrent = styler.GetLine(startPos);
     int levelCurrent = SC_FOLDLEVELBASE;
     if (lineCurrent > 0)
         levelCurrent = styler.LevelAt(lineCurrent-1) >> 16;
@@ -296,11 +280,10 @@ static void FoldPSDoc(unsigned int startPos, int length, int, WordList *[],
     int levelNext = levelCurrent;
     char chNext = styler[startPos];
     int styleNext = styler.StyleAt(startPos);
-    int style;
-    for (unsigned int i = startPos; i < endPos; i++) {
+    for (Sci_PositionU i = startPos; i < endPos; i++) {
         char ch = chNext;
         chNext = styler.SafeGetCharAt(i + 1);
-        style = styleNext;
+        int style = styleNext;
         styleNext = styler.StyleAt(i + 1);
         bool atEOL = (ch == '\r' && chNext != '\n') || (ch == '\n');  //mac??
         if ((style & 31) == SCE_PS_PAREN_PROC) {

@@ -1,6 +1,6 @@
 ;* Notepad2-mod - Installer script
 ;*
-;* Copyright (C) 2010-2012 XhmikosR
+;* Copyright (C) 2010-2016 XhmikosR
 ;*
 ;* This file is part of Notepad2-mod.
 ;*
@@ -10,31 +10,20 @@
 ; Inno Setup: http://www.jrsoftware.org/isdl.php
 
 
-;#define ICL12
-;#define VS2010
-;#define VS2012
+;#define VS2015
 ;#define WDK
 
 ; Preprocessor related stuff
-#if VER < EncodeVer(5,5,1)
-  #error Update your Inno Setup version (5.5.1 or newer)
+#if VER < EncodeVer(5,5,9)
+  #error Update your Inno Setup version (5.5.9 or newer)
 #endif
 
-#if !defined(ICL12) && !defined(VS2010) && !defined(VS2012) && !defined(WDK)
-  #error You need to define the compiler used; ICL12, VS2010, VS2012 or WDK
+#if !defined(VS2015) && !defined(WDK)
+  #error You need to define the compiler used; VS2015 or WDK
 #endif
 
-#if defined(ICL12) && (defined(VS2010) || defined(VS2012) || defined(WDK)) || defined(VS2010) && (defined(VS2012) || defined(WDK)) || defined(VS2012) && defined(WDK)
-  #error You can't use two or more compiler defines at the same time
-#endif
-
-#if defined(ICL12)
-  #define compiler "ICL12"
-  #define sse2_required
-#elif defined(VS2010)
-  #define compiler "VS2010"
-#elif defined(VS2012)
-  #define compiler "VS2012"
+#if defined(VS2015)
+  #define compiler "VS2015"
 #elif defined(WDK)
   #define compiler "WDK"
 #endif
@@ -57,7 +46,7 @@
 #expr ParseVersion(bindir + "\Release_x86\Notepad2.exe", VerMajor, VerMinor, VerBuild, VerRevision)
 #define app_version   str(VerMajor) + "." + str(VerMinor) + "." + str(VerBuild) + "." + str(VerRevision)
 #define app_name      "Notepad2-mod"
-#define app_copyright "Copyright © 2004-2012, Florian Balmer et al."
+#define app_copyright "Copyright © 2004-2016, Florian Balmer et al."
 #define quick_launch  "{userappdata}\Microsoft\Internet Explorer\Quick Launch"
 
 
@@ -72,20 +61,17 @@ AppSupportURL=https://github.com/XhmikosR/notepad2-mod
 AppUpdatesURL=https://github.com/XhmikosR/notepad2-mod
 AppContact=https://github.com/XhmikosR/notepad2-mod
 AppCopyright={#app_copyright}
-VersionInfoCompany=XhmikosR
-VersionInfoCopyright={#app_copyright}
-VersionInfoDescription={#app_name} {#app_version} Setup
-VersionInfoTextVersion={#app_version}
 VersionInfoVersion={#app_version}
-VersionInfoProductName={#app_name}
-VersionInfoProductVersion={#app_version}
-VersionInfoProductTextVersion={#app_version}
 UninstallDisplayIcon={app}\Notepad2.exe
+#if defined(VS2015)
+UninstallDisplayName={#app_name} {#app_version}
+#else
 UninstallDisplayName={#app_name} {#app_version} ({#compiler})
+#endif
 DefaultDirName={pf}\Notepad2
 LicenseFile=license.txt
 OutputDir=.
-#if defined(WDK)
+#if defined(VS2015)
 OutputBaseFilename={#app_name}.{#app_version}
 #else
 OutputBaseFilename={#app_name}.{#app_version}_{#compiler}
@@ -106,13 +92,16 @@ DisableWelcomePage=yes
 AllowCancelDuringInstall=no
 #if defined(WDK)
 MinVersion=5.0
-#elif defined(VS2012)
-MinVersion=6.0
 #else
-MinVersion=5.1.2600sp3
+MinVersion=5.1sp3
 #endif
 ArchitecturesAllowed=x86 x64
 ArchitecturesInstallIn64BitMode=x64
+#ifexist "..\signinfo.txt"
+SignTool=MySignTool
+#endif
+CloseApplications=true
+SetupMutex='{#app_name}' + '_setup_mutex'
 
 
 [Languages]
@@ -129,7 +118,6 @@ SetupWindowTitle =Setup - {#app_name}
 en.msg_AppIsRunning          =Setup has detected that {#app_name} is currently running.%n%nPlease close all instances of it now, then click OK to continue, or Cancel to exit.
 en.msg_AppIsRunningUninstall =Uninstall has detected that {#app_name} is currently running.%n%nPlease close all instances of it now, then click OK to continue, or Cancel to exit.
 en.msg_DeleteSettings        =Do you also want to delete {#app_name}'s settings?%n%nIf you plan on installing {#app_name} again then you do not have to delete them.
-en.msg_SetupIsRunningWarning ={#app_name} setup is already running!
 #if defined(sse_required)
 en.msg_simd_sse              =This build of {#app_name} requires a CPU with SSE extension support.%n%nYour CPU does not have those capabilities.
 #elif defined(sse2_required)
@@ -141,12 +129,14 @@ en.tsk_Other                 =Other tasks:
 en.tsk_ResetSettings         =Reset {#app_name}'s settings
 en.tsk_RemoveDefault         =Restore Windows notepad
 en.tsk_SetDefault            =Replace Windows notepad with {#app_name}
+en.tsk_StartMenuIcon         =Create a Start Menu shortcut
 
 
 [Tasks]
 Name: desktopicon;        Description: {cm:CreateDesktopIcon};     GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
 Name: desktopicon\user;   Description: {cm:tsk_CurrentUser};       GroupDescription: {cm:AdditionalIcons}; Flags: unchecked exclusive
 Name: desktopicon\common; Description: {cm:tsk_AllUsers};          GroupDescription: {cm:AdditionalIcons}; Flags: unchecked exclusive
+Name: startup_icon;       Description: {cm:tsk_StartMenuIcon};     GroupDescription: {cm:AdditionalIcons}
 Name: quicklaunchicon;    Description: {cm:CreateQuickLaunchIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked;             OnlyBelowVersion: 6.01
 Name: reset_settings;     Description: {cm:tsk_ResetSettings};     GroupDescription: {cm:tsk_Other};       Flags: checkedonce unchecked; Check: SettingsExistCheck()
 Name: set_default;        Description: {cm:tsk_SetDefault};        GroupDescription: {cm:tsk_Other};                                     Check: not DefaulNotepadCheck()
@@ -154,18 +144,18 @@ Name: remove_default;     Description: {cm:tsk_RemoveDefault};     GroupDescript
 
 
 [Files]
-Source: psvince.dll;                        DestDir: {app};                  Flags: ignoreversion
-Source: ..\License.txt;                     DestDir: {app};                  Flags: ignoreversion
 Source: {#bindir}\Release_x64\Notepad2.exe; DestDir: {app};                  Flags: ignoreversion;                         Check: Is64BitInstallMode()
 Source: {#bindir}\Release_x86\Notepad2.exe; DestDir: {app};                  Flags: ignoreversion;                         Check: not Is64BitInstallMode()
-Source: Notepad2.ini;                       DestDir: {userappdata}\Notepad2; Flags: onlyifdoesntexist uninsneveruninstall
+Source: ..\License.txt;                     DestDir: {app};                  Flags: ignoreversion
 Source: ..\Notepad2.txt;                    DestDir: {app};                  Flags: ignoreversion
 Source: ..\Readme-mod.txt;                  DestDir: {app};                  Flags: ignoreversion
+Source: Notepad2.ini;                       DestDir: {userappdata}\Notepad2; Flags: onlyifdoesntexist uninsneveruninstall
 
 
 [Icons]
 Name: {commondesktop}\{#app_name}; Filename: {app}\Notepad2.exe; Tasks: desktopicon\common; Comment: {#app_name} {#app_version}; WorkingDir: {app}; AppUserModelID: Notepad2; IconFilename: {app}\Notepad2.exe; IconIndex: 0
 Name: {userdesktop}\{#app_name};   Filename: {app}\Notepad2.exe; Tasks: desktopicon\user;   Comment: {#app_name} {#app_version}; WorkingDir: {app}; AppUserModelID: Notepad2; IconFilename: {app}\Notepad2.exe; IconIndex: 0
+Name: {userstartmenu}\{#app_name}; Filename: {app}\Notepad2.exe; Tasks: startup_icon;       Comment: {#app_name} {#app_version}; WorkingDir: {app}; AppUserModelID: Notepad2; IconFilename: {app}\Notepad2.exe; IconIndex: 0
 Name: {#quick_launch}\{#app_name}; Filename: {app}\Notepad2.exe; Tasks: quicklaunchicon;    Comment: {#app_name} {#app_version}; WorkingDir: {app};                           IconFilename: {app}\Notepad2.exe; IconIndex: 0
 
 
@@ -180,6 +170,7 @@ Filename: {app}\Notepad2.exe; Description: {cm:LaunchProgram,{#app_name}}; Worki
 [InstallDelete]
 Type: files;      Name: {userdesktop}\{#app_name}.lnk;   Check: not IsTaskSelected('desktopicon\user')   and IsUpgrade()
 Type: files;      Name: {commondesktop}\{#app_name}.lnk; Check: not IsTaskSelected('desktopicon\common') and IsUpgrade()
+Type: files;      Name: {userstartmenu}\{#app_name}.lnk; Check: not IsTaskSelected('startup_icon')       and IsUpgrade()
 Type: files;      Name: {#quick_launch}\{#app_name}.lnk; Check: not IsTaskSelected('quicklaunchicon')    and IsUpgrade(); OnlyBelowVersion: 6.01
 Type: files;      Name: {app}\Notepad2.ini
 Type: files;      Name: {app}\Readme.txt
@@ -191,15 +182,7 @@ Type: dirifempty; Name: {app}
 
 
 [Code]
-const
-  installer_mutex = '{#app_name}' + '_setup_mutex';
-  IFEO            = 'SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe';
-
-function IsModuleLoaded(modulename: AnsiString): Boolean;
-external 'IsModuleLoaded2@files:psvince.dll stdcall setuponly';
-
-function IsModuleLoadedU(modulename: AnsiString): Boolean;
-external 'IsModuleLoaded2@{app}\psvince.dll stdcall uninstallonly';
+const IFEO = 'SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe';
 
 #if defined(sse_required) || defined(sse2_required)
 function IsProcessorFeaturePresent(Feature: Integer): Boolean;
@@ -408,23 +391,8 @@ end;
 
 
 function InitializeSetup(): Boolean;
-var
-  iMsgBoxResult: Integer;
 begin
-  // Create a mutex for the installer and if it's already running then show a message and stop installation
-  if CheckForMutexes(installer_mutex) and not WizardSilent() then begin
-    SuppressibleMsgBox(CustomMessage('msg_SetupIsRunningWarning'), mbError, MB_OK, MB_OK);
-    Result := False;
-  end
-  else begin
     Result := True;
-    CreateMutex(installer_mutex);
-
-    while IsModuleLoaded('Notepad2.exe') and (iMsgBoxResult <> IDCANCEL) do
-      iMsgBoxResult := SuppressibleMsgBox(CustomMessage('msg_AppIsRunning'), mbError, MB_OKCANCEL, IDCANCEL);
-
-    if iMsgBoxResult = IDCANCEL then
-      Result := False;
 
 #if defined(sse2_required)
     if not IsSSE2Supported() then begin
@@ -438,30 +406,4 @@ begin
     end;
 #endif
 
-  end;
-end;
-
-
-function InitializeUninstall(): Boolean;
-var
-  iMsgBoxResult: Integer;
-begin
-  if CheckForMutexes(installer_mutex) then begin
-    SuppressibleMsgBox(CustomMessage('msg_SetupIsRunningWarning'), mbError, MB_OK, MB_OK);
-    Result := False;
-  end
-  else begin
-    Result := True;
-    CreateMutex(installer_mutex);
-
-    // Check if Notepad2 is running during uninstallation
-    while IsModuleLoadedU('Notepad2.exe') and (iMsgBoxResult <> IDCANCEL) do
-      iMsgBoxResult := SuppressibleMsgBox(CustomMessage('msg_AppIsRunningUninstall'), mbError, MB_OKCANCEL, IDCANCEL);
-
-    if iMsgBoxResult = IDCANCEL then
-      Result := False;
-
-    // Unload psvince.dll in order to be uninstalled
-    UnloadDLL(ExpandConstant('{app}\psvince.dll'));
-  end;
 end;

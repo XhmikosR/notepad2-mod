@@ -7,7 +7,7 @@
 #*
 #* See License.txt for details about distribution and modification.
 #*
-#*                                       (c) XhmikosR 2010-2012
+#*                                       (c) XhmikosR 2010-2016
 #*                                       https://github.com/XhmikosR/notepad2-mod
 #*
 #* Use build_wdk.bat and set there your WDK directory.
@@ -51,7 +51,9 @@ NP2_RES        = ..\res
 
 
 DEFINES       = /D "_WINDOWS" /D "NDEBUG" /D "_UNICODE" /D "UNICODE" /D "_STL70_" \
-                /D "_STATIC_CPPLIB" /D "_CRT_SECURE_NO_WARNINGS" /D "BOOKMARK_EDITION"
+                /D "_STATIC_CPPLIB" /D "_CRT_SECURE_NO_WARNINGS" /D "BOOKMARK_EDITION" \
+                /D "WDK_BUILD" /D "NO_CXX11_REGEX"
+                # _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES is causing build errors
 INCLUDEDIRS   = /I "$(SCI_INC)" /I "$(SCI_LEX)" /I "$(SCI_LIB)" /I "$(SCI_SRC)" \
                 /I "$(SCI_WIN)"
 CXXFLAGS      = /nologo /c /W3 /WX /EHsc /MD /O2 /GL /MP $(DEFINES) $(INCLUDEDIRS)
@@ -72,7 +74,6 @@ LDFLAGS       = $(LDFLAGS) /SUBSYSTEM:WINDOWS,5.02 /MACHINE:$(MACHINE)
 LIBS          = $(LIBS) msvcrt_win2003.obj
 RFLAGS        = $(RFLAGS) /d "_WIN64"
 !ELSE
-CXXFLAGS      = $(CXXFLAGS) /Oy
 DEFINES       = $(DEFINES) /D "WIN32" /D "_WIN32_WINNT=0x0501"
 MACHINE       = X86
 LDFLAGS       = $(LDFLAGS) /SUBSYSTEM:WINDOWS,5.0 /MACHINE:$(MACHINE)
@@ -127,27 +128,37 @@ SCI_LEX_OBJ = \
     $(SCI_LEX_OBJDIR)\LexAU3.obj \
     $(SCI_LEX_OBJDIR)\LexAVS.obj \
     $(SCI_LEX_OBJDIR)\LexBash.obj \
+    $(SCI_LEX_OBJDIR)\LexBatch.obj \
     $(SCI_LEX_OBJDIR)\LexCmake.obj \
+    $(SCI_LEX_OBJDIR)\LexCoffeeScript.obj \
     $(SCI_LEX_OBJDIR)\LexConf.obj \
     $(SCI_LEX_OBJDIR)\LexCPP.obj \
     $(SCI_LEX_OBJDIR)\LexCSS.obj \
+    $(SCI_LEX_OBJDIR)\LexDiff.obj \
+    $(SCI_LEX_OBJDIR)\LexErrorList.obj \
     $(SCI_LEX_OBJDIR)\LexHTML.obj \
     $(SCI_LEX_OBJDIR)\LexInno.obj \
+    $(SCI_LEX_OBJDIR)\LexLaTeX.obj \
     $(SCI_LEX_OBJDIR)\LexLua.obj \
+    $(SCI_LEX_OBJDIR)\LexMake.obj \
     $(SCI_LEX_OBJDIR)\LexMarkdown.obj \
     $(SCI_LEX_OBJDIR)\LexNsis.obj \
-    $(SCI_LEX_OBJDIR)\LexOthers.obj \
+    $(SCI_LEX_OBJDIR)\LexNull.obj \
     $(SCI_LEX_OBJDIR)\LexPascal.obj \
     $(SCI_LEX_OBJDIR)\LexPerl.obj \
     $(SCI_LEX_OBJDIR)\LexPowerShell.obj \
+    $(SCI_LEX_OBJDIR)\LexProps.obj \
     $(SCI_LEX_OBJDIR)\LexPython.obj \
     $(SCI_LEX_OBJDIR)\LexRuby.obj \
     $(SCI_LEX_OBJDIR)\LexSQL.obj \
     $(SCI_LEX_OBJDIR)\LexTCL.obj \
-    $(SCI_LEX_OBJDIR)\LexVB.obj
+    $(SCI_LEX_OBJDIR)\LexVB.obj \
+    $(SCI_LEX_OBJDIR)\LexVHDL.obj \
+    $(SCI_LEX_OBJDIR)\LexYAML.obj
 
 SCI_LIB_OBJ = \
     $(SCI_LIB_OBJDIR)\Accessor.obj \
+    $(SCI_LIB_OBJDIR)\CharacterCategory.obj \
     $(SCI_LIB_OBJDIR)\CharacterSet.obj \
     $(SCI_LIB_OBJDIR)\LexerBase.obj \
     $(SCI_LIB_OBJDIR)\LexerModule.obj \
@@ -159,17 +170,22 @@ SCI_LIB_OBJ = \
 SCI_SRC_OBJ = \
     $(SCI_SRC_OBJDIR)\AutoComplete.obj \
     $(SCI_SRC_OBJDIR)\CallTip.obj \
+    $(SCI_SRC_OBJDIR)\CaseConvert.obj \
+    $(SCI_SRC_OBJDIR)\CaseFolder.obj \
     $(SCI_SRC_OBJDIR)\Catalogue.obj \
     $(SCI_SRC_OBJDIR)\CellBuffer.obj \
     $(SCI_SRC_OBJDIR)\CharClassify.obj \
     $(SCI_SRC_OBJDIR)\ContractionState.obj \
     $(SCI_SRC_OBJDIR)\Decoration.obj \
     $(SCI_SRC_OBJDIR)\Document.obj \
+    $(SCI_SRC_OBJDIR)\EditModel.obj \
     $(SCI_SRC_OBJDIR)\Editor.obj \
+    $(SCI_SRC_OBJDIR)\EditView.obj \
     $(SCI_SRC_OBJDIR)\ExternalLexer.obj \
     $(SCI_SRC_OBJDIR)\Indicator.obj \
     $(SCI_SRC_OBJDIR)\KeyMap.obj \
     $(SCI_SRC_OBJDIR)\LineMarker.obj \
+    $(SCI_SRC_OBJDIR)\MarginView.obj \
     $(SCI_SRC_OBJDIR)\PerLine.obj \
     $(SCI_SRC_OBJDIR)\PositionCache.obj \
     $(SCI_SRC_OBJDIR)\RESearch.obj \
@@ -182,6 +198,7 @@ SCI_SRC_OBJ = \
     $(SCI_SRC_OBJDIR)\XPM.obj
 
 SCI_WIN_OBJ = \
+    $(SCI_WIN_OBJDIR)\HanjaDic.obj \
     $(SCI_WIN_OBJDIR)\PlatWin.obj \
     $(SCI_WIN_OBJDIR)\ScintillaWin.obj
 

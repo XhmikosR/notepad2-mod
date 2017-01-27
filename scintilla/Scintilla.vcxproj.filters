@@ -18,10 +18,106 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="lexers\LexOthers.cxx">
+    <ClCompile Include="lexers\LexAHK.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="lexers\LexAsm.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="lexers\LexAU3.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="lexers\LexAVS.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="lexers\LexBash.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="lexers\LexBatch.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="lexers\LexCmake.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="lexers\LexCoffeeScript.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="lexers\LexConf.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="lexers\LexCPP.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="lexers\LexCSS.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="lexers\LexDiff.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="lexers\LexErrorList.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="lexers\LexHTML.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="lexers\LexInno.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="lexers\LexLaTeX.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="lexers\LexLua.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="lexers\LexMake.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="lexers\LexMarkdown.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="lexers\LexNsis.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="lexers\LexNull.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="lexers\LexPascal.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="lexers\LexPerl.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="lexers\LexPowerShell.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="lexers\LexProps.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="lexers\LexPython.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="lexers\LexRuby.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="lexers\LexSQL.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="lexers\LexTCL.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="lexers\LexVB.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="lexers\LexYAML.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="lexers\LexVHDL.cxx">
       <Filter>lexers</Filter>
     </ClCompile>
     <ClCompile Include="lexlib\Accessor.cxx">
+      <Filter>lexlib</Filter>
+    </ClCompile>
+    <ClCompile Include="lexlib\CharacterCategory.cxx">
       <Filter>lexlib</Filter>
     </ClCompile>
     <ClCompile Include="lexlib\CharacterSet.cxx">
@@ -54,6 +150,12 @@
     <ClCompile Include="src\CallTip.cxx">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\CaseConvert.cxx">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CaseFolder.cxx">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="src\Catalogue.cxx">
       <Filter>src</Filter>
     </ClCompile>
@@ -72,7 +174,13 @@
     <ClCompile Include="src\Document.cxx">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\EditModel.cxx">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="src\Editor.cxx">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EditView.cxx">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\ExternalLexer.cxx">
@@ -85,6 +193,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\LineMarker.cxx">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MarginView.cxx">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\PerLine.cxx">
@@ -117,6 +228,9 @@
     <ClCompile Include="src\XPM.cxx">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="win32\HanjaDic.cxx">
+      <Filter>win32</Filter>
+    </ClCompile>
     <ClCompile Include="win32\PlatWin.cxx">
       <Filter>win32</Filter>
     </ClCompile>
@@ -138,6 +252,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="lexlib\Accessor.h">
+      <Filter>lexlib</Filter>
+    </ClInclude>
+    <ClInclude Include="lexlib\CharacterCategory.h">
       <Filter>lexlib</Filter>
     </ClInclude>
     <ClInclude Include="lexlib\CharacterSet.h">
@@ -167,7 +284,13 @@
     <ClInclude Include="lexlib\SparseState.h">
       <Filter>lexlib</Filter>
     </ClInclude>
+    <ClInclude Include="lexlib\StringCopy.h">
+      <Filter>lexlib</Filter>
+    </ClInclude>
     <ClInclude Include="lexlib\StyleContext.h">
+      <Filter>lexlib</Filter>
+    </ClInclude>
+    <ClInclude Include="lexlib\SubStyles.h">
       <Filter>lexlib</Filter>
     </ClInclude>
     <ClInclude Include="lexlib\WordList.h">
@@ -177,6 +300,12 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\CallTip.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CaseConvert.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CaseFolder.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Catalogue.h">
@@ -197,7 +326,13 @@
     <ClInclude Include="src\Document.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\EditModel.h">
+      <Filter>src</Filter>
+    </ClInclude>
     <ClInclude Include="src\Editor.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EditView.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\ExternalLexer.h">
@@ -215,10 +350,16 @@
     <ClInclude Include="src\LineMarker.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\MarginView.h">
+      <Filter>src</Filter>
+    </ClInclude>
     <ClInclude Include="src\Partitioning.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\PerLine.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Position.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\PositionCache.h">
@@ -242,7 +383,7 @@
     <ClInclude Include="src\Style.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\SVector.h">
+    <ClInclude Include="src\UnicodeFromUTF8.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\UniConversion.h">
@@ -254,8 +395,12 @@
     <ClInclude Include="src\XPM.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="win32\HanjaDic.h">
+      <Filter>win32</Filter>
+    </ClInclude>
     <ClInclude Include="win32\PlatWin.h">
       <Filter>win32</Filter>
     </ClInclude>
+    <ClInclude Include="include\Sci_Position.h" />
   </ItemGroup>
 </Project>

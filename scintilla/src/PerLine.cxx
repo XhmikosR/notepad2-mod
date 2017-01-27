@@ -7,9 +7,14 @@
 
 #include <string.h>
 
+#include <stdexcept>
+#include <vector>
+#include <algorithm>
+
 #include "Platform.h"
 
 #include "Scintilla.h"
+#include "Position.h"
 #include "SplitVector.h"
 #include "Partitioning.h"
 #include "CellBuffer.h"
@@ -43,17 +48,6 @@ int MarkerHandleSet::Length() const {
 	return c;
 }
 
-int MarkerHandleSet::NumberFromHandle(int handle) const {
-	MarkerHandleNumber *mhn = root;
-	while (mhn) {
-		if (mhn->handle == handle) {
-			return mhn->number;
-		}
-		mhn = mhn->next;
-	}
-	return - 1;
-}
-
 int MarkerHandleSet::MarkValue() const {
 	unsigned int m = 0;
 	MarkerHandleNumber *mhn = root;
@@ -77,8 +71,6 @@ bool MarkerHandleSet::Contains(int handle) const {
 
 bool MarkerHandleSet::InsertHandle(int handle, int markerNum) {
 	MarkerHandleNumber *mhn = new MarkerHandleNumber;
-	if (!mhn)
-		return false;
 	mhn->handle = handle;
 	mhn->number = markerNum;
 	mhn->next = root;
@@ -109,7 +101,7 @@ bool MarkerHandleSet::RemoveNumber(int markerNum, bool all) {
 			delete mhn;
 			performedDeletion = true;
 			if (!all)
-				break; 
+				break;
 		} else {
 			pmhn = &((*pmhn)->next);
 		}
@@ -118,11 +110,12 @@ bool MarkerHandleSet::RemoveNumber(int markerNum, bool all) {
 }
 
 void MarkerHandleSet::CombineWith(MarkerHandleSet *other) {
-	MarkerHandleNumber **pmhn = &root;
+	MarkerHandleNumber **pmhn = &other->root;
 	while (*pmhn) {
 		pmhn = &((*pmhn)->next);
 	}
-	*pmhn = other->root;
+	*pmhn = root;
+	root = other->root;
 	other->root = 0;
 }
 
@@ -209,8 +202,6 @@ int LineMarkers::AddMark(int line, int markerNum, int lines) {
 	if (!markers[line]) {
 		// Need new structure to hold marker handle
 		markers[line] = new MarkerHandleSet();
-		if (!markers[line])
-			return -1;
 	}
 	markers[line]->InsertHandle(handleCurrent, markerNum);
 
@@ -295,7 +286,7 @@ int LineLevels::SetLevel(int line, int level, int lines) {
 	return prev;
 }
 
-int LineLevels::GetLevel(int line) {
+int LineLevels::GetLevel(int line) const {
 	if (levels.Length() && (line >= 0) && (line < levels.Length())) {
 		return levels[line];
 	} else {
@@ -338,7 +329,7 @@ int LineState::GetLineState(int line) {
 	return lineStates[line];
 }
 
-int LineState::GetMaxLineState() {
+int LineState::GetMaxLineState() const {
 	return lineStates.Length();
 }
 
@@ -383,14 +374,10 @@ void LineAnnotation::InsertLine(int line) {
 }
 
 void LineAnnotation::RemoveLine(int line) {
-	if (annotations.Length() && (line < annotations.Length())) {
-		delete []annotations[line];
-		annotations.Delete(line);
+	if (annotations.Length() && (line > 0) && (line <= annotations.Length())) {
+		delete []annotations[line-1];
+		annotations.Delete(line-1);
 	}
-}
-
-bool LineAnnotation::AnySet() const {
-	return annotations.Length() > 0;
 }
 
 bool LineAnnotation::MultipleStyles(int line) const {
@@ -400,7 +387,7 @@ bool LineAnnotation::MultipleStyles(int line) const {
 		return 0;
 }
 
-int LineAnnotation::Style(int line) {
+int LineAnnotation::Style(int line) const {
 	if (annotations.Length() && (line >= 0) && (line < annotations.Length()) && annotations[line])
 		return reinterpret_cast<AnnotationHeader *>(annotations[line])->style;
 	else
@@ -423,8 +410,7 @@ const unsigned char *LineAnnotation::Styles(int line) const {
 
 static char *AllocateAnnotation(int length, int style) {
 	size_t len = sizeof(AnnotationHeader) + length + ((style == IndividualStyles) ? length : 0);
-	char *ret = new char[len];
-	memset(ret, 0, len);
+	char *ret = new char[len]();
 	return ret;
 }
 
@@ -500,4 +486,73 @@ int LineAnnotation::Lines(int line) const {
 		return reinterpret_cast<AnnotationHeader *>(annotations[line])->lines;
 	else
 		return 0;
+}
+
+LineTabstops::~LineTabstops() {
+	Init();
+}
+
+void LineTabstops::Init() {
+	for (int line = 0; line < tabstops.Length(); line++) {
+		delete tabstops[line];
+	}
+	tabstops.DeleteAll();
+}
+
+void LineTabstops::InsertLine(int line) {
+	if (tabstops.Length()) {
+		tabstops.EnsureLength(line);
+		tabstops.Insert(line, 0);
+	}
+}
+
+void LineTabstops::RemoveLine(int line) {
+	if (tabstops.Length() > line) {
+		delete tabstops[line];
+		tabstops.Delete(line);
+	}
+}
+
+bool LineTabstops::ClearTabstops(int line) {
+	if (line < tabstops.Length()) {
+		TabstopList *tl = tabstops[line];
+		if (tl) {
+			tl->clear();
+			return true;
+		}
+	}
+	return false;
+}
+
+bool LineTabstops::AddTabstop(int line, int x) {
+	tabstops.EnsureLength(line + 1);
+	if (!tabstops[line]) {
+		tabstops[line] = new TabstopList();
+	}
+
+	TabstopList *tl = tabstops[line];
+	if (tl) {
+		// tabstop positions are kept in order - insert in the right place
+		std::vector<int>::iterator it = std::lower_bound(tl->begin(), tl->end(), x);
+		// don't insert duplicates
+		if (it == tl->end() || *it != x) {
+			tl->insert(it, x);
+			return true;
+		}
+	}
+	return false;
+}
+
+int LineTabstops::GetNextTabstop(int line, int x) const {
+	if (line < tabstops.Length()) {
+		TabstopList *tl = tabstops[line];
+		if (tl) {
+			for (size_t i = 0; i < tl->size(); i++) {
+				if ((*tl)[i] > x) {
+					return (*tl)[i];
+				}
+			}
+		}
+	}
+	return 0;
 }

@@ -13,20 +13,18 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
+// English (United States) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
-#endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // RT_MANIFEST
 //
 
-1                        RT_MANIFEST            "..\\res\\Notepad2.exe.manifest"
+1                       RT_MANIFEST             "..\\res\\Notepad2.exe.manifest"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -611,8 +609,8 @@ BEGIN
     "H",            IDACC_REPLACE,          VIRTKEY, CONTROL, NOINVERT
     "O",            IDACC_SAVEPOS,          VIRTKEY, CONTROL, NOINVERT
     "P",            IDACC_RESETPOS,         VIRTKEY, CONTROL, NOINVERT
-    VK_F2,          IDACC_SELTONEXT,        VIRTKEY, CONTROL ,ALT, NOINVERT
-    VK_F2,          IDACC_SELTOPREV,        VIRTKEY, CONTROL ,ALT, SHIFT, NOINVERT
+    VK_F2,          IDACC_SELTONEXT,        VIRTKEY, CONTROL, ALT, NOINVERT
+    VK_F2,          IDACC_SELTOPREV,        VIRTKEY, SHIFT, CONTROL, ALT, NOINVERT
     VK_F3,          IDACC_FINDNEXT,         VIRTKEY, NOINVERT
     VK_F3,          IDACC_SAVEFIND,         VIRTKEY, ALT, NOINVERT
     VK_F3,          IDACC_FINDPREV,         VIRTKEY, SHIFT, NOINVERT
@@ -625,24 +623,26 @@ END
 // Dialog
 //
 
-IDD_ABOUT DIALOGEX 0, 0, 255, 100
+IDD_ABOUT DIALOGEX 0, 0, 255, 130
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_NOFAILCREATE | WS_POPUP |
     WS_CAPTION | WS_SYSMENU
 CAPTION MY_APPNAME
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,195,75,50,14
-    ICON            IDR_MAINWND,IDC_STATIC,7,7,20,20
-    LTEXT           "",IDC_VERSION,45,7,174,8
-    LTEXT           "",IDC_COPYRIGHT,45,19,174,8
-    LTEXT           "",IDC_WEBPAGE2,45,28,174,8,NOT WS_VISIBLE | WS_DISABLED
-    CONTROL         "",IDC_WEBPAGE,"SysLink",WS_TABSTOP,45,28,174,10
-    LTEXT           "Visit Notepad2-mod's project page:",IDC_STATIC,45,44,174,8
-    LTEXT           "",IDC_MOD_PAGE2,45,53,174,8,NOT WS_VISIBLE | WS_DISABLED
-    CONTROL         "",IDC_MOD_PAGE,"SysLink",WS_TABSTOP,45,53,174,10
-    LTEXT           "Contact Florian Balmer:",IDC_STATIC,45,68,140,8
-    LTEXT           "",IDC_EMAIL2,45,77,140,8,NOT WS_VISIBLE | WS_DISABLED
-    CONTROL         "",IDC_EMAIL,"SysLink",WS_TABSTOP,45,77,140,10
+    DEFPUSHBUTTON   "OK",IDOK,195,107,50,14
+    ICON            IDR_MAINWND,IDC_STATIC,7,7,21,20
+    LTEXT           "",IDC_VERSION,45,7,200,8
+    LTEXT           "Compiled with: ",IDC_COMPILER2,45,19,200,8
+    LTEXT           "",IDC_COMPILER,96,19,200,8
+    LTEXT           "",IDC_COPYRIGHT,45,35,200,8
+    LTEXT           "",IDC_WEBPAGE2,45,44,200,8,NOT WS_VISIBLE | WS_DISABLED
+    CONTROL         "",IDC_WEBPAGE,"SysLink",WS_TABSTOP,45,44,200,10
+    LTEXT           "Visit Notepad2-mod's website:",IDC_STATIC,45,60,200,8
+    LTEXT           "",IDC_MOD_PAGE2,45,69,200,8,NOT WS_VISIBLE | WS_DISABLED
+    CONTROL         "",IDC_MOD_PAGE,"SysLink",WS_TABSTOP,45,69,200,10
+    LTEXT           "Contact Florian Balmer:",IDC_STATIC,45,85,200,8
+    LTEXT           "",IDC_EMAIL2,45,94,200,8,NOT WS_VISIBLE | WS_DISABLED
+    CONTROL         "",IDC_EMAIL,"SysLink",WS_TABSTOP,45,94,200,10
 END
 
 IDD_FIND DIALOGEX 0, 0, 272, 101
@@ -1251,7 +1251,7 @@ BEGIN
         RIGHTMARGIN, 245
         VERTGUIDE, 45
         TOPMARGIN, 7
-        BOTTOMMARGIN, 95
+        BOTTOMMARGIN, 121
     END
 
     IDD_FIND, DIALOG
@@ -1877,7 +1877,7 @@ BEGIN
     63194                   "Tag-Class"
     63195                   "Tag-Id"
     63196                   "Tag-Attribute"
-    63197                   "Pseudo-class/element"
+    63197                   "Pseudo-class"
     63198                   "Unknown Pseudo-class"
     63199                   "CSS Property"
 END
@@ -1956,7 +1956,7 @@ BEGIN
     63257                   "XML Element Text"
 END
 
-#endif    // English (U.S.) resources
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
@@ -1964,10 +1964,8 @@ END
 // German (Switzerland) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DES)
-#ifdef _WIN32
 LANGUAGE LANG_GERMAN, SUBLANG_GERMAN_SWISS
 #pragma code_page(1252)
-#endif //_WIN32
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -1975,17 +1973,17 @@ LANGUAGE LANG_GERMAN, SUBLANG_GERMAN_SWISS
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE
+1 TEXTINCLUDE 
 BEGIN
     "resource.h\0"
 END
 
-2 TEXTINCLUDE
+2 TEXTINCLUDE 
 BEGIN
-    "#include <winres.h>\0"
+    "#include <winresrc.h>\0"
 END
 
-3 TEXTINCLUDE
+3 TEXTINCLUDE 
 BEGIN
     "#include ""Notepad2.ver""\0"
 END

@@ -78,33 +78,34 @@ EDITLEXER lexDefault = { SCLEX_NULL, 63000, L"Default Text", L"txt; text; wtx; l
 KEYWORDLIST KeyWords_HTML = {
 "!doctype ^aria- ^data- a abbr accept accept-charset accesskey acronym action address align alink "
 "alt and applet archive area article aside async audio autocomplete autofocus autoplay axis b "
-"background base basefont bb bdi bdo bgcolor big blockquote body border bordercolor br button "
+"background base basefont bb bdi bdo bgcolor big blockquote body border bordercolor br buffered button "
 "canvas caption cellpadding cellspacing center challenge char charoff charset checkbox checked "
 "cite class classid clear code codebase codetype col colgroup color cols colspan command compact "
-"content contenteditable contextmenu controls coords data datafld dataformatas datagrid datalist "
-"datapagesize datasrc datetime dd declare default defer del details dfn dialog dir dirname "
-"disabled div dl draggable dropzone dt em embed enctype event eventsource face fieldset "
+"content contenteditable contextmenu controls coords crossorigin data datafld dataformatas datagrid "
+"datalist datapagesize datasrc datetime dd declare default defer del details dfn dialog dir dirname "
+"disabled div dl download draggable dropzone dt em embed enctype event eventsource face fieldset "
 "figcaption figure file font footer for form formaction formenctype formmethod formnovalidate "
 "formtarget frame frameborder frameset h1 h2 h3 h4 h5 h6 head header headers height hgroup hidden "
-"high hr href hreflang hspace html http-equiv i icon id iframe image img input ins isindex ismap "
-"kbd keygen keytype kind label lang language leftmargin legend li link list longdesc loop low "
-"manifest map marginheight marginwidth mark max maxlength media menu meta meter method min "
-"multiple name nav noframes nohref noresize noscript noshade novalidate nowrap object ol onabort "
-"onafterprint onbeforeprint onbeforeunload onblur oncanplay oncanplaythrough onchange onclick "
-"oncontextmenu oncuechange ondblclick ondrag ondragend ondragenter ondragleave ondragover "
-"ondragstart ondrop ondurationchange onemptied onended onerror onfocus onformchange onforminput "
-"onhashchange oninput oninvalid onkeydown onkeypress onkeyup onload onloadeddata onloadedmetadata "
+"high hr href hreflang hspace html http-equiv i icon id iframe image img input ins integrity isindex "
+"ismap itemprop itemscope itemtype kbd keygen keytype kind label lang language leftmargin legend li link "
+"list longdesc loop low main manifest map marginheight marginwidth mark max maxlength media mediagroup "
+"menu menuitem meta meter method min multiple muted name nav noframes nohref noresize noscript noshade "
+"novalidate nowrap object ol onabort onafterprint onbeforeprint onbeforeunload onblur oncancel oncanplay "
+"oncanplaythrough onchange onclick onclose oncontextmenu oncuechange ondblclick ondrag ondragend ondragenter "
+"ondragleave ondragover ondragstart ondrop ondurationchange onemptied onended onerror onfocus onformchange "
+"onforminput onhashchange oninput oninvalid onkeydown onkeypress onkeyup onload onloadeddata onloadedmetadata "
 "onloadstart onmessage onmousedown onmousemove onmouseout onmouseover onmouseup onmousewheel "
 "onoffline ononline onpagehide onpageshow onpause onplay onplaying onpopstate onprogress "
 "onratechange onreadystatechange onredo onreset onresize onscroll onseeked onseeking onselect "
 "onshow onstalled onstorage onsubmit onsuspend ontimeupdate onundo onunload onvolumechange "
 "onwaiting open optgroup optimum option output p param password pattern ping placeholder poster "
-"pre preload profile progress prompt pubdate public q radio radiogroup readonly rel required "
-"reset rev reversed rows rowspan rp rt ruby rules s samp sandbox scheme scope scoped script "
+"pre prefix preload profile progress prompt property pubdate public q radio radiogroup readonly rel "
+"required reset rev reversed role rows rowspan rp rt ruby rules s samp sandbox scheme scope scoped script "
 "scrolling seamless section select selected shape size sizes small source span spellcheck src "
 "srcdoc srclang standby start step strike strong style sub submit summary sup tabindex table "
-"target tbody td text textarea tfoot th thead time title topmargin tr track tt type u ul usemap "
-"valign value valuetype var version video vlink vspace wbr width wrap xml xmlns",
+"target tbody td text textarea tfoot th thead time title topmargin tr track translate tt type "
+"typemustmatch u ul usemap valign value valuetype var version video vlink vspace wbr width wrap xml "
+"xmlns",
 "abstract boolean break byte case catch char class const continue debugger default delete do "
 "double else enum export extends false final finally float for function goto if implements "
 "import in instanceof int interface long native new null package private protected public "
@@ -237,10 +238,10 @@ EDITLEXER lexXML = { SCLEX_XML, 63002, L"XML Document", L"xml; xsl; rss; svg; xu
 
 
 KEYWORDLIST KeyWords_CSS = {
-"^-moz- ^-ms- ^-o- ^-webkit- alignment-adjust alignment-baseline animation animation-delay "
-"animation-direction animation-duration animation-iteration-count animation-name "
+"align-content align-items align-self alignment-adjust alignment-baseline animation animation-delay "
+"animation-direction animation-duration animation-fill-mode animation-iteration-count animation-name "
 "animation-play-state animation-timing-function appearance ascent azimuth backface-visibility "
-"background background-attachment background-break background-clip background-color "
+"background background-attachment background-blend-mode background-break background-clip background-color "
 "background-image background-origin background-position background-repeat background-size "
 "baseline baseline-shift bbox binding bleed bookmark-label bookmark-level bookmark-state "
 "bookmark-target border border-bottom border-bottom-color border-bottom-left-radius "
@@ -253,41 +254,48 @@ KEYWORDLIST KeyWords_CSS = {
 "bottom box-align box-decoration-break box-direction box-flex box-flex-group box-lines "
 "box-ordinal-group box-orient box-pack box-shadow box-sizing break-after break-before "
 "break-inside cap-height caption-side centerline change-bar change-bar-class change-bar-offset "
-"change-bar-side clear clip color color-profile column-count column-fill column-gap column-rule "
-"column-rule-color column-rule-style column-rule-width columns column-span column-width content "
-"counter-increment counter-reset crop cue cue-after cue-before cursor definition-src descent "
+"change-bar-side clear clip clip-path clip-rule color color-profile column-count column-fill column-gap "
+"column-rule column-rule-color column-rule-style column-rule-width columns column-span column-width "
+"content counter-increment counter-reset crop cue cue-after cue-before cursor definition-src descent "
 "direction display dominant-baseline drop-initial-after-adjust drop-initial-after-align "
 "drop-initial-before-adjust drop-initial-before-align drop-initial-size drop-initial-value "
-"elevation empty-cells fit fit-position float float-offset font font-family font-size "
-"font-size-adjust font-stretch font-style font-variant font-weight grid-columns grid-rows "
-"hanging-punctuation height hyphenate-after hyphenate-before hyphenate-character hyphenate-lines "
-"hyphenate-resource hyphens icon image-orientation image-resolution inline-box-align "
-"insert-position left letter-spacing line-height line-stacking line-stacking-ruby "
-"line-stacking-shift line-stacking-strategy list-style list-style-image list-style-position "
-"list-style-type make-element margin margin-bottom margin-left margin-right margin-top mark "
-"mark-after mark-before marker-offset marks marquee-direction marquee-play-count marquee-speed "
-"marquee-style mathline max-height max-width min-height min-width move-to nav-down nav-index "
-"nav-left nav-right nav-up opacity orphans outline outline-color outline-offset outline-style "
-"outline-width overflow overflow-style overflow-x overflow-y padding padding-bottom padding-left "
-"padding-right padding-top page page-break-after page-break-before page-break-inside page-policy "
-"panose-1 pause pause-after pause-before perspective perspective-origin phonemes pitch "
-"pitch-range play-during position presentation-level prototype prototype-insert-policy "
-"prototype-insert-position punctuation-trim quotes rendering-intent resize rest rest-after "
-"rest-before richness right rotation rotation-point ruby-align ruby-overhang ruby-position "
-"ruby-span size slope speak speak-header speak-numeral speak-punctuation speech-rate src stemh "
-"stemv stress string-set table-layout target target-name target-new target-position text-align "
-"text-align-last text-decoration text-emphasis text-height text-indent text-justify text-outline "
-"text-replace text-shadow text-transform text-wrap top topline transform transform-origin "
-"transform-style transition transition-delay transition-duration transition-property "
+"elevation empty-cells fill fit fit-position flex flex-basis flex-direction flex-flow flex-grow flex-shrink "
+"flex-wrap float float-offset flow-from flow-into font font-family font-feature-settings font-kerning font-size "
+"font-size-adjust font-stretch font-style font-synthesis font-variant font-weight grid-columns grid-rows "
+"hanging-punctuation height hyphenate-after hyphenate-before hyphenate-character hyphenate-limit-chars "
+"hyphenate-limit-last hyphenate-limit-zone hyphenate-lines hyphenate-resource hyphens icon image-orientation "
+"image-resolution ime-mode inline-box-align insert-position interpret-as justify-content left letter-spacing "
+"line-height line-stacking line-stacking-ruby line-stacking-shift line-stacking-strategy list-style "
+"list-style-image list-style-position list-style-type make-element margin margin-bottom margin-left "
+"margin-right margin-top mark mark-after mark-before marker-offset marks marquee-direction marquee-play-count "
+"marquee-speed marquee-style mask mask-type mathline max-height max-width media min-height min-width "
+"move-to nav-down nav-index nav-left nav-right nav-up object-fit object-position opacity order orphans "
+"outline outline-color outline-offset outline-style outline-width overflow overflow-style overflow-wrap "
+"overflow-x overflow-y padding padding-bottom padding-left padding-right padding-top page page-break-after "
+"page-break-before page-break-inside page-policy panose-1 pause pause-after pause-before perspective "
+"perspective-origin phonemes pitch pitch-range play-during pointer-events position presentation-level prototype "
+"prototype-insert-policy prototype-insert-position punctuation-trim quotes region-overflow "
+"rendering-intent resize rest rest-after rest-before richness right rotation rotation-point ruby-align "
+"ruby-overhang ruby-position ruby-span shape-image-threshold shape-inside shape-outside size slope speak "
+"speak-header speak-numeral speak-punctuation speech-rate src stemh stemv stress string-set tab-size table-layout "
+"target target-name target-new target-position text-align text-align-last text-decoration text-decoration-color "
+"text-decoration-line text-decoration-style text-emphasis text-height text-indent text-justify text-outline "
+"text-overflow text-rendering text-replace text-shadow text-transform text-underline-position text-wrap top topline "
+"transform transform-origin transform-style transition transition-delay transition-duration transition-property "
 "transition-timing-function unicode-bidi unicode-range units-per-em vertical-align visibility "
 "voice-balance voice-duration voice-family voice-pitch voice-pitch-range voice-rate voice-stress "
-"voice-volume volume white-space white-space-collapse widows width widths word-break word-spacing "
-"word-wrap x-height z-index",
-"active after before checked default disabled empty enabled first first-child first-letter "
-"first-line first-of-type focus hover indeterminate invalid lang last-child last-of-type left "
+"voice-volume volume white-space white-space-collapse widows width widths will-change word-break word-spacing "
+"word-wrap wrap wrap-flow wrap-margin wrap-padding wrap-through writing-mode x-height z-index",
+"active after before checked choices default disabled empty enabled first first-child first-letter "
+"first-line first-of-type focus hover indeterminate in-range invalid lang last-child last-of-type left "
 "link not nth-child nth-last-child nth-last-of-type nth-of-type only-child only-of-type optional "
-"required right root target valid visited",
-"", "", "", "", "", "", "" };
+"out-of-range read-only read-write repeat-index repeat-item required right root target valid visited",
+"", "",
+"after before first-letter first-line selection",
+"^-moz- ^-ms- ^-o- ^-webkit-",
+"^-moz- ^-ms- ^-o- ^-webkit-",
+"^-moz- ^-ms- ^-o- ^-webkit-",
+"" };
 
 
 EDITLEXER lexCSS = { SCLEX_CSS, 63003, L"CSS Style Sheets", L"css", L"", &KeyWords_CSS, {
@@ -298,7 +306,8 @@ EDITLEXER lexCSS = { SCLEX_CSS, 63003, L"CSS Style Sheets", L"css", L"", &KeyWor
                      { SCE_CSS_CLASS, 63194, L"Tag-Class", L"fore:#648000", L"" },
                      { SCE_CSS_ID, 63195, L"Tag-Id", L"fore:#648000", L"" },
                      { SCE_CSS_ATTRIBUTE, 63196, L"Tag-Attribute", L"italic; fore:#648000", L"" },
-                     { MULTI_STYLE(SCE_CSS_PSEUDOCLASS,SCE_CSS_EXTENDED_PSEUDOCLASS,SCE_CSS_PSEUDOELEMENT,SCE_CSS_EXTENDED_PSEUDOELEMENT), 63197, L"Pseudo-class/element", L"fore:#B000B0", L"" },
+                     { MULTI_STYLE(SCE_CSS_PSEUDOCLASS,SCE_CSS_EXTENDED_PSEUDOCLASS,0,0), 63197, L"Pseudo-class", L"fore:#B000B0", L"" },
+                     { MULTI_STYLE(SCE_CSS_PSEUDOELEMENT,SCE_CSS_EXTENDED_PSEUDOELEMENT,0,0), 63361, L"Pseudo-element", L"fore:#B00050", L"" },
                      { SCE_CSS_UNKNOWN_PSEUDOCLASS, 63198, L"Unknown Pseudo-class", L"fore:#C80000; back:#FFFF80", L"" },
                      { MULTI_STYLE(SCE_CSS_IDENTIFIER,SCE_CSS_IDENTIFIER2,SCE_CSS_IDENTIFIER3,SCE_CSS_EXTENDED_IDENTIFIER), 63199, L"CSS Property", L"fore:#FF4000", L"" },
                      { SCE_CSS_UNKNOWN_IDENTIFIER, 63200, L"Unknown Property", L"fore:#C80000; back:#FFFF80", L"" },
@@ -335,7 +344,7 @@ EDITLEXER lexCPP = { SCLEX_CPP, 63004, L"C/C++ Source Code", L"c; cpp; cxx; cc; 
                      { MULTI_STYLE(SCE_C_STRING,SCE_C_CHARACTER,SCE_C_STRINGEOL,SCE_C_VERBATIM), 63131, L"String", L"fore:#008000", L"" },
                      { SCE_C_NUMBER, 63130, L"Number", L"fore:#FF0000", L"" },
                      { SCE_C_OPERATOR, 63132, L"Operator", L"fore:#B000B0", L"" },
-                     { SCE_C_PREPROCESSOR, 63133, L"Preprocessor", L"fore:#FF8000", L"" },
+                     { MULTI_STYLE(SCE_C_PREPROCESSOR,SCE_C_PREPROCESSORCOMMENT,SCE_C_PREPROCESSORCOMMENTDOC,0), 63133, L"Preprocessor", L"fore:#FF8000", L"" },
                      //{ SCE_C_UUID, L"UUID", L"", L"" },
                      //{ SCE_C_REGEX, L"Regex", L"", L"" },
                      //{ SCE_C_WORD2, L"Word 2", L"", L"" },
@@ -492,7 +501,7 @@ EDITLEXER lexCS = { SCLEX_CPP, 63005, L"C# Source Code", L"cs", L"", &KeyWords_C
                     //{ SCE_C_UUID, L"UUID", L"", L"" },
                     //{ SCE_C_REGEX, L"Regex", L"", L"" },
                     //{ SCE_C_WORD2, L"Word 2", L"", L"" },
-                    { SCE_C_GLOBALCLASS, 63338, L"Global Class", L"fore:#2B91AF", L"" },
+                    { SCE_C_GLOBALCLASS, 63337, L"Global Class", L"fore:#2B91AF", L"" },
                     { -1, 00000, L"", L"", L"" } } };
 
 
@@ -541,12 +550,12 @@ EDITLEXER lexMAK = { SCLEX_MAKEFILE, 63007, L"Makefiles", L"mak; make; mk; dsp; 
 
 
 KEYWORDLIST KeyWords_VBS = {
-"Alias And As Attribute Begin Boolean ByRef Byte ByVal Call Case Class Compare Const Continue "
-"Currency Date Declare Dim Do Double Each Else ElseIf Empty End Enum Eqv Erase Error Event Exit "
-"Explicit False For Friend Function Get Global GoSub Goto If Imp Implement In Integer Is Let Lib "
-"Load Long Loop LSet Me Mid Mod Module New Next Not Nothing Null Object On Option Optional Or "
-"Preserve Private Property Public RaiseEvent ReDim Rem Resume Return RSet Select Set Single "
-"Static Stop String Sub Then To True Type Unload Until Variant Wend While With WithEvents Xor",
+"alias and as attribute begin boolean byref byte byval call case class compare const continue "
+"currency date declare dim do double each else elseif empty end enum eqv erase error event exit "
+"explicit false for friend function get global gosub goto if imp implement in integer is let lib "
+"load long loop lset me mid mod module new next not nothing null object on option optional or "
+"preserve private property public raiseevent redim rem resume return rset select set single "
+"static stop string sub then to true type unload until variant wend while with withevents xor",
 "", "", "", "", "", "", "", "" };
 
 
@@ -570,17 +579,17 @@ EDITLEXER lexVBS = { SCLEX_VBSCRIPT, 63008, L"VBScript", L"vbs; dsm", L"", &KeyW
 
 
 KEYWORDLIST KeyWords_VB = {
-"Addhandler AddressOf Alias And AndAlso Ansi Any As Assembly Auto Boolean ByRef Byte ByVal Call "
-"Case Catch CBool CByte CChar CDate CDbl CDec Char CInt Class CLng CObj Compare Const CShort CSng "
-"CStr CType Date Decimal Declare Default Delegate Dim DirectCast Do Double Each Else ElseIf End "
-"Enum Erase Error Event Exit Explicit ExternalSource False Finally For Friend Function Get "
-"GetType GoSub Goto Handles If Implements Imports In Inherits Integer Interface Is Let Lib Like "
-"Long Loop Me Mid Mod Module MustInherit MustOverride MyBase MyClass Namespace New Next Not "
-"Nothing NotInheritable NotOverridable Object On Option Optional Or OrElse Overloads Overridable "
-"Overrides ParamArray Preserve Private Property Protected Public RaiseEvent Randomize Readonly "
-"ReDim Rem RemoveHandler Resume Return Select Set Shadows Shared Short Single Static Step Stop "
-"Strict String Structure Sub SyncLock Then Throw To True Try TypeOf Unicode Until Variant When "
-"While With WithEvents WriteOnly Xor",
+"addhandler addressof alias and andalso ansi any as assembly auto boolean byref byte byval call "
+"case catch cbool cbyte cchar cdate cdbl cdec char cint class clng cobj compare const cshort csng "
+"cstr ctype date decimal declare default delegate dim directcast do double each else elseif end "
+"enum erase error event exit explicit externalsource false finally for friend function get "
+"gettype gosub goto handles if implements imports in inherits integer interface is let lib like "
+"long loop me mid mod module mustinherit mustoverride mybase myclass namespace new next not "
+"nothing notinheritable notoverridable object on option optional or orelse overloads overridable "
+"overrides paramarray preserve private property protected public raiseevent randomize readonly "
+"redim rem removehandler resume return select set shadows shared short single static step stop "
+"strict string structure sub synclock then throw to true try typeof unicode until variant when "
+"while with withevents writeonly xor",
 "", "", "", "", "", "", "", "" };
 
 
@@ -605,7 +614,7 @@ EDITLEXER lexVB = { SCLEX_VB, 63009, L"Visual Basic", L"vb; bas; frm; cls; ctl; 
 KEYWORDLIST KeyWords_JS = {
 "abstract boolean break byte case catch char class const continue debugger default delete do "
 "double else enum export extends false final finally float for function goto if implements "
-"import in instanceof int interface long native new null package private protected public "
+"import in instanceof int interface let long native new null package private protected public "
 "return short static super switch synchronized this throw throws transient true try typeof var "
 "void volatile while with",
 "", "", "", "", "", "", "", "" };
@@ -629,12 +638,16 @@ EDITLEXER lexJS = { SCLEX_CPP, 63010, L"JavaScript", L"js; jse; jsm; json; as", 
 
 
 KEYWORDLIST KeyWords_JAVA = {
-"abstract assert boolean break byte case catch char class const "
-"continue default do double else extends final finally float for future "
+"@interface abstract assert boolean break byte case catch char class const "
+"continue default do double else enum extends final finally float for future "
 "generic goto if implements import inner instanceof int interface long "
 "native new null outer package private protected public rest return "
 "short static super switch synchronized this throw throws transient try "
-"var void volatile while",
+"var void volatile while "
+"@Deprecated @Documented @FlaskyTest @Inherited @JavascriptInterface "
+"@LargeTest @MediumTest @Override @Retention "
+"@SmallTest @Smoke @Supress @SupressLint @SupressWarnings @Target @TargetApi "
+"@TestTarget @TestTargetClass @UiThreadTest",
 "", "", "", "", "", "", "", "" };
 
 
@@ -866,13 +879,14 @@ EDITLEXER lexINI = { SCLEX_PROPERTIES, 63015, L"Configuration Files", L"ini; inf
 KEYWORDLIST KeyWords_BAT = {
 "arp assoc attrib bcdedit bootcfg break cacls call cd change chcp chdir chkdsk chkntfs choice cipher "
 "cleanmgr cls cmd cmdkey color com comp compact con convert copy country ctty date defined defrag del "
-"dir disableextensions diskcomp diskcopy diskpart do doskey driverquery echo echo. else enabledelayedexpansion "
-"endlocal equ erase errorlevel exist exit expand fc find findstr for forfiles format fsutil ftp ftype "
-"geq goto gpresult gpupdate graftabl gtr help icacls if in ipconfig kill label leq loadfix loadhigh logman "
-"logoff lpt lss md mem mkdir mklink mode more move msg msiexe nbtstat neq net netstat netsh not nslookup nul "
-"openfiles path pathping pause perfmon popd powercfg print prompt pushd rd recover reg regedit regsvr32 rem "
-"ren rename replace rmdir robocopy route runas rundll32 sc schtasks sclist set setlocal sfc shift shutdown sort "
-"start subst systeminfo taskkill tasklist time timeout title tracert tree type typeperf ver verify vol wmic xcopy",
+"dir disableextensions diskcomp diskcopy diskpart do doskey driverquery echo echo. else enableextensions "
+"enabledelayedexpansion endlocal equ erase errorlevel exist exit expand fc find findstr for forfiles format "
+"fsutil ftp ftype geq goto gpresult gpupdate graftabl gtr help icacls if in ipconfig kill label leq loadfix "
+"loadhigh logman logoff lpt lss md mem mkdir mklink mode more move msg msiexe nbtstat neq net netstat netsh "
+"not nslookup nul openfiles path pathping pause perfmon popd powercfg print prompt pushd rd recover reg regedit "
+"regsvr32 rem ren rename replace rmdir robocopy route runas rundll32 sc schtasks sclist set setlocal sfc shift "
+"shutdown sort start subst systeminfo taskkill tasklist time timeout title tracert tree type typeperf ver verify "
+"vol wmic xcopy",
 "", "", "", "", "", "", "", "" };
 
 
@@ -969,107 +983,114 @@ EDITLEXER lexPY = { SCLEX_PYTHON, 63019, L"Python Script", L"py; pyw", L"", &Key
 
 
 KEYWORDLIST KeyWords_CONF = {
-"AuthnProviderAlias AuthzProviderAlias Directory DirectoryMatch Else ElseIf Files FilesMatch If "
-"IfDefine IfModule IfVersion Limit LimitExcept Location LocationMatch Proxy ProxyMatch RequireAll "
-"RequireAny RequireNone VirtualHost "
-
-"AcceptFilter AcceptMutex AcceptPathInfo AccessFileName Action AddAlt AddAltByEncoding AddAltByType "
-"AddCharset AddDefaultCharset AddDescription AddEncoding AddHandler AddIcon AddIconByEncoding "
-"AddIconByType AddInputFilter AddLanguage AddModuleInfo AddOutputFilter AddOutputFilterByType AddType "
-"Alias AliasMatch Allow AllowCONNECT AllowEncodedSlashes AllowMethods AllowOverride AllowOverrideList "
-"Anonymous Anonymous_LogEmail Anonymous_MustGiveEmail Anonymous_NoUserID Anonymous_VerifyEmail "
-"AsyncRequestWorkerFactor AuthBasicAuthoritative AuthBasicProvider AuthDBDUserPWQuery "
-"AuthDBDUserRealmQuery AuthDBMGroupFile AuthDBMType AuthDBMUserFile AuthDefaultAuthoritative "
-"AuthDigestAlgorithm AuthDigestDomain AuthDigestNcCheck AuthDigestNonceFormat AuthDigestNonceLifetime "
-"AuthDigestProvider AuthDigestQop AuthDigestShmemSize AuthFormAuthoritative AuthFormBody "
-"AuthFormDisableNoStore AuthFormFakeBasicAuth AuthFormLocation AuthFormLoginRequiredLocation "
-"AuthFormLoginSuccessLocation AuthFormLogoutLocation AuthFormMethod AuthFormMimetype AuthFormPassword "
-"AuthFormProvider AuthFormSitePassphrase AuthFormSize AuthFormUsername AuthGroupFile AuthLDAPAuthorizePrefix "
-"AuthLDAPBindAuthoritative AuthLDAPBindDN AuthLDAPBindPassword AuthLDAPCharsetConfig AuthLDAPCompareAsUser "
-"AuthLDAPCompareDNOnServer AuthLDAPDereferenceAliases AuthLDAPGroupAttribute AuthLDAPGroupAttributeIsDN "
-"AuthLDAPInitialBindAsUser AuthLDAPInitialBindPattern AuthLDAPMaxSubGroupDepth AuthLDAPRemoteUserAttribute "
-"AuthLDAPRemoteUserIsDN AuthLDAPSearchAsUser AuthLDAPSubGroupAttribute AuthLDAPSubGroupClass AuthLDAPUrl "
-"AuthMerging AuthName AuthnCacheContext AuthnCacheEnable AuthnCacheProvideFor AuthnCacheSOCache "
-"AuthnCacheTimeout AuthType AuthUserFile AuthzDBDLoginToReferer AuthzDBDQuery AuthzDBDRedirectQuery "
-"AuthzDBMAuthoritative AuthzDBMType AuthzDefaultAuthoritative AuthzGroupFileAuthoritative "
-"AuthzLDAPAuthoritative AuthzOwnerAuthoritative AuthzSendForbiddenOnFailure AuthzUserAuthoritative "
-"BalancerGrowth BalancerMember BrowserMatch BrowserMatchNoCase BufferedLogs BufferSize CacheDefaultExpire "
-"CacheDetailHeader CacheDirLength CacheDirLevels CacheDisable CacheEnable CacheFile CacheHeader "
-"CacheIgnoreCacheControl CacheIgnoreHeaders CacheIgnoreNoLastMod CacheIgnoreQueryString "
-"CacheIgnoreURLSessionIdentifiers CacheKeyBaseURL CacheLastModifiedFactor CacheLock CacheLockMaxAge "
-"CacheLockPath CacheMaxExpire CacheMaxFileSize CacheMinExpire CacheMinFileSize CacheNegotiatedDocs "
-"CacheQuickHandler CacheReadSize CacheReadTime CacheRoot CacheStaleOnError CacheStoreExpired "
-"CacheStoreNoStore CacheStorePrivate CGIMapExtension CharsetDefault CharsetOptions CharsetSourceEnc "
-"CheckCaseOnly CheckSpelling ChrootDir ContentDigest CookieDomain CookieExpires CookieLog CookieName "
-"CookieStyle CookieTracking CoreDumpDirectory CustomLog Dav DavDepthInfinity DavGenericLockDB DavLockDB "
-"DavMinTimeout DBDExptime DBDInitSQL DBDKeep DBDMax DBDMin DBDParams DBDPersist DBDPrepareSQL DBDriver "
-"DefaultIcon DefaultLanguage DefaultRuntimeDir DefaultType Define DeflateBufferSize DeflateCompressionLevel "
-"DeflateFilterNote DeflateMemLevel DeflateWindowSize Deny DirectoryIndex DirectoryIndexRedirect "
-"DirectorySlash DocumentRoot DTracePrivileges DumpIOInput DumpIOLogLevel DumpIOOutput EnableExceptionHook "
-"EnableMMAP EnableSendfile Error ErrorDocument ErrorLog ErrorLogFormat Example ExpiresActive ExpiresByType "
-"ExpiresDefault ExtendedStatus ExtFilterDefine ExtFilterOptions FallbackResource FileETag FilterChain "
-"FilterDeclare FilterProtocol FilterProvider FilterTrace ForceLanguagePriority ForceType ForensicLog "
-"GprofDir GracefulShutdownTimeout Group Header HeaderName HeartbeatAddress HeartbeatListen "
-"HeartbeatMaxServers HeartbeatStorage HostnameLookups IdentityCheck IdentityCheckTimeout ImapBase "
-"ImapDefault ImapMenu Include IncludeOptional IndexHeadInsert IndexIgnore IndexIgnoreReset IndexOptions "
-"IndexOrderDefault IndexStyleSheet InputSed ISAPIAppendLogToErrors ISAPIAppendLogToQuery ISAPICacheFile "
-"ISAPIFakeAsync ISAPILogNotSupported ISAPIReadAheadBuffer KeepAlive KeepAliveTimeout KeptBodySize "
-"LanguagePriority LDAPCacheEntries LDAPCacheTTL LDAPConnectionPoolTTL LDAPConnectionTimeout "
-"LDAPLibraryDebug LDAPOpCacheEntries LDAPOpCacheTTL LDAPReferralHopLimit LDAPReferrals LDAPRetries "
-"LDAPRetryDelay LDAPSharedCacheFile LDAPSharedCacheSize LDAPTimeout LDAPTrustedClientCert "
-"LDAPTrustedGlobalCert LDAPTrustedMode LDAPVerifyServerCert LimitInternalRecursion LimitRequestBody "
-"LimitRequestFields LimitRequestFieldSize LimitRequestLine LimitXMLRequestBody Listen ListenBackLog "
-"LoadFile LoadModule LockFile LogFormat LogLevel LogMessage LuaAuthzProvider LuaHookAccessChecker "
-"LuaHookAuthChecker LuaHookCheckUserID LuaHookFixups LuaHookInsertFilter LuaHookMapToStorage "
-"LuaHookTranslateName LuaHookTypeChecker LuaInherit LuaPackageCPath LuaPackagePath LuaQuickHandler "
-"LuaRoot LuaScope MaxClients MaxConnectionsPerChild MaxKeepAliveRequests MaxMemFree MaxRangeOverlaps "
-"MaxRangeReversals MaxRanges MaxRequestsPerChild MaxRequestsPerThread MaxRequestWorkers MaxSpareServers "
-"MaxSpareThreads MaxThreads MCacheMaxObjectCount MCacheMaxObjectSize MCacheMaxStreamingBuffer "
-"MCacheMinObjectSize MCacheRemovalAlgorithm MCacheSize MetaDir MetaFiles MetaSuffix MimeMagicFile "
-"MinSpareServers MinSpareThreads MMapFile ModemStandard ModMimeUsePathInfo MultiviewsMatch Mutex "
-"NameVirtualHost NoProxy NWSSLTrustedCerts NWSSLUpgradeable Options Order OutputSed PassEnv PidFile "
-"PrivilegesMode Protocol ProtocolEcho ProxyAddHeaders ProxyBadHeader ProxyBlock ProxyDomain "
-"ProxyErrorOverride ProxyExpressDBMFile ProxyExpressDBMType ProxyExpressEnable ProxyFtpDirCharset "
-"ProxyFtpEscapeWildcards ProxyFtpListOnWildcard ProxyHTMLBufSize ProxyHTMLCharsetOut ProxyHTMLDocType "
-"ProxyHTMLEnable ProxyHTMLEvents ProxyHTMLExtended ProxyHTMLFixups ProxyHTMLInterp ProxyHTMLLinks "
-"ProxyHTMLMeta ProxyHTMLStripComments ProxyHTMLURLMap ProxyIOBufferSize ProxyMaxForwards ProxyPass "
-"ProxyPassInterpolateEnv ProxyPassMatch ProxyPassReverse ProxyPassReverseCookieDomain "
-"ProxyPassReverseCookiePath ProxyPreserveHost ProxyReceiveBufferSize ProxyRemote ProxyRemoteMatch "
-"ProxyRequests ProxySCGIInternalRedirect ProxySCGISendfile ProxySet ProxySourceAddress ProxyStatus "
-"ProxyTimeout ProxyVia ReadmeName ReceiveBufferSize Redirect RedirectMatch RedirectPermanent "
-"RedirectTemp ReflectorHeader RemoteIPHeader RemoteIPInternalProxy RemoteIPInternalProxyList "
-"RemoteIPProxiesHeader RemoteIPTrustedProxy RemoteIPTrustedProxyList RemoveCharset RemoveEncoding "
-"RemoveHandler RemoveInputFilter RemoveLanguage RemoveOutputFilter RemoveType RequestHeader "
-"RequestReadTimeout Require RewriteBase RewriteCond RewriteEngine RewriteLock RewriteLog RewriteLogLevel "
-"RewriteMap RewriteOptions RewriteRule RLimitCPU RLimitMEM RLimitNPROC Satisfy ScoreBoardFile Script "
-"ScriptAlias ScriptAliasMatch ScriptInterpreterSource ScriptLog ScriptLogBuffer ScriptLogLength "
-"ScriptSock SecureListen SeeRequestTail SendBufferSize ServerAdmin ServerAlias ServerLimit ServerName "
-"ServerPath ServerRoot ServerSignature ServerTokens Session SessionCookieName SessionCookieName2 "
-"SessionCookieRemove SessionCryptoCipher SessionCryptoDriver SessionCryptoPassphrase "
-"SessionCryptoPassphraseFile SessionDBDCookieName SessionDBDCookieName2 SessionDBDCookieRemove "
-"SessionDBDDeleteLabel SessionDBDInsertLabel SessionDBDPerUser SessionDBDSelectLabel SessionDBDUpdateLabel "
-"SessionEnv SessionExclude SessionHeader SessionInclude SessionMaxAge SetEnv SetEnvIf SetEnvIfExpr "
-"SetEnvIfNoCase SetHandler SetInputFilter SetOutputFilter SSIEnableAccess SSIEndTag SSIErrorMsg "
-"SSIETag SSILastModified SSILegacyExprParser SSIStartTag SSITimeFormat SSIUndefinedEcho "
-"SSLCACertificateFile SSLCACertificatePath SSLCADNRequestFile SSLCADNRequestPath SSLCARevocationCheck "
-"SSLCARevocationFile SSLCARevocationPath SSLCertificateChainFile SSLCertificateFile SSLCertificateKeyFile "
-"SSLCipherSuite SSLCompression SSLCryptoDevice SSLEngine SSLFIPS SSLHonorCipherOrder SSLInsecureRenegotiation "
-"SSLMutex SSLOCSPDefaultResponder SSLOCSPEnable SSLOCSPOverrideResponder SSLOCSPResponderTimeout "
-"SSLOCSPResponseMaxAge SSLOCSPResponseTimeSkew SSLOptions SSLPassPhraseDialog SSLProtocol "
-"SSLProxyCACertificateFile SSLProxyCACertificatePath SSLProxyCARevocationCheck SSLProxyCARevocationFile "
-"SSLProxyCARevocationPath SSLProxyCheckPeerCN SSLProxyCheckPeerExpire SSLProxyCipherSuite SSLProxyEngine "
-"SSLProxyMachineCertificateChainFile SSLProxyMachineCertificateFile SSLProxyMachineCertificatePath "
-"SSLProxyProtocol SSLProxyVerify SSLProxyVerifyDepth SSLRandomSeed SSLRenegBufferSize SSLRequire "
-"SSLRequireSSL SSLSessionCache SSLSessionCacheTimeout SSLSessionTicketKeyFile SSLStaplingCache "
-"SSLStaplingErrorCacheTimeout SSLStaplingFakeTryLater SSLStaplingForceURL SSLStaplingResponderTimeout "
-"SSLStaplingResponseMaxAge SSLStaplingResponseTimeSkew SSLStaplingReturnResponderErrors "
-"SSLStaplingStandardCacheTimeout SSLStrictSNIVHostCheck SSLUserName SSLUseStapling SSLVerifyClient "
-"SSLVerifyDepth StartServers StartThreads Substitute Suexec SuexecUserGroup ThreadLimit ThreadsPerChild "
-"ThreadStackSize TimeOut TraceEnable TransferLog TypesConfig UnDefine UnsetEnv UseCanonicalName "
-"UseCanonicalPhysicalPort User UserDir VHostCGIMode VHostCGIPrivs VHostGroup VHostPrivs VHostSecure "
-"VHostUser VirtualDocumentRoot VirtualDocumentRootIP VirtualScriptAlias VirtualScriptAliasIP "
-"WatchdogInterval Win32DisableAcceptEx XBitHack xml2EncAlias xml2EncDefault xml2StartParse"
-,
+"acceptfilter acceptmutex acceptpathinfo accessconfig accessfilename action addalt addaltbyencoding "
+"addaltbytype addcharset adddefaultcharset adddescription addencoding addhandler addicon addiconbyencoding "
+"addiconbytype addinputfilter addlanguage addmodule addmoduleinfo addoutputfilter addoutputfilterbytype "
+"addtype agentlog alias aliasmatch all allow allowconnect allowencodedslashes allowmethods allowoverride "
+"allowoverridelist anonymous anonymous_authoritative anonymous_logemail anonymous_mustgiveemail "
+"anonymous_nouserid anonymous_verifyemail assignuserid asyncrequestworkerfactor authauthoritative "
+"authbasicauthoritative authbasicfake authbasicprovider authbasicusedigestalgorithm authdbauthoritative "
+"authdbduserpwquery authdbduserrealmquery authdbgroupfile authdbmauthoritative authdbmgroupfile "
+"authdbmtype authdbmuserfile authdbuserfile authdigestalgorithm authdigestdomain authdigestfile "
+"authdigestgroupfile authdigestnccheck authdigestnonceformat authdigestnoncelifetime authdigestprovider "
+"authdigestqop authdigestshmemsize authformauthoritative authformbody authformdisablenostore authformfakebasicauth "
+"authformlocation authformloginrequiredlocation authformloginsuccesslocation authformlogoutlocation authformmethod "
+"authformmimetype authformpassword authformprovider authformsitepassphrase authformsize authformusername "
+"authgroupfile authldapauthoritative authldapauthorizeprefix authldapbindauthoritative authldapbinddn "
+"authldapbindpassword authldapcharsetconfig authldapcompareasuser authldapcomparednonserver "
+"authldapdereferencealiases authldapenabled authldapfrontpagehack authldapgroupattribute "
+"authldapgroupattributeisdn authldapinitialbindasuser authldapinitialbindpattern authldapmaxsubgroupdepth "
+"authldapremoteuserattribute authldapremoteuserisdn authldapsearchasuser authldapsubgroupattribute "
+"authldapsubgroupclass authldapurl authmerging authname authncachecontext authncacheenable authncacheprovidefor "
+"authncachesocache authncachetimeout authnprovideralias authnzfcgicheckauthnprovider authnzfcgidefineprovider "
+"authtype authuserfile authzdbdlogintoreferer authzdbdquery authzdbdredirectquery authzdbmtype "
+"authzsendforbiddenonfailure balancergrowth balancerinherit balancermember balancerpersist bindaddress "
+"browsermatch browsermatchnocase bs2000account bufferedlogs buffersize cachedefaultexpire cachedetailheader "
+"cachedirlength cachedirlevels cachedisable cacheenable cacheexpirycheck cachefile cacheforcecompletion "
+"cachegcclean cachegcdaily cachegcinterval cachegcmemusage cachegcunused cacheheader cacheignorecachecontrol "
+"cacheignoreheaders cacheignorenolastmod cacheignorequerystring cacheignoreurlsessionidentifiers "
+"cachekeybaseurl cachelastmodifiedfactor cachelock cachelockmaxage cachelockpath cachemaxexpire "
+"cachemaxfilesize cacheminexpire cacheminfilesize cachenegotiateddocs cachequickhandler cachereadsize "
+"cachereadtime cacheroot cachesize cachesocache cachesocachemaxsize cachesocachemaxtime cachesocachemintime "
+"cachesocachereadsize cachesocachereadtime cachestaleonerror cachestoreexpired cachestorenostore cachestoreprivate "
+"cachetimemargin cgidscripttimeout cgimapextension cgipassauth cgivar charsetdefault charsetoptions charsetsourceenc "
+"checkcaseonly checkspelling childperuserid chrootdir clearmodulelist contentdigest cookiedomain cookieexpires "
+"cookielog cookiename cookiestyle cookietracking coredumpdirectory customlog dav davdepthinfinity davgenericlockdb "
+"davlockdb davmintimeout dbdexptime dbdinitsql dbdkeep dbdmax dbdmin dbdparams dbdpersist dbdpreparesql dbdriver "
+"defaulticon defaultlanguage defaultruntimedir defaulttype define deflatebuffersize deflatecompressionlevel "
+"deflatefilternote deflateinflatelimitrequestbody deflateinflateratioburst deflateinflateratiolimit deflatememlevel "
+"deflatewindowsize deny directory directorycheckhandler directoryindex directoryindexredirect directorymatch "
+"directoryslash documentroot dtraceprivileges dumpioinput dumpiooutput else elseif enableexceptionhook enablemmap "
+"enablesendfile error errordocument errorlog errorlogformat example expiresactive expiresbytype expiresdefault "
+"extendedstatus extfilterdefine extfilteroptions fallbackresource fancyindexing fileetag files filesmatch "
+"filterchain filterdeclare filterprotocol filterprovider filtertrace forcelanguagepriority forcetype forensiclog "
+"from globallog gracefulshutdowntimeout group h2direct h2maxsessionstreams h2maxworkeridleseconds h2maxworkers "
+"h2minworkers h2moderntlsonly h2push h2pushdiarysize h2pushpriority h2serializeheaders h2sessionextrafiles "
+"h2streammaxmemsize h2tlscooldownsecs h2tlswarmupsize h2upgrade h2windowsize header headername heartbeataddress "
+"heartbeatlisten heartbeatmaxservers heartbeatstorage hostnamelookups identitycheck identitychecktimeout "
+"if ifdefine ifmodule ifversion imapbase imapdefault imapmenu include includeoptional indexheadinsert "
+"indexignore indexignorereset indexoptions indexorderdefault indexstylesheet inputsed isapiappendlogtoerrors "
+"isapiappendlogtoquery isapicachefile isapifakeasync isapilognotsupported isapireadaheadbuffer keepalive "
+"keepalivetimeout keptbodysize languagepriority ldapcacheentries ldapcachettl ldapconnectionpoolttl "
+"ldapconnectiontimeout ldaplibrarydebug ldapopcacheentries ldapopcachettl ldapreferralhoplimit ldapreferrals "
+"ldapretries ldapretrydelay ldapsharedcachefile ldapsharedcachesize ldaptimeout ldaptrustedca ldaptrustedcatype "
+"ldaptrustedclientcert ldaptrustedglobalcert ldaptrustedmode ldapverifyservercert limit limitexcept "
+"limitinternalrecursion limitrequestbody limitrequestfields limitrequestfieldsize limitrequestline "
+"limitxmlrequestbody listen listenbacklog listencoresbucketsratio loadfile loadmodule location "
+"locationmatch lockfile logformat logiotrackttfb loglevel logmessage luaauthzprovider luacodecache "
+"luahookaccesschecker luahookauthchecker luahookcheckuserid luahookfixups luahookinsertfilter luahooklog "
+"luahookmaptostorage luahooktranslatename luahooktypechecker luainherit luainputfilter luamaphandler "
+"luaoutputfilter luapackagecpath luapackagepath luaquickhandler luaroot luascope macro maxclients "
+"maxconnectionsperchild maxkeepaliverequests maxmemfree maxrangeoverlaps maxrangereversals maxranges "
+"maxrequestsperchild maxrequestsperthread maxrequestworkers maxspareservers maxsparethreads maxthreads "
+"maxthreadsperchild mcachemaxobjectcount mcachemaxobjectsize mcachemaxstreamingbuffer mcacheminobjectsize "
+"mcacheremovalalgorithm mcachesize memcacheconnttl mergetrailers metadir metafiles metasuffix mimemagicfile "
+"minspareservers minsparethreads mmapfile modemstandard modmimeusepathinfo multiviewsmatch mutex namevirtualhost "
+"nocache noproxy numservers nwssltrustedcerts nwsslupgradeable options order outputsed passenv pidfile port "
+"privilegesmode protocol protocolecho protocols protocolshonororder proxy proxyaddheaders proxybadheader "
+"proxyblock proxydomain proxyerroroverride proxyexpressdbmfile proxyexpressdbmtype proxyexpressenable "
+"proxyftpdircharset proxyftpescapewildcards proxyftplistonwildcard proxyhcexpr proxyhctemplate proxyhctpsize "
+"proxyhtmlbufsize proxyhtmlcharsetout proxyhtmldoctype proxyhtmlenable proxyhtmlevents proxyhtmlextended "
+"proxyhtmlfixups proxyhtmlinterp proxyhtmllinks proxyhtmlmeta proxyhtmlstripcomments proxyhtmlurlmap "
+"proxyiobuffersize proxymatch proxymaxforwards proxypass proxypassinherit proxypassinterpolateenv "
+"proxypassmatch proxypassreverse proxypassreversecookiedomain proxypassreversecookiepath proxypreservehost "
+"proxyreceivebuffersize proxyremote proxyremotematch proxyrequests proxyscgiinternalredirect proxyscgisendfile "
+"proxyset proxysourceaddress proxystatus proxytimeout proxyvia qsc qualifyredirecturl readmename "
+"receivebuffersize redirect redirectmatch redirectpermanent redirecttemp refererignore refererlog "
+"reflectorheader remoteipheader remoteipinternalproxy remoteipinternalproxylist remoteipproxiesheader "
+"remoteiptrustedproxy remoteiptrustedproxylist removecharset removeencoding removehandler removeinputfilter "
+"removelanguage removeoutputfilter removetype requestheader requestreadtimeout require requireall "
+"requireany requirenone resourceconfig rewritebase rewritecond rewriteengine rewritelock rewritelog "
+"rewriteloglevel rewritemap rewriteoptions rewriterule rlimitcpu rlimitmem rlimitnproc satisfy "
+"scoreboardfile script scriptalias scriptaliasmatch scriptinterpretersource scriptlog scriptlogbuffer "
+"scriptloglength scriptsock securelisten seerequesttail sendbuffersize serveradmin serveralias serverlimit "
+"servername serverpath serverroot serversignature servertokens servertype session sessioncookiename "
+"sessioncookiename2 sessioncookieremove sessioncryptocipher sessioncryptodriver sessioncryptopassphrase "
+"sessioncryptopassphrasefile sessiondbdcookiename sessiondbdcookiename2 sessiondbdcookieremove "
+"sessiondbddeletelabel sessiondbdinsertlabel sessiondbdperuser sessiondbdselectlabel sessiondbdupdatelabel "
+"sessionenv sessionexclude sessionheader sessioninclude sessionmaxage setenv setenvif setenvifexpr "
+"setenvifnocase sethandler setinputfilter setoutputfilter singlelisten ssiendtag ssierrormsg ssietag "
+"ssilastmodified ssilegacyexprparser ssistarttag ssitimeformat ssiundefinedecho sslcacertificatefile "
+"sslcacertificatepath sslcadnrequestfile sslcadnrequestpath sslcarevocationcheck sslcarevocationfile "
+"sslcarevocationpath sslcertificatechainfile sslcertificatefile sslcertificatekeyfile sslciphersuite "
+"sslcompression sslcryptodevice sslengine sslfips sslhonorcipherorder sslinsecurerenegotiation sslmutex "
+"sslocspdefaultresponder sslocspenable sslocspoverrideresponder sslocspproxyurl sslocsprespondertimeout "
+"sslocspresponsemaxage sslocspresponsetimeskew sslocspuserequestnonce sslopensslconfcmd ssloptions "
+"sslpassphrasedialog sslprotocol sslproxycacertificatefile sslproxycacertificatepath sslproxycarevocationcheck "
+"sslproxycarevocationfile sslproxycarevocationpath sslproxycheckpeercn sslproxycheckpeerexpire "
+"sslproxycheckpeername sslproxyciphersuite sslproxyengine sslproxymachinecertificatechainfile "
+"sslproxymachinecertificatefile sslproxymachinecertificatepath sslproxyprotocol sslproxyverify "
+"sslproxyverifydepth sslrandomseed sslrenegbuffersize sslrequire sslrequiressl sslsessioncache "
+"sslsessioncachetimeout sslsessionticketkeyfile sslsessiontickets sslsrpunknownuserseed "
+"sslsrpverifierfile sslstaplingcache sslstaplingerrorcachetimeout sslstaplingfaketrylater "
+"sslstaplingforceurl sslstaplingrespondertimeout sslstaplingresponsemaxage sslstaplingresponsetimeskew "
+"sslstaplingreturnrespondererrors sslstaplingstandardcachetimeout sslstrictsnivhostcheck sslusername "
+"sslusestapling sslverifyclient sslverifydepth startservers startthreads substitute substituteinheritbefore "
+"substitutemaxlinelength suexec suexecusergroup threadlimit threadsperchild threadstacksize timeout "
+"traceenable transferlog typesconfig undefine undefmacro unsetenv use usecanonicalname usecanonicalphysicalport "
+"user userdir vhostcgimode vhostcgiprivs vhostgroup vhostprivs vhostsecure vhostuser virtualdocumentroot "
+"virtualdocumentrootip virtualhost virtualscriptalias virtualscriptaliasip watchdoginterval win32disableacceptex "
+"xbithack xml2encalias xml2encdefault xml2startparse",
 "", //"on off standalone inetd force-response-1.0 downgrade-1.0 nokeepalive indexes includes followsymlinks none x-compress x-gzip",
 "", "", "", "", "", "", "" };
 
@@ -1110,28 +1131,29 @@ KEYWORDLIST KeyWords_PS = {
 "get-transaction get-uiculture get-unique get-variable get-verb get-winevent get-wmiobject "
 "get-wsmancredssp get-wsmaninstance group-object import-alias import-clixml import-counter "
 "import-csv import-localizeddata import-module import-pssession invoke-command invoke-expression "
-"invoke-history invoke-item invoke-wmimethod invoke-wsmanaction join-path limit-eventlog "
-"measure-command measure-object move-item move-itemproperty new-alias new-event new-eventlog "
-"new-item new-itemproperty new-module new-modulemanifest new-object new-psdrive new-pssession "
-"new-pssessionoption new-service new-timespan new-variable new-webserviceproxy new-wsmaninstance "
-"new-wsmansessionoption out-default out-file out-gridview out-host out-null out-printer "
-"out-string pop-location push-location read-host receive-job register-engineevent "
-"register-objectevent register-pssessionconfiguration register-wmievent remove-computer "
-"remove-event remove-eventlog remove-item remove-itemproperty remove-job remove-module "
-"remove-psbreakpoint remove-psdrive remove-pssession remove-pssnapin remove-variable "
-"remove-wmiobject remove-wsmaninstance rename-item rename-itemproperty "
-"reset-computermachinepassword resolve-path restart-computer restart-service restore-computer "
-"resume-service select-object select-string select-xml send-mailmessage set-acl set-alias "
-"set-authenticodesignature set-content set-date set-executionpolicy set-item set-itemproperty "
-"set-location set-psbreakpoint set-psdebug set-pssessionconfiguration set-service set-strictmode "
-"set-tracesource set-variable set-wmiinstance set-wsmaninstance set-wsmanquickconfig "
-"show-eventlog sort-object split-path start-job start-process start-service start-sleep "
-"start-transaction start-transcript stop-computer stop-job stop-process stop-service "
-"stop-transcript suspend-service tee-object test-computersecurechannel test-connection "
-"test-modulemanifest test-path test-wsman trace-command undo-transaction unregister-event "
-"unregister-pssessionconfiguration update-formatdata update-list update-typedata use-transaction "
-"wait-event wait-job wait-process where-object write-debug write-error write-eventlog write-host "
-"write-output write-progress write-verbose write-warning",
+"invoke-history invoke-item invoke-restmethod invoke-webrequest invoke-wmimethod "
+"invoke-wsmanaction join-path limit-eventlog measure-command measure-object move-item "
+"move-itemproperty new-alias new-event new-eventlog new-item new-itemproperty new-module "
+"new-modulemanifest new-object new-psdrive new-pssession new-pssessionoption new-service "
+"new-timespan new-variable new-webserviceproxy new-wsmaninstance new-wsmansessionoption "
+"out-default out-file out-gridview out-host out-null out-printer out-string pop-location "
+"push-location read-host receive-job register-engineevent register-objectevent "
+"register-pssessionconfiguration register-wmievent remove-computer remove-event remove-eventlog "
+"remove-item remove-itemproperty remove-job remove-module remove-psbreakpoint remove-psdrive "
+"remove-pssession remove-pssnapin remove-variable remove-wmiobject remove-wsmaninstance "
+"rename-item rename-itemproperty reset-computermachinepassword resolve-path restart-computer "
+"restart-service restore-computer resume-service select-object select-string select-xml "
+"send-mailmessage set-acl set-alias set-authenticodesignature set-content set-date "
+"set-executionpolicy set-item set-itemproperty set-location set-psbreakpoint set-psdebug "
+"set-pssessionconfiguration set-service set-strictmode set-tracesource set-variable "
+"set-wmiinstance set-wsmaninstance set-wsmanquickconfig show-eventlog sort-object split-path "
+"start-job start-process start-service start-sleep start-transaction start-transcript "
+"stop-computer stop-job stop-process stop-service stop-transcript suspend-service tee-object "
+"test-computersecurechannel test-connection test-modulemanifest test-path test-wsman "
+"trace-command undo-transaction unregister-event unregister-pssessionconfiguration "
+"update-formatdata update-list update-typedata use-transaction wait-event wait-job wait-process "
+"where-object write-debug write-error write-eventlog write-host write-output write-progress "
+"write-verbose write-warning",
 "ac asnp cat cd chdir clc clear clhy cli clp cls clv compare copy cp cpi cpp cvpa dbp del diff "
 "dir ebp echo epal epcsv epsn erase etsn exsn fc fl foreach ft fw gal gbp gc gci gcm gcs gdr ghy "
 "gi gjb gl gm gmo gp gps group gsn gsnp gsv gu gv gwmi h help history icm iex ihy ii ipal ipcsv "
@@ -1160,16 +1182,16 @@ EDITLEXER lexPS = { SCLEX_POWERSHELL, 63021, L"PowerShell Script", L"ps1; psd1; 
 
 KEYWORDLIST KeyWords_NSIS = {
 "!addincludedir !addplugindir !appendfile !cd !define !delfile !echo !else !endif !error "
-"!execute !if !ifdef !ifmacrodef !ifmacrondef !ifndef !include !insertmacro !macro !macroend "
-"!packhdr !searchparse !searchreplace !system !tempfile !undef !verbose !warning .onguiend .onguiinit "
-".oninit .oninstfailed .oninstsuccess .onmouseoversection .onrebootfailed .onselchange .onuserabort "
-".onverifyinstdir un.onguiend un.onguiinit un.oninit un.onrebootfailed un.onuninstfailed un.onuninstsuccess "
+"!execute !finalize !getdllversion !if !ifdef !ifmacrodef !ifmacrondef !ifndef !include !insertmacro !macro "
+"!macroend !macroundef !makensis !packhdr !searchparse !searchreplace !system !tempfile !undef !verbose !warning "
+".onguiend .onguiinit .oninit .oninstfailed .oninstsuccess .onmouseoversection .onrebootfailed .onselchange "
+".onuserabort .onverifyinstdir un.onguiend un.onguiinit un.oninit un.onrebootfailed un.onuninstfailed un.onuninstsuccess "
 "un.onuserabort abort addbrandingimage addsize allowrootdirinstall allowskipfiles autoclosewindow "
 "bannertrimpath bgfont bggradient brandingtext bringtofront call callinstdll caption changeui checkbitmap "
 "clearerrors completedtext componenttext copyfiles crccheck createdirectory createfont createshortcut "
 "delete deleteinisec deleteinistr deleteregkey deleteregvalue detailprint detailsbuttontext dirstate dirtext "
 "dirvar dirverify enablewindow enumregkey enumregvalue exch exec execshell execwait expandenvstrings "
-"file filebufsize fileclose fileerrortext fileopen fileread filereadbyte filereadutf16le filereadword "
+"file filebufsize fileclose fileerrortext fileexists fileopen fileread filereadbyte filereadutf16le filereadword "
 "fileseek filewrite filewritebyte filewriteutf16le filewriteword findclose findfirst findnext findproc "
 "findwindow flushini getcurinsttype getcurrentaddress getdlgitem getdllversion getdllversionlocal "
 "geterrorlevel getfiletime getfiletimelocal getfontname getfontnamelocal getfontversion getfontversionlocal "
@@ -1177,17 +1199,17 @@ KEYWORDLIST KeyWords_NSIS = {
 "ifabort iferrors iffileexists ifrebootflag ifsilent initpluginsdir installbuttontext installcolors installdir "
 "installdirregkey instprogressflags insttype insttypegettext insttypesettext intcmp intcmpu intfmt intop "
 "iswindow langstring licensebkcolor licensedata licenseforceselection licenselangstring licensetext "
-"loadlanguagefile lockwindow logset logtext messagebox miscbuttontext name nop outfile page pagecallbacks pop "
-"push quit readenvstr readinistr readregdword readregstr reboot regdll rename requestexecutionlevel reservefile "
-"return rmdir searchpath sectiongetflags sectiongetinsttypes sectiongetsize sectiongettext sectionin "
+"loadlanguagefile lockwindow logset logtext manifestsupportedos messagebox miscbuttontext name nop outfile page "
+"pagecallbacks pop push quit readenvstr readinistr readregdword readregstr reboot regdll rename requestexecutionlevel "
+"reservefile return rmdir searchpath sectiongetflags sectiongetinsttypes sectiongetsize sectiongettext sectionin "
 "sectionsetflags sectionsetinsttypes sectionsetsize sectionsettext sendmessage setautoclose setbrandingimage "
 "setcompress setcompressionlevel setcompressor setcompressordictsize setctlcolors setcurinsttype "
 "setdatablockoptimize setdatesave setdetailsprint setdetailsview seterrorlevel seterrors setfileattributes "
 "setfont setoutpath setoverwrite setpluginunload setrebootflag setregview setshellvarcontext setsilent "
 "showinstdetails showuninstdetails showwindow silentinstall silentuninstall sleep spacetexts strcmp strcmps "
-"strcpy strlen subcaption uninstallbuttontext uninstallcaption uninstallicon uninstallsubcaption uninstalltext "
-"uninstpage unregdll var viaddversionkey viproductversion windowicon writeinistr writeregbin writeregdword "
-"writeregexpandstr writeregstr writeuninstaller xpstyle",
+"strcpy strlen subcaption unicode uninstallbuttontext uninstallcaption uninstallicon uninstallsubcaption uninstalltext "
+"uninstpage unregdll var viaddversionkey vifileversion viproductversion windowicon writeinistr writeregbin "
+"writeregdword writeregexpandstr writeregstr writeuninstaller xpstyle",
 "${nsisdir} $0 $1 $2 $3 $4 $5 $6 $7 $8 $9 $r0 $r1 $r2 $r3 $r4 $r5 $r6 $r7 $r8 $r9 $instdir $outdir $cmdline "
 "$language $programfiles $programfiles32 $programfiles64 $commonfiles $commonfiles32 $commonfiles64 "
 "$desktop $exedir $exefile $exepath $windir $sysdir $temp $startmenu $smprograms $smstartup $quicklaunch "
@@ -1195,7 +1217,7 @@ KEYWORDLIST KeyWords_NSIS = {
 "$localappdata $printhood $internet_cache $cookies $history $profile $admintools $resources $resources_localized "
 "$cdburn_area $hwndparent $pluginsdir ${__date__} ${__file__} ${__function__} ${__global__} ${__line__} "
 "${__pageex__} ${__section__} ${__time__} ${__timestamp__} ${__uninstall__}",
-"alt colored control cur date end global ignorecase leave shift smooth utcdate sw_hide sw_showmaximized "
+"alt charset colored control cur date end global ignorecase leave shift smooth utcdate sw_hide sw_showmaximized "
 "sw_showminimized sw_shownormal archive auto oname rebootok nonfatal ifempty nounload filesonly short mb_ok "
 "mb_okcancel mb_abortretryignore mb_retrycancel mb_yesno mb_yesnocancel mb_iconexclamation mb_iconinformation "
 "mb_iconquestion mb_iconstop mb_usericon mb_topmost mb_setforeground mb_right mb_rtlreading mb_defbutton1 "
@@ -1208,7 +1230,7 @@ KEYWORDLIST KeyWords_NSIS = {
 "zlib bzip2 lzma try ifnewer ifdiff lastused manual alwaysoff normal file_attribute_normal file_attribute_archive "
 "hidden file_attribute_hidden offline file_attribute_offline readonly file_attribute_readonly system "
 "file_attribute_system temporary file_attribute_temporary custom license components directory instfiles "
-"uninstconfirm 32 64 enablecancel",
+"uninstconfirm 32 64 enablecancel noworkingdir plugin rawnl winvista win7 win8 win8.1 win10",
 "", "", "", "", "", "" };
 
 
@@ -1250,15 +1272,15 @@ KEYWORDLIST KeyWords_INNO = {
 "languagecodepage languageid languagename licensefile lzmaalgorithm lzmablocksize lzmadictionarysize lzmamatchfinder "
 "lzmanumblockthreads lzmanumfastbytes lzmauseseparateprocess mergeduplicatefiles minversion onlybelowversion "
 "outputbasefilename outputdir outputmanifestfile password privilegesrequired reservebytes restartapplications "
-"restartifneededbyrun righttoleft setupiconfile setuplogging showcomponentsizes showlanguagedialog showtaskstreelines "
-"showundisplayablelanguages signeduninstaller signeduninstallerdir signtool slicesperdisk solidcompression sourcedir "
-"strongassemblyname timestamprounding timestampsinutc titlefontname titlefontsize touchdate touchtime uninstallable "
+"restartifneededbyrun righttoleft setupiconfile setuplogging setupmutex showcomponentsizes showlanguagedialog showtaskstreelines "
+"showundisplayablelanguages signeduninstaller signeduninstallerdir signtool signtoolretrycount slicesperdisk solidcompression "
+"sourcedir strongassemblyname timestamprounding timestampsinutc titlefontname titlefontsize touchdate touchtime uninstallable "
 "uninstalldisplayicon uninstalldisplayname uninstallfilesdir uninstalldisplaysize uninstalllogmode uninstallrestartcomputer "
 "updateuninstalllogappname usepreviousappdir usepreviousgroup usepreviouslanguage useprevioussetuptype useprevioustasks "
 "verb versioninfoproductname useprevioususerinfo userinfopage usesetupldr versioninfocompany versioninfocopyright "
 "versioninfodescription versioninfoproductversion versioninfotextversion versioninfoversion versioninfoproducttextversion "
-"welcomefontname welcomefontsize windowshowcaption windowstartmaximized windowresizable windowvisible wizardimagebackcolor "
-"wizardimagefile wizardimagestretch wizardsmallimagefile",
+"welcomefontname welcomefontsize windowshowcaption windowstartmaximized windowresizable windowvisible wizardimagealphaformat "
+"wizardimagebackcolor wizardimagefile wizardimagestretch wizardsmallimagefile",
 "appusermodelid afterinstall attribs beforeinstall check comment components copymode description destdir destname excludes "
 "extradiskspacerequired filename flags fontinstall groupdescription hotkey infoafterfile infobeforefile iconfilename "
 "iconindex key languages licensefile messagesfile minversion name onlybelowversion parameters permissions root runonceid "
@@ -1293,7 +1315,7 @@ KEYWORDLIST KeyWords_RUBY = {
 "undef unless until when while yield",
 "", "", "", "", "", "", "", "" };
 
-EDITLEXER lexRUBY = { SCLEX_RUBY, 63304, L"Ruby Script", L"rb; ruby; rbw; rake; rjs; Rakefile", L"", &KeyWords_RUBY, {
+EDITLEXER lexRUBY = { SCLEX_RUBY, 63304, L"Ruby Script", L"rb; ruby; rbw; rake; rjs; Rakefile; gemspec", L"", &KeyWords_RUBY, {
                     { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
                     //{ SCE_P_DEFAULT, L"Default", L"", L"" },
                     { MULTI_STYLE(SCE_RB_COMMENTLINE,SCE_P_COMMENTBLOCK,0,0), 63127, L"Comment", L"fore:#008000", L"" },
@@ -1352,12 +1374,12 @@ EDITLEXER lexLUA = { SCLEX_LUA, 63298, L"Lua Script", L"lua", L"", &KeyWords_LUA
                     { SCE_LUA_WORD2, 63321, L"Basic Functions", L"fore:#00007F", L"" },
                     { SCE_LUA_WORD3, 63322, L"String, Table & Math Functions", L"fore:#00007F", L"" },
                     { SCE_LUA_WORD4, 63323, L"Input, Output & System Facilities", L"fore:#00007F", L"" },
-                    { MULTI_STYLE(SCE_LUA_STRING,SCE_LUA_STRINGEOL,0,0), 63131, L"String", L"fore:#B000B0", L"" },
+                    { MULTI_STYLE(SCE_LUA_STRING,SCE_LUA_STRINGEOL,SCE_LUA_CHARACTER,0), 63131, L"String", L"fore:#B000B0", L"" },
                     { SCE_LUA_LITERALSTRING, 63302, L"Literal String", L"fore:#B000B0", L"" },
-                    { SCE_LUA_CHARACTER, 63301, L"Character", L"fore:#B000B0", L"" },
                     { SCE_LUA_PREPROCESSOR, 63133, L"Preprocessor", L"fore:#FF8000", L"" },
                     { SCE_LUA_OPERATOR, 63132, L"Operator", L"", L"" },
                     { SCE_LUA_IDENTIFIER, 63129, L"Identifier", L"", L"" },
+                    { SCE_LUA_LABEL, 63235, L"Label", L"fore:#808000", L"" },
                     { -1, 00000, L"", L"", L"" } } };
 
 
@@ -1536,7 +1558,553 @@ KEYWORDLIST KeyWords_AU3 = {
 "#autoit3wrapper_tidy_stop_onerror #autoit3wrapper_useansi #autoit3wrapper_useupx "
 "#autoit3wrapper_usex64 #autoit3wrapper_version #endregion #forceref #obfuscator_ignore_funcs "
 "#obfuscator_ignore_variables #obfuscator_parameters #region #tidy_parameters",
-"", "", "" };
+"", // Reserved for expand
+"_arrayadd _arraybinarysearch _arraycombinations _arrayconcatenate _arraydelete _arraydisplay _arrayfindall "
+"_arrayinsert _arraymax _arraymaxindex _arraymin _arrayminindex _arraypermute _arraypop _arraypush "
+"_arrayreverse _arraysearch _arraysort _arrayswap _arraytoclip _arraytostring _arraytrim _arrayunique _assert "
+"_choosecolor _choosefont _clipboard_changechain _clipboard_close _clipboard _countformats _clipboard_empty "
+"_clipboard_enumformats _clipboard_formatstr _clipboard_getdata _clipboard_getdataex _clipboard_getformatname "
+"_clipboard_getopenwindow _clipboard_getowner _clipboard_getpriorityformat _clipboard_getsequencenumber "
+"_clipboard_getviewer _clipboard_isformatavailable _clipboard_open _clipboard_registerformat "
+"_clipboard_setdata _clipboard_setdataex _clipboard_setviewer _clipputfile _colorconverthsltorgb "
+"_colorconvertrgbtohsl _colorgetblue _colorgetcolorref _colorgetgreen _colorgetred _colorgetrgb "
+"_colorsetcolorref _colorsetrgb _crypt_decryptdata _crypt_decryptfile _crypt_derivekey _crypt_destroykey "
+"_crypt_encryptdata _crypt_encryptfile _crypt_hashdata _crypt_hashfile _crypt_shutdown _crypt_startup "
+"_date_time_comparefiletime _date_time_dosdatetimetoarray _date_time_dosdatetimetofiletime "
+"_date_time_dosdatetimetostr _date_time_dosdatetoarray _date_time_dosdatetostr _date_time_dostimetoarray "
+"_date_time_dostimetostr _date_time_encodefiletime _date_time_encodesystemtime _date_time_filetimetoarray "
+"_date_time_filetimetodosdatetime _date_time_filetimetolocalfiletime _date_time_filetimetostr "
+"_date_time_filetimetosystemtime _date_time_getfiletime _date_time_getlocaltime _date_time_getsystemtime "
+"_date_time_getsystemtimeadjustment _date_time_getsystemtimeasfiletime _date_time_getsystemtimes "
+"_date_time_gettickcount _date_time_gettimezoneinformation _date_time_localfiletimetofiletime "
+"_date_time_setfiletime _date_time_setlocaltime _date_time_setsystemtime _date_time_setsystemtimeadjustment "
+"_date_time_settimezoneinformation _date_time_systemtimetoarray _date_time_systemtimetodatestr "
+"_date_time_systemtimetodatetimestr _date_time_systemtimetofiletime _date_time_systemtimetotimestr "
+"_date_time_systemtimetotzspecificlocaltime _date_time_tzspecificlocaltimetosystemtime _dateadd "
+"_datedayofweek _datedaysinmonth _datediff _dateisleapyear _dateisvalid _datetimeformat _datetimesplit "
+"_datetodayofweek _datetodayofweekiso _datetodayvalue _datetomonth _dayvaluetodate _debugbugreportenv "
+"_debugout _debugreport _debugreportex _debugreportvar _debugsetup _degree _eventlog__backup _eventlog__clear "
+"_eventlog__close _eventlog__count _eventlog__deregistersource _eventlog__full _eventlog__notify "
+"_eventlog__oldest _eventlog__open _eventlog__openbackup _eventlog__read _eventlog__registersource "
+"_eventlog__report _excelbookattach _excelbookclose _excelbooknew _excelbookopen _excelbooksave "
+"_excelbooksaveas _excelcolumndelete _excelcolumninsert _excelfontsetproperties _excelhorizontalalignset "
+"_excelhyperlinkinsert _excelnumberformat _excelreadarray _excelreadcell _excelreadsheettoarray "
+"_excelrowdelete _excelrowinsert _excelsheetactivate _excelsheetaddnew _excelsheetdelete _excelsheetlist "
+"_excelsheetmove _excelsheetnameget _excelsheetnameset _excelwritearray _excelwritecell _excelwriteformula "
+"_excelwritesheetfromarray _filecountlines _filecreate _filelisttoarray _fileprint _filereadtoarray "
+"_filewritefromarray _filewritelog _filewritetoline _ftp_close _ftp_command _ftp_connect "
+"_ftp_decodeinternetstatus _ftp_dircreate _ftp_dirdelete _ftp_dirgetcurrent _ftp_dirputcontents "
+"_ftp_dirsetcurrent _ftp_fileclose _ftp_filedelete _ftp_fileget _ftp_filegetsize _ftp_fileopen _ftp_fileput "
+"_ftp_fileread _ftp_filerename _ftp_filetimelohitostr _ftp_findfileclose _ftp_findfilefirst _ftp_findfilenext "
+"_ftp_getlastresponseinfo _ftp_listtoarray _ftp_listtoarray2d _ftp_listtoarrayex _ftp_open "
+"_ftp_progressdownload _ftp_progressupload _ftp_setstatuscallback _gdiplus_arrowcapcreate "
+"_gdiplus_arrowcapdispose _gdiplus_arrowcapgetfillstate _gdiplus_arrowcapgetheight "
+"_gdiplus_arrowcapgetmiddleinset _gdiplus_arrowcapgetwidth _gdiplus_arrowcapsetfillstate "
+"_gdiplus_arrowcapsetheight _gdiplus_arrowcapsetmiddleinset _gdiplus_arrowcapsetwidth "
+"_gdiplus_bitmapclonearea _gdiplus_bitmapcreatefromfile _gdiplus_bitmapcreatefromgraphics "
+"_gdiplus_bitmapcreatefromhbitmap _gdiplus_bitmapcreatehbitmapfrombitmap _gdiplus_bitmapdispose "
+"_gdiplus_bitmaplockbits _gdiplus_bitmapunlockbits _gdiplus_brushclone _gdiplus_brushcreatesolid "
+"_gdiplus_brushdispose _gdiplus_brushgetsolidcolor _gdiplus_brushgettype _gdiplus_brushsetsolidcolor "
+"_gdiplus_customlinecapdispose _gdiplus_decoders _gdiplus_decodersgetcount _gdiplus_decodersgetsize "
+"_gdiplus_drawimagepoints _gdiplus_encoders _gdiplus_encodersgetclsid _gdiplus_encodersgetcount "
+"_gdiplus_encodersgetparamlist _gdiplus_encodersgetparamlistsize _gdiplus_encodersgetsize _gdiplus_fontcreate "
+"_gdiplus_fontdispose _gdiplus_fontfamilycreate _gdiplus_fontfamilydispose _gdiplus_graphicsclear "
+"_gdiplus_graphicscreatefromhdc _gdiplus_graphicscreatefromhwnd _gdiplus_graphicsdispose "
+"_gdiplus_graphicsdrawarc _gdiplus_graphicsdrawbezier _gdiplus_graphicsdrawclosedcurve "
+"_gdiplus_graphicsdrawcurve _gdiplus_graphicsdrawellipse _gdiplus_graphicsdrawimage "
+"_gdiplus_graphicsdrawimagerect _gdiplus_graphicsdrawimagerectrect _gdiplus_graphicsdrawline "
+"_gdiplus_graphicsdrawpie _gdiplus_graphicsdrawpolygon _gdiplus_graphicsdrawrect _gdiplus_graphicsdrawstring "
+"_gdiplus_graphicsdrawstringex _gdiplus_graphicsfillclosedcurve _gdiplus_graphicsfillellipse "
+"_gdiplus_graphicsfillpie _gdiplus_graphicsfillpolygon _gdiplus_graphicsfillrect _gdiplus_graphicsgetdc "
+"_gdiplus_graphicsgetsmoothingmode _gdiplus_graphicsmeasurestring _gdiplus_graphicsreleasedc "
+"_gdiplus_graphicssetsmoothingmode _gdiplus_graphicssettransform _gdiplus_imagedispose _gdiplus_imagegetflags "
+"_gdiplus_imagegetgraphicscontext _gdiplus_imagegetheight _gdiplus_imagegethorizontalresolution "
+"_gdiplus_imagegetpixelformat _gdiplus_imagegetrawformat _gdiplus_imagegettype "
+"_gdiplus_imagegetverticalresolution _gdiplus_imagegetwidth _gdiplus_imageloadfromfile "
+"_gdiplus_imagesavetofile _gdiplus_imagesavetofileex _gdiplus_matrixcreate _gdiplus_matrixdispose "
+"_gdiplus_matrixrotate _gdiplus_matrixscale _gdiplus_matrixtranslate _gdiplus_paramadd _gdiplus_paraminit "
+"_gdiplus_pencreate _gdiplus_pendispose _gdiplus_pengetalignment _gdiplus_pengetcolor "
+"_gdiplus_pengetcustomendcap _gdiplus_pengetdashcap _gdiplus_pengetdashstyle _gdiplus_pengetendcap "
+"_gdiplus_pengetwidth _gdiplus_pensetalignment _gdiplus_pensetcolor _gdiplus_pensetcustomendcap "
+"_gdiplus_pensetdashcap _gdiplus_pensetdashstyle _gdiplus_pensetendcap _gdiplus_pensetwidth "
+"_gdiplus_rectfcreate _gdiplus_shutdown _gdiplus_startup _gdiplus_stringformatcreate "
+"_gdiplus_stringformatdispose _gdiplus_stringformatsetalign _getip _guictrlavi_close _guictrlavi_create "
+"_guictrlavi_destroy _guictrlavi_isplaying _guictrlavi_open _guictrlavi_openex _guictrlavi_play "
+"_guictrlavi_seek _guictrlavi_show _guictrlavi_stop _guictrlbutton_click _guictrlbutton_create "
+"_guictrlbutton_destroy _guictrlbutton_enable _guictrlbutton_getcheck _guictrlbutton_getfocus "
+"_guictrlbutton_getidealsize _guictrlbutton_getimage _guictrlbutton_getimagelist _guictrlbutton_getnote "
+"_guictrlbutton_getnotelength _guictrlbutton_getsplitinfo _guictrlbutton_getstate _guictrlbutton_gettext "
+"_guictrlbutton_gettextmargin _guictrlbutton_setcheck _guictrlbutton_setdontclick _guictrlbutton_setfocus "
+"_guictrlbutton_setimage _guictrlbutton_setimagelist _guictrlbutton_setnote _guictrlbutton_setshield "
+"_guictrlbutton_setsize _guictrlbutton_setsplitinfo _guictrlbutton_setstate _guictrlbutton_setstyle "
+"_guictrlbutton_settext _guictrlbutton_settextmargin _guictrlbutton_show _guictrlcombobox_adddir "
+"_guictrlcombobox_addstring _guictrlcombobox_autocomplete _guictrlcombobox_beginupdate "
+"_guictrlcombobox_create _guictrlcombobox_deletestring _guictrlcombobox_destroy _guictrlcombobox_endupdate "
+"_guictrlcombobox_findstring _guictrlcombobox_findstringexact _guictrlcombobox_getcomboboxinfo "
+"_guictrlcombobox_getcount _guictrlcombobox_getcuebanner _guictrlcombobox_getcursel "
+"_guictrlcombobox_getdroppedcontrolrect _guictrlcombobox_getdroppedcontrolrectex "
+"_guictrlcombobox_getdroppedstate _guictrlcombobox_getdroppedwidth _guictrlcombobox_geteditsel "
+"_guictrlcombobox_getedittext _guictrlcombobox_getextendedui _guictrlcombobox_gethorizontalextent "
+"_guictrlcombobox_getitemheight _guictrlcombobox_getlbtext _guictrlcombobox_getlbtextlen "
+"_guictrlcombobox_getlist _guictrlcombobox_getlistarray _guictrlcombobox_getlocale "
+"_guictrlcombobox_getlocalecountry _guictrlcombobox_getlocalelang _guictrlcombobox_getlocaleprimlang "
+"_guictrlcombobox_getlocalesublang _guictrlcombobox_getminvisible _guictrlcombobox_gettopindex "
+"_guictrlcombobox_initstorage _guictrlcombobox_insertstring _guictrlcombobox_limittext "
+"_guictrlcombobox_replaceeditsel _guictrlcombobox_resetcontent _guictrlcombobox_selectstring "
+"_guictrlcombobox_setcuebanner _guictrlcombobox_setcursel _guictrlcombobox_setdroppedwidth "
+"_guictrlcombobox_seteditsel _guictrlcombobox_setedittext _guictrlcombobox_setextendedui "
+"_guictrlcombobox_sethorizontalextent _guictrlcombobox_setitemheight _guictrlcombobox_setminvisible "
+"_guictrlcombobox_settopindex _guictrlcombobox_showdropdown _guictrlcomboboxex_adddir "
+"_guictrlcomboboxex_addstring _guictrlcomboboxex_beginupdate _guictrlcomboboxex_create "
+"_guictrlcomboboxex_createsolidbitmap _guictrlcomboboxex_deletestring _guictrlcomboboxex_destroy "
+"_guictrlcomboboxex_endupdate _guictrlcomboboxex_findstringexact _guictrlcomboboxex_getcomboboxinfo "
+"_guictrlcomboboxex_getcombocontrol _guictrlcomboboxex_getcount _guictrlcomboboxex_getcursel "
+"_guictrlcomboboxex_getdroppedcontrolrect _guictrlcomboboxex_getdroppedcontrolrectex "
+"_guictrlcomboboxex_getdroppedstate _guictrlcomboboxex_getdroppedwidth _guictrlcomboboxex_geteditcontrol "
+"_guictrlcomboboxex_geteditsel _guictrlcomboboxex_getedittext _guictrlcomboboxex_getextendedstyle "
+"_guictrlcomboboxex_getextendedui _guictrlcomboboxex_getimagelist _guictrlcomboboxex_getitem "
+"_guictrlcomboboxex_getitemex _guictrlcomboboxex_getitemheight _guictrlcomboboxex_getitemimage "
+"_guictrlcomboboxex_getitemindent _guictrlcomboboxex_getitemoverlayimage _guictrlcomboboxex_getitemparam "
+"_guictrlcomboboxex_getitemselectedimage _guictrlcomboboxex_getitemtext _guictrlcomboboxex_getitemtextlen "
+"_guictrlcomboboxex_getlist _guictrlcomboboxex_getlistarray _guictrlcomboboxex_getlocale "
+"_guictrlcomboboxex_getlocalecountry _guictrlcomboboxex_getlocalelang _guictrlcomboboxex_getlocaleprimlang "
+"_guictrlcomboboxex_getlocalesublang _guictrlcomboboxex_getminvisible _guictrlcomboboxex_gettopindex "
+"_guictrlcomboboxex_getunicode _guictrlcomboboxex_initstorage _guictrlcomboboxex_insertstring "
+"_guictrlcomboboxex_limittext _guictrlcomboboxex_replaceeditsel _guictrlcomboboxex_resetcontent "
+"_guictrlcomboboxex_setcursel _guictrlcomboboxex_setdroppedwidth _guictrlcomboboxex_seteditsel "
+"_guictrlcomboboxex_setedittext _guictrlcomboboxex_setextendedstyle _guictrlcomboboxex_setextendedui "
+"_guictrlcomboboxex_setimagelist _guictrlcomboboxex_setitem _guictrlcomboboxex_setitemex "
+"_guictrlcomboboxex_setitemheight _guictrlcomboboxex_setitemimage _guictrlcomboboxex_setitemindent "
+"_guictrlcomboboxex_setitemoverlayimage _guictrlcomboboxex_setitemparam "
+"_guictrlcomboboxex_setitemselectedimage _guictrlcomboboxex_setminvisible _guictrlcomboboxex_settopindex "
+"_guictrlcomboboxex_setunicode _guictrlcomboboxex_showdropdown _guictrldtp_create _guictrldtp_destroy "
+"_guictrldtp_getmccolor _guictrldtp_getmcfont _guictrldtp_getmonthcal _guictrldtp_getrange "
+"_guictrldtp_getrangeex _guictrldtp_getsystemtime _guictrldtp_getsystemtimeex _guictrldtp_setformat "
+"_guictrldtp_setmccolor _guictrldtp_setmcfont _guictrldtp_setrange _guictrldtp_setrangeex "
+"_guictrldtp_setsystemtime _guictrldtp_setsystemtimeex _guictrledit_appendtext _guictrledit_beginupdate "
+"_guictrledit_canundo _guictrledit_charfrompos _guictrledit_create _guictrledit_destroy "
+"_guictrledit_emptyundobuffer _guictrledit_endupdate _guictrledit_find _guictrledit_fmtlines "
+"_guictrledit_getfirstvisibleline _guictrledit_getlimittext _guictrledit_getline _guictrledit_getlinecount "
+"_guictrledit_getmargins _guictrledit_getmodify _guictrledit_getpasswordchar _guictrledit_getrect "
+"_guictrledit_getrectex _guictrledit_getsel _guictrledit_gettext _guictrledit_gettextlen "
+"_guictrledit_hideballoontip _guictrledit_inserttext _guictrledit_linefromchar _guictrledit_lineindex "
+"_guictrledit_linelength _guictrledit_linescroll _guictrledit_posfromchar _guictrledit_replacesel "
+"_guictrledit_scroll _guictrledit_setlimittext _guictrledit_setmargins _guictrledit_setmodify "
+"_guictrledit_setpasswordchar _guictrledit_setreadonly _guictrledit_setrect _guictrledit_setrectex "
+"_guictrledit_setrectnp _guictrledit_setrectnpex _guictrledit_setsel _guictrledit_settabstops "
+"_guictrledit_settext _guictrledit_showballoontip _guictrledit_undo _guictrlheader_additem "
+"_guictrlheader_clearfilter _guictrlheader_clearfilterall _guictrlheader_create "
+"_guictrlheader_createdragimage _guictrlheader_deleteitem _guictrlheader_destroy _guictrlheader_editfilter "
+"_guictrlheader_getbitmapmargin _guictrlheader_getimagelist _guictrlheader_getitem "
+"_guictrlheader_getitemalign _guictrlheader_getitembitmap _guictrlheader_getitemcount "
+"_guictrlheader_getitemdisplay _guictrlheader_getitemflags _guictrlheader_getitemformat "
+"_guictrlheader_getitemimage _guictrlheader_getitemorder _guictrlheader_getitemparam "
+"_guictrlheader_getitemrect _guictrlheader_getitemrectex _guictrlheader_getitemtext "
+"_guictrlheader_getitemwidth _guictrlheader_getorderarray _guictrlheader_getunicodeformat "
+"_guictrlheader_hittest _guictrlheader_insertitem _guictrlheader_layout _guictrlheader_ordertoindex "
+"_guictrlheader_setbitmapmargin _guictrlheader_setfilterchangetimeout _guictrlheader_sethotdivider "
+"_guictrlheader_setimagelist _guictrlheader_setitem _guictrlheader_setitemalign "
+"_guictrlheader_setitembitmap _guictrlheader_setitemdisplay _guictrlheader_setitemflags "
+"_guictrlheader_setitemformat _guictrlheader_setitemimage _guictrlheader_setitemorder "
+"_guictrlheader_setitemparam _guictrlheader_setitemtext _guictrlheader_setitemwidth "
+"_guictrlheader_setorderarray _guictrlheader_setunicodeformat _guictrlipaddress_clearaddress "
+"_guictrlipaddress_create _guictrlipaddress_destroy _guictrlipaddress_get _guictrlipaddress_getarray "
+"_guictrlipaddress_getex _guictrlipaddress_isblank _guictrlipaddress_set _guictrlipaddress_setarray "
+"_guictrlipaddress_setex _guictrlipaddress_setfocus _guictrlipaddress_setfont _guictrlipaddress_setrange "
+"_guictrlipaddress_showhide _guictrllistbox_addfile _guictrllistbox_addstring _guictrllistbox_beginupdate "
+"_guictrllistbox_clickitem _guictrllistbox_create _guictrllistbox_deletestring _guictrllistbox_destroy "
+"_guictrllistbox_dir _guictrllistbox_endupdate _guictrllistbox_findintext _guictrllistbox_findstring "
+"_guictrllistbox_getanchorindex _guictrllistbox_getcaretindex _guictrllistbox_getcount "
+"_guictrllistbox_getcursel _guictrllistbox_gethorizontalextent _guictrllistbox_getitemdata "
+"_guictrllistbox_getitemheight _guictrllistbox_getitemrect _guictrllistbox_getitemrectex "
+"_guictrllistbox_getlistboxinfo _guictrllistbox_getlocale _guictrllistbox_getlocalecountry "
+"_guictrllistbox_getlocalelang _guictrllistbox_getlocaleprimlang _guictrllistbox_getlocalesublang "
+"_guictrllistbox_getsel _guictrllistbox_getselcount _guictrllistbox_getselitems "
+"_guictrllistbox_getselitemstext _guictrllistbox_gettext _guictrllistbox_gettextlen "
+"_guictrllistbox_gettopindex _guictrllistbox_initstorage _guictrllistbox_insertstring "
+"_guictrllistbox_itemfrompoint _guictrllistbox_replacestring _guictrllistbox_resetcontent "
+"_guictrllistbox_selectstring _guictrllistbox_selitemrange _guictrllistbox_selitemrangeex "
+"_guictrllistbox_setanchorindex _guictrllistbox_setcaretindex _guictrllistbox_setcolumnwidth "
+"_guictrllistbox_setcursel _guictrllistbox_sethorizontalextent _guictrllistbox_setitemdata "
+"_guictrllistbox_setitemheight _guictrllistbox_setlocale _guictrllistbox_setsel _guictrllistbox_settabstops "
+"_guictrllistbox_settopindex _guictrllistbox_sort _guictrllistbox_swapstring _guictrllistbox_updatehscroll "
+"_guictrllistview_addarray _guictrllistview_addcolumn _guictrllistview_additem _guictrllistview_addsubitem "
+"_guictrllistview_approximateviewheight _guictrllistview_approximateviewrect "
+"_guictrllistview_approximateviewwidth _guictrllistview_arrange _guictrllistview_beginupdate "
+"_guictrllistview_canceleditlabel _guictrllistview_clickitem _guictrllistview_copyitems "
+"_guictrllistview_create _guictrllistview_createdragimage _guictrllistview_createsolidbitmap "
+"_guictrllistview_deleteallitems _guictrllistview_deletecolumn _guictrllistview_deleteitem "
+"_guictrllistview_deleteitemsselected _guictrllistview_destroy _guictrllistview_drawdragimage "
+"_guictrllistview_editlabel _guictrllistview_enablegroupview _guictrllistview_endupdate "
+"_guictrllistview_ensurevisible _guictrllistview_findintext _guictrllistview_finditem "
+"_guictrllistview_findnearest _guictrllistview_findparam _guictrllistview_findtext "
+"_guictrllistview_getbkcolor _guictrllistview_getbkimage _guictrllistview_getcallbackmask "
+"_guictrllistview_getcolumn _guictrllistview_getcolumncount _guictrllistview_getcolumnorder "
+"_guictrllistview_getcolumnorderarray _guictrllistview_getcolumnwidth _guictrllistview_getcounterpage "
+"_guictrllistview_geteditcontrol _guictrllistview_getextendedlistviewstyle _guictrllistview_getfocusedgroup "
+"_guictrllistview_getgroupcount _guictrllistview_getgroupinfo _guictrllistview_getgroupinfobyindex "
+"_guictrllistview_getgrouprect _guictrllistview_getgroupviewenabled _guictrllistview_getheader "
+"_guictrllistview_gethotcursor _guictrllistview_gethotitem _guictrllistview_gethovertime "
+"_guictrllistview_getimagelist _guictrllistview_getisearchstring _guictrllistview_getitem "
+"_guictrllistview_getitemchecked _guictrllistview_getitemcount _guictrllistview_getitemcut "
+"_guictrllistview_getitemdrophilited _guictrllistview_getitemex _guictrllistview_getitemfocused "
+"_guictrllistview_getitemgroupid _guictrllistview_getitemimage _guictrllistview_getitemindent "
+"_guictrllistview_getitemparam _guictrllistview_getitemposition _guictrllistview_getitempositionx "
+"_guictrllistview_getitempositiony _guictrllistview_getitemrect _guictrllistview_getitemrectex "
+"_guictrllistview_getitemselected _guictrllistview_getitemspacing _guictrllistview_getitemspacingx "
+"_guictrllistview_getitemspacingy _guictrllistview_getitemstate _guictrllistview_getitemstateimage "
+"_guictrllistview_getitemtext _guictrllistview_getitemtextarray _guictrllistview_getitemtextstring "
+"_guictrllistview_getnextitem _guictrllistview_getnumberofworkareas _guictrllistview_getorigin "
+"_guictrllistview_getoriginx _guictrllistview_getoriginy _guictrllistview_getoutlinecolor "
+"_guictrllistview_getselectedcolumn _guictrllistview_getselectedcount _guictrllistview_getselectedindices "
+"_guictrllistview_getselectionmark _guictrllistview_getstringwidth _guictrllistview_getsubitemrect "
+"_guictrllistview_gettextbkcolor _guictrllistview_gettextcolor _guictrllistview_gettooltips "
+"_guictrllistview_gettopindex _guictrllistview_getunicodeformat _guictrllistview_getview "
+"_guictrllistview_getviewdetails _guictrllistview_getviewlarge _guictrllistview_getviewlist "
+"_guictrllistview_getviewrect _guictrllistview_getviewsmall _guictrllistview_getviewtile "
+"_guictrllistview_hidecolumn _guictrllistview_hittest _guictrllistview_insertcolumn "
+"_guictrllistview_insertgroup _guictrllistview_insertitem _guictrllistview_justifycolumn "
+"_guictrllistview_mapidtoindex _guictrllistview_mapindextoid _guictrllistview_redrawitems "
+"_guictrllistview_registersortcallback _guictrllistview_removeallgroups _guictrllistview_removegroup "
+"_guictrllistview_scroll _guictrllistview_setbkcolor _guictrllistview_setbkimage "
+"_guictrllistview_setcallbackmask _guictrllistview_setcolumn _guictrllistview_setcolumnorder "
+"_guictrllistview_setcolumnorderarray _guictrllistview_setcolumnwidth "
+"_guictrllistview_setextendedlistviewstyle _guictrllistview_setgroupinfo _guictrllistview_sethotitem "
+"_guictrllistview_sethovertime _guictrllistview_seticonspacing _guictrllistview_setimagelist "
+"_guictrllistview_setitem _guictrllistview_setitemchecked _guictrllistview_setitemcount "
+"_guictrllistview_setitemcut _guictrllistview_setitemdrophilited _guictrllistview_setitemex "
+"_guictrllistview_setitemfocused _guictrllistview_setitemgroupid _guictrllistview_setitemimage "
+"_guictrllistview_setitemindent _guictrllistview_setitemparam _guictrllistview_setitemposition "
+"_guictrllistview_setitemposition32 _guictrllistview_setitemselected _guictrllistview_setitemstate "
+"_guictrllistview_setitemstateimage _guictrllistview_setitemtext _guictrllistview_setoutlinecolor "
+"_guictrllistview_setselectedcolumn _guictrllistview_setselectionmark _guictrllistview_settextbkcolor "
+"_guictrllistview_settextcolor _guictrllistview_settooltips _guictrllistview_setunicodeformat "
+"_guictrllistview_setview _guictrllistview_setworkareas _guictrllistview_simplesort "
+"_guictrllistview_sortitems _guictrllistview_subitemhittest _guictrllistview_unregistersortcallback "
+"_guictrlmenu_addmenuitem _guictrlmenu_appendmenu _guictrlmenu_checkmenuitem _guictrlmenu_checkradioitem "
+"_guictrlmenu_createmenu _guictrlmenu_createpopup _guictrlmenu_deletemenu _guictrlmenu_destroymenu "
+"_guictrlmenu_drawmenubar _guictrlmenu_enablemenuitem _guictrlmenu_finditem _guictrlmenu_findparent "
+"_guictrlmenu_getitembmp _guictrlmenu_getitembmpchecked _guictrlmenu_getitembmpunchecked "
+"_guictrlmenu_getitemchecked _guictrlmenu_getitemcount _guictrlmenu_getitemdata _guictrlmenu_getitemdefault "
+"_guictrlmenu_getitemdisabled _guictrlmenu_getitemenabled _guictrlmenu_getitemgrayed "
+"_guictrlmenu_getitemhighlighted _guictrlmenu_getitemid _guictrlmenu_getiteminfo _guictrlmenu_getitemrect "
+"_guictrlmenu_getitemrectex _guictrlmenu_getitemstate _guictrlmenu_getitemstateex "
+"_guictrlmenu_getitemsubmenu _guictrlmenu_getitemtext _guictrlmenu_getitemtype _guictrlmenu_getmenu "
+"_guictrlmenu_getmenubackground _guictrlmenu_getmenubarinfo _guictrlmenu_getmenucontexthelpid "
+"_guictrlmenu_getmenudata _guictrlmenu_getmenudefaultitem _guictrlmenu_getmenuheight "
+"_guictrlmenu_getmenuinfo _guictrlmenu_getmenustyle _guictrlmenu_getsystemmenu _guictrlmenu_insertmenuitem "
+"_guictrlmenu_insertmenuitemex _guictrlmenu_ismenu _guictrlmenu_loadmenu _guictrlmenu_mapaccelerator "
+"_guictrlmenu_menuitemfrompoint _guictrlmenu_removemenu _guictrlmenu_setitembitmaps _guictrlmenu_setitembmp "
+"_guictrlmenu_setitembmpchecked _guictrlmenu_setitembmpunchecked _guictrlmenu_setitemchecked "
+"_guictrlmenu_setitemdata _guictrlmenu_setitemdefault _guictrlmenu_setitemdisabled "
+"_guictrlmenu_setitemenabled _guictrlmenu_setitemgrayed _guictrlmenu_setitemhighlighted "
+"_guictrlmenu_setitemid _guictrlmenu_setiteminfo _guictrlmenu_setitemstate _guictrlmenu_setitemsubmenu "
+"_guictrlmenu_setitemtext _guictrlmenu_setitemtype _guictrlmenu_setmenu _guictrlmenu_setmenubackground "
+"_guictrlmenu_setmenucontexthelpid _guictrlmenu_setmenudata _guictrlmenu_setmenudefaultitem "
+"_guictrlmenu_setmenuheight _guictrlmenu_setmenuinfo _guictrlmenu_setmenustyle _guictrlmenu_trackpopupmenu "
+"_guictrlmonthcal_create _guictrlmonthcal_destroy _guictrlmonthcal_getcalendarborder "
+"_guictrlmonthcal_getcalendarcount _guictrlmonthcal_getcolor _guictrlmonthcal_getcolorarray "
+"_guictrlmonthcal_getcursel _guictrlmonthcal_getcurselstr _guictrlmonthcal_getfirstdow "
+"_guictrlmonthcal_getfirstdowstr _guictrlmonthcal_getmaxselcount _guictrlmonthcal_getmaxtodaywidth "
+"_guictrlmonthcal_getminreqheight _guictrlmonthcal_getminreqrect _guictrlmonthcal_getminreqrectarray "
+"_guictrlmonthcal_getminreqwidth _guictrlmonthcal_getmonthdelta _guictrlmonthcal_getmonthrange "
+"_guictrlmonthcal_getmonthrangemax _guictrlmonthcal_getmonthrangemaxstr _guictrlmonthcal_getmonthrangemin "
+"_guictrlmonthcal_getmonthrangeminstr _guictrlmonthcal_getmonthrangespan _guictrlmonthcal_getrange "
+"_guictrlmonthcal_getrangemax _guictrlmonthcal_getrangemaxstr _guictrlmonthcal_getrangemin "
+"_guictrlmonthcal_getrangeminstr _guictrlmonthcal_getselrange _guictrlmonthcal_getselrangemax "
+"_guictrlmonthcal_getselrangemaxstr _guictrlmonthcal_getselrangemin _guictrlmonthcal_getselrangeminstr "
+"_guictrlmonthcal_gettoday _guictrlmonthcal_gettodaystr _guictrlmonthcal_getunicodeformat "
+"_guictrlmonthcal_hittest _guictrlmonthcal_setcalendarborder _guictrlmonthcal_setcolor "
+"_guictrlmonthcal_setcursel _guictrlmonthcal_setdaystate _guictrlmonthcal_setfirstdow "
+"_guictrlmonthcal_setmaxselcount _guictrlmonthcal_setmonthdelta _guictrlmonthcal_setrange "
+"_guictrlmonthcal_setselrange _guictrlmonthcal_settoday _guictrlmonthcal_setunicodeformat "
+"_guictrlrebar_addband _guictrlrebar_addtoolbarband _guictrlrebar_begindrag _guictrlrebar_create "
+"_guictrlrebar_deleteband _guictrlrebar_destroy _guictrlrebar_dragmove _guictrlrebar_enddrag "
+"_guictrlrebar_getbandbackcolor _guictrlrebar_getbandborders _guictrlrebar_getbandbordersex "
+"_guictrlrebar_getbandchildhandle _guictrlrebar_getbandchildsize _guictrlrebar_getbandcount "
+"_guictrlrebar_getbandforecolor _guictrlrebar_getbandheadersize _guictrlrebar_getbandid "
+"_guictrlrebar_getbandidealsize _guictrlrebar_getbandlength _guictrlrebar_getbandlparam "
+"_guictrlrebar_getbandmargins _guictrlrebar_getbandmarginsex _guictrlrebar_getbandrect "
+"_guictrlrebar_getbandrectex _guictrlrebar_getbandstyle _guictrlrebar_getbandstylebreak "
+"_guictrlrebar_getbandstylechildedge _guictrlrebar_getbandstylefixedbmp _guictrlrebar_getbandstylefixedsize "
+"_guictrlrebar_getbandstylegripperalways _guictrlrebar_getbandstylehidden "
+"_guictrlrebar_getbandstylehidetitle _guictrlrebar_getbandstylenogripper _guictrlrebar_getbandstyletopalign "
+"_guictrlrebar_getbandstyleusechevron _guictrlrebar_getbandstylevariableheight _guictrlrebar_getbandtext "
+"_guictrlrebar_getbarheight _guictrlrebar_getbarinfo _guictrlrebar_getbkcolor _guictrlrebar_getcolorscheme "
+"_guictrlrebar_getrowcount _guictrlrebar_getrowheight _guictrlrebar_gettextcolor _guictrlrebar_gettooltips "
+"_guictrlrebar_getunicodeformat _guictrlrebar_hittest _guictrlrebar_idtoindex _guictrlrebar_maximizeband "
+"_guictrlrebar_minimizeband _guictrlrebar_moveband _guictrlrebar_setbandbackcolor "
+"_guictrlrebar_setbandforecolor _guictrlrebar_setbandheadersize _guictrlrebar_setbandid "
+"_guictrlrebar_setbandidealsize _guictrlrebar_setbandlength _guictrlrebar_setbandlparam "
+"_guictrlrebar_setbandstyle _guictrlrebar_setbandstylebreak _guictrlrebar_setbandstylechildedge "
+"_guictrlrebar_setbandstylefixedbmp _guictrlrebar_setbandstylefixedsize "
+"_guictrlrebar_setbandstylegripperalways _guictrlrebar_setbandstylehidden "
+"_guictrlrebar_setbandstylehidetitle _guictrlrebar_setbandstylenogripper _guictrlrebar_setbandstyletopalign "
+"_guictrlrebar_setbandstyleusechevron _guictrlrebar_setbandstylevariableheight _guictrlrebar_setbandtext "
+"_guictrlrebar_setbarinfo _guictrlrebar_setbkcolor _guictrlrebar_setcolorscheme _guictrlrebar_settextcolor "
+"_guictrlrebar_settooltips _guictrlrebar_setunicodeformat _guictrlrebar_showband "
+"_guictrlrichedit_appendtext _guictrlrichedit_autodetecturl _guictrlrichedit_canpaste "
+"_guictrlrichedit_canpastespecial _guictrlrichedit_canredo _guictrlrichedit_canundo "
+"_guictrlrichedit_changefontsize _guictrlrichedit_copy _guictrlrichedit_create _guictrlrichedit_cut "
+"_guictrlrichedit_deselect _guictrlrichedit_destroy _guictrlrichedit_emptyundobuffer "
+"_guictrlrichedit_findtext _guictrlrichedit_findtextinrange _guictrlrichedit_getbkcolor "
+"_guictrlrichedit_getcharattributes _guictrlrichedit_getcharbkcolor _guictrlrichedit_getcharcolor "
+"_guictrlrichedit_getcharposfromxy _guictrlrichedit_getcharposofnextword "
+"_guictrlrichedit_getcharposofpreviousword _guictrlrichedit_getcharwordbreakinfo "
+"_guictrlrichedit_getfirstcharposonline _guictrlrichedit_getfont _guictrlrichedit_getlinecount "
+"_guictrlrichedit_getlinelength _guictrlrichedit_getlinenumberfromcharpos _guictrlrichedit_getnextredo "
+"_guictrlrichedit_getnextundo _guictrlrichedit_getnumberoffirstvisibleline "
+"_guictrlrichedit_getparaalignment _guictrlrichedit_getparaattributes _guictrlrichedit_getparaborder "
+"_guictrlrichedit_getparaindents _guictrlrichedit_getparanumbering _guictrlrichedit_getparashading "
+"_guictrlrichedit_getparaspacing _guictrlrichedit_getparatabstops _guictrlrichedit_getpasswordchar "
+"_guictrlrichedit_getrect _guictrlrichedit_getscrollpos _guictrlrichedit_getsel _guictrlrichedit_getselaa "
+"_guictrlrichedit_getseltext _guictrlrichedit_getspaceunit _guictrlrichedit_gettext "
+"_guictrlrichedit_gettextinline _guictrlrichedit_gettextinrange _guictrlrichedit_gettextlength "
+"_guictrlrichedit_getversion _guictrlrichedit_getxyfromcharpos _guictrlrichedit_getzoom "
+"_guictrlrichedit_gotocharpos _guictrlrichedit_hideselection _guictrlrichedit_inserttext "
+"_guictrlrichedit_ismodified _guictrlrichedit_istextselected _guictrlrichedit_paste "
+"_guictrlrichedit_pastespecial _guictrlrichedit_pauseredraw _guictrlrichedit_redo "
+"_guictrlrichedit_replacetext _guictrlrichedit_resumeredraw _guictrlrichedit_scrolllineorpage "
+"_guictrlrichedit_scrolllines _guictrlrichedit_scrolltocaret _guictrlrichedit_setbkcolor "
+"_guictrlrichedit_setcharattributes _guictrlrichedit_setcharbkcolor _guictrlrichedit_setcharcolor "
+"_guictrlrichedit_seteventmask _guictrlrichedit_setfont _guictrlrichedit_setlimitontext "
+"_guictrlrichedit_setmodified _guictrlrichedit_setparaalignment _guictrlrichedit_setparaattributes "
+"_guictrlrichedit_setparaborder _guictrlrichedit_setparaindents _guictrlrichedit_setparanumbering "
+"_guictrlrichedit_setparashading _guictrlrichedit_setparaspacing _guictrlrichedit_setparatabstops "
+"_guictrlrichedit_setpasswordchar _guictrlrichedit_setreadonly _guictrlrichedit_setrect "
+"_guictrlrichedit_setscrollpos _guictrlrichedit_setsel _guictrlrichedit_setspaceunit "
+"_guictrlrichedit_settabstops _guictrlrichedit_settext _guictrlrichedit_setundolimit "
+"_guictrlrichedit_setzoom _guictrlrichedit_streamfromfile _guictrlrichedit_streamfromvar "
+"_guictrlrichedit_streamtofile _guictrlrichedit_streamtovar _guictrlrichedit_undo _guictrlslider_clearsel "
+"_guictrlslider_cleartics _guictrlslider_create _guictrlslider_destroy _guictrlslider_getbuddy "
+"_guictrlslider_getchannelrect _guictrlslider_getchannelrectex _guictrlslider_getlinesize "
+"_guictrlslider_getlogicaltics _guictrlslider_getnumtics _guictrlslider_getpagesize _guictrlslider_getpos "
+"_guictrlslider_getrange _guictrlslider_getrangemax _guictrlslider_getrangemin _guictrlslider_getsel "
+"_guictrlslider_getselend _guictrlslider_getselstart _guictrlslider_getthumblength "
+"_guictrlslider_getthumbrect _guictrlslider_getthumbrectex _guictrlslider_gettic _guictrlslider_getticpos "
+"_guictrlslider_gettooltips _guictrlslider_getunicodeformat _guictrlslider_setbuddy "
+"_guictrlslider_setlinesize _guictrlslider_setpagesize _guictrlslider_setpos _guictrlslider_setrange "
+"_guictrlslider_setrangemax _guictrlslider_setrangemin _guictrlslider_setsel _guictrlslider_setselend "
+"_guictrlslider_setselstart _guictrlslider_setthumblength _guictrlslider_settic _guictrlslider_setticfreq "
+"_guictrlslider_settipside _guictrlslider_settooltips _guictrlslider_setunicodeformat "
+"_guictrlstatusbar_create _guictrlstatusbar_destroy _guictrlstatusbar_embedcontrol "
+"_guictrlstatusbar_getborders _guictrlstatusbar_getbordershorz _guictrlstatusbar_getbordersrect "
+"_guictrlstatusbar_getbordersvert _guictrlstatusbar_getcount _guictrlstatusbar_getheight "
+"_guictrlstatusbar_geticon _guictrlstatusbar_getparts _guictrlstatusbar_getrect _guictrlstatusbar_getrectex "
+"_guictrlstatusbar_gettext _guictrlstatusbar_gettextflags _guictrlstatusbar_gettextlength "
+"_guictrlstatusbar_gettextlengthex _guictrlstatusbar_gettiptext _guictrlstatusbar_getunicodeformat "
+"_guictrlstatusbar_getwidth _guictrlstatusbar_issimple _guictrlstatusbar_resize "
+"_guictrlstatusbar_setbkcolor _guictrlstatusbar_seticon _guictrlstatusbar_setminheight "
+"_guictrlstatusbar_setparts _guictrlstatusbar_setsimple _guictrlstatusbar_settext "
+"_guictrlstatusbar_settiptext _guictrlstatusbar_setunicodeformat _guictrlstatusbar_showhide "
+"_guictrltab_activatetab _guictrltab_clicktab _guictrltab_create _guictrltab_deleteallitems "
+"_guictrltab_deleteitem _guictrltab_deselectall _guictrltab_destroy _guictrltab_findtab "
+"_guictrltab_getcurfocus _guictrltab_getcursel _guictrltab_getdisplayrect _guictrltab_getdisplayrectex "
+"_guictrltab_getextendedstyle _guictrltab_getimagelist _guictrltab_getitem _guictrltab_getitemcount "
+"_guictrltab_getitemimage _guictrltab_getitemparam _guictrltab_getitemrect _guictrltab_getitemrectex "
+"_guictrltab_getitemstate _guictrltab_getitemtext _guictrltab_getrowcount _guictrltab_gettooltips "
+"_guictrltab_getunicodeformat _guictrltab_highlightitem _guictrltab_hittest _guictrltab_insertitem "
+"_guictrltab_removeimage _guictrltab_setcurfocus _guictrltab_setcursel _guictrltab_setextendedstyle "
+"_guictrltab_setimagelist _guictrltab_setitem _guictrltab_setitemimage _guictrltab_setitemparam "
+"_guictrltab_setitemsize _guictrltab_setitemstate _guictrltab_setitemtext _guictrltab_setmintabwidth "
+"_guictrltab_setpadding _guictrltab_settooltips _guictrltab_setunicodeformat _guictrltoolbar_addbitmap "
+"_guictrltoolbar_addbutton _guictrltoolbar_addbuttonsep _guictrltoolbar_addstring "
+"_guictrltoolbar_buttoncount _guictrltoolbar_checkbutton _guictrltoolbar_clickaccel "
+"_guictrltoolbar_clickbutton _guictrltoolbar_clickindex _guictrltoolbar_commandtoindex "
+"_guictrltoolbar_create _guictrltoolbar_customize _guictrltoolbar_deletebutton _guictrltoolbar_destroy "
+"_guictrltoolbar_enablebutton _guictrltoolbar_findtoolbar _guictrltoolbar_getanchorhighlight "
+"_guictrltoolbar_getbitmapflags _guictrltoolbar_getbuttonbitmap _guictrltoolbar_getbuttoninfo "
+"_guictrltoolbar_getbuttoninfoex _guictrltoolbar_getbuttonparam _guictrltoolbar_getbuttonrect "
+"_guictrltoolbar_getbuttonrectex _guictrltoolbar_getbuttonsize _guictrltoolbar_getbuttonstate "
+"_guictrltoolbar_getbuttonstyle _guictrltoolbar_getbuttontext _guictrltoolbar_getcolorscheme "
+"_guictrltoolbar_getdisabledimagelist _guictrltoolbar_getextendedstyle _guictrltoolbar_gethotimagelist "
+"_guictrltoolbar_gethotitem _guictrltoolbar_getimagelist _guictrltoolbar_getinsertmark "
+"_guictrltoolbar_getinsertmarkcolor _guictrltoolbar_getmaxsize _guictrltoolbar_getmetrics "
+"_guictrltoolbar_getpadding _guictrltoolbar_getrows _guictrltoolbar_getstring _guictrltoolbar_getstyle "
+"_guictrltoolbar_getstylealtdrag _guictrltoolbar_getstylecustomerase _guictrltoolbar_getstyleflat "
+"_guictrltoolbar_getstylelist _guictrltoolbar_getstyleregisterdrop _guictrltoolbar_getstyletooltips "
+"_guictrltoolbar_getstyletransparent _guictrltoolbar_getstylewrapable _guictrltoolbar_gettextrows "
+"_guictrltoolbar_gettooltips _guictrltoolbar_getunicodeformat _guictrltoolbar_hidebutton "
+"_guictrltoolbar_highlightbutton _guictrltoolbar_hittest _guictrltoolbar_indextocommand "
+"_guictrltoolbar_insertbutton _guictrltoolbar_insertmarkhittest _guictrltoolbar_isbuttonchecked "
+"_guictrltoolbar_isbuttonenabled _guictrltoolbar_isbuttonhidden _guictrltoolbar_isbuttonhighlighted "
+"_guictrltoolbar_isbuttonindeterminate _guictrltoolbar_isbuttonpressed _guictrltoolbar_loadbitmap "
+"_guictrltoolbar_loadimages _guictrltoolbar_mapaccelerator _guictrltoolbar_movebutton "
+"_guictrltoolbar_pressbutton _guictrltoolbar_setanchorhighlight _guictrltoolbar_setbitmapsize "
+"_guictrltoolbar_setbuttonbitmap _guictrltoolbar_setbuttoninfo _guictrltoolbar_setbuttoninfoex "
+"_guictrltoolbar_setbuttonparam _guictrltoolbar_setbuttonsize _guictrltoolbar_setbuttonstate "
+"_guictrltoolbar_setbuttonstyle _guictrltoolbar_setbuttontext _guictrltoolbar_setbuttonwidth "
+"_guictrltoolbar_setcmdid _guictrltoolbar_setcolorscheme _guictrltoolbar_setdisabledimagelist "
+"_guictrltoolbar_setdrawtextflags _guictrltoolbar_setextendedstyle _guictrltoolbar_sethotimagelist "
+"_guictrltoolbar_sethotitem _guictrltoolbar_setimagelist _guictrltoolbar_setindent "
+"_guictrltoolbar_setindeterminate _guictrltoolbar_setinsertmark _guictrltoolbar_setinsertmarkcolor "
+"_guictrltoolbar_setmaxtextrows _guictrltoolbar_setmetrics _guictrltoolbar_setpadding "
+"_guictrltoolbar_setparent _guictrltoolbar_setrows _guictrltoolbar_setstyle _guictrltoolbar_setstylealtdrag "
+"_guictrltoolbar_setstylecustomerase _guictrltoolbar_setstyleflat _guictrltoolbar_setstylelist "
+"_guictrltoolbar_setstyleregisterdrop _guictrltoolbar_setstyletooltips _guictrltoolbar_setstyletransparent "
+"_guictrltoolbar_setstylewrapable _guictrltoolbar_settooltips _guictrltoolbar_setunicodeformat "
+"_guictrltoolbar_setwindowtheme _guictrltreeview_add _guictrltreeview_addchild "
+"_guictrltreeview_addchildfirst _guictrltreeview_addfirst _guictrltreeview_beginupdate "
+"_guictrltreeview_clickitem _guictrltreeview_create _guictrltreeview_createdragimage "
+"_guictrltreeview_createsolidbitmap _guictrltreeview_delete _guictrltreeview_deleteall "
+"_guictrltreeview_deletechildren _guictrltreeview_destroy _guictrltreeview_displayrect "
+"_guictrltreeview_displayrectex _guictrltreeview_edittext _guictrltreeview_endedit "
+"_guictrltreeview_endupdate _guictrltreeview_ensurevisible _guictrltreeview_expand "
+"_guictrltreeview_expandedonce _guictrltreeview_finditem _guictrltreeview_finditemex "
+"_guictrltreeview_getbkcolor _guictrltreeview_getbold _guictrltreeview_getchecked "
+"_guictrltreeview_getchildcount _guictrltreeview_getchildren _guictrltreeview_getcount "
+"_guictrltreeview_getcut _guictrltreeview_getdroptarget _guictrltreeview_geteditcontrol "
+"_guictrltreeview_getexpanded _guictrltreeview_getfirstchild _guictrltreeview_getfirstitem "
+"_guictrltreeview_getfirstvisible _guictrltreeview_getfocused _guictrltreeview_getheight "
+"_guictrltreeview_getimageindex _guictrltreeview_getimagelisticonhandle _guictrltreeview_getindent "
+"_guictrltreeview_getinsertmarkcolor _guictrltreeview_getisearchstring _guictrltreeview_getitembyindex "
+"_guictrltreeview_getitemhandle _guictrltreeview_getitemparam _guictrltreeview_getlastchild "
+"_guictrltreeview_getlinecolor _guictrltreeview_getnext _guictrltreeview_getnextchild "
+"_guictrltreeview_getnextsibling _guictrltreeview_getnextvisible _guictrltreeview_getnormalimagelist "
+"_guictrltreeview_getparenthandle _guictrltreeview_getparentparam _guictrltreeview_getprev "
+"_guictrltreeview_getprevchild _guictrltreeview_getprevsibling _guictrltreeview_getprevvisible "
+"_guictrltreeview_getscrolltime _guictrltreeview_getselected _guictrltreeview_getselectedimageindex "
+"_guictrltreeview_getselection _guictrltreeview_getsiblingcount _guictrltreeview_getstate "
+"_guictrltreeview_getstateimageindex _guictrltreeview_getstateimagelist _guictrltreeview_gettext "
+"_guictrltreeview_gettextcolor _guictrltreeview_gettooltips _guictrltreeview_gettree "
+"_guictrltreeview_getunicodeformat _guictrltreeview_getvisible _guictrltreeview_getvisiblecount "
+"_guictrltreeview_hittest _guictrltreeview_hittestex _guictrltreeview_hittestitem _guictrltreeview_index "
+"_guictrltreeview_insertitem _guictrltreeview_isfirstitem _guictrltreeview_isparent _guictrltreeview_level "
+"_guictrltreeview_selectitem _guictrltreeview_selectitembyindex _guictrltreeview_setbkcolor "
+"_guictrltreeview_setbold _guictrltreeview_setchecked _guictrltreeview_setcheckedbyindex "
+"_guictrltreeview_setchildren _guictrltreeview_setcut _guictrltreeview_setdroptarget "
+"_guictrltreeview_setfocused _guictrltreeview_setheight _guictrltreeview_seticon "
+"_guictrltreeview_setimageindex _guictrltreeview_setindent _guictrltreeview_setinsertmark "
+"_guictrltreeview_setinsertmarkcolor _guictrltreeview_setitemheight _guictrltreeview_setitemparam "
+"_guictrltreeview_setlinecolor _guictrltreeview_setnormalimagelist _guictrltreeview_setscrolltime "
+"_guictrltreeview_setselected _guictrltreeview_setselectedimageindex _guictrltreeview_setstate "
+"_guictrltreeview_setstateimageindex _guictrltreeview_setstateimagelist _guictrltreeview_settext "
+"_guictrltreeview_settextcolor _guictrltreeview_settooltips _guictrltreeview_setunicodeformat "
+"_guictrltreeview_sort _guiimagelist_add _guiimagelist_addbitmap _guiimagelist_addicon "
+"_guiimagelist_addmasked _guiimagelist_begindrag _guiimagelist_copy _guiimagelist_create "
+"_guiimagelist_destroy _guiimagelist_destroyicon _guiimagelist_dragenter _guiimagelist_dragleave "
+"_guiimagelist_dragmove _guiimagelist_draw _guiimagelist_drawex _guiimagelist_duplicate "
+"_guiimagelist_enddrag _guiimagelist_getbkcolor _guiimagelist_geticon _guiimagelist_geticonheight "
+"_guiimagelist_geticonsize _guiimagelist_geticonsizeex _guiimagelist_geticonwidth "
+"_guiimagelist_getimagecount _guiimagelist_getimageinfoex _guiimagelist_remove _guiimagelist_replaceicon "
+"_guiimagelist_setbkcolor _guiimagelist_seticonsize _guiimagelist_setimagecount _guiimagelist_swap "
+"_guiscrollbars_enablescrollbar _guiscrollbars_getscrollbarinfoex _guiscrollbars_getscrollbarrect "
+"_guiscrollbars_getscrollbarrgstate _guiscrollbars_getscrollbarxylinebutton "
+"_guiscrollbars_getscrollbarxythumbbottom _guiscrollbars_getscrollbarxythumbtop "
+"_guiscrollbars_getscrollinfo _guiscrollbars_getscrollinfoex _guiscrollbars_getscrollinfomax "
+"_guiscrollbars_getscrollinfomin _guiscrollbars_getscrollinfopage _guiscrollbars_getscrollinfopos "
+"_guiscrollbars_getscrollinfotrackpos _guiscrollbars_getscrollpos _guiscrollbars_getscrollrange "
+"_guiscrollbars_init _guiscrollbars_scrollwindow _guiscrollbars_setscrollinfo "
+"_guiscrollbars_setscrollinfomax _guiscrollbars_setscrollinfomin _guiscrollbars_setscrollinfopage "
+"_guiscrollbars_setscrollinfopos _guiscrollbars_setscrollrange _guiscrollbars_showscrollbar "
+"_guitooltip_activate _guitooltip_addtool _guitooltip_adjustrect _guitooltip_bitstottf _guitooltip_create "
+"_guitooltip_deltool _guitooltip_destroy _guitooltip_enumtools _guitooltip_getbubbleheight "
+"_guitooltip_getbubblesize _guitooltip_getbubblewidth _guitooltip_getcurrenttool _guitooltip_getdelaytime "
+"_guitooltip_getmargin _guitooltip_getmarginex _guitooltip_getmaxtipwidth _guitooltip_gettext "
+"_guitooltip_gettipbkcolor _guitooltip_gettiptextcolor _guitooltip_gettitlebitmap _guitooltip_gettitletext "
+"_guitooltip_gettoolcount _guitooltip_gettoolinfo _guitooltip_hittest _guitooltip_newtoolrect "
+"_guitooltip_pop _guitooltip_popup _guitooltip_setdelaytime _guitooltip_setmargin "
+"_guitooltip_setmaxtipwidth _guitooltip_settipbkcolor _guitooltip_settiptextcolor _guitooltip_settitle "
+"_guitooltip_settoolinfo _guitooltip_setwindowtheme _guitooltip_toolexists _guitooltip_tooltoarray "
+"_guitooltip_trackactivate _guitooltip_trackposition _guitooltip_ttftobits _guitooltip_update "
+"_guitooltip_updatetiptext _hextostring _ie_example _ie_introduction _ie_versioninfo _ieaction _ieattach "
+"_iebodyreadhtml _iebodyreadtext _iebodywritehtml _iecreate _iecreateembedded _iedocgetobj _iedocinserthtml "
+"_iedocinserttext _iedocreadhtml _iedocwritehtml _ieerrorhandlerderegister _ieerrorhandlerregister "
+"_ieerrornotify _ieformelementcheckboxselect _ieformelementgetcollection _ieformelementgetobjbyname "
+"_ieformelementgetvalue _ieformelementoptionselect _ieformelementradioselect _ieformelementsetvalue "
+"_ieformgetcollection _ieformgetobjbyname _ieformimageclick _ieformreset _ieformsubmit "
+"_ieframegetcollection _ieframegetobjbyname _iegetobjbyid _iegetobjbyname _ieheadinserteventscript "
+"_ieimgclick _ieimggetcollection _ieisframeset _ielinkclickbyindex _ielinkclickbytext _ielinkgetcollection "
+"_ieloadwait _ieloadwaittimeout _ienavigate _iepropertyget _iepropertyset _iequit _ietablegetcollection "
+"_ietablewritetoarray _ietagnameallgetcollection _ietagnamegetcollection _iif _inetexplorercapable "
+"_inetgetsource _inetmail _inetsmtpmail _ispressed _mathcheckdiv _max _memglobalalloc _memglobalfree "
+"_memgloballock _memglobalsize _memglobalunlock _memmovememory _memvirtualalloc _memvirtualallocex "
+"_memvirtualfree _memvirtualfreeex _min _mousetrap _namedpipes_callnamedpipe _namedpipes_connectnamedpipe "
+"_namedpipes_createnamedpipe _namedpipes_createpipe _namedpipes_disconnectnamedpipe "
+"_namedpipes_getnamedpipehandlestate _namedpipes_getnamedpipeinfo _namedpipes_peeknamedpipe "
+"_namedpipes_setnamedpipehandlestate _namedpipes_transactnamedpipe _namedpipes_waitnamedpipe "
+"_net_share_connectionenum _net_share_fileclose _net_share_fileenum _net_share_filegetinfo "
+"_net_share_permstr _net_share_resourcestr _net_share_sessiondel _net_share_sessionenum "
+"_net_share_sessiongetinfo _net_share_shareadd _net_share_sharecheck _net_share_sharedel "
+"_net_share_shareenum _net_share_sharegetinfo _net_share_sharesetinfo _net_share_statisticsgetsvr "
+"_net_share_statisticsgetwrk _now _nowcalc _nowcalcdate _nowdate _nowtime _pathfull _pathgetrelative "
+"_pathmake _pathsplit _processgetname _processgetpriority _radian _replacestringinfile _rundos "
+"_screencapture_capture _screencapture_capturewnd _screencapture_saveimage _screencapture_setbmpformat "
+"_screencapture_setjpgquality _screencapture_settifcolordepth _screencapture_settifcompression "
+"_security__adjusttokenprivileges _security__createprocesswithtoken _security__duplicatetokenex "
+"_security__getaccountsid _security__getlengthsid _security__gettokeninformation _security__impersonateself "
+"_security__isvalidsid _security__lookupaccountname _security__lookupaccountsid "
+"_security__lookupprivilegevalue _security__openprocesstoken _security__openthreadtoken "
+"_security__openthreadtokenex _security__setprivilege _security__settokeninformation "
+"_security__sidtostringsid _security__sidtypestr _security__stringsidtosid _sendmessage _sendmessagea "
+"_setdate _settime _singleton _soundclose _soundlength _soundopen _soundpause _soundplay _soundpos "
+"_soundresume _soundseek _soundstatus _soundstop _sqlite_changes _sqlite_close _sqlite_display2dresult "
+"_sqlite_encode _sqlite_errcode _sqlite_errmsg _sqlite_escape _sqlite_exec _sqlite_fastencode "
+"_sqlite_fastescape _sqlite_fetchdata _sqlite_fetchnames _sqlite_gettable _sqlite_gettable2d "
+"_sqlite_lastinsertrowid _sqlite_libversion _sqlite_open _sqlite_query _sqlite_queryfinalize "
+"_sqlite_queryreset _sqlite_querysinglerow _sqlite_safemode _sqlite_settimeout _sqlite_shutdown "
+"_sqlite_sqliteexe _sqlite_startup _sqlite_totalchanges _stringbetween _stringencrypt _stringexplode "
+"_stringinsert _stringproper _stringrepeat _stringreverse _stringtohex _tcpiptoname _tempfile _tickstotime "
+"_timer_diff _timer_getidletime _timer_gettimerid _timer_init _timer_killalltimers _timer_killtimer "
+"_timer_settimer _timetoticks _versioncompare _viclose _viexeccommand _vifindgpib _vigpibbusreset _vigtl "
+"_viinteractivecontrol _viopen _visetattribute _visettimeout _weeknumberiso _winapi_attachconsole "
+"_winapi_attachthreadinput _winapi_beep _winapi_bitblt _winapi_callnexthookex _winapi_callwindowproc "
+"_winapi_clienttoscreen _winapi_closehandle _winapi_combinergn _winapi_commdlgextendederror "
+"_winapi_copyicon _winapi_createbitmap _winapi_createcompatiblebitmap _winapi_createcompatibledc "
+"_winapi_createevent _winapi_createfile _winapi_createfont _winapi_createfontindirect _winapi_createpen "
+"_winapi_createprocess _winapi_createrectrgn _winapi_createroundrectrgn _winapi_createsolidbitmap "
+"_winapi_createsolidbrush _winapi_createwindowex _winapi_defwindowproc _winapi_deletedc "
+"_winapi_deleteobject _winapi_destroyicon _winapi_destroywindow _winapi_drawedge _winapi_drawframecontrol "
+"_winapi_drawicon _winapi_drawiconex _winapi_drawline _winapi_drawtext _winapi_duplicatehandle "
+"_winapi_enablewindow _winapi_enumdisplaydevices _winapi_enumwindows _winapi_enumwindowspopup "
+"_winapi_enumwindowstop _winapi_expandenvironmentstrings _winapi_extracticonex _winapi_fatalappexit "
+"_winapi_fillrect _winapi_findexecutable _winapi_findwindow _winapi_flashwindow _winapi_flashwindowex "
+"_winapi_floattoint _winapi_flushfilebuffers _winapi_formatmessage _winapi_framerect _winapi_freelibrary "
+"_winapi_getancestor _winapi_getasynckeystate _winapi_getbkmode _winapi_getclassname "
+"_winapi_getclientheight _winapi_getclientrect _winapi_getclientwidth _winapi_getcurrentprocess "
+"_winapi_getcurrentprocessid _winapi_getcurrentthread _winapi_getcurrentthreadid _winapi_getcursorinfo "
+"_winapi_getdc _winapi_getdesktopwindow _winapi_getdevicecaps _winapi_getdibits _winapi_getdlgctrlid "
+"_winapi_getdlgitem _winapi_getfilesizeex _winapi_getfocus _winapi_getforegroundwindow "
+"_winapi_getguiresources _winapi_geticoninfo _winapi_getlasterror _winapi_getlasterrormessage "
+"_winapi_getlayeredwindowattributes _winapi_getmodulehandle _winapi_getmousepos _winapi_getmouseposx "
+"_winapi_getmouseposy _winapi_getobject _winapi_getopenfilename _winapi_getoverlappedresult "
+"_winapi_getparent _winapi_getprocessaffinitymask _winapi_getsavefilename _winapi_getstdhandle "
+"_winapi_getstockobject _winapi_getsyscolor _winapi_getsyscolorbrush _winapi_getsystemmetrics "
+"_winapi_gettextextentpoint32 _winapi_gettextmetrics _winapi_getwindow _winapi_getwindowdc "
+"_winapi_getwindowheight _winapi_getwindowlong _winapi_getwindowplacement _winapi_getwindowrect "
+"_winapi_getwindowrgn _winapi_getwindowtext _winapi_getwindowthreadprocessid _winapi_getwindowwidth "
+"_winapi_getxyfrompoint _winapi_globalmemorystatus _winapi_guidfromstring _winapi_guidfromstringex "
+"_winapi_hiword _winapi_inprocess _winapi_inttofloat _winapi_invalidaterect _winapi_isclassname "
+"_winapi_iswindow _winapi_iswindowvisible _winapi_lineto _winapi_loadbitmap _winapi_loadimage "
+"_winapi_loadlibrary _winapi_loadlibraryex _winapi_loadshell32icon _winapi_loadstring _winapi_localfree "
+"_winapi_loword _winapi_makelangid _winapi_makelcid _winapi_makelong _winapi_makeqword _winapi_messagebeep "
+"_winapi_mouse_event _winapi_moveto _winapi_movewindow _winapi_msgbox _winapi_muldiv "
+"_winapi_multibytetowidechar _winapi_multibytetowidecharex _winapi_openprocess _winapi_pathfindonpath "
+"_winapi_pointfromrect _winapi_postmessage _winapi_primarylangid _winapi_ptinrect _winapi_readfile "
+"_winapi_readprocessmemory _winapi_rectisempty _winapi_redrawwindow _winapi_registerwindowmessage "
+"_winapi_releasecapture _winapi_releasedc _winapi_screentoclient _winapi_selectobject _winapi_setbkcolor "
+"_winapi_setbkmode _winapi_setcapture _winapi_setcursor _winapi_setdefaultprinter _winapi_setdibits "
+"_winapi_setendoffile _winapi_setevent _winapi_setfilepointer _winapi_setfocus _winapi_setfont "
+"_winapi_sethandleinformation _winapi_setlasterror _winapi_setlayeredwindowattributes _winapi_setparent "
+"_winapi_setprocessaffinitymask _winapi_setsyscolors _winapi_settextcolor _winapi_setwindowlong "
+"_winapi_setwindowplacement _winapi_setwindowpos _winapi_setwindowrgn _winapi_setwindowshookex "
+"_winapi_setwindowtext _winapi_showcursor _winapi_showerror _winapi_showmsg _winapi_showwindow "
+"_winapi_stringfromguid _winapi_stringlena _winapi_stringlenw _winapi_sublangid "
+"_winapi_systemparametersinfo _winapi_twipsperpixelx _winapi_twipsperpixely _winapi_unhookwindowshookex "
+"_winapi_updatelayeredwindow _winapi_updatewindow _winapi_waitforinputidle _winapi_waitformultipleobjects "
+"_winapi_waitforsingleobject _winapi_widechartomultibyte _winapi_windowfrompoint _winapi_writeconsole "
+"_winapi_writefile _winapi_writeprocessmemory _winnet_addconnection _winnet_addconnection2 "
+"_winnet_addconnection3 _winnet_cancelconnection _winnet_cancelconnection2 _winnet_closeenum "
+"_winnet_connectiondialog _winnet_connectiondialog1 _winnet_disconnectdialog _winnet_disconnectdialog1 "
+"_winnet_enumresource _winnet_getconnection _winnet_getconnectionperformance _winnet_getlasterror "
+"_winnet_getnetworkinformation _winnet_getprovidername _winnet_getresourceinformation "
+"_winnet_getresourceparent _winnet_getuniversalname _winnet_getuser _winnet_openenum "
+"_winnet_restoreconnection _winnet_useconnection _word_versioninfo _wordattach _wordcreate _worddocadd "
+"_worddocaddlink _worddocaddpicture _worddocclose _worddocfindreplace _worddocgetcollection "
+"_worddoclinkgetcollection _worddocopen _worddocprint _worddocpropertyget _worddocpropertyset _worddocsave "
+"_worddocsaveas _worderrorhandlerderegister _worderrorhandlerregister _worderrornotify _wordmacrorun "
+"_wordpropertyget _wordpropertyset _wordquit",
+"" };
 
 
 EDITLEXER lexAU3 = { SCLEX_AU3, 63276, L"AutoIt3 Script", L"au3", L"", &KeyWords_AU3, {
@@ -1544,6 +2112,7 @@ EDITLEXER lexAU3 = { SCLEX_AU3, 63276, L"AutoIt3 Script", L"au3", L"", &KeyWords
                      { MULTI_STYLE(SCE_AU3_COMMENT,SCE_AU3_COMMENTBLOCK,0,0), 63127, L"Comment", L"fore:#008000", L"" },
                      { SCE_AU3_NUMBER, 63130, L"Number", L"fore:#008080", L"" },
                      { SCE_AU3_FUNCTION, 63277, L"Function", L"fore:#0000FF", L"" },
+                     { SCE_AU3_UDF, 63360, L"User-Defined Function", L"fore:#0000FF", L"" },
                      { SCE_AU3_KEYWORD, 63128, L"Keyword", L"fore:#0000FF", L"" },
                      { SCE_AU3_MACRO, 63278, L"Macro", L"fore:#0080FF", L"" },
                      { SCE_AU3_STRING, 63131, L"String", L"fore:#008080", L"" },
@@ -1835,11 +2404,11 @@ EDITLEXER lexAVS = { SCLEX_AVS, 63332, L"AviSynth Script", L"avs; avsi", L"", &K
                      { SCE_AVS_OPERATOR, 63132, L"Operator", L"", L"" },
                      { MULTI_STYLE(SCE_AVS_STRING,SCE_AVS_TRIPLESTRING,0,0), 63131, L"String", L"fore:#7F007F", L"" },
                      { SCE_AVS_NUMBER, 63130, L"Number", L"fore:#007F7F", L"" },
-                     { SCE_AVS_KEYWORD, 63333, L"Keywords", L"fore:#00007F; bold", L"" },
-                     { SCE_AVS_FILTER, 63334, L"Filter", L"fore:#00007F; bold", L"" },
-                     { SCE_AVS_PLUGIN, 63335, L"Plugin", L"fore:#0080C0; bold", L"" },
+                     { SCE_AVS_KEYWORD, 63128, L"Keyword", L"fore:#00007F; bold", L"" },
+                     { SCE_AVS_FILTER, 63333, L"Filter", L"fore:#00007F; bold", L"" },
+                     { SCE_AVS_PLUGIN, 63334, L"Plugin", L"fore:#0080C0; bold", L"" },
                      { SCE_AVS_FUNCTION, 63277, L"Function", L"fore:#007F7F", L"" },
-                     { SCE_AVS_CLIPPROP, 63337, L"Clip property", L"fore:#00007F", L"" },
+                     { SCE_AVS_CLIPPROP, 63335, L"Clip property", L"fore:#00007F", L"" },
                      //{ SCE_AVS_USERDFN, 63106, L"User Defined", L"fore:#8000FF", L"" },
                      { -1, 00000, L"", L"", L"" } } };
 
@@ -1851,10 +2420,9 @@ KEYWORDLIST KeyWords_MARKDOWN = {
 EDITLEXER lexMARKDOWN = { SCLEX_MARKDOWN, 63336, L"Markdown", L"md; markdown; mdown; mkdn; mkd", L"", &KeyWords_MARKDOWN, {
                           { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
                           //{ SCE_MARKDOWN_DEFAULT, L"Default", L"", L"" },
-                          { SCE_MARKDOWN_LINE_BEGIN, 63337, L"Line Begin", L"", L"" },
-                          { MULTI_STYLE(SCE_MARKDOWN_STRONG1,SCE_MARKDOWN_STRONG2,0,0), 63338, L"Strong", L"bold", L"" },
-                          { SCE_MARKDOWN_EM1, 63339, L"EM1", L"italic", L"" },
-                          { SCE_MARKDOWN_EM2, 63340, L"EM2", L"italic", L"" },
+                          { SCE_MARKDOWN_LINE_BEGIN, 63338, L"Line Begin", L"", L"" },
+                          { MULTI_STYLE(SCE_MARKDOWN_STRONG1,SCE_MARKDOWN_STRONG2,0,0), 63339, L"Strong", L"bold", L"" },
+                          { MULTI_STYLE(SCE_MARKDOWN_EM1,SCE_MARKDOWN_EM2,0,0), 63340, L"Emphasis", L"italic", L"" },
                           { SCE_MARKDOWN_HEADER1, 63341, L"Header 1", L"fore:#FF0088; bold", L"" },
                           { SCE_MARKDOWN_HEADER2, 63342, L"Header 2", L"fore:#FF0088; bold", L"" },
                           { SCE_MARKDOWN_HEADER3, 63343, L"Header 3", L"fore:#FF0088; bold", L"" },
@@ -1862,15 +2430,87 @@ EDITLEXER lexMARKDOWN = { SCLEX_MARKDOWN, 63336, L"Markdown", L"md; markdown; md
                           { SCE_MARKDOWN_HEADER5, 63345, L"Header 5", L"fore:#FF0088; bold", L"" },
                           { SCE_MARKDOWN_HEADER6, 63346, L"Header 6", L"fore:#FF0088; bold", L"" },
                           { SCE_MARKDOWN_PRECHAR, 63347, L"Pre char", L"fore:#00007F", L"" },
-                          { SCE_MARKDOWN_ULIST_ITEM, 63348, L"Ulist", L"fore:#0080FF; bold", L"" },
-                          { SCE_MARKDOWN_OLIST_ITEM, 63349, L"Olist", L"fore:#0080FF; bold", L"" },
+                          { SCE_MARKDOWN_ULIST_ITEM, 63348, L"Unordered list", L"fore:#0080FF; bold", L"" },
+                          { SCE_MARKDOWN_OLIST_ITEM, 63349, L"Ordered list", L"fore:#0080FF; bold", L"" },
                           { SCE_MARKDOWN_BLOCKQUOTE, 63350, L"Block quote", L"fore:#00007F", L"" },
                           { SCE_MARKDOWN_STRIKEOUT, 63351, L"Strikeout", L"", L"" },
-                          { SCE_MARKDOWN_HRULE, 63352, L"HRULE", L"bold", L"" },
+                          { SCE_MARKDOWN_HRULE, 63352, L"Horizontal rule", L"bold", L"" },
                           { SCE_MARKDOWN_LINK, 63353, L"Link", L"fore:#0000FF", L"" },
-                          { MULTI_STYLE(SCE_MARKDOWN_CODE,SCE_MARKDOWN_CODE2,0,0), 63354, L"Code", L"fore:#00007F", L"" },
-                          { SCE_MARKDOWN_CODEBK, 63355, L"Code Block", L"fore:#00007F", L"" },
+                          { MULTI_STYLE(SCE_MARKDOWN_CODE,SCE_MARKDOWN_CODE2,SCE_MARKDOWN_CODEBK,0), 63354, L"Code", L"fore:#00007F; back:#EBEBEB", L"" },
                           { -1, 00000, L"", L"", L"" } } };
+
+
+KEYWORDLIST KeyWords_YAML = {
+"y n yes no on off true false", "", "", "", "", "", "", "", "" };
+
+EDITLEXER lexYAML = { SCLEX_YAML, 63355, L"YAML", L"yaml; yml", L"", &KeyWords_YAML, {
+                      { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
+                      //{ SCE_YAML_DEFAULT, L"Default", L"", L"" },
+                      { SCE_YAML_COMMENT, 63127, L"Comment", L"fore:#008800", L"" },
+                      { SCE_YAML_IDENTIFIER, 63129, L"Identifier", L"bold; fore:#0A246A", L"" },
+                      { SCE_YAML_KEYWORD, 63128, L"Keyword", L"fore:#880088", L"" },
+                      { SCE_YAML_NUMBER, 63130, L"Number", L"fore:#FF8000", L"" },
+                      { SCE_YAML_REFERENCE, 63356, L"Reference", L"fore:#008888", L"" },
+                      { SCE_YAML_DOCUMENT, 63357, L"Document", L"fore:#FFFFFF; bold; back:#000088; eolfilled", L"" },
+                      { SCE_YAML_TEXT, 63358, L"Text", L"fore:#404040", L"" },
+                      { SCE_YAML_ERROR, 63359, L"Error", L"fore:#FFFFFF; bold; italic; back:#FF0000; eolfilled", L"" },
+                      { SCE_YAML_OPERATOR, 63132, L"Operator", L"fore:#333366", L"" },
+                      { -1, 00000, L"", L"", L"" } } };
+
+KEYWORDLIST KeyWords_VHDL = {
+"access after alias all architecture array assert attribute begin block body buffer bus case component configuration "
+"constant disconnect downto else elsif end entity exit file for function generate generic group guarded if impure in "
+"inertial inout is label library linkage literal loop map new next null of on open others out package port postponed "
+"procedure process pure range record register reject report return select severity shared signal subtype then "
+"to transport type unaffected units until use variable wait when while with",
+"abs and mod nand nor not or rem rol ror sla sll sra srl xnor xor",
+"left right low high ascending image value pos val succ pred leftof rightof base range reverse_range length delayed stable "
+"quiet transaction event active last_event last_active last_value driving driving_value simple_name path_name instance_name",
+"now readline read writeline write endfile resolved to_bit to_bitvector to_stdulogic to_stdlogicvector to_stdulogicvector "
+"to_x01 to_x01z to_UX01 rising_edge falling_edge is_x shift_left shift_right rotate_left rotate_right resize to_integer "
+"to_unsigned to_signed std_match to_01",
+"std ieee work standard textio std_logic_1164 std_logic_arith std_logic_misc std_logic_signed std_logic_textio std_logic_unsigned "
+"numeric_bit numeric_std math_complex math_real vital_primitives vital_timing",
+"boolean bit character severity_level integer real time delay_length natural positive string bit_vector file_open_kind "
+"file_open_status line text side width std_ulogic std_ulogic_vector std_logic std_logic_vector X01 X01Z UX01 UX01Z unsigned signed",
+"", "", "" };
+
+EDITLEXER lexVHDL = { SCLEX_VHDL, 63370, L"VHDL", L"vhdl; vhd", L"", &KeyWords_VHDL, {
+                       { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
+                       { MULTI_STYLE(SCE_VHDL_COMMENTLINEBANG, SCE_VHDL_COMMENT, SCE_VHDL_BLOCK_COMMENT, 0), 63127, L"Comment", L"fore:#008800", L"" },
+                       { SCE_VHDL_NUMBER, 63130, L"Number", L"fore:#FF0000", L"" },
+                       { MULTI_STYLE(SCE_VHDL_STRING, SCE_VHDL_STRINGEOL, 0, 0), 63131, L"String", L"fore:#008000", L"" },
+                       { SCE_VHDL_OPERATOR, 63132, L"Operator", L"fore:#B000B0", L"" },
+                       { SCE_VHDL_IDENTIFIER, 63129, L"Identifier", L"", L"" },
+                       { SCE_VHDL_KEYWORD, 63128, L"Keyword", L"bold; fore:#0A246A", L"" },
+                       { SCE_VHDL_STDOPERATOR, 63371, L"Standard operator", L"bold; fore:#0A246A", L"" },
+                       { SCE_VHDL_ATTRIBUTE, 63372, L"Attribute", L"", L"" },
+                       { SCE_VHDL_STDFUNCTION, 63373, L"Standard function", L"", L"" },
+                       { SCE_VHDL_STDPACKAGE, 63374, L"Standard package", L"", L"" },
+                       { SCE_VHDL_STDTYPE, 63375, L"Standard type", L"fore:#FF8000", L"" },
+                       { -1, 00000, L"", L"", L"" } } };
+
+
+KEYWORDLIST KeyWords_COFFEESCRIPT = {
+"", "", "", "", "", "", "", "", "" };
+
+
+EDITLEXER lexCOFFEESCRIPT = { SCLEX_COFFEESCRIPT, 63362, L"Coffeescript", L"coffee; Cakefile", L"", &KeyWords_COFFEESCRIPT, {
+                       { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
+                       //{ SCE_COFFEESCRIPT_DEFAULT, L"Default", L"", L"" },
+                       { MULTI_STYLE(SCE_COFFEESCRIPT_COMMENT,SCE_COFFEESCRIPT_COMMENTLINE,SCE_COFFEESCRIPT_COMMENTDOC,SCE_COFFEESCRIPT_COMMENTBLOCK), 63127, L"Comment", L"fore:#646464", L"" },
+                       { MULTI_STYLE(SCE_COFFEESCRIPT_STRING,SCE_COFFEESCRIPT_STRINGEOL,SCE_COFFEESCRIPT_STRINGRAW,0), 63131, L"String", L"fore:#008000", L"" },
+                       { SCE_COFFEESCRIPT_PREPROCESSOR, 63133, L"Preprocessor", L"fore:#FF8000", L"" },
+                       { SCE_COFFEESCRIPT_IDENTIFIER, 63129, L"Identifier", L"bold; fore:#0A246A", L"" },
+                       { SCE_COFFEESCRIPT_OPERATOR, 63132, L"Operator", L"fore:#B000B0", L"" },
+                       { SCE_COFFEESCRIPT_NUMBER, 63130, L"Number", L"fore:#FF0000", L"" },
+                       //{ SCE_COFFEESCRIPT_CHARACTER, 63376, L"Character", L"", L"" },
+                       { MULTI_STYLE(SCE_COFFEESCRIPT_REGEX,SCE_COFFEESCRIPT_VERBOSE_REGEX,SCE_COFFEESCRIPT_VERBOSE_REGEX_COMMENT,0), 63315, L"Regex", L"fore:#006633; back:#FFF1A8", L"" },
+                       { SCE_COFFEESCRIPT_GLOBALCLASS, 63378, L"Global Class", L"", L"" },
+                       //{ MULTI_STYLE(SCE_COFFEESCRIPT_COMMENTLINEDOC,SCE_COFFEESCRIPT_COMMENTDOCKEYWORD,SCE_COFFEESCRIPT_COMMENTDOCKEYWORDERROR,0), 63379, L"Comment line", L"fore:#646464", L"" },
+                       { MULTI_STYLE(SCE_COFFEESCRIPT_WORD,SCE_COFFEESCRIPT_WORD2,0,0), 63380, L"Word", L"", L"" },
+                       { MULTI_STYLE(SCE_COFFEESCRIPT_VERBATIM,SCE_COFFEESCRIPT_TRIPLEVERBATIM,0,0), 63381, L"Verbatim", L"", L"" },
+                       { -1, 00000, L"", L"", L"" } } };
 
 
 // This array holds all the lexers...
@@ -1886,6 +2526,7 @@ PEDITLEXER pLexArray[NUMLEXERS] =
   &lexAHK,
   &lexAU3,
   &lexBAT,
+  &lexCOFFEESCRIPT,
   &lexINI,
   &lexCPP,
   &lexCS,
@@ -1912,7 +2553,9 @@ PEDITLEXER pLexArray[NUMLEXERS] =
   &lexVBS,
   &lexVB,
   &lexHTML,
-  &lexXML
+  &lexXML,
+  &lexYAML,
+  &lexVHDL
 };
 
 
@@ -1931,19 +2574,6 @@ int cyStyleSelectDlg;
 extern int  iDefaultCodePage;
 extern int  iDefaultCharSet;
 extern BOOL bHiliteCurrentLine;
-
-
-__inline BOOL IsLexerUsingLowerKeywords(PEDITLEXER pLex)
-{
-	switch (pLex->iLexer) {
-		case SCLEX_VB:			// VB
-		case SCLEX_VBSCRIPT:	// VBS
-		case SCLEX_CONF:		// Apache Config
-			return TRUE;
-		default:
-			return FALSE;
-	}
-}
 
 
 //=============================================================================
@@ -2237,35 +2867,8 @@ void Style_SetLexer(HWND hwnd,PEDITLEXER pLexNew)
   SciCall_SetProperty("fold.cpp.comment.explicit", "0");
 
   // Add KeyWord Lists
-	if (IsLexerUsingLowerKeywords(pLexNew)) {
-		const char *pKeywords;
-		char *lowerKeywords;
-		char ch;
-		int wLen;
-		for (i = 0; i <= KEYWORDSET_MAX; i++) {
-			pKeywords = pLexNew->pKeyWords->pszKeyWords[i];
-			if (*pKeywords) {
-				wLen = lstrlenA(pKeywords);
-				lowerKeywords = LocalAlloc(LPTR, wLen + 1);
-				lstrcpyA(lowerKeywords, pKeywords);
-				while ((ch = *lowerKeywords)) {
-					if (ch >= 'A' && ch <= 'Z') {
-						*lowerKeywords = ch - 'A' + 'a';
-					}
-					lowerKeywords++;
-				}
-				lowerKeywords -= wLen;
-				SendMessage(hwnd, SCI_SETKEYWORDS, i, (LPARAM)lowerKeywords);
-				LocalFree(lowerKeywords);
-			} else {
-				SendMessage(hwnd, SCI_SETKEYWORDS, i, (LPARAM)"");
-			}
-		}
-	} else {
-		for (i = 0; i <= KEYWORDSET_MAX; i++) {
-			SendMessage(hwnd, SCI_SETKEYWORDS, i, (LPARAM)pLexNew->pKeyWords->pszKeyWords[i]);
-		}
-	}
+  for (i = 0; i < 9; i++)
+    SendMessage(hwnd,SCI_SETKEYWORDS,i,(LPARAM)pLexNew->pKeyWords->pszKeyWords[i]);
 
   // Use 2nd default style
   iIdx = (bUse2ndDefaultStyle) ? 12 : 0;
@@ -2704,6 +3307,8 @@ PEDITLEXER __fastcall Style_SniffShebang(char *pchText)
       return(&lexBASH);
     else if ((pch - pchText) >= 4 && StrCmpNA(pch-4,"ruby",4) == 0)
       return(&lexRUBY);
+    else if ((pch - pchText) >= 4 && StrCmpNA(pch-4,"node",4) == 0)
+      return(&lexJS);
   }
 
   return(NULL);
@@ -2837,6 +3442,18 @@ void Style_SetLexerFromFile(HWND hwnd,LPCWSTR lpszFile)
   if (!bFound && bAutoSelect &&
        lstrcmpi(PathFindFileName(lpszFile),L"makefile") == 0) {
     pLexNew = &lexMAK;
+    bFound = TRUE;
+  }
+
+  if (!bFound && bAutoSelect &&
+       lstrcmpi(PathFindFileName(lpszFile),L"rakefile") == 0) {
+    pLexNew = &lexRUBY;
+    bFound = TRUE;
+  }
+
+  if (!bFound && bAutoSelect &&
+       lstrcmpi(PathFindFileName(lpszFile),L"mozconfig") == 0) {
+    pLexNew = &lexBASH;
     bFound = TRUE;
   }
 
@@ -3500,7 +4117,7 @@ void Style_SetStyles(HWND hwnd,int iStyle,LPCWSTR lpszStyle)
   // Font
   if (Style_StrGetFont(lpszStyle,tch,COUNTOF(tch))) {
     char mch[256];
-    WideCharToMultiByte(CP_ACP,0,tch,-1,mch,COUNTOF(mch),NULL,NULL);
+    WideCharToMultiByte(CP_UTF8,0,tch,-1,mch,COUNTOF(mch),NULL,NULL);
     SendMessage(hwnd,SCI_STYLESETFONT,iStyle,(LPARAM)mch);
   }
 

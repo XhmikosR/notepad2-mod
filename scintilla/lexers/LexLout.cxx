@@ -40,7 +40,7 @@ static inline bool IsAnOther(const int ch) {
 	ch == ']' || ch == '^' || ch == '`' || ch == '|' || ch == '~');
 }
 
-static void ColouriseLoutDoc(unsigned int startPos, int length, int initStyle,
+static void ColouriseLoutDoc(Sci_PositionU startPos, Sci_Position length, int initStyle,
 			     WordList *keywordlists[], Accessor &styler) {
 
 	WordList &keywords = *keywordlists[0];
@@ -140,20 +140,20 @@ static void ColouriseLoutDoc(unsigned int startPos, int length, int initStyle,
 	sc.Complete();
 }
 
-static void FoldLoutDoc(unsigned int startPos, int length, int, WordList *[],
+static void FoldLoutDoc(Sci_PositionU startPos, Sci_Position length, int, WordList *[],
                         Accessor &styler) {
 
-	unsigned int endPos = startPos + length;
+	Sci_PositionU endPos = startPos + length;
 	int visibleChars = 0;
-	int lineCurrent = styler.GetLine(startPos);
+	Sci_Position lineCurrent = styler.GetLine(startPos);
 	int levelPrev = styler.LevelAt(lineCurrent) & SC_FOLDLEVELNUMBERMASK;
 	int levelCurrent = levelPrev;
 	char chNext = styler[startPos];
 	bool foldCompact = styler.GetPropertyInt("fold.compact", 1) != 0;
 	int styleNext = styler.StyleAt(startPos);
-	char s[10];
+	char s[10] = "";
 
-	for (unsigned int i = startPos; i < endPos; i++) {
+	for (Sci_PositionU i = startPos; i < endPos; i++) {
 		char ch = chNext;
 		chNext = styler.SafeGetCharAt(i + 1);
 		int style = styleNext;
@@ -162,7 +162,7 @@ static void FoldLoutDoc(unsigned int startPos, int length, int, WordList *[],
 
 		if (style == SCE_LOUT_WORD) {
 			if (ch == '@') {
-				for (unsigned int j = 0; j < 8; j++) {
+				for (Sci_PositionU j = 0; j < 8; j++) {
 					if (!IsAWordChar(styler[i + j])) {
 						break;
 					}

@@ -1,4 +1,2 @@
-1) Implement a mutex in Notepad2 and use that to check if it's running
-   (a working patch would be really welcome)
-2) Use RegQueryStringValue to get the uninstall command for the other versions.
+1) Use RegQueryStringValue to get the uninstall command for the other versions.
    I need to trim down the command in order to use it.

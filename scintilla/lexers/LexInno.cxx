@@ -27,14 +27,14 @@
 using namespace Scintilla;
 #endif
 
-static void ColouriseInnoDoc(unsigned int startPos, int length, int, WordList *keywordLists[], Accessor &styler) {
+static void ColouriseInnoDoc(Sci_PositionU startPos, Sci_Position length, int, WordList *keywordLists[], Accessor &styler) {
 	int state = SCE_INNO_DEFAULT;
 	char chPrev;
 	char ch = 0;
 	char chNext = styler[startPos];
-	int lengthDoc = startPos + length;
-	char *buffer = new char[length];
-	int bufferCount = 0;
+	Sci_Position lengthDoc = startPos + length;
+	char *buffer = new char[length+1];
+	Sci_Position bufferCount = 0;
 	bool isBOL, isEOL, isWS, isBOLWS = 0;
 	bool isCStyleComment = false;
 
@@ -45,7 +45,7 @@ static void ColouriseInnoDoc(unsigned int startPos, int length, int, WordList *k
 	WordList &pascalKeywords = *keywordLists[4];
 	WordList &userKeywords = *keywordLists[5];
 
-	int curLine = styler.GetLine(startPos);
+	Sci_Position curLine = styler.GetLine(startPos);
 	int curLineState = curLine > 0 ? styler.GetLineState(curLine - 1) : 0;
 	bool isCode = (curLineState == 1);
 
@@ -53,7 +53,7 @@ static void ColouriseInnoDoc(unsigned int startPos, int length, int, WordList *k
 	// using the hand-written state machine shown below
 	styler.StartAt(startPos);
 	styler.StartSegment(startPos);
-	for (int i = startPos; i < lengthDoc; i++) {
+	for (Sci_Position i = startPos; i < lengthDoc; i++) {
 		chPrev = ch;
 		ch = chNext;
 		chNext = styler.SafeGetCharAt(i + 1);
@@ -104,7 +104,7 @@ static void ColouriseInnoDoc(unsigned int startPos, int length, int, WordList *k
 				} else if (ch == '\'') {
 					// Start of a single-quote string
 					state = SCE_INNO_STRING_SINGLE;
-				} else if (isascii(ch) && (isalpha(ch) || (ch == '_'))) {
+				} else if (IsASCII(ch) && (isalpha(ch) || (ch == '_'))) {
 					// Start of an identifier
 					bufferCount = 0;
 					buffer[bufferCount++] = static_cast<char>(tolower(ch));
@@ -123,7 +123,7 @@ static void ColouriseInnoDoc(unsigned int startPos, int length, int, WordList *k
 				break;
 
 			case SCE_INNO_IDENTIFIER:
-				if (isascii(ch) && (isalnum(ch) || (ch == '_'))) {
+				if (IsASCII(ch) && (isalnum(ch) || (ch == '_'))) {
 					buffer[bufferCount++] = static_cast<char>(tolower(ch));
 				} else {
 					state = SCE_INNO_DEFAULT;
@@ -160,7 +160,7 @@ static void ColouriseInnoDoc(unsigned int startPos, int length, int, WordList *k
 					} else {
 						styler.ColourTo(i,SCE_INNO_DEFAULT);
 					}
-				} else if (isascii(ch) && (isalnum(ch) || (ch == '_'))) {
+				} else if (IsASCII(ch) && (isalnum(ch) || (ch == '_'))) {
 					buffer[bufferCount++] = static_cast<char>(tolower(ch));
 				} else {
 					state = SCE_INNO_DEFAULT;
@@ -170,7 +170,7 @@ static void ColouriseInnoDoc(unsigned int startPos, int length, int, WordList *k
 
 			case SCE_INNO_PREPROC:
 				if (isWS || isEOL) {
-					if (isascii(chPrev) && isalpha(chPrev)) {
+					if (IsASCII(chPrev) && isalpha(chPrev)) {
 						state = SCE_INNO_DEFAULT;
 						buffer[bufferCount] = '\0';
 
@@ -185,7 +185,7 @@ static void ColouriseInnoDoc(unsigned int startPos, int length, int, WordList *k
 						chNext = styler[i--];
 						ch = chPrev;
 					}
-				} else if (isascii(ch) && isalpha(ch)) {
+				} else if (IsASCII(ch) && isalpha(ch)) {
 					if (chPrev == '#' || chPrev == ' ' || chPrev == '\t')
 						bufferCount = 0;
 					buffer[bufferCount++] = static_cast<char>(tolower(ch));
@@ -248,17 +248,17 @@ static const char * const innoWordListDesc[] = {
 	0
 };
 
-static void FoldInnoDoc(unsigned int startPos, int length, int, WordList *[], Accessor &styler) {
-	unsigned int endPos = startPos + length;
+static void FoldInnoDoc(Sci_PositionU startPos, Sci_Position length, int, WordList *[], Accessor &styler) {
+	Sci_PositionU endPos = startPos + length;
 	char chNext = styler[startPos];
 
-	int lineCurrent = styler.GetLine(startPos);
+	Sci_Position lineCurrent = styler.GetLine(startPos);
 
 	bool sectionFlag = false;
 	int levelPrev = lineCurrent > 0 ? styler.LevelAt(lineCurrent - 1) : SC_FOLDLEVELBASE;
 	int level;
 
-	for (unsigned int i = startPos; i < endPos; i++) {
+	for (Sci_PositionU i = startPos; i < endPos; i++) {
 		char ch = chNext;
 		chNext = styler[i+1];
 		bool atEOL = (ch == '\r' && chNext != '\n') || (ch == '\n');

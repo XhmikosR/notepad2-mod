@@ -8,10 +8,10 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <assert.h>
+#include <ctype.h>
 
 #include <string>
 #include <vector>
@@ -30,12 +30,16 @@
 #include "LexerModule.h"
 #include "OptionSet.h"
 #include "SparseState.h"
+#include "SubStyles.h"
 
 #ifdef SCI_NAMESPACE
 using namespace Scintilla;
 #endif
 
-static bool IsSpaceEquiv(int state) {
+namespace {
+	// Use an unnamed namespace to protect the functions and classes from name conflicts
+
+bool IsSpaceEquiv(int state) {
 	return (state <= SCE_C_COMMENTDOC) ||
 		// including SCE_C_DEFAULT, SCE_C_COMMENT, SCE_C_COMMENTLINE
 		(state == SCE_C_COMMENTLINEDOC) || (state == SCE_C_COMMENTDOCKEYWORD) ||
@@ -49,8 +53,8 @@ static bool IsSpaceEquiv(int state) {
 // a = b+++/ptn/...
 // Putting a space between the '++' post-inc operator and the '+' binary op
 // fixes this, and is highly recommended for readability anyway.
-static bool FollowsPostfixOperator(StyleContext &sc, LexAccessor &styler) {
-	int pos = (int) sc.currentPos;
+bool FollowsPostfixOperator(StyleContext &sc, LexAccessor &styler) {
+	Sci_Position pos = (Sci_Position) sc.currentPos;
 	while (--pos > 0) {
 		char ch = styler[pos];
 		if (ch == '+' || ch == '-') {
@@ -60,14 +64,13 @@ static bool FollowsPostfixOperator(StyleContext &sc, LexAccessor &styler) {
 	return false;
 }
 
-static bool followsReturnKeyword(StyleContext &sc, LexAccessor &styler) {
+bool followsReturnKeyword(StyleContext &sc, LexAccessor &styler) {
 	// Don't look at styles, so no need to flush.
-	int pos = (int) sc.currentPos;
-	int currentLine = styler.GetLine(pos);
-	int lineStartPos = styler.LineStart(currentLine);
-	char ch;
+	Sci_Position pos = (Sci_Position) sc.currentPos;
+	Sci_Position currentLine = styler.GetLine(pos);
+	Sci_Position lineStartPos = styler.LineStart(currentLine);
 	while (--pos > lineStartPos) {
-		ch = styler.SafeGetCharAt(pos);
+		char ch = styler.SafeGetCharAt(pos);
 		if (ch != ' ' && ch != '\t') {
 			break;
 		}
@@ -83,52 +86,151 @@ static bool followsReturnKeyword(StyleContext &sc, LexAccessor &styler) {
 	return !*s;
 }
 
-static std::string GetRestOfLine(LexAccessor &styler, int start, bool allowSpace) {
+bool IsSpaceOrTab(int ch) {
+	return ch == ' ' || ch == '\t';
+}
+
+bool OnlySpaceOrTab(const std::string &s) {
+	for (std::string::const_iterator it = s.begin(); it != s.end(); ++it) {
+		if (!IsSpaceOrTab(*it))
+			return false;
+	}
+	return true;
+}
+
+std::vector<std::string> StringSplit(const std::string &text, int separator) {
+	std::vector<std::string> vs(text.empty() ? 0 : 1);
+	for (std::string::const_iterator it = text.begin(); it != text.end(); ++it) {
+		if (*it == separator) {
+			vs.push_back(std::string());
+		} else {
+			vs.back() += *it;
+		}
+	}
+	return vs;
+}
+
+struct BracketPair {
+	std::vector<std::string>::iterator itBracket;
+	std::vector<std::string>::iterator itEndBracket;
+};
+
+BracketPair FindBracketPair(std::vector<std::string> &tokens) {
+	BracketPair bp;
+	std::vector<std::string>::iterator itTok = std::find(tokens.begin(), tokens.end(), "(");
+	bp.itBracket = tokens.end();
+	bp.itEndBracket = tokens.end();
+	if (itTok != tokens.end()) {
+		bp.itBracket = itTok;
+		size_t nest = 0;
+		while (itTok != tokens.end()) {
+			if (*itTok == "(") {
+				nest++;
+			} else if (*itTok == ")") {
+				nest--;
+				if (nest == 0) {
+					bp.itEndBracket = itTok;
+					return bp;
+				}
+			}
+			++itTok;
+		}
+	}
+	bp.itBracket = tokens.end();
+	return bp;
+}
+
+void highlightTaskMarker(StyleContext &sc, LexAccessor &styler,
+		int activity, WordList &markerList, bool caseSensitive){
+	if ((isoperator(sc.chPrev) || IsASpace(sc.chPrev)) && markerList.Length()) {
+		const int lengthMarker = 50;
+		char marker[lengthMarker+1];
+		Sci_Position currPos = (Sci_Position) sc.currentPos;
+		int i = 0;
+		while (i < lengthMarker) {
+			char ch = styler.SafeGetCharAt(currPos + i);
+			if (IsASpace(ch) || isoperator(ch)) {
+				break;
+			}
+			if (caseSensitive)
+				marker[i] = ch;
+			else
+				marker[i] = static_cast<char>(tolower(ch));
+			i++;
+		}
+		marker[i] = '\0';
+		if (markerList.InList(marker)) {
+			sc.SetState(SCE_C_TASKMARKER|activity);
+		}
+	}
+}
+
+struct EscapeSequence {
+	int digitsLeft;
+	CharacterSet setHexDigits;
+	CharacterSet setOctDigits;
+	CharacterSet setNoneNumeric;
+	CharacterSet *escapeSetValid;
+	EscapeSequence() {
+		digitsLeft = 0;
+		escapeSetValid = 0;
+		setHexDigits = CharacterSet(CharacterSet::setDigits, "ABCDEFabcdef");
+		setOctDigits = CharacterSet(CharacterSet::setNone, "01234567");
+	}
+	void resetEscapeState(int nextChar) {
+		digitsLeft = 0;
+		escapeSetValid = &setNoneNumeric;
+		if (nextChar == 'U') {
+			digitsLeft = 9;
+			escapeSetValid = &setHexDigits;
+		} else if (nextChar == 'u') {
+			digitsLeft = 5;
+			escapeSetValid = &setHexDigits;
+		} else if (nextChar == 'x') {
+			digitsLeft = 5;
+			escapeSetValid = &setHexDigits;
+		} else if (setOctDigits.Contains(nextChar)) {
+			digitsLeft = 3;
+			escapeSetValid = &setOctDigits;
+		}
+	}
+	bool atEscapeEnd(int currChar) const {
+		return (digitsLeft <= 0) || !escapeSetValid->Contains(currChar);
+	}
+};
+
+std::string GetRestOfLine(LexAccessor &styler, Sci_Position start, bool allowSpace) {
 	std::string restOfLine;
-	int i =0;
+	Sci_Position i =0;
 	char ch = styler.SafeGetCharAt(start, '\n');
-	while ((ch != '\r') && (ch != '\n')) {
+	Sci_Position endLine = styler.LineEnd(styler.GetLine(start));
+	while (((start+i) < endLine) && (ch != '\r')) {
+		char chNext = styler.SafeGetCharAt(start + i + 1, '\n');
+		if (ch == '/' && (chNext == '/' || chNext == '*'))
+			break;
 		if (allowSpace || (ch != ' '))
 			restOfLine += ch;
 		i++;
-		ch = styler.SafeGetCharAt(start + i, '\n');
+		ch = chNext;
 	}
 	return restOfLine;
 }
 
-static bool IsStreamCommentStyle(int style) {
+bool IsStreamCommentStyle(int style) {
 	return style == SCE_C_COMMENT ||
 		style == SCE_C_COMMENTDOC ||
 		style == SCE_C_COMMENTDOCKEYWORD ||
 		style == SCE_C_COMMENTDOCKEYWORDERROR;
 }
 
-static std::vector<std::string> Tokenize(const std::string &s) {
-	// Break into space separated tokens
-	std::string word;
-	std::vector<std::string> tokens;
-	for (const char *cp = s.c_str(); *cp; cp++) {
-		if ((*cp == ' ') || (*cp == '\t')) {
-			if (!word.empty()) {
-				tokens.push_back(word);
-				word = "";
-			}
-		} else {
-			word += *cp;
-		}
-	}
-	if (!word.empty()) {
-		tokens.push_back(word);
-	}
-	return tokens;
-}
-
 struct PPDefinition {
-	int line;
+	Sci_Position line;
 	std::string key;
 	std::string value;
-	PPDefinition(int line_, const std::string &key_, const std::string &value_) :
-		line(line_), key(key_), value(value_) {
+	bool isUndef;
+	std::string arguments;
+	PPDefinition(Sci_Position line_, const std::string &key_, const std::string &value_, bool isUndef_ = false, const std::string &arguments_="") :
+		line(line_), key(key_), value(value_), isUndef(isUndef_), arguments(arguments_) {
 	}
 };
 
@@ -148,7 +250,7 @@ public:
 	bool IsInactive() const {
 		return state != 0;
 	}
-	bool CurrentIfTaken() {
+	bool CurrentIfTaken() const {
 		return (ifTaken & maskLevel()) != 0;
 	}
 	void StartSection(bool on) {
@@ -183,14 +285,14 @@ public:
 class PPStates {
 	std::vector<LinePPState> vlls;
 public:
-	LinePPState ForLine(int line) {
+	LinePPState ForLine(Sci_Position line) const {
 		if ((line > 0) && (vlls.size() > static_cast<size_t>(line))) {
 			return vlls[line];
 		} else {
 			return LinePPState();
 		}
 	}
-	void Add(int line, LinePPState lls) {
+	void Add(Sci_Position line, LinePPState lls) {
 		vlls.resize(line+1);
 		vlls[line] = lls;
 	}
@@ -204,8 +306,11 @@ struct OptionsCPP {
 	bool identifiersAllowDollars;
 	bool trackPreprocessor;
 	bool updatePreprocessor;
+	bool verbatimStringsAllowEscapes;
 	bool triplequotedStrings;
 	bool hashquotedStrings;
+	bool backQuotedStrings;
+	bool escapeSequence;
 	bool fold;
 	bool foldSyntaxBased;
 	bool foldComment;
@@ -215,6 +320,7 @@ struct OptionsCPP {
 	std::string foldExplicitEnd;
 	bool foldExplicitAnywhere;
 	bool foldPreprocessor;
+	bool foldPreprocessorAtElse;
 	bool foldCompact;
 	bool foldAtElse;
 	OptionsCPP() {
@@ -222,8 +328,11 @@ struct OptionsCPP {
 		identifiersAllowDollars = true;
 		trackPreprocessor = true;
 		updatePreprocessor = true;
+		verbatimStringsAllowEscapes = false;
 		triplequotedStrings = false;
 		hashquotedStrings = false;
+		backQuotedStrings = false;
+		escapeSequence = false;
 		fold = false;
 		foldSyntaxBased = true;
 		foldComment = false;
@@ -233,17 +342,19 @@ struct OptionsCPP {
 		foldExplicitEnd = "";
 		foldExplicitAnywhere = false;
 		foldPreprocessor = false;
+		foldPreprocessorAtElse = false;
 		foldCompact = false;
 		foldAtElse = false;
 	}
 };
 
-static const char *const cppWordLists[] = {
+const char *const cppWordLists[] = {
             "Primary keywords and identifiers",
             "Secondary keywords and identifiers",
             "Documentation comment keywords",
             "Global classes and typedefs",
             "Preprocessor definitions",
+            "Task marker and error marker keywords",
             0,
 };
 
@@ -263,11 +374,20 @@ struct OptionSetCPP : public OptionSet<OptionsCPP> {
 		DefineProperty("lexer.cpp.update.preprocessor", &OptionsCPP::updatePreprocessor,
 			"Set to 1 to update preprocessor definitions when #define found.");
 
+		DefineProperty("lexer.cpp.verbatim.strings.allow.escapes", &OptionsCPP::verbatimStringsAllowEscapes,
+			"Set to 1 to allow verbatim strings to contain escape sequences.");
+
 		DefineProperty("lexer.cpp.triplequoted.strings", &OptionsCPP::triplequotedStrings,
 			"Set to 1 to enable highlighting of triple-quoted strings.");
 
 		DefineProperty("lexer.cpp.hashquoted.strings", &OptionsCPP::hashquotedStrings,
 			"Set to 1 to enable highlighting of hash-quoted strings.");
+
+		DefineProperty("lexer.cpp.backquoted.strings", &OptionsCPP::backQuotedStrings,
+			"Set to 1 to enable highlighting of back-quoted raw strings .");
+
+		DefineProperty("lexer.cpp.escape.sequence", &OptionsCPP::escapeSequence,
+			"Set to 1 to enable highlighting of escape sequences in strings");
 
 		DefineProperty("fold", &OptionsCPP::fold);
 
@@ -293,6 +413,9 @@ struct OptionSetCPP : public OptionSet<OptionsCPP> {
 
 		DefineProperty("fold.cpp.explicit.anywhere", &OptionsCPP::foldExplicitAnywhere,
 			"Set this property to 1 to enable explicit fold points anywhere, not just in line comments.");
+		
+		DefineProperty("fold.cpp.preprocessor.at.else", &OptionsCPP::foldPreprocessorAtElse,
+			"This option enables folding on a preprocessor #else or #endif line of an #if statement.");
 
 		DefineProperty("fold.preprocessor", &OptionsCPP::foldPreprocessor,
 			"This option enables folding preprocessor directives when using the C++ lexer. "
@@ -307,13 +430,18 @@ struct OptionSetCPP : public OptionSet<OptionsCPP> {
 	}
 };
 
-class LexerCPP : public ILexer {
+const char styleSubable[] = {SCE_C_IDENTIFIER, SCE_C_COMMENTDOCKEYWORD, 0};
+
+}
+
+class LexerCPP : public ILexerWithSubStyles {
 	bool caseSensitive;
 	CharacterSet setWord;
 	CharacterSet setNegationOp;
 	CharacterSet setArithmethicOp;
 	CharacterSet setRelOp;
 	CharacterSet setLogicalOp;
+	CharacterSet setWordStart;
 	PPStates vlls;
 	std::vector<PPDefinition> ppDefineHistory;
 	WordList keywords;
@@ -321,19 +449,39 @@ class LexerCPP : public ILexer {
 	WordList keywords3;
 	WordList keywords4;
 	WordList ppDefinitions;
-	std::map<std::string, std::string> preprocessorDefinitionsStart;
+	WordList markerList;
+	struct SymbolValue {
+		std::string value;
+		std::string arguments;
+		SymbolValue(const std::string &value_="", const std::string &arguments_="") : value(value_), arguments(arguments_) {
+		}
+		SymbolValue &operator = (const std::string &value_) {
+			value = value_;
+			arguments.clear();
+			return *this;
+		}
+		bool IsMacro() const {
+			return !arguments.empty();
+		}
+	};
+	typedef std::map<std::string, SymbolValue> SymbolTable;
+	SymbolTable preprocessorDefinitionsStart;
 	OptionsCPP options;
 	OptionSetCPP osCPP;
+	EscapeSequence escapeSeq;
 	SparseState<std::string> rawStringTerminators;
 	enum { activeFlag = 0x40 };
+	enum { ssIdentifier, ssDocKeyword };
+	SubStyles subStyles;
 public:
-	LexerCPP(bool caseSensitive_) :
+	explicit LexerCPP(bool caseSensitive_) :
 		caseSensitive(caseSensitive_),
 		setWord(CharacterSet::setAlphaNum, "._", 0x80, true),
 		setNegationOp(CharacterSet::setNone, "!"),
 		setArithmethicOp(CharacterSet::setNone, "+-/*%"),
 		setRelOp(CharacterSet::setNone, "=!<>"),
-		setLogicalOp(CharacterSet::setNone, "|&") {
+		setLogicalOp(CharacterSet::setNone, "|&"),
+		subStyles(styleSubable, 0x80, 0x40, activeFlag) {
 	}
 	virtual ~LexerCPP() {
 	}
@@ -341,7 +489,7 @@ public:
 		delete this;
 	}
 	int SCI_METHOD Version() const {
-		return lvOriginal;
+		return lvSubStyles;
 	}
 	const char * SCI_METHOD PropertyNames() {
 		return osCPP.PropertyNames();
@@ -352,16 +500,50 @@ public:
 	const char * SCI_METHOD DescribeProperty(const char *name) {
 		return osCPP.DescribeProperty(name);
 	}
-	int SCI_METHOD PropertySet(const char *key, const char *val);
+	Sci_Position SCI_METHOD PropertySet(const char *key, const char *val);
 	const char * SCI_METHOD DescribeWordListSets() {
 		return osCPP.DescribeWordListSets();
 	}
-	int SCI_METHOD WordListSet(int n, const char *wl);
-	void SCI_METHOD Lex(unsigned int startPos, int length, int initStyle, IDocument *pAccess);
-	void SCI_METHOD Fold(unsigned int startPos, int length, int initStyle, IDocument *pAccess);
+	Sci_Position SCI_METHOD WordListSet(int n, const char *wl);
+	void SCI_METHOD Lex(Sci_PositionU startPos, Sci_Position length, int initStyle, IDocument *pAccess);
+	void SCI_METHOD Fold(Sci_PositionU startPos, Sci_Position length, int initStyle, IDocument *pAccess);
 
 	void * SCI_METHOD PrivateCall(int, void *) {
 		return 0;
+	}
+
+	int SCI_METHOD LineEndTypesSupported() {
+		return SC_LINE_END_TYPE_UNICODE;
+	}
+
+	int SCI_METHOD AllocateSubStyles(int styleBase, int numberStyles) {
+		return subStyles.Allocate(styleBase, numberStyles);
+	}
+	int SCI_METHOD SubStylesStart(int styleBase) {
+		return subStyles.Start(styleBase);
+	}
+	int SCI_METHOD SubStylesLength(int styleBase) {
+		return subStyles.Length(styleBase);
+	}
+	int SCI_METHOD StyleFromSubStyle(int subStyle) {
+		int styleBase = subStyles.BaseStyle(MaskActive(subStyle));
+		int active = subStyle & activeFlag;
+		return styleBase | active;
+	}
+	int SCI_METHOD PrimaryStyleFromStyle(int style) {
+		return MaskActive(style);
+ 	}
+	void SCI_METHOD FreeSubStyles() {
+		subStyles.Free();
+	}
+	void SCI_METHOD SetIdentifiers(int style, const char *identifiers) {
+		subStyles.SetIdentifiers(style, identifiers);
+	}
+	int SCI_METHOD DistanceToSecondaryStyles() {
+		return activeFlag;
+	}
+	const char * SCI_METHOD GetSubStyleBases() {
+		return styleSubable;
 	}
 
 	static ILexer *LexerFactoryCPP() {
@@ -373,11 +555,12 @@ public:
 	static int MaskActive(int style) {
 		return style & ~activeFlag;
 	}
-	void EvaluateTokens(std::vector<std::string> &tokens);
-	bool EvaluateExpression(const std::string &expr, const std::map<std::string, std::string> &preprocessorDefinitions);
+	void EvaluateTokens(std::vector<std::string> &tokens, const SymbolTable &preprocessorDefinitions);
+	std::vector<std::string> Tokenize(const std::string &expr) const;
+	bool EvaluateExpression(const std::string &expr, const SymbolTable &preprocessorDefinitions);
 };
 
-int SCI_METHOD LexerCPP::PropertySet(const char *key, const char *val) {
+Sci_Position SCI_METHOD LexerCPP::PropertySet(const char *key, const char *val) {
 	if (osCPP.PropertySet(&options, key, val)) {
 		if (strcmp(key, "lexer.cpp.allow.dollars") == 0) {
 			setWord = CharacterSet(CharacterSet::setAlphaNum, "._", 0x80, true);
@@ -390,7 +573,7 @@ int SCI_METHOD LexerCPP::PropertySet(const char *key, const char *val) {
 	return -1;
 }
 
-int SCI_METHOD LexerCPP::WordListSet(int n, const char *wl) {
+Sci_Position SCI_METHOD LexerCPP::WordListSet(int n, const char *wl) {
 	WordList *wordListN = 0;
 	switch (n) {
 	case 0:
@@ -408,8 +591,11 @@ int SCI_METHOD LexerCPP::WordListSet(int n, const char *wl) {
 	case 4:
 		wordListN = &ppDefinitions;
 		break;
+	case 5:
+		wordListN = &markerList;
+		break;
 	}
-	int firstModification = -1;
+	Sci_Position firstModification = -1;
 	if (wordListN) {
 		WordList wlNew;
 		wlNew.Set(wl);
@@ -419,13 +605,22 @@ int SCI_METHOD LexerCPP::WordListSet(int n, const char *wl) {
 			if (n == 4) {
 				// Rebuild preprocessorDefinitions
 				preprocessorDefinitionsStart.clear();
-				for (int nDefinition = 0; nDefinition < ppDefinitions.len; nDefinition++) {
-					char *cpDefinition = ppDefinitions.words[nDefinition];
-					char *cpEquals = strchr(cpDefinition, '=');
+				for (int nDefinition = 0; nDefinition < ppDefinitions.Length(); nDefinition++) {
+					const char *cpDefinition = ppDefinitions.WordAt(nDefinition);
+					const char *cpEquals = strchr(cpDefinition, '=');
 					if (cpEquals) {
 						std::string name(cpDefinition, cpEquals - cpDefinition);
 						std::string val(cpEquals+1);
-						preprocessorDefinitionsStart[name] = val;
+						size_t bracket = name.find('(');
+						size_t bracketEnd = name.find(')');
+						if ((bracket != std::string::npos) && (bracketEnd != std::string::npos)) {
+							// Macro
+							std::string args = name.substr(bracket + 1, bracketEnd - bracket - 1);
+							name = name.substr(0, bracket);
+							preprocessorDefinitionsStart[name] = SymbolValue(val, args);
+						} else {
+							preprocessorDefinitionsStart[name] = val;
+						}
 					} else {
 						std::string name(cpDefinition);
 						std::string val("1");
@@ -440,14 +635,14 @@ int SCI_METHOD LexerCPP::WordListSet(int n, const char *wl) {
 
 // Functor used to truncate history
 struct After {
-	int line;
-	After(int line_) : line(line_) {}
+	Sci_Position line;
+	explicit After(Sci_Position line_) : line(line_) {}
 	bool operator()(PPDefinition &p) const {
 		return p.line > line;
 	}
 };
 
-void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, IDocument *pAccess) {
+void SCI_METHOD LexerCPP::Lex(Sci_PositionU startPos, Sci_Position length, int initStyle, IDocument *pAccess) {
 	LexAccessor styler(pAccess);
 
 	CharacterSet setOKBeforeRE(CharacterSet::setNone, "([{=,:;!%^&*|?~+-");
@@ -455,7 +650,9 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 
 	CharacterSet setDoxygen(CharacterSet::setAlpha, "$@\\&<>#{}[]");
 
-	CharacterSet setWordStart(CharacterSet::setAlpha, "_", 0x80, true);
+	setWordStart = CharacterSet(CharacterSet::setAlpha, "_", 0x80, true);
+
+	CharacterSet setInvalidRawFirst(CharacterSet::setNone, " )\\\t\v\f\n");
 
 	if (options.identifiersAllowDollars) {
 		setWordStart.Add('$');
@@ -465,31 +662,29 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 	int visibleChars = 0;
 	bool lastWordWasUUID = false;
 	int styleBeforeDCKeyword = SCE_C_DEFAULT;
+	int styleBeforeTaskMarker = SCE_C_DEFAULT;
 	bool continuationLine = false;
 	bool isIncludePreprocessor = false;
 	bool isStringInPreprocessor = false;
+	bool inRERange = false;
+	bool seenDocKeyBrace = false;
 
-	int lineCurrent = styler.GetLine(startPos);
+	Sci_Position lineCurrent = styler.GetLine(startPos);
 	if ((MaskActive(initStyle) == SCE_C_PREPROCESSOR) ||
       (MaskActive(initStyle) == SCE_C_COMMENTLINE) ||
       (MaskActive(initStyle) == SCE_C_COMMENTLINEDOC)) {
 		// Set continuationLine if last character of previous line is '\'
 		if (lineCurrent > 0) {
-			int chBack = styler.SafeGetCharAt(startPos-1, 0);
-			int chBack2 = styler.SafeGetCharAt(startPos-2, 0);
-			int lineEndChar = '!';
-			if (chBack2 == '\r' && chBack == '\n') {
-				lineEndChar = styler.SafeGetCharAt(startPos-3, 0);
-			} else if (chBack == '\n' || chBack == '\r') {
-				lineEndChar = chBack2;
+			Sci_Position endLinePrevious = styler.LineEnd(lineCurrent - 1);
+			if (endLinePrevious > 0) {
+				continuationLine = styler.SafeGetCharAt(endLinePrevious-1) == '\\';
 			}
-			continuationLine = lineEndChar == '\\';
 		}
 	}
 
 	// look back to set chPrevNonWhite properly for better regex colouring
 	if (startPos > 0) {
-		int back = startPos;
+		Sci_Position back = startPos;
 		while (--back && IsSpaceEquiv(MaskActive(styler.StyleAt(back))))
 			;
 		if (MaskActive(styler.StyleAt(back)) == SCE_C_OPERATOR) {
@@ -497,7 +692,7 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 		}
 	}
 
-	StyleContext sc(startPos, length, initStyle, styler, 0x7f);
+	StyleContext sc(startPos, length, initStyle, styler);
 	LinePPState preproc = vlls.ForLine(lineCurrent);
 
 	bool definitionsChanged = false;
@@ -513,15 +708,23 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 		definitionsChanged = true;
 	}
 
-	std::map<std::string, std::string> preprocessorDefinitions = preprocessorDefinitionsStart;
+	SymbolTable preprocessorDefinitions = preprocessorDefinitionsStart;
 	for (std::vector<PPDefinition>::iterator itDef = ppDefineHistory.begin(); itDef != ppDefineHistory.end(); ++itDef) {
-		preprocessorDefinitions[itDef->key] = itDef->value;
+		if (itDef->isUndef)
+			preprocessorDefinitions.erase(itDef->key);
+		else
+			preprocessorDefinitions[itDef->key] = SymbolValue(itDef->value, itDef->arguments);
 	}
 
 	std::string rawStringTerminator = rawStringTerminators.ValueAt(lineCurrent-1);
 	SparseState<std::string> rawSTNew(lineCurrent);
 
 	int activitySet = preproc.IsInactive() ? activeFlag : 0;
+
+	const WordClassifier &classifierIdentifiers = subStyles.Classifier(SCE_C_IDENTIFIER);
+	const WordClassifier &classifierDocKeyWords = subStyles.Classifier(SCE_C_COMMENTDOCKEYWORD);
+
+	Sci_Position lineEndNext = styler.LineEnd(lineCurrent);
 
 	for (; sc.More();) {
 
@@ -530,17 +733,18 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 			// Inside inactive preprocessor declaration, state will be reset anyway at the end of this block.
 			if ((sc.state == SCE_C_STRING) || (sc.state == SCE_C_CHARACTER)) {
 				// Prevent SCE_C_STRINGEOL from leaking back to previous line which
-				// ends with a line continuation by locking in the state upto this position.
+				// ends with a line continuation by locking in the state up to this position.
 				sc.SetState(sc.state);
 			}
 			if ((MaskActive(sc.state) == SCE_C_PREPROCESSOR) && (!continuationLine)) {
 				sc.SetState(SCE_C_DEFAULT|activitySet);
 			}
-			// Reset states to begining of colourise so no surprises
+			// Reset states to beginning of colourise so no surprises
 			// if different sets of lines lexed.
 			visibleChars = 0;
 			lastWordWasUUID = false;
 			isIncludePreprocessor = false;
+			inRERange = false;
 			if (preproc.IsInactive()) {
 				activitySet = activeFlag;
 				sc.SetState(sc.state | activitySet);
@@ -549,6 +753,7 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 
 		if (sc.atLineEnd) {
 			lineCurrent++;
+			lineEndNext = styler.LineEnd(lineCurrent);
 			vlls.Add(lineCurrent, preproc);
 			if (rawStringTerminator != "") {
 				rawSTNew.Set(lineCurrent-1, rawStringTerminator);
@@ -557,11 +762,16 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 
 		// Handle line continuation generically.
 		if (sc.ch == '\\') {
-			if (sc.chNext == '\n' || sc.chNext == '\r') {
+			if (static_cast<Sci_Position>((sc.currentPos+1)) >= lineEndNext) {
 				lineCurrent++;
+				lineEndNext = styler.LineEnd(lineCurrent);
 				vlls.Add(lineCurrent, preproc);
+				if (rawStringTerminator != "") {
+					rawSTNew.Set(lineCurrent-1, rawStringTerminator);
+				}
 				sc.Forward();
 				if (sc.ch == '\r' && sc.chNext == '\n') {
+					// Even in UTF-8, \r and \n are separate
 					sc.Forward();
 				}
 				continuationLine = true;
@@ -579,12 +789,21 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 				break;
 			case SCE_C_NUMBER:
 				// We accept almost anything because of hex. and number suffixes
-				if (!(setWord.Contains(sc.ch) || ((sc.ch == '+' || sc.ch == '-') && (sc.chPrev == 'e' || sc.chPrev == 'E')))) {
+				if (sc.ch == '_') {
+					sc.ChangeState(SCE_C_USERLITERAL|activitySet);
+				} else if (!(setWord.Contains(sc.ch)
+				   || (sc.ch == '\'')
+				   || ((sc.ch == '+' || sc.ch == '-') && (sc.chPrev == 'e' || sc.chPrev == 'E' ||
+				                                          sc.chPrev == 'p' || sc.chPrev == 'P')))) {
 					sc.SetState(SCE_C_DEFAULT|activitySet);
 				}
 				break;
+			case SCE_C_USERLITERAL:
+				if (!(setWord.Contains(sc.ch)))
+					sc.SetState(SCE_C_DEFAULT|activitySet);
+				break;
 			case SCE_C_IDENTIFIER:
-				if (!setWord.Contains(sc.ch) || (sc.ch == '.')) {
+				if (sc.atLineStart || sc.atLineEnd || !setWord.Contains(sc.ch) || (sc.ch == '.')) {
 					char s[1000];
 					if (caseSensitive) {
 						sc.GetCurrent(s, sizeof(s));
@@ -598,11 +817,16 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 						sc.ChangeState(SCE_C_WORD2|activitySet);
 					} else if (keywords4.InList(s)) {
 						sc.ChangeState(SCE_C_GLOBALCLASS|activitySet);
+					} else {
+						int subStyle = classifierIdentifiers.ValueFor(s);
+						if (subStyle >= 0) {
+							sc.ChangeState(subStyle|activitySet);
+						}
 					}
 					const bool literalString = sc.ch == '\"';
 					if (literalString || sc.ch == '\'') {
 						size_t lenS = strlen(s);
-						const bool raw = literalString && sc.chPrev == 'R';
+						const bool raw = literalString && sc.chPrev == 'R' && !setInvalidRawFirst.Contains(sc.chNext);
 						if (raw)
 							s[lenS--] = '\0';
 						bool valid =
@@ -610,27 +834,42 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 							((lenS == 1) && ((s[0] == 'L') || (s[0] == 'u') || (s[0] == 'U'))) ||
 							((lenS == 2) && literalString && (s[0] == 'u') && (s[1] == '8'));
 						if (valid) {
-							if (literalString)
-								sc.ChangeState((raw ? SCE_C_STRINGRAW : SCE_C_STRING)|activitySet);
-							else
+							if (literalString) {
+								if (raw) {
+									// Set the style of the string prefix to SCE_C_STRINGRAW but then change to
+									// SCE_C_DEFAULT as that allows the raw string start code to run.
+									sc.ChangeState(SCE_C_STRINGRAW|activitySet);
+									sc.SetState(SCE_C_DEFAULT|activitySet);
+								} else {
+									sc.ChangeState(SCE_C_STRING|activitySet);
+								}
+							} else {
 								sc.ChangeState(SCE_C_CHARACTER|activitySet);
+							}
+						} else {
+							sc.SetState(SCE_C_DEFAULT | activitySet);
 						}
+					} else {
+						sc.SetState(SCE_C_DEFAULT|activitySet);
 					}
-					sc.SetState(SCE_C_DEFAULT|activitySet);
 				}
 				break;
-			case SCE_C_PREPROCESSOR: 	
+			case SCE_C_PREPROCESSOR:
 				if (options.stylingWithinPreprocessor) {
 					if (IsASpace(sc.ch)) {
 						sc.SetState(SCE_C_DEFAULT|activitySet);
 					}
-				} else if (isStringInPreprocessor && (sc.Match('>') || sc.Match('\"'))) {
+				} else if (isStringInPreprocessor && (sc.Match('>') || sc.Match('\"') || sc.atLineEnd)) {
 					isStringInPreprocessor = false;
 				} else if (!isStringInPreprocessor) {
 					if ((isIncludePreprocessor && sc.Match('<')) || sc.Match('\"')) {
 						isStringInPreprocessor = true;
 					} else if (sc.Match('/', '*')) {
-						sc.SetState(SCE_C_PREPROCESSORCOMMENT|activitySet);
+						if (sc.Match("/**") || sc.Match("/*!")) {
+							sc.SetState(SCE_C_PREPROCESSORCOMMENTDOC|activitySet);
+						} else {
+							sc.SetState(SCE_C_PREPROCESSORCOMMENT|activitySet);
+						}
 						sc.Forward();	// Eat the *
 					} else if (sc.Match('/', '/')) {
 						sc.SetState(SCE_C_DEFAULT|activitySet);
@@ -638,6 +877,7 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 				}
 				break;
 			case SCE_C_PREPROCESSORCOMMENT:
+			case SCE_C_PREPROCESSORCOMMENTDOC:
 				if (sc.Match('*', '/')) {
 					sc.Forward();
 					sc.ForwardSetState(SCE_C_PREPROCESSOR|activitySet);
@@ -648,6 +888,9 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 				if (sc.Match('*', '/')) {
 					sc.Forward();
 					sc.ForwardSetState(SCE_C_DEFAULT|activitySet);
+				} else {
+					styleBeforeTaskMarker = SCE_C_COMMENT;
+					highlightTaskMarker(sc, styler, activitySet, markerList, caseSensitive);
 				}
 				break;
 			case SCE_C_COMMENTDOC:
@@ -665,6 +908,9 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 			case SCE_C_COMMENTLINE:
 				if (sc.atLineStart && !continuationLine) {
 					sc.SetState(SCE_C_DEFAULT|activitySet);
+				} else {
+					styleBeforeTaskMarker = SCE_C_COMMENTLINE;
+					highlightTaskMarker(sc, styler, activitySet, markerList, caseSensitive);
 				}
 				break;
 			case SCE_C_COMMENTLINEDOC:
@@ -683,17 +929,29 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 					sc.ChangeState(SCE_C_COMMENTDOCKEYWORDERROR);
 					sc.Forward();
 					sc.ForwardSetState(SCE_C_DEFAULT|activitySet);
-				} else if (!setDoxygen.Contains(sc.ch)) {
+					seenDocKeyBrace = false;
+				} else if (sc.ch == '[' || sc.ch == '{') {
+					seenDocKeyBrace = true;
+				} else if (!setDoxygen.Contains(sc.ch)
+				           && !(seenDocKeyBrace && (sc.ch == ',' || sc.ch == '.'))) {
 					char s[100];
 					if (caseSensitive) {
 						sc.GetCurrent(s, sizeof(s));
 					} else {
 						sc.GetCurrentLowered(s, sizeof(s));
 					}
-					if (!IsASpace(sc.ch) || !keywords3.InList(s + 1)) {
+					if (!(IsASpace(sc.ch) || (sc.ch == 0))) {
 						sc.ChangeState(SCE_C_COMMENTDOCKEYWORDERROR|activitySet);
+					} else if (!keywords3.InList(s + 1)) {
+						int subStyleCDKW = classifierDocKeyWords.ValueFor(s+1);
+						if (subStyleCDKW >= 0) {
+							sc.ChangeState(subStyleCDKW|activitySet);
+						} else {
+							sc.ChangeState(SCE_C_COMMENTDOCKEYWORDERROR|activitySet);
+						}
 					}
 					sc.SetState(styleBeforeDCKeyword|activitySet);
+					seenDocKeyBrace = false;
 				}
 				break;
 			case SCE_C_STRING:
@@ -705,11 +963,35 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 						isIncludePreprocessor = false;
 					}
 				} else if (sc.ch == '\\') {
-					if (sc.chNext == '\"' || sc.chNext == '\'' || sc.chNext == '\\') {
-						sc.Forward();
+					if (options.escapeSequence) {
+						sc.SetState(SCE_C_ESCAPESEQUENCE|activitySet);
+						escapeSeq.resetEscapeState(sc.chNext);
 					}
+					sc.Forward(); // Skip all characters after the backslash
 				} else if (sc.ch == '\"') {
+					if (sc.chNext == '_') {
+						sc.ChangeState(SCE_C_USERLITERAL|activitySet);
+					} else {
+						sc.ForwardSetState(SCE_C_DEFAULT|activitySet);
+					}
+				}
+				break;
+			case SCE_C_ESCAPESEQUENCE:
+				escapeSeq.digitsLeft--;
+				if (!escapeSeq.atEscapeEnd(sc.ch)) {
+					break;
+				}
+				if (sc.ch == '"') {
+					sc.SetState(SCE_C_STRING|activitySet);
 					sc.ForwardSetState(SCE_C_DEFAULT|activitySet);
+				} else if (sc.ch == '\\') {
+					escapeSeq.resetEscapeState(sc.chNext);
+					sc.Forward();
+				} else {
+					sc.SetState(SCE_C_STRING|activitySet);
+					if (sc.atLineEnd) {
+						sc.ChangeState(SCE_C_STRINGEOL|activitySet);
+					}
 				}
 				break;
 			case SCE_C_HASHQUOTEDSTRING:
@@ -737,22 +1019,28 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 						sc.Forward();
 					}
 				} else if (sc.ch == '\'') {
-					sc.ForwardSetState(SCE_C_DEFAULT|activitySet);
+					if (sc.chNext == '_') {
+						sc.ChangeState(SCE_C_USERLITERAL|activitySet);
+					} else {
+						sc.ForwardSetState(SCE_C_DEFAULT|activitySet);
+					}
 				}
 				break;
 			case SCE_C_REGEX:
 				if (sc.atLineStart) {
 					sc.SetState(SCE_C_DEFAULT|activitySet);
-				} else if (sc.ch == '/') {
+				} else if (! inRERange && sc.ch == '/') {
 					sc.Forward();
 					while ((sc.ch < 0x80) && islower(sc.ch))
 						sc.Forward();    // gobble regex flags
 					sc.SetState(SCE_C_DEFAULT|activitySet);
-				} else if (sc.ch == '\\') {
-					// Gobble up the quoted character
-					if (sc.chNext == '\\' || sc.chNext == '/') {
-						sc.Forward();
-					}
+				} else if (sc.ch == '\\' && (static_cast<Sci_Position>(sc.currentPos+1) < lineEndNext)) {
+					// Gobble up the escaped character
+					sc.Forward();
+				} else if (sc.ch == '[') {
+					inRERange = true;
+				} else if (sc.ch == ']') {
+					inRERange = false;
 				}
 				break;
 			case SCE_C_STRINGEOL:
@@ -761,7 +1049,9 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 				}
 				break;
 			case SCE_C_VERBATIM:
-				if (sc.ch == '\"') {
+				if (options.verbatimStringsAllowEscapes && (sc.ch == '\\')) {
+					sc.Forward(); // Skip all characters after the backslash
+				} else if (sc.ch == '\"') {
 					if (sc.chNext == '\"') {
 						sc.Forward();
 					} else {
@@ -778,14 +1068,21 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 				}
 				break;
 			case SCE_C_UUID:
-				if (sc.ch == '\r' || sc.ch == '\n' || sc.ch == ')') {
+				if (sc.atLineEnd || sc.ch == ')') {
 					sc.SetState(SCE_C_DEFAULT|activitySet);
+				}
+				break;
+			case SCE_C_TASKMARKER:
+				if (isoperator(sc.ch) || IsASpace(sc.ch)) {
+					sc.SetState(styleBeforeTaskMarker|activitySet);
+					styleBeforeTaskMarker = SCE_C_DEFAULT;
 				}
 		}
 
 		if (sc.atLineEnd && !atLineEndBeforeSwitch) {
 			// State exit processing consumed characters up to end of line.
 			lineCurrent++;
+			lineEndNext = styler.LineEnd(lineCurrent);
 			vlls.Add(lineCurrent, preproc);
 		}
 
@@ -800,6 +1097,9 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 			} else if (options.hashquotedStrings && sc.Match('#', '\"')) {
 				sc.SetState(SCE_C_HASHQUOTEDSTRING|activitySet);
 				sc.Forward();
+			} else if (options.backQuotedStrings && sc.Match('`')) {
+				sc.SetState(SCE_C_STRINGRAW|activitySet);
+				rawStringTerminator = "`";
 			} else if (IsADigit(sc.ch) || (sc.ch == '.' && IsADigit(sc.chNext))) {
 				if (lastWordWasUUID) {
 					sc.SetState(SCE_C_UUID|activitySet);
@@ -807,7 +1107,7 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 				} else {
 					sc.SetState(SCE_C_NUMBER|activitySet);
 				}
-			} else if (setWordStart.Contains(sc.ch) || (sc.ch == '@')) {
+			} else if (!sc.atLineEnd && (setWordStart.Contains(sc.ch) || (sc.ch == '@'))) {
 				if (lastWordWasUUID) {
 					sc.SetState(SCE_C_UUID|activitySet);
 					lastWordWasUUID = false;
@@ -833,13 +1133,14 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 				   && (!setCouldBePostOp.Contains(chPrevNonWhite)
 				       || !FollowsPostfixOperator(sc, styler))) {
 				sc.SetState(SCE_C_REGEX|activitySet);	// JavaScript's RegEx
+				inRERange = false;
 			} else if (sc.ch == '\"') {
 				if (sc.chPrev == 'R') {
 					styler.Flush();
 					if (MaskActive(styler.StyleAt(sc.currentPos - 1)) == SCE_C_STRINGRAW) {
 						sc.SetState(SCE_C_STRINGRAW|activitySet);
 						rawStringTerminator = ")";
-						for (int termPos = sc.currentPos + 1;; termPos++) {
+						for (Sci_Position termPos = sc.currentPos + 1;; termPos++) {
 							char chTerminator = styler.SafeGetCharAt(termPos, '(');
 							if (chTerminator == '(')
 								break;
@@ -917,25 +1218,54 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 						} else if (sc.Match("define")) {
 							if (options.updatePreprocessor && !preproc.IsInactive()) {
 								std::string restOfLine = GetRestOfLine(styler, sc.currentPos + 6, true);
-								if (restOfLine.find(")") == std::string::npos) {	// Don't handle macros with arguments
-									std::vector<std::string> tokens = Tokenize(restOfLine);
-									std::string key;
-									std::string value("1");
-									if (tokens.size() >= 1) {
-										key = tokens[0];
-										if (tokens.size() >= 2) {
-											value = tokens[1];
-										}
-										preprocessorDefinitions[key] = value;
-										ppDefineHistory.push_back(PPDefinition(lineCurrent, key, value));
-										definitionsChanged = true;
-									}
+								size_t startName = 0;
+								while ((startName < restOfLine.length()) && IsSpaceOrTab(restOfLine[startName]))
+									startName++;
+								size_t endName = startName;
+								while ((endName < restOfLine.length()) && setWord.Contains(static_cast<unsigned char>(restOfLine[endName])))
+									endName++;
+								std::string key = restOfLine.substr(startName, endName-startName);
+								if ((endName < restOfLine.length()) && (restOfLine.at(endName) == '(')) {
+									// Macro
+									size_t endArgs = endName;
+									while ((endArgs < restOfLine.length()) && (restOfLine[endArgs] != ')'))
+										endArgs++;
+									std::string args = restOfLine.substr(endName + 1, endArgs - endName - 1);
+									size_t startValue = endArgs+1;
+									while ((startValue < restOfLine.length()) && IsSpaceOrTab(restOfLine[startValue]))
+										startValue++;
+									std::string value;
+									if (startValue < restOfLine.length())
+										value = restOfLine.substr(startValue);
+									preprocessorDefinitions[key] = SymbolValue(value, args);
+									ppDefineHistory.push_back(PPDefinition(lineCurrent, key, value, false, args));
+									definitionsChanged = true;
+								} else {
+									// Value
+									size_t startValue = endName;
+									while ((startValue < restOfLine.length()) && IsSpaceOrTab(restOfLine[startValue]))
+										startValue++;
+									std::string value = restOfLine.substr(startValue);
+									preprocessorDefinitions[key] = value;
+									ppDefineHistory.push_back(PPDefinition(lineCurrent, key, value));
+									definitionsChanged = true;
+								}
+							}
+						} else if (sc.Match("undef")) {
+							if (options.updatePreprocessor && !preproc.IsInactive()) {
+								const std::string restOfLine = GetRestOfLine(styler, sc.currentPos + 5, false);
+								std::vector<std::string> tokens = Tokenize(restOfLine);
+								if (tokens.size() >= 1) {
+									const std::string key = tokens[0];
+									preprocessorDefinitions.erase(key);
+									ppDefineHistory.push_back(PPDefinition(lineCurrent, key, "", true));
+									definitionsChanged = true;
 								}
 							}
 						}
 					}
 				}
-			} else if (isoperator(static_cast<char>(sc.ch))) {
+			} else if (isoperator(sc.ch)) {
 				sc.SetState(SCE_C_OPERATOR|activitySet);
 			}
 		}
@@ -957,36 +1287,40 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 // level store to make it easy to pick up with each increment
 // and to make it possible to fiddle the current level for "} else {".
 
-void SCI_METHOD LexerCPP::Fold(unsigned int startPos, int length, int initStyle, IDocument *pAccess) {
+void SCI_METHOD LexerCPP::Fold(Sci_PositionU startPos, Sci_Position length, int initStyle, IDocument *pAccess) {
 
 	if (!options.fold)
 		return;
 
 	LexAccessor styler(pAccess);
 
-	unsigned int endPos = startPos + length;
+	Sci_PositionU endPos = startPos + length;
 	int visibleChars = 0;
-	int lineCurrent = styler.GetLine(startPos);
+	bool inLineComment = false;
+	Sci_Position lineCurrent = styler.GetLine(startPos);
 	int levelCurrent = SC_FOLDLEVELBASE;
 	if (lineCurrent > 0)
 		levelCurrent = styler.LevelAt(lineCurrent-1) >> 16;
+	Sci_PositionU lineStartNext = styler.LineStart(lineCurrent+1);
 	int levelMinCurrent = levelCurrent;
 	int levelNext = levelCurrent;
 	char chNext = styler[startPos];
 	int styleNext = MaskActive(styler.StyleAt(startPos));
 	int style = MaskActive(initStyle);
 	const bool userDefinedFoldMarkers = !options.foldExplicitStart.empty() && !options.foldExplicitEnd.empty();
-	for (unsigned int i = startPos; i < endPos; i++) {
+	for (Sci_PositionU i = startPos; i < endPos; i++) {
 		char ch = chNext;
 		chNext = styler.SafeGetCharAt(i + 1);
 		int stylePrev = style;
 		style = styleNext;
 		styleNext = MaskActive(styler.StyleAt(i + 1));
-		bool atEOL = (ch == '\r' && chNext != '\n') || (ch == '\n');
-		if (options.foldComment && options.foldCommentMultiline && IsStreamCommentStyle(style)) {
-			if (!IsStreamCommentStyle(stylePrev) && (stylePrev != SCE_C_COMMENTLINEDOC)) {
+		bool atEOL = i == (lineStartNext-1);
+		if ((style == SCE_C_COMMENTLINE) || (style == SCE_C_COMMENTLINEDOC))
+			inLineComment = true;
+		if (options.foldComment && options.foldCommentMultiline && IsStreamCommentStyle(style) && !inLineComment) {
+			if (!IsStreamCommentStyle(stylePrev)) {
 				levelNext++;
-			} else if (!IsStreamCommentStyle(styleNext) && (styleNext != SCE_C_COMMENTLINEDOC) && !atEOL) {
+			} else if (!IsStreamCommentStyle(styleNext) && !atEOL) {
 				// Comments don't end at end of line and the next character may be unstyled.
 				levelNext--;
 			}
@@ -1011,7 +1345,7 @@ void SCI_METHOD LexerCPP::Fold(unsigned int startPos, int length, int initStyle,
 		}
 		if (options.foldPreprocessor && (style == SCE_C_PREPROCESSOR)) {
 			if (ch == '#') {
-				unsigned int j = i + 1;
+				Sci_PositionU j = i + 1;
 				while ((j < endPos) && IsASpaceOrTab(styler.SafeGetCharAt(j))) {
 					j++;
 				}
@@ -1020,17 +1354,21 @@ void SCI_METHOD LexerCPP::Fold(unsigned int startPos, int length, int initStyle,
 				} else if (styler.Match(j, "end")) {
 					levelNext--;
 				}
+				
+				if (options.foldPreprocessorAtElse && (styler.Match(j, "else") || styler.Match(j, "elif"))) {
+					levelMinCurrent--;
+				}
 			}
 		}
 		if (options.foldSyntaxBased && (style == SCE_C_OPERATOR)) {
-			if (ch == '{') {
+			if (ch == '{' || ch == '[' || ch == '(') {
 				// Measure the minimum before a '{' to allow
 				// folding on "} else {"
-				if (levelMinCurrent > levelNext) {
+				if (options.foldAtElse && levelMinCurrent > levelNext) {
 					levelMinCurrent = levelNext;
 				}
 				levelNext++;
-			} else if (ch == '}') {
+			} else if (ch == '}' || ch == ']' || ch == ')') {
 				levelNext--;
 			}
 		}
@@ -1038,7 +1376,9 @@ void SCI_METHOD LexerCPP::Fold(unsigned int startPos, int length, int initStyle,
 			visibleChars++;
 		if (atEOL || (i == endPos-1)) {
 			int levelUse = levelCurrent;
-			if (options.foldSyntaxBased && options.foldAtElse) {
+			if ((options.foldSyntaxBased && options.foldAtElse) ||
+				(options.foldPreprocessor && options.foldPreprocessorAtElse)
+			) {
 				levelUse = levelMinCurrent;
 			}
 			int lev = levelUse | levelNext << 16;
@@ -1050,30 +1390,49 @@ void SCI_METHOD LexerCPP::Fold(unsigned int startPos, int length, int initStyle,
 				styler.SetLevel(lineCurrent, lev);
 			}
 			lineCurrent++;
+			lineStartNext = styler.LineStart(lineCurrent+1);
 			levelCurrent = levelNext;
 			levelMinCurrent = levelCurrent;
-			if (atEOL && (i == static_cast<unsigned int>(styler.Length()-1))) {
+			if (atEOL && (i == static_cast<Sci_PositionU>(styler.Length()-1))) {
 				// There is an empty line at end of file so give it same level and empty
 				styler.SetLevel(lineCurrent, (levelCurrent | levelCurrent << 16) | SC_FOLDLEVELWHITEFLAG);
 			}
 			visibleChars = 0;
+			inLineComment = false;
 		}
 	}
 }
 
-void LexerCPP::EvaluateTokens(std::vector<std::string> &tokens) {
+void LexerCPP::EvaluateTokens(std::vector<std::string> &tokens, const SymbolTable &preprocessorDefinitions) {
 
-	// Evaluate defined() statements to either 0 or 1
-	for (size_t i=0; (i+2)<tokens.size();) {
-		if ((tokens[i] == "defined") && (tokens[i+1] == "(")) {
+	// Remove whitespace tokens
+	tokens.erase(std::remove_if(tokens.begin(), tokens.end(), OnlySpaceOrTab), tokens.end());
+
+	// Evaluate defined statements to either 0 or 1
+	for (size_t i=0; (i+1)<tokens.size();) {
+		if (tokens[i] == "defined") {
 			const char *val = "0";
-			if (tokens[i+2] == ")") {
-				// defined()
-				tokens.erase(tokens.begin() + i + 1, tokens.begin() + i + 3);
-			} else if (((i+3)<tokens.size()) && (tokens[i+3] == ")")) {
-				// defined(<int>)
-				tokens.erase(tokens.begin() + i + 1, tokens.begin() + i + 4);
-				val = "1";
+			if (tokens[i+1] == "(") {
+				if (((i + 2)<tokens.size()) && (tokens[i + 2] == ")")) {
+					// defined()
+					tokens.erase(tokens.begin() + i + 1, tokens.begin() + i + 3);
+				} else if (((i+3)<tokens.size()) && (tokens[i+3] == ")")) {
+					// defined(<identifier>)
+					SymbolTable::const_iterator it = preprocessorDefinitions.find(tokens[i+2]);
+					if (it != preprocessorDefinitions.end()) {
+						val = "1";
+					}
+					tokens.erase(tokens.begin() + i + 1, tokens.begin() + i + 4);
+				} else {
+					// Spurious '(' so erase as more likely to result in false
+					tokens.erase(tokens.begin() + i + 1, tokens.begin() + i + 2);
+				}
+			} else {
+				// defined <identifier>
+				SymbolTable::const_iterator it = preprocessorDefinitions.find(tokens[i+1]);
+				if (it != preprocessorDefinitions.end()) {
+					val = "1";
+				}
 			}
 			tokens[i] = val;
 		} else {
@@ -1081,21 +1440,82 @@ void LexerCPP::EvaluateTokens(std::vector<std::string> &tokens) {
 		}
 	}
 
+	// Evaluate identifiers
+	const size_t maxIterations = 100;
+	size_t iterations = 0;	// Limit number of iterations in case there is a recursive macro.
+	for (size_t i = 0; (i<tokens.size()) && (iterations < maxIterations);) {
+		iterations++;
+		if (setWordStart.Contains(static_cast<unsigned char>(tokens[i][0]))) {
+			SymbolTable::const_iterator it = preprocessorDefinitions.find(tokens[i]);
+			if (it != preprocessorDefinitions.end()) {
+				// Tokenize value
+				std::vector<std::string> macroTokens = Tokenize(it->second.value);
+				if (it->second.IsMacro()) {
+					if ((i + 1 < tokens.size()) && (tokens.at(i + 1) == "(")) {
+						// Create map of argument name to value
+						std::vector<std::string> argumentNames = StringSplit(it->second.arguments, ',');
+						std::map<std::string, std::string> arguments;
+						size_t arg = 0;
+						size_t tok = i+2;
+						while ((tok < tokens.size()) && (arg < argumentNames.size()) && (tokens.at(tok) != ")")) {
+							if (tokens.at(tok) != ",") {
+								arguments[argumentNames.at(arg)] = tokens.at(tok);
+								arg++;
+							}
+							tok++;
+						}
+
+						// Remove invocation
+						tokens.erase(tokens.begin() + i, tokens.begin() + tok + 1);
+
+						// Substitute values into macro
+						macroTokens.erase(std::remove_if(macroTokens.begin(), macroTokens.end(), OnlySpaceOrTab), macroTokens.end());
+
+						for (size_t iMacro = 0; iMacro < macroTokens.size();) {
+							if (setWordStart.Contains(static_cast<unsigned char>(macroTokens[iMacro][0]))) {
+								std::map<std::string, std::string>::const_iterator itFind = arguments.find(macroTokens[iMacro]);
+								if (itFind != arguments.end()) {
+									// TODO: Possible that value will be expression so should insert tokenized form
+									macroTokens[iMacro] = itFind->second;
+								}
+							}
+							iMacro++;
+						}
+
+						// Insert results back into tokens
+						tokens.insert(tokens.begin() + i, macroTokens.begin(), macroTokens.end());
+
+					} else {
+						i++;
+					}
+				} else {
+					// Remove invocation
+					tokens.erase(tokens.begin() + i);
+					// Insert results back into tokens
+					tokens.insert(tokens.begin() + i, macroTokens.begin(), macroTokens.end());
+				}
+			} else {
+				// Identifier not found
+				tokens.erase(tokens.begin() + i);
+			}
+		} else {
+			i++;
+		}
+	}
+
 	// Find bracketed subexpressions and recurse on them
-	std::vector<std::string>::iterator itBracket = std::find(tokens.begin(), tokens.end(), "(");
-	std::vector<std::string>::iterator itEndBracket = std::find(tokens.begin(), tokens.end(), ")");
-	while ((itBracket != tokens.end()) && (itEndBracket != tokens.end()) && (itEndBracket > itBracket)) {
-		std::vector<std::string> inBracket(itBracket + 1, itEndBracket);
-		EvaluateTokens(inBracket);
+	BracketPair bracketPair = FindBracketPair(tokens);
+	while (bracketPair.itBracket != tokens.end()) {
+		std::vector<std::string> inBracket(bracketPair.itBracket + 1, bracketPair.itEndBracket);
+		EvaluateTokens(inBracket, preprocessorDefinitions);
 
 		// The insertion is done before the removal because there were failures with the opposite approach
-		tokens.insert(itBracket, inBracket.begin(), inBracket.end());
-		itBracket = std::find(tokens.begin(), tokens.end(), "(");
-		itEndBracket = std::find(tokens.begin(), tokens.end(), ")");
-		tokens.erase(itBracket, itEndBracket + 1);
+		tokens.insert(bracketPair.itBracket, inBracket.begin(), inBracket.end());
 
-		itBracket = std::find(tokens.begin(), tokens.end(), "(");
-		itEndBracket = std::find(tokens.begin(), tokens.end(), ")");
+		bracketPair = FindBracketPair(tokens);
+		tokens.erase(bracketPair.itBracket, bracketPair.itEndBracket + 1);
+
+		bracketPair = FindBracketPair(tokens);
 	}
 
 	// Evaluate logical negations
@@ -1164,45 +1584,51 @@ void LexerCPP::EvaluateTokens(std::vector<std::string> &tokens) {
 	}
 }
 
-bool LexerCPP::EvaluateExpression(const std::string &expr, const std::map<std::string, std::string> &preprocessorDefinitions) {
-	// Break into tokens, replacing with definitions
-	std::string word;
+std::vector<std::string> LexerCPP::Tokenize(const std::string &expr) const {
+	// Break into tokens
 	std::vector<std::string> tokens;
 	const char *cp = expr.c_str();
-	for (;;) {
-		if (setWord.Contains(*cp)) {
+	while (*cp) {
+		std::string word;
+		if (setWord.Contains(static_cast<unsigned char>(*cp))) {
+			// Identifiers and numbers
+			while (setWord.Contains(static_cast<unsigned char>(*cp))) {
+				word += *cp;
+				cp++;
+			}
+		} else if (IsSpaceOrTab(*cp)) {
+			while (IsSpaceOrTab(*cp)) {
+				word += *cp;
+				cp++;
+			}
+		} else if (setRelOp.Contains(static_cast<unsigned char>(*cp))) {
 			word += *cp;
+			cp++;
+			if (setRelOp.Contains(static_cast<unsigned char>(*cp))) {
+				word += *cp;
+				cp++;
+			}
+		} else if (setLogicalOp.Contains(static_cast<unsigned char>(*cp))) {
+			word += *cp;
+			cp++;
+			if (setLogicalOp.Contains(static_cast<unsigned char>(*cp))) {
+				word += *cp;
+				cp++;
+			}
 		} else {
-			std::map<std::string, std::string>::const_iterator it = preprocessorDefinitions.find(word);
-			if (it != preprocessorDefinitions.end()) {
-				tokens.push_back(it->second);
-			} else if (!word.empty() && ((word[0] >= '0' && word[0] <= '9') || (word == "defined"))) {
-				tokens.push_back(word);
-			}
-			word = "";
-			if (!*cp) {
-				break;
-			}
-			if ((*cp != ' ') && (*cp != '\t')) {
-				std::string op(cp, 1);
-				if (setRelOp.Contains(*cp)) {
-					if (setRelOp.Contains(cp[1])) {
-						op += cp[1];
-						cp++;
-					}
-				} else if (setLogicalOp.Contains(*cp)) {
-					if (setLogicalOp.Contains(cp[1])) {
-						op += cp[1];
-						cp++;
-					}
-				}
-				tokens.push_back(op);
-			}
+			// Should handle strings, characters, and comments here
+			word += *cp;
+			cp++;
 		}
-		cp++;
+		tokens.push_back(word);
 	}
+	return tokens;
+}
 
-	EvaluateTokens(tokens);
+bool LexerCPP::EvaluateExpression(const std::string &expr, const SymbolTable &preprocessorDefinitions) {
+	std::vector<std::string> tokens = Tokenize(expr);
+
+	EvaluateTokens(tokens, preprocessorDefinitions);
 
 	// "0" or "" -> false else true
 	bool isFalse = tokens.empty() ||

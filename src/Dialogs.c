@@ -220,6 +220,7 @@ INT_PTR CALLBACK AboutDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lParam)
         SetDlgItemText(hwnd,IDC_VERSION,VERSION_FILEVERSION_LONG);
         SetDlgItemText(hwnd,IDC_COPYRIGHT,VERSION_LEGALCOPYRIGHT_SHORT);
         SetDlgItemText(hwnd,IDC_AUTHORNAME,VERSION_AUTHORNAME);
+        SetDlgItemText(hwnd,IDC_COMPILER,VERSION_COMPILER);
 
         if (hFontTitle)
           DeleteObject(hFontTitle);
@@ -277,7 +278,7 @@ INT_PTR CALLBACK AboutDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lParam)
                 ShellExecute(hwnd,L"open",L"mailto:florian.balmer@gmail.com",NULL,NULL,SW_SHOWNORMAL);
               }
               else if (pnmhdr->idFrom == IDC_MOD_PAGE) {
-                ShellExecute(hwnd,L"open",L"http://xhmikosr.github.com/notepad2-mod/",NULL,NULL,SW_SHOWNORMAL);
+                ShellExecute(hwnd,L"open",L"https://xhmikosr.github.io/notepad2-mod/",NULL,NULL,SW_SHOWNORMAL);
               }
             }
             break;

@@ -2174,7 +2174,8 @@ void MsgInitMenu(HWND hwnd,WPARAM wParam,LPARAM lParam)
     !(i == SCLEX_NULL || i == SCLEX_VBSCRIPT || i == SCLEX_MAKEFILE || i == SCLEX_VB || i == SCLEX_ASM ||
       i == SCLEX_SQL || i == SCLEX_PERL || i == SCLEX_PYTHON || i == SCLEX_PROPERTIES ||i == SCLEX_CONF ||
       i == SCLEX_POWERSHELL || i == SCLEX_BATCH || i == SCLEX_DIFF || i == SCLEX_BASH || i == SCLEX_TCL ||
-      i == SCLEX_AU3 || i == SCLEX_LATEX || i == SCLEX_AHK || i == SCLEX_RUBY || i == SCLEX_CMAKE || i == SCLEX_MARKDOWN));
+      i == SCLEX_AU3 || i == SCLEX_LATEX || i == SCLEX_AHK || i == SCLEX_RUBY || i == SCLEX_CMAKE || i == SCLEX_MARKDOWN ||
+      i == SCLEX_YAML));
 
   EnableCmd(hmenu,IDM_EDIT_INSERT_ENCODING,*mEncoding[iEncoding].pszParseNames);
 
@@ -2869,7 +2870,7 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
     case IDM_EDIT_SWAP:
       if (SendMessage(hwndEdit,SCI_GETSELECTIONEND,0,0) -
           SendMessage(hwndEdit,SCI_GETSELECTIONSTART,0,0) == 0) {
-        int iNewPos = -1;
+        int iNewPos;
         int iPos = (int)SendMessage(hwndEdit,SCI_GETCURRENTPOS,0,0);
         SendMessage(hwndEdit,SCI_PASTE,0,0);
         iNewPos = (int)SendMessage(hwndEdit,SCI_GETCURRENTPOS,0,0);
@@ -3408,6 +3409,8 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
         case SCLEX_POWERSHELL:
         case SCLEX_CMAKE:
         case SCLEX_AVS:
+        case SCLEX_YAML:
+        case SCLEX_COFFEESCRIPT:
           BeginWaitCursor();
           EditToggleLineComments(hwndEdit,L"#",TRUE);
           EndWaitCursor();
@@ -3424,6 +3427,7 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
           break;
         case SCLEX_SQL:
         case SCLEX_LUA:
+        case SCLEX_VHDL:
           BeginWaitCursor();
           EditToggleLineComments(hwndEdit,L"--",TRUE);
           EndWaitCursor();
@@ -3465,6 +3469,7 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
         case SCLEX_RUBY:
         case SCLEX_CMAKE:
         case SCLEX_MARKDOWN:
+        case SCLEX_YAML:
           break;
         case SCLEX_HTML:
         case SCLEX_XML:
@@ -3472,6 +3477,7 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
         case SCLEX_CPP:
         case SCLEX_NSIS:
         case SCLEX_AVS:
+        case SCLEX_VHDL:
           EditEncloseSelection(hwndEdit,L"/*",L"*/");
           break;
         case SCLEX_PASCAL:
@@ -3480,6 +3486,9 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
           break;
         case SCLEX_LUA:
           EditEncloseSelection(hwndEdit,L"--[[",L"]]");
+          break;
+        case SCLEX_COFFEESCRIPT:
+          EditEncloseSelection(hwndEdit,L"###",L"###");
       }
       break;
 
@@ -3964,7 +3973,14 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
       break;
 
     case IDM_VIEW_AUTOCOMPLETEWORDS:
-      bAutoCompleteWords = bAutoCompleteWords ? FALSE : TRUE;
+      if (bAutoCompleteWords) {
+        // close the autocompletion list
+        SendMessage(hwndEdit, SCI_AUTOCCANCEL, 0, 0);
+        bAutoCompleteWords = FALSE;
+      }
+      else {
+        bAutoCompleteWords = TRUE;
+      }
       break;
 
     case IDM_VIEW_MARKOCCURRENCES_OFF:
@@ -4566,7 +4582,7 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
     case CMD_WEBACTION1:
     case CMD_WEBACTION2:
       {
-        BOOL  bCmdEnabled = FALSE;
+        BOOL  bCmdEnabled;
         LPWSTR lpszTemplateName;
         WCHAR  szCmdTemplate[256];
         char  mszSelection[512] = { 0 };
@@ -5244,7 +5260,7 @@ LRESULT MsgNotify(HWND hwnd,WPARAM wParam,LPARAM lParam)
             //int iLexer = (int)SendMessage(hwndEdit,SCI_GETLEXER,0,0);
             if (/*iLexer == SCLEX_HTML || iLexer == SCLEX_XML*/ 1)
             {
-              char tchBuf[512];
+              char tchBuf[512] = { 0 };
               char tchIns[516] = "</";
               int  cchIns = 2;
               int  iCurPos = (int)SendMessage(hwndEdit,SCI_GETCURRENTPOS,0,0);
@@ -5254,7 +5270,7 @@ LRESULT MsgNotify(HWND hwnd,WPARAM wParam,LPARAM lParam)
 
               if (iSize >= 3) {
 
-                struct TextRange tr = { { iStartPos, iCurPos }, tchBuf };
+                struct Sci_TextRange tr = { { iStartPos, iCurPos }, tchBuf };
                 SendMessage(hwndEdit,SCI_GETTEXTRANGE,0,(LPARAM)&tr);
 
                 if (tchBuf[iSize - 2] != '/') {
@@ -5621,7 +5637,7 @@ void LoadSettings()
 
   iDefaultEncoding = IniSectionGetInt(pIniSection,L"DefaultEncoding",0);
   iDefaultEncoding = Encoding_MapIniSetting(TRUE,iDefaultEncoding);
-  if (!Encoding_IsValid(iDefaultEncoding)) iDefaultEncoding = CPI_DEFAULT;
+  if (!Encoding_IsValid(iDefaultEncoding)) iDefaultEncoding = CPI_UTF8;
 
   bSkipUnicodeDetection = IniSectionGetInt(pIniSection,L"SkipUnicodeDetection",0);
   if (bSkipUnicodeDetection) bSkipUnicodeDetection = 1;
@@ -6261,7 +6277,7 @@ void ParseCommandLine()
             LocalFree(lpSchemeArg);
             lpSchemeArg = NULL;
           }
-          iInitialLexer = 33;
+          iInitialLexer = 34;
           flagLexerSpecified = 1;
           break;
 
@@ -6270,7 +6286,7 @@ void ParseCommandLine()
             LocalFree(lpSchemeArg);
             lpSchemeArg = NULL;
           }
-          iInitialLexer = 34;
+          iInitialLexer = 35;
           flagLexerSpecified = 1;
           break;
 

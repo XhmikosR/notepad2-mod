@@ -34,8 +34,8 @@ using namespace Scintilla;
  */
 
 static void ColouriseDocument(
-    unsigned int startPos,
-    int length,
+    Sci_PositionU startPos,
+    Sci_Position length,
     int initStyle,
     WordList *keywordlists[],
     Accessor &styler);
@@ -60,11 +60,7 @@ static void ColouriseWhiteSpace(StyleContext& sc, bool& apostropheStartsAttribut
 static void ColouriseWord(StyleContext& sc, WordList& keywords, WordList& keywords2, WordList& keywords3, bool& apostropheStartsAttribute);
 
 static inline bool IsDelimiterCharacter(int ch);
-static inline bool IsNumberStartCharacter(int ch);
-static inline bool IsNumberCharacter(int ch);
 static inline bool IsSeparatorOrDelimiterCharacter(int ch);
-static inline bool IsWordStartCharacter(int ch);
-static inline bool IsWordCharacter(int ch);
 
 static void ColouriseComment(StyleContext& sc, bool&) {
     sc.SetState(SCE_SPICE_COMMENTLINE);
@@ -140,8 +136,8 @@ static void ColouriseWord(StyleContext& sc, WordList& keywords, WordList& keywor
 // ColouriseDocument
 //
 static void ColouriseDocument(
-    unsigned int startPos,
-    int length,
+    Sci_PositionU startPos,
+    Sci_Position length,
     int initStyle,
     WordList *keywordlists[],
     Accessor &styler) {
@@ -149,7 +145,7 @@ static void ColouriseDocument(
     WordList &keywords2 = *keywordlists[1];
     WordList &keywords3 = *keywordlists[2];
     StyleContext sc(startPos, length, initStyle, styler);
-    int lineCurrent = styler.GetLine(startPos);
+    Sci_Position lineCurrent = styler.GetLine(startPos);
     bool apostropheStartsAttribute = (styler.GetLineState(lineCurrent) & 1) != 0;
     while (sc.More()) {
         if (sc.atLineEnd) {
@@ -205,27 +201,6 @@ static inline bool IsDelimiterCharacter(int ch) {
     }
 }
 
-static inline bool IsNumberCharacter(int ch) {
-    return IsNumberStartCharacter(ch) ||
-           ch == '_' ||
-           ch == '.' ||
-           ch == '#' ||
-           (ch >= 'a' && ch <= 'f') ||
-           (ch >= 'A' && ch <= 'F');
-}
-
-static inline bool IsNumberStartCharacter(int ch) {
-    return IsADigit(ch);
-}
-
 static inline bool IsSeparatorOrDelimiterCharacter(int ch) {
     return IsASpace(ch) || IsDelimiterCharacter(ch);
-}
-
-static inline bool IsWordCharacter(int ch) {
-    return IsWordStartCharacter(ch) || IsADigit(ch);
-}
-
-static inline bool IsWordStartCharacter(int ch) {
-    return (isascii(ch) && isalpha(ch)) || ch == '_';
 }

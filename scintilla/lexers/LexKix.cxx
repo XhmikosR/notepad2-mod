@@ -4,6 +4,7 @@
  **/
 // Copyright 2004 by Manfred Becker <manfred@becker-trdf.de>
 // The License.txt file describes the conditions under which this software may be distributed.
+// Edited by Lee Wilmott (24-Jun-2014) added support for block comments
 
 #include <stdlib.h>
 #include <string.h>
@@ -36,7 +37,7 @@ static inline bool IsOperator(const int ch) {
 	return (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '&' || ch == '|' || ch == '<' || ch == '>' || ch == '=');
 }
 
-static void ColouriseKixDoc(unsigned int startPos, int length, int initStyle,
+static void ColouriseKixDoc(Sci_PositionU startPos, Sci_Position length, int initStyle,
                            WordList *keywordlists[], Accessor &styler) {
 
 	WordList &keywords = *keywordlists[0];
@@ -53,6 +54,10 @@ static void ColouriseKixDoc(unsigned int startPos, int length, int initStyle,
 		if (sc.state == SCE_KIX_COMMENT) {
 			if (sc.atLineEnd) {
 				sc.SetState(SCE_KIX_DEFAULT);
+			}
+		} else if (sc.state == SCE_KIX_COMMENTSTREAM) {
+			if (sc.ch == '/' && sc.chPrev == '*') {
+				sc.ForwardSetState(SCE_KIX_DEFAULT);
 			}
 		} else if (sc.state == SCE_KIX_STRING1) {
 			// This is a doubles quotes string
@@ -104,6 +109,8 @@ static void ColouriseKixDoc(unsigned int startPos, int length, int initStyle,
 		if (sc.state == SCE_KIX_DEFAULT) {
 			if (sc.ch == ';') {
 				sc.SetState(SCE_KIX_COMMENT);
+			} else if (sc.ch == '/' && sc.chNext == '*') {
+				sc.SetState(SCE_KIX_COMMENTSTREAM);
 			} else if (sc.ch == '\"') {
 				sc.SetState(SCE_KIX_STRING1);
 			} else if (sc.ch == '\'') {

@@ -4,12 +4,12 @@ rem *
 rem * Notepad2-mod
 rem *
 rem * make_installer.bat
-rem *   Batch file for building the installer for Notepad2-mod with MSVC2010
+rem *   Batch file for building the installer for Notepad2-mod
 rem *
 rem * See License.txt for details about distribution and modification.
 rem *
-rem *                                       (c) XhmikosR 2010-2012
-rem *                                       https://github.com/XhmikosR/notepad2-mod
+rem *                                     (c) XhmikosR 2010-2016
+rem *                                     https://github.com/XhmikosR/notepad2-mod
 rem *
 rem ******************************************************************************
 
@@ -34,20 +34,12 @@ CALL :SubDetectInnoSetup
 
 rem Check for the first switch
 IF "%~1" == "" (
-  SET "COMPILER=WDK"
+  SET "COMPILER=VS2015"
 ) ELSE (
-  IF /I "%~1" == "ICL12"    SET "COMPILER=ICL12"  & GOTO START
-  IF /I "%~1" == "/ICL12"   SET "COMPILER=ICL12"  & GOTO START
-  IF /I "%~1" == "-ICL12"   SET "COMPILER=ICL12"  & GOTO START
-  IF /I "%~1" == "--ICL12"  SET "COMPILER=ICL12"  & GOTO START
-  IF /I "%~1" == "VS2010"   SET "COMPILER=VS2010" & GOTO START
-  IF /I "%~1" == "/VS2010"  SET "COMPILER=VS2010" & GOTO START
-  IF /I "%~1" == "-VS2010"  SET "COMPILER=VS2010" & GOTO START
-  IF /I "%~1" == "--VS2010" SET "COMPILER=VS2010" & GOTO START
-  IF /I "%~1" == "VS2012"   SET "COMPILER=VS2012" & GOTO START
-  IF /I "%~1" == "/VS2012"  SET "COMPILER=VS2012" & GOTO START
-  IF /I "%~1" == "-VS2012"  SET "COMPILER=VS2012" & GOTO START
-  IF /I "%~1" == "--VS2012" SET "COMPILER=VS2012" & GOTO START
+  IF /I "%~1" == "VS2015"   SET "COMPILER=VS2015" & GOTO START
+  IF /I "%~1" == "/VS2015"  SET "COMPILER=VS2015" & GOTO START
+  IF /I "%~1" == "-VS2015"  SET "COMPILER=VS2015" & GOTO START
+  IF /I "%~1" == "--VS2015" SET "COMPILER=VS2015" & GOTO START
   IF /I "%~1" == "WDK"      SET "COMPILER=WDK"    & GOTO START
   IF /I "%~1" == "/WDK"     SET "COMPILER=WDK"    & GOTO START
   IF /I "%~1" == "-WDK"     SET "COMPILER=WDK"    & GOTO START
@@ -61,6 +53,19 @@ IF "%~1" == "" (
 
 
 :START
+IF EXIST "%~dp0..\signinfo.txt" SET "SIGN=True"
+
+SET INPUTDIRx86=bin\%COMPILER%\Release_x86
+SET INPUTDIRx64=bin\%COMPILER%\Release_x64
+IF /I NOT "%COMPILER%" == "VS2015" SET SUFFIX=_%COMPILER%
+SET "TEMP_NAME=temp_zip%SUFFIX%"
+
+IF NOT EXIST "..\%INPUTDIRx86%\Notepad2.exe" CALL :SUBMSG "ERROR" "Compile Notepad2 x86 first!"
+IF NOT EXIST "..\%INPUTDIRx64%\Notepad2.exe" CALL :SUBMSG "ERROR" "Compile Notepad2 x64 first!"
+
+IF /I "%SIGN%" == "True" CALL :SubSign %INPUTDIRx86%
+IF /I "%SIGN%" == "True" CALL :SubSign %INPUTDIRx64%
+
 CALL :SubInstaller %COMPILER%
 
 
@@ -75,12 +80,9 @@ EXIT /B
 TITLE Building %1 installer...
 CALL :SUBMSG "INFO" "Building %1 installer using %InnoSetupPath%\ISCC.exe..."
 
-PUSHD "..\distrib"
-
-"%InnoSetupPath%\ISCC.exe" /Q /O"..\build\packages" "notepad2_setup.iss" /D%1
+"%InnoSetupPath%\ISCC.exe" /SMySignTool="cmd /c "%~dp0sign.bat" $f" /Q /O"packages" "..\distrib\notepad2_setup.iss" /D%1
 IF %ERRORLEVEL% NEQ 0 CALL :SUBMSG "ERROR" "Compilation failed!"
 
-POPD
 EXIT /B
 
 
@@ -112,10 +114,22 @@ SET "InnoSetupPath=%*"
 EXIT /B
 
 
+:SubSign
+IF %ERRORLEVEL% NEQ 0 EXIT /B
+REM %1 is the subfolder
+
+CALL "%~dp0sign.bat" "..\%1\Notepad2.exe" || (CALL :SUBMSG "ERROR" "Problem signing ..\%1\Notepad2.exe" & GOTO Break)
+
+CALL :SUBMSG "INFO" "..\%1\Notepad2.exe signed successfully."
+
+:Break
+EXIT /B
+
+
 :SHOWHELP
 TITLE %~nx0 %1
 ECHO. & ECHO.
-ECHO Usage:  %~nx0 [ICL12^|VS2010^|VS2012^|WDK]
+ECHO Usage:  %~nx0 [VS2015^|WDK]
 ECHO.
 ECHO Notes:  You can also prefix the commands with "-", "--" or "/".
 ECHO         The arguments are not case sensitive.

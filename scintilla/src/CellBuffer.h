@@ -17,8 +17,8 @@ class PerLine {
 public:
 	virtual ~PerLine() {}
 	virtual void Init()=0;
-	virtual void InsertLine(int)=0;
-	virtual void RemoveLine(int)=0;
+	virtual void InsertLine(int line)=0;
+	virtual void RemoveLine(int line)=0;
 };
 
 /**
@@ -47,22 +47,6 @@ public:
 	int LineStart(int line) const {
 		return starts.PositionFromPartition(line);
 	}
-
-	int MarkValue(int line);
-	int AddMark(int line, int marker);
-	void MergeMarkers(int pos);
-	void DeleteMark(int line, int markerNum, bool all);
-	void DeleteMarkFromHandle(int markerHandle);
-	int LineFromHandle(int markerHandle);
-
-	void ClearLevels();
-	int SetLevel(int line, int level);
-	int GetLevel(int line);
-
-	int SetLineState(int line, int state);
-	int GetLineState(int line);
-	int GetMaxLineState();
-
 };
 
 enum actionType { insertAction, removeAction, startAction, containerAction };
@@ -80,7 +64,7 @@ public:
 
 	Action();
 	~Action();
-	void Create(actionType at_, int position_=0, char *data_=0, int lenData_=0, bool mayCoalesce_=true);
+	void Create(actionType at_, int position_=0, const char *data_=0, int lenData_=0, bool mayCoalesce_=true);
 	void Destroy();
 	void Grab(Action *source);
 };
@@ -95,14 +79,18 @@ class UndoHistory {
 	int currentAction;
 	int undoSequenceDepth;
 	int savePoint;
+	int tentativePoint;
 
 	void EnsureUndoRoom();
+
+	// Private so UndoHistory objects can not be copied
+	UndoHistory(const UndoHistory &);
 
 public:
 	UndoHistory();
 	~UndoHistory();
 
-	void AppendAction(actionType at, int position, char *data, int length, bool &startSequence, bool mayCoalesce=true);
+	const char *AppendAction(actionType at, int position, const char *data, int length, bool &startSequence, bool mayCoalesce=true);
 
 	void BeginUndoAction();
 	void EndUndoAction();
@@ -113,6 +101,12 @@ public:
 	/// the buffer was saved. Undo and redo can move over the save point.
 	void SetSavePoint();
 	bool IsSavePoint() const;
+
+	// Tentative actions are used for input composition so that it can be undone cleanly
+	void TentativeStart();
+	void TentativeCommit();
+	bool TentativeActive() const { return tentativePoint >= 0; }
+	int TentativeSteps();
 
 	/// To perform an undo, StartUndo is called to retrieve the number of steps, then UndoStep is
 	/// called that many times. Similarly for redo.
@@ -136,12 +130,15 @@ private:
 	SplitVector<char> substance;
 	SplitVector<char> style;
 	bool readOnly;
+	int utf8LineEnds;
 
 	bool collectingUndo;
 	UndoHistory uh;
 
 	LineVector lv;
 
+	bool UTF8LineEndOverlaps(int position) const;
+	void ResetLineEnds();
 	/// Actions without undo
 	void BasicInsertString(int position, const char *s, int insertLength);
 	void BasicDeleteChars(int position, int deleteLength);
@@ -162,6 +159,9 @@ public:
 
 	int Length() const;
 	void Allocate(int newSize);
+	int GetLineEndTypes() const { return utf8LineEnds; }
+	void SetLineEndTypes(int utf8LineEnds_);
+	bool ContainsLineEnd(const char *s, int length) const;
 	void SetPerLine(PerLine *pl);
 	int Lines() const;
 	int LineStart(int line) const;
@@ -172,8 +172,8 @@ public:
 
 	/// Setting styles for positions outside the range of the buffer is safe and has no effect.
 	/// @return true if the style of a character is changed.
-	bool SetStyleAt(int position, char styleValue, char mask='\377');
-	bool SetStyleFor(int position, int length, char styleValue, char mask);
+	bool SetStyleAt(int position, char styleValue);
+	bool SetStyleFor(int position, int length, char styleValue);
 
 	const char *DeleteChars(int position, int deleteLength, bool &startSequence);
 
@@ -183,7 +183,12 @@ public:
 	/// The save point is a marker in the undo stack where the container has stated that
 	/// the buffer was saved. Undo and redo can move over the save point.
 	void SetSavePoint();
-	bool IsSavePoint();
+	bool IsSavePoint() const;
+
+	void TentativeStart();
+	void TentativeCommit();
+	bool TentativeActive() const;
+	int TentativeSteps();
 
 	bool SetUndoCollection(bool collectUndo);
 	bool IsCollectingUndo() const;
@@ -194,11 +199,11 @@ public:
 
 	/// To perform an undo, StartUndo is called to retrieve the number of steps, then UndoStep is
 	/// called that many times. Similarly for redo.
-	bool CanUndo();
+	bool CanUndo() const;
 	int StartUndo();
 	const Action &GetUndoStep() const;
 	void PerformUndoStep();
-	bool CanRedo();
+	bool CanRedo() const;
 	int StartRedo();
 	const Action &GetRedoStep() const;
 	void PerformRedoStep();
