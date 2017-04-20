@@ -3388,6 +3388,7 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
         case SCLEX_XML:
         case SCLEX_CPP:
         case SCLEX_PASCAL:
+        case SCLEX_RUST:
           BeginWaitCursor();
           EditToggleLineComments(hwndEdit,L"//",FALSE);
           EndWaitCursor();
@@ -6248,7 +6249,7 @@ void ParseCommandLine()
             LocalFree(lpSchemeArg);
             lpSchemeArg = NULL;
           }
-          iInitialLexer = 34;
+          iInitialLexer = 35;
           flagLexerSpecified = 1;
           break;
 
@@ -6257,7 +6258,7 @@ void ParseCommandLine()
             LocalFree(lpSchemeArg);
             lpSchemeArg = NULL;
           }
-          iInitialLexer = 35;
+          iInitialLexer = 36;
           flagLexerSpecified = 1;
           break;
 

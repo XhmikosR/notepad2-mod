@@ -30,6 +30,7 @@
     "lmProps",
     "lmPython",
     "lmRuby",
+    "lmRust",
     "lmSQL",
     "lmTCL",
     "lmVB",

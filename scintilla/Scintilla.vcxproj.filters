@@ -99,6 +99,9 @@
     <ClCompile Include="lexers\LexRuby.cxx">
       <Filter>lexers</Filter>
     </ClCompile>
+    <ClCompile Include="lexers\LexRust.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
     <ClCompile Include="lexers\LexSQL.cxx">
       <Filter>lexers</Filter>
     </ClCompile>
