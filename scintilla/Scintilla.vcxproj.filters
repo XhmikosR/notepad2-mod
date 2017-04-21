@@ -16,6 +16,12 @@
     <Filter Include="win32">
       <UniqueIdentifier>{afe7e35e-cd81-406c-a770-df29d2b3fc95}</UniqueIdentifier>
     </Filter>
+    <Filter Include="deelx">
+      <UniqueIdentifier>{47d0299d-a31e-44e8-af03-73cf1212cb33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="deelx\doc">
+      <UniqueIdentifier>{66cba9c7-d2e8-4698-85f1-f0691bc8890d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lexers\LexAHK.cxx">
@@ -237,6 +243,9 @@
     <ClCompile Include="win32\ScintillaWin.cxx">
       <Filter>win32</Filter>
     </ClCompile>
+    <ClCompile Include="deelx\DeelxRegexSearch.cxx">
+      <Filter>deelx</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ILexer.h">
@@ -395,12 +404,22 @@
     <ClInclude Include="src\XPM.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="win32\HanjaDic.h">
-      <Filter>win32</Filter>
-    </ClInclude>
     <ClInclude Include="win32\PlatWin.h">
       <Filter>win32</Filter>
     </ClInclude>
     <ClInclude Include="include\Sci_Position.h" />
+    <ClInclude Include="deelx\deelx64.h">
+      <Filter>deelx</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="deelx\doc\Deelx Regular Expression Syntax Reference.txt">
+      <Filter>deelx\doc</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="deelx\doc\deelx_en.chm">
+      <Filter>deelx\doc</Filter>
+    </None>
   </ItemGroup>
 </Project>
