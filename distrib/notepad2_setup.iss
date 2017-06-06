@@ -1,6 +1,6 @@
 ;* Notepad2-mod - Installer script
 ;*
-;* Copyright (C) 2010-2016 XhmikosR
+;* Copyright (C) 2010-2017 XhmikosR
 ;*
 ;* This file is part of Notepad2-mod.
 ;*
@@ -10,22 +10,19 @@
 ; Inno Setup: http://www.jrsoftware.org/isdl.php
 
 
-;#define VS2015
-;#define WDK
+#define VS2015
 
 ; Preprocessor related stuff
 #if VER < EncodeVer(5,5,9)
   #error Update your Inno Setup version (5.5.9 or newer)
 #endif
 
-#if !defined(VS2015) && !defined(WDK)
-  #error You need to define the compiler used; VS2015 or WDK
+#if !defined(VS2015)
+  #error You need to define the compiler used; VS2015
 #endif
 
 #if defined(VS2015)
   #define compiler "VS2015"
-#elif defined(WDK)
-  #define compiler "WDK"
 #endif
 
 #define bindir "..\bin\" + compiler
@@ -46,7 +43,7 @@
 #expr ParseVersion(bindir + "\Release_x86\Notepad2.exe", VerMajor, VerMinor, VerBuild, VerRevision)
 #define app_version   str(VerMajor) + "." + str(VerMinor) + "." + str(VerBuild) + "." + str(VerRevision)
 #define app_name      "Notepad2-mod"
-#define app_copyright "Copyright © 2004-2016, Florian Balmer et al."
+#define app_copyright "Copyright © 2004-2017, Florian Balmer et al."
 #define quick_launch  "{userappdata}\Microsoft\Internet Explorer\Quick Launch"
 
 
@@ -90,11 +87,7 @@ DisableProgramGroupPage=yes
 DisableReadyPage=yes
 DisableWelcomePage=yes
 AllowCancelDuringInstall=no
-#if defined(WDK)
-MinVersion=5.0
-#else
 MinVersion=5.1sp3
-#endif
 ArchitecturesAllowed=x86 x64
 ArchitecturesInstallIn64BitMode=x64
 #ifexist "..\signinfo.txt"
