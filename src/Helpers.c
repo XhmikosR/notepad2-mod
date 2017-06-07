@@ -991,15 +991,18 @@ void PathRelativeToApp(
 //
 void PathAbsoluteFromApp(LPWSTR lpszSrc,LPWSTR lpszDest,int cchDest,BOOL bExpandEnv) {
 
-  WCHAR wchPath[MAX_PATH];
-  WCHAR wchResult[MAX_PATH];
+  WCHAR wchPath[MAX_PATH] = { 0 };
+  WCHAR wchResult[MAX_PATH] = { 0 };
 
   if (StrCmpNI(lpszSrc,L"%CSIDL:MYDOCUMENTS%",CSTRLEN("%CSIDL:MYDOCUMENTS%")) == 0) {
     SHGetFolderPath(NULL,CSIDL_PERSONAL,NULL,SHGFP_TYPE_CURRENT,wchPath);
     PathAppend(wchPath,lpszSrc+CSTRLEN("%CSIDL:MYDOCUMENTS%"));
   }
-  else
-    lstrcpyn(wchPath,lpszSrc,COUNTOF(wchPath));
+  else {
+    if (lpszSrc) {
+      lstrcpyn(wchPath, lpszSrc, COUNTOF(wchPath));
+    }
+  }
 
   if (bExpandEnv)
     ExpandEnvironmentStringsEx(wchPath,COUNTOF(wchPath));
@@ -1658,6 +1661,9 @@ BOOL MRU_AddFile(LPMRULIST pmru,LPCWSTR pszFile,BOOL bRelativePath,BOOL bUnexpan
   for (i = 0; i < pmru->iSize; i++) {
     if (lstrcmpi(pmru->pszItems[i],pszFile) == 0) {
       LocalFree(pmru->pszItems[i]);
+      break;
+    }
+    else if (pmru->pszItems[i] == NULL) {
       break;
     }
     else {
