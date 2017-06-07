@@ -684,7 +684,7 @@ static void ColouriseBashDoc(Sci_PositionU startPos, Sci_Position length, int in
 				sc.SetState(SCE_SH_BACKTICKS);
 				QuoteStack.Start(sc.ch, BASH_DELIM_BACKTICK);
 			} else if (sc.ch == '$') {
-				if (sc.Match("$((")) {
+				if (sc.Match("$((") || sc.Match("$(")) {
 					sc.SetState(SCE_SH_OPERATOR);	// handle '((' later
 					continue;
 				}
