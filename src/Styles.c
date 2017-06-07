@@ -2985,6 +2985,7 @@ void Style_SetLexer(HWND hwnd,PEDITLEXER pLexNew)
     if (Style_StrGetColor(FALSE,lexDefault.Styles[8+iIdx].szValue,&rgb)) // caret line back
     {
       SendMessage(hwnd,SCI_SETCARETLINEVISIBLE,TRUE,0);
+      SendMessage(hwnd,SCI_SETCARETLINEVISIBLEALWAYS,TRUE,0);
       SendMessage(hwnd,SCI_SETCARETLINEBACK,rgb,0);
 
       if (Style_StrGetAlpha(lexDefault.Styles[8+iIdx].szValue,&iValue))
@@ -3260,6 +3261,7 @@ void Style_SetCurrentLineBackground(HWND hwnd)
     if (Style_StrGetColor(FALSE,lexDefault.Styles[8+iIdx].szValue,&rgb)) // caret line back
     {
       SendMessage(hwnd,SCI_SETCARETLINEVISIBLE,TRUE,0);
+      SendMessage(hwnd,SCI_SETCARETLINEVISIBLEALWAYS,TRUE,0);
       SendMessage(hwnd,SCI_SETCARETLINEBACK,rgb,0);
 
       if (Style_StrGetAlpha(lexDefault.Styles[8+iIdx].szValue,&iValue))
