@@ -5836,6 +5836,8 @@ void EditMarkAll(HWND hwnd, int iMarkOccurrences, BOOL bMarkOccurrencesMatchCase
     return;
 
 
+  // scintilla/src/Editor.h SelectionText.LengthWithTerminator()
+  iSelCount = (int)SendMessage(hwnd,SCI_GETSELTEXT,0,0) - 1;
   pszText = LocalAlloc(LPTR,iSelCount + 1);
   (int)SendMessage(hwnd,SCI_GETSELTEXT,0,(LPARAM)pszText);
 
