@@ -36,6 +36,7 @@
 * [RL Vision](http://www.rlvision.com/notepad2/about.asp)
 * Aleksandar Lekov
 * Bruno Barbieri
+* Everyone else on [GitHub](https://github.com/XhmikosR/notepad2-mod/graphs/contributors)
 
 ## More information:
 
