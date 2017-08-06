@@ -47,4 +47,4 @@
 * <kbd>Ctrl+Alt+Shift+F2</kbd> Expand selection to previous match.
 * <kbd>Ctrl+Shift+Enter</kbd>  New line with toggled auto indent option.
 
-You can use MSVC 2015 to build Notepad2-mod.
+You can use MSVC 2017 to build Notepad2-mod.

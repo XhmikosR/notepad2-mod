@@ -9,7 +9,7 @@ rem *   Originally taken and adapted from  https://github.com/mpc-hc/mpc-hc
 rem *
 rem * See License.txt for details about distribution and modification.
 rem *
-rem *                                     (c) XhmikosR 2013-2015
+rem *                                     (c) XhmikosR 2013-2015, 2017
 rem *                                     https://github.com/XhmikosR/notepad2-mod
 rem *
 rem ******************************************************************************
@@ -27,22 +27,19 @@ IF DEFINED COVDIR IF NOT EXIST "%COVDIR%" (
 )
 
 
-CALL "%VS140COMNTOOLS%..\..\VC\vcvarsall.bat" x86
-IF %ERRORLEVEL% NEQ 0 (
-  ECHO vcvarsall.bat call failed.
-  GOTO End
-)
+CALL :SubVSPath
+IF NOT EXIST "%VS_PATH%" CALL :SUBMSG "ERROR" "Visual Studio 2017 NOT FOUND!"
 
 
 :Cleanup
-IF EXIST "cov-int" RD /q /s "cov-int"
+IF EXIST "cov-int"           RD /q /s "cov-int"
 IF EXIST "Notepad2-mod.lzma" DEL "Notepad2-mod.lzma"
 IF EXIST "Notepad2-mod.tar"  DEL "Notepad2-mod.tar"
 IF EXIST "Notepad2-mod.tgz"  DEL "Notepad2-mod.tgz"
 
 
 :Main
-"%COVDIR%\bin\cov-build.exe" --dir cov-int "build_vs2015.bat" Rebuild All Release
+"%COVDIR%\bin\cov-build.exe" --dir cov-int "build_vs2017.bat" Rebuild All Release
 
 
 :tar
@@ -74,6 +71,11 @@ IF EXIST "%SEVENZIP_PATH%" (SET "SEVENZIP=%SEVENZIP_PATH%" & EXIT /B)
 FOR /F "tokens=2*" %%A IN (
   'REG QUERY "HKLM\SOFTWARE\7-Zip" /v "Path" 2^>NUL ^| FIND "REG_SZ" ^|^|
    REG QUERY "HKLM\SOFTWARE\Wow6432Node\7-Zip" /v "Path" 2^>NUL ^| FIND "REG_SZ"') DO SET "SEVENZIP=%%B\7z.exe"
+EXIT /B
+
+
+:SubVSPath
+FOR /f "delims=" %%A IN ('"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -property installationPath -latest -requires Microsoft.Component.MSBuild Microsoft.VisualStudio.Component.VC.ATLMFC Microsoft.VisualStudio.Component.VC.Tools.x86.x64') DO SET "VS_PATH=%%A"
 EXIT /B
 
 

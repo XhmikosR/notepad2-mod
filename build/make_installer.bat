@@ -34,12 +34,12 @@ CALL :SubDetectInnoSetup
 
 rem Check for the first switch
 IF "%~1" == "" (
-  SET "COMPILER=VS2015"
+  SET "COMPILER=VS2017"
 ) ELSE (
-  IF /I "%~1" == "VS2015"   SET "COMPILER=VS2015" & GOTO START
-  IF /I "%~1" == "/VS2015"  SET "COMPILER=VS2015" & GOTO START
-  IF /I "%~1" == "-VS2015"  SET "COMPILER=VS2015" & GOTO START
-  IF /I "%~1" == "--VS2015" SET "COMPILER=VS2015" & GOTO START
+  IF /I "%~1" == "VS2017"   SET "COMPILER=VS2017" & GOTO START
+  IF /I "%~1" == "/VS2017"  SET "COMPILER=VS2017" & GOTO START
+  IF /I "%~1" == "-VS2017"  SET "COMPILER=VS2017" & GOTO START
+  IF /I "%~1" == "--VS2017" SET "COMPILER=VS2017" & GOTO START
 
   ECHO.
   ECHO Unsupported commandline switch!
@@ -53,7 +53,7 @@ IF EXIST "%~dp0..\signinfo.txt" SET "SIGN=True"
 
 SET INPUTDIRx86=bin\%COMPILER%\Release_x86
 SET INPUTDIRx64=bin\%COMPILER%\Release_x64
-IF /I NOT "%COMPILER%" == "VS2015" SET SUFFIX=_%COMPILER%
+IF /I NOT "%COMPILER%" == "VS2017" SET SUFFIX=_%COMPILER%
 SET "TEMP_NAME=temp_zip%SUFFIX%"
 
 IF NOT EXIST "..\%INPUTDIRx86%\Notepad2.exe" CALL :SUBMSG "ERROR" "Compile Notepad2 x86 first!"
@@ -125,7 +125,7 @@ EXIT /B
 :SHOWHELP
 TITLE %~nx0 %1
 ECHO. & ECHO.
-ECHO Usage:  %~nx0 [VS2015]
+ECHO Usage:  %~nx0 [VS2017]
 ECHO.
 ECHO Notes:  You can also prefix the commands with "-", "--" or "/".
 ECHO         The arguments are not case sensitive.
@@ -134,7 +134,7 @@ ECHO         You can use another Inno Setup location by defining %%InnoSetupPath
 ECHO         This is usefull if you have the Unicode build installed
 ECHO         and you want to use the ANSI one.
 ECHO. & ECHO.
-ECHO Executing %~nx0 without any arguments is equivalent to "%~nx0 VS2015"
+ECHO Executing %~nx0 without any arguments is equivalent to "%~nx0 VS2017"
 ECHO.
 ENDLOCAL
 EXIT /B

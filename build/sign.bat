@@ -9,7 +9,7 @@ rem *   Originally taken and adapted from  https://github.com/mpc-hc/mpc-hc
 rem *
 rem * See License.txt for details about distribution and modification.
 rem *
-rem *                                     (c) XhmikosR 2013-2015
+rem *                                     (c) XhmikosR 2013-2015, 2017
 rem *                                     https://github.com/XhmikosR/notepad2-mod
 rem *
 rem ******************************************************************************
@@ -24,11 +24,8 @@ IF "%~1" == "" (
   GOTO END
 )
 
-IF NOT DEFINED VS140COMNTOOLS (
-  ECHO %~nx0: Visual Studio 2015 does not seem to be installed...
-  SET SIGN_ERROR=True
-  GOTO END
-)
+CALL :SubVSPath
+IF NOT EXIST "%VS_PATH%" CALL :SUBMSG "ERROR" "Visual Studio 2017 NOT FOUND!"
 
 IF NOT EXIST "%FILE_DIR%..\signinfo.txt" (
   ECHO %~nx0: %FILE_DIR%..\signinfo.txt is not present!
@@ -36,7 +33,9 @@ IF NOT EXIST "%FILE_DIR%..\signinfo.txt" (
   GOTO END
 )
 
-signtool /? 2>NUL || CALL "%VS140COMNTOOLS%..\..\VC\vcvarsall.bat" 2>NUL
+SET "TOOLSET=%VS_PATH%\Common7\Tools\vsdevcmd"
+
+signtool /? 2>NUL || CALL "%TOOLSET%" 2>NUL
 IF %ERRORLEVEL% NEQ 0 (
   ECHO vcvarsall.bat call failed.
   GOTO End
@@ -53,6 +52,10 @@ IF /I "%SIGN_ERROR%" == "True" (
   EXIT /B 1
 )
 ENDLOCAL
+EXIT /B
+
+:SubVSPath
+FOR /f "delims=" %%A IN ('"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -property installationPath -latest -requires Microsoft.Component.MSBuild Microsoft.VisualStudio.Component.VC.ATLMFC Microsoft.VisualStudio.Component.VC.Tools.x86.x64') DO SET "VS_PATH=%%A"
 EXIT /B
 
 :START_SIGN

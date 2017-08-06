@@ -8,17 +8,13 @@ rem *   Batch file used to build Notepad2 with MSVC2015
 rem *
 rem * See License.txt for details about distribution and modification.
 rem *
-rem *                                     (c) XhmikosR 2010-2015
+rem *                                     (c) XhmikosR 2010-2015, 2017
 rem *                                     https://github.com/XhmikosR/notepad2-mod
 rem *
 rem ******************************************************************************
 
 SETLOCAL ENABLEEXTENSIONS
 CD /D %~dp0
-
-rem Check the building environment
-IF NOT DEFINED VS140COMNTOOLS CALL :SUBMSG "ERROR" "Visual Studio 2015 wasn't found!"
-
 
 rem Check for the help switches
 IF /I "%~1" == "help"   GOTO SHOWHELP
@@ -103,12 +99,15 @@ IF "%~3" == "" (
 
 
 :START
+CALL :SubVSPath
+IF NOT EXIST "%VS_PATH%" CALL :SUBMSG "ERROR" "Visual Studio 2017 NOT FOUND!"
+
 IF /I "%ARCH%" == "x64" GOTO x64
 IF /I "%ARCH%" == "x86" GOTO x86
 
 
 :x86
-CALL "%VS140COMNTOOLS%..\..\VC\vcvarsall.bat" x86
+CALL "%VS_PATH%\Common7\Tools\vsdevcmd" -no_logo -arch=x86
 
 IF /I "%CONFIG%" == "all" (CALL :SUBMSVC %BUILDTYPE% Debug Win32 && CALL :SUBMSVC %BUILDTYPE% Release Win32) ELSE (CALL :SUBMSVC %BUILDTYPE% %CONFIG% Win32)
 
@@ -116,7 +115,7 @@ IF /I "%ARCH%" == "x86" GOTO END
 
 
 :x64
-CALL "%VS140COMNTOOLS%..\..\VC\vcvarsall.bat" x86_amd64
+CALL "%VS_PATH%\Common7\Tools\vsdevcmd" -no_logo -arch=amd64
 
 IF /I "%CONFIG%" == "all" (CALL :SUBMSVC %BUILDTYPE% Debug x64 && CALL :SUBMSVC %BUILDTYPE% Release x64) ELSE (CALL :SUBMSVC %BUILDTYPE% %CONFIG% x64)
 
@@ -124,6 +123,12 @@ IF /I "%CONFIG%" == "all" (CALL :SUBMSVC %BUILDTYPE% Debug x64 && CALL :SUBMSVC 
 :END
 TITLE Building Notepad2-mod with MSVC2015 - Finished!
 ENDLOCAL
+EXIT /B
+
+
+:SubVSPath
+rem Check the building environment
+FOR /f "delims=" %%A IN ('"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -property installationPath -latest -requires Microsoft.Component.MSBuild Microsoft.VisualStudio.Component.VC.ATLMFC Microsoft.VisualStudio.Component.VC.Tools.x86.x64') DO SET "VS_PATH=%%A"
 EXIT /B
 
 
