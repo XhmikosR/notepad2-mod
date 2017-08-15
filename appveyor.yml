@@ -1,0 +1,15 @@
+image: Visual Studio 2017
+
+version: "{build}"
+
+#clone_depth: 10
+
+build_script:
+  - CALL "build\build_vs2017.bat" Build All Release
+
+test: off
+
+deploy: off
+
+matrix:
+  fast_finish: true

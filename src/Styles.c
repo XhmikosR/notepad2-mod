@@ -4349,7 +4349,7 @@ INT_PTR CALLBACK Style_ConfigDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lP
         int i;
         SHFILEINFO shfi;
         LOGFONT lf;
-        HTREEITEM currentLex;
+        HTREEITEM currentLex = { 0 };
         int found = 0;
 
         hwndTV = GetDlgItem(hwnd,IDC_STYLELIST);

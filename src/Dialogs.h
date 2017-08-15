@@ -27,7 +27,7 @@
 #define MBOKCANCEL     8
 
 int  MsgBox(int,UINT,...);
-void DisplayCmdLineHelp();
+void DisplayCmdLineHelp(HWND hwnd);
 BOOL GetDirectory(HWND,int,LPWSTR,LPCWSTR,BOOL);
 INT_PTR CALLBACK AboutDlgProc(HWND,UINT,WPARAM,LPARAM);
 void RunDlg(HWND,LPCWSTR);

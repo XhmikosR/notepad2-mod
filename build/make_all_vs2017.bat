@@ -9,7 +9,7 @@ rem *   and creating the installer/zip packages
 rem *
 rem * See License.txt for details about distribution and modification.
 rem *
-rem *                                     (c) XhmikosR 2010-2015
+rem *                                     (c) XhmikosR 2010-2015, 2017
 rem *                                     https://github.com/XhmikosR/notepad2-mod
 rem *
 rem ******************************************************************************
@@ -17,9 +17,9 @@ rem ****************************************************************************
 SETLOCAL
 CD /D %~dp0
 
-CALL "build_vs2015.bat" %1
-CALL "make_installer.bat" vs2015
-CALL "make_zip.bat" vs2015
+CALL "build_vs2017.bat" %1
+CALL "make_installer.bat" vs2017
+CALL "make_zip.bat" vs2017
 
 
 :END

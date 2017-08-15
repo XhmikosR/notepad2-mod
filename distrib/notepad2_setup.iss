@@ -10,19 +10,19 @@
 ; Inno Setup: http://www.jrsoftware.org/isdl.php
 
 
-#define VS2015
+#define VS2017
 
 ; Preprocessor related stuff
 #if VER < EncodeVer(5,5,9)
   #error Update your Inno Setup version (5.5.9 or newer)
 #endif
 
-#if !defined(VS2015)
-  #error You need to define the compiler used; VS2015
+#if !defined(VS2017)
+  #error You need to define the compiler used; VS2017
 #endif
 
-#if defined(VS2015)
-  #define compiler "VS2015"
+#if defined(VS2017)
+  #define compiler "VS2017"
 #endif
 
 #define bindir "..\bin\" + compiler
@@ -60,7 +60,7 @@ AppContact=https://github.com/XhmikosR/notepad2-mod
 AppCopyright={#app_copyright}
 VersionInfoVersion={#app_version}
 UninstallDisplayIcon={app}\Notepad2.exe
-#if defined(VS2015)
+#if defined(VS2017)
 UninstallDisplayName={#app_name} {#app_version}
 #else
 UninstallDisplayName={#app_name} {#app_version} ({#compiler})
@@ -68,7 +68,7 @@ UninstallDisplayName={#app_name} {#app_version} ({#compiler})
 DefaultDirName={pf}\Notepad2
 LicenseFile=license.txt
 OutputDir=.
-#if defined(VS2015)
+#if defined(VS2017)
 OutputBaseFilename={#app_name}.{#app_version}
 #else
 OutputBaseFilename={#app_name}.{#app_version}_{#compiler}

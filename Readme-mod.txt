@@ -20,6 +20,7 @@ Contributors:
 * RL Vision
 * Aleksandar Lekov
 * Bruno Barbieri
+* Everyone else on GitHub: https://github.com/XhmikosR/notepad2-mod/graphs/contributors
 
 More information:
 * Source code and binaries:   https://github.com/XhmikosR/notepad2-mod
