@@ -73,6 +73,14 @@ BEGIN
         MENUITEM "Save &Copy...\tCtrl+F6",      IDM_FILE_SAVECOPY
         MENUITEM "&Read Only",                  IDM_FILE_READONLY
         MENUITEM SEPARATOR
+        POPUP "&Reload"
+        BEGIN
+            MENUITEM "As UFT-&8\tShift+F8",         CMD_RELOADASCIIASUTF8
+            MENUITEM "As &ANSI\tCtrl+Shift+A",      CMD_RELOADANSI
+            MENUITEM "As &OEM\tCtrl+Shift+O",       CMD_RELOADOEM
+            MENUITEM "&No FileVars\tAlt+F8",        CMD_RELOADNOFILEVARS
+            MENUITEM "&Default\tCtrl+Alt+F",        CMD_RECODEDEFAULT
+        END
         POPUP "&Launch"
         BEGIN
             MENUITEM "&New Window\tAlt+N",          IDM_FILE_NEWWINDOW
@@ -81,6 +89,9 @@ BEGIN
             MENUITEM "Execute &Document\tCtrl+L",   IDM_FILE_LAUNCH
             MENUITEM "&Open with...\tAlt+L",        IDM_FILE_OPENWITH
             MENUITEM "&Command...\tCtrl+R",         IDM_FILE_RUN
+            MENUITEM SEPARATOR
+            MENUITEM "Web Template &1\tCtrl+Shift+1",   CMD_WEBACTION1
+            MENUITEM "Web Template &2\tCtrl+Shift+2",   CMD_WEBACTION2
         END
         MENUITEM SEPARATOR
         POPUP "&Encoding"
@@ -112,6 +123,7 @@ BEGIN
         MENUITEM "Propert&ies...",              IDM_FILE_PROPERTIES
         MENUITEM "Create &Desktop Link",        IDM_FILE_CREATELINK
         MENUITEM SEPARATOR
+        MENUITEM "Browse...\tCtrl+M",           IDM_FILE_BROWSE
         POPUP "&Favorites"
         BEGIN
             MENUITEM "&Open Favorites...\tAlt+I",   IDM_FILE_OPENFAV
@@ -157,8 +169,6 @@ BEGIN
             MENUITEM "&Indent\tTab",                IDM_EDIT_INDENT
             MENUITEM "&Unindent\tShift+Tab",        IDM_EDIT_UNINDENT
             MENUITEM SEPARATOR
-            MENUITEM "&Enclose Selection...\tAlt+Q",
-                                                    IDM_EDIT_ENCLOSESELECTION
 
             MENUITEM "&Duplicate Selection\tAlt+D", IDM_EDIT_SELECTIONDUPLICATE
 
@@ -176,10 +186,21 @@ BEGIN
             MENUITEM "Alig&n Lines...\tAlt+J",      IDM_EDIT_ALIGN
             MENUITEM "S&ort Lines...\tAlt+O",       IDM_EDIT_SORTLINES
         END
+        POPUP "&Enclose Selection"
+        BEGIN
+            MENUITEM "&With...\tAlt+Q",             IDM_EDIT_ENCLOSESELECTION
+            MENUITEM SEPARATOR
+            MENUITEM "( )\tCtrl+3",                 CMD_EMBRACE
+            MENUITEM "{ }\tCtrl+4",                 CMD_EMBRACE2
+            MENUITEM "[ ]\tCtrl+5",                 CMD_EMBRACE3
+            MENUITEM SEPARATOR
+            MENUITEM "&Single Quotes\tCtrl+1",      CMD_STRINGIFY
+            MENUITEM "&Double Quotes\tCtrl+2",      CMD_STRINGIFY2
+            MENUITEM "&Backticks\tCtrl+6",          CMD_EMBRACE4
+        END
         POPUP "C&onvert"
         BEGIN
             MENUITEM "&Uppercase\tCtrl+Shift+U",    IDM_EDIT_CONVERTUPPERCASE
-
             MENUITEM "&Lowercase\tCtrl+U",          IDM_EDIT_CONVERTLOWERCASE
 
             MENUITEM SEPARATOR
@@ -197,6 +218,8 @@ BEGIN
         END
         POPUP "I&nsert"
         BEGIN
+            MENUITEM "Complete Word\tCtrl+Enter",   IDM_EDIT_COMPLETEWORD
+            MENUITEM SEPARATOR
             MENUITEM "&HTML/XML Tag...\tAlt+X",     IDM_EDIT_INSERT_TAG
             MENUITEM SEPARATOR
             MENUITEM "&Encoding Identifier\tCtrl+F8",
@@ -237,7 +260,12 @@ BEGIN
             MENUITEM "Select To Ne&xt\tCtrl+Alt+F2",         IDM_EDIT_SELTONEXT
             MENUITEM "Select To Pre&vious\tCtrl+Alt+Shift+F2", IDM_EDIT_SELTOPREV
             MENUITEM SEPARATOR
-            MENUITEM "Complete Word\tCtrl+Enter",   IDM_EDIT_COMPLETEWORD
+            MENUITEM "Delete Line Left\tCtrl+Shift+Back",   IDM_EDIT_DELETELINELEFT
+            MENUITEM "Delete Line Right\tCtrl+Shift+Del",   IDM_EDIT_DELETELINERIGHT
+            MENUITEM "Delete Word Left\tCtrl+Back",         CMD_CTRLBACK
+            MENUITEM "Delete Word Right\tCtrl+Del",         CMD_CTRLDEL
+            MENUITEM SEPARATOR
+            MENUITEM "Update Timestamps\tShift+F5", CMD_TIMESTAMPS
         END
 #ifdef BOOKMARK_EDITION
         POPUP "Bookmarks"
@@ -350,10 +378,12 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Save Settings On E&xit",      IDM_VIEW_SAVESETTINGS
         MENUITEM "Save Settings &Now\tF7",      IDM_VIEW_SAVESETTINGSNOW
+        MENUITEM "&Open Notepad2.ini\tCtrl+F7", CMD_OPENINIFILE
     END
     POPUP "&?"
     BEGIN
         MENUITEM "&About...\tF1",               IDM_HELP_ABOUT
+        MENUITEM "&Command Line Help",          IDM_CMDLINE_HELP
     END
 END
 
@@ -545,7 +575,6 @@ BEGIN
     VK_F3,          CMD_FINDPREVSEL,        VIRTKEY, SHIFT, CONTROL,
                                                     NOINVERT
     VK_F4,          IDM_EDIT_REPLACENEXT,   VIRTKEY, NOINVERT
-    VK_F4,          IDM_FILE_NEW,           VIRTKEY, CONTROL, NOINVERT
     VK_F4,          IDM_FILE_NEW,           VIRTKEY, CONTROL, NOINVERT
     VK_F5,          IDM_FILE_REVERT,        VIRTKEY, NOINVERT
     VK_F5,          IDM_EDIT_INSERT_SHORTDATE, VIRTKEY, CONTROL, NOINVERT

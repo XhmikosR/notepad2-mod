@@ -353,6 +353,7 @@
 #define IDM_VIEW_MARKOCCURRENCES_WORD   40452
 #define IDM_VIEW_AUTOCOMPLETEWORDS      40453
 #define IDM_HELP_ABOUT                  40500
+#define IDM_CMDLINE_HELP                40501
 #define IDM_TRAY_RESTORE                40600
 #define IDM_TRAY_EXIT                   40601
 #define IDT_FILE_NEW                    40700
