@@ -1768,7 +1768,7 @@ void EditTitleCase(HWND hwnd)
       bPrevWasSpace = TRUE;
       for (i = 0; i < cchTextW; i++)
       {
-          if (!IsCharAlphaNumericW(pszTextW[i]) && (!StrChr(L"'`´’",pszTextW[i]) ||  bPrevWasSpace ) )
+          if (!IsCharAlphaNumericW(pszTextW[i]) && (!StrChr(L"\x0027\x0060\x00B4\x0092",pszTextW[i]) ||  bPrevWasSpace ) )
           {
               bNewWord = TRUE;
           }
@@ -4110,7 +4110,7 @@ void EditWrapToColumn(HWND hwnd,int nColumn/*,int nTabWidth*/)
   cchConvW = 0;
   iLineLength = 0;
 
-#define ISDELIMITER(wc) StrChr(L",;.:-+%&¦|/*?!\"\'~´#=",wc)
+#define ISDELIMITER(wc) StrChr(L",;.:-+%&\x00A6|/*?!\"\'~\x00B4#=",wc)
 #define ISWHITE(wc) StrChr(L" \t",wc)
 #define ISWORDEND(wc) (/*ISDELIMITER(wc) ||*/ StrChr(L" \t\r\n",wc))
 
