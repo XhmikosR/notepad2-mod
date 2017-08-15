@@ -75,6 +75,9 @@
     <ClCompile Include="lexers\LexMarkdown.cxx">
       <Filter>lexers</Filter>
     </ClCompile>
+    <ClCompile Include="lexers\LexMatlab.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
     <ClCompile Include="lexers\LexNsis.cxx">
       <Filter>lexers</Filter>
     </ClCompile>
