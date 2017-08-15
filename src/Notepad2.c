@@ -94,6 +94,7 @@ TBBUTTON  tbbMainWnd[] = { {0,IDT_FILE_NEW,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0},
 
 WCHAR      szIniFile[MAX_PATH] = L"";
 WCHAR      szIniFile2[MAX_PATH] = L"";
+WCHAR      szBufferFile[MAX_PATH] = L"";
 BOOL      bSaveSettings;
 BOOL      bSaveRecentFiles;
 BOOL      bSaveFindReplace;
@@ -373,6 +374,7 @@ int flagQuietCreate        = 0;
 int flagUseSystemMRU       = 0;
 int flagRelaunchElevated   = 0;
 int flagDisplayHelp        = 0;
+int flagBufferFile         = 0;
 
 
 
@@ -639,7 +641,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInst,LPSTR lpCmdLine,int n
     StrCat(wchWndClass,L"B");
 
   // Relaunch with elevated privileges
-  if (RelaunchElevated())
+  if (RelaunchElevated(NULL))
     return(0);
 
   // Try to run multiple instances
@@ -875,8 +877,18 @@ HWND InitInstance(HINSTANCE hInstance,LPSTR pszCmdLine,int nCmdShow)
       if (OpenFileDlg(hwndMain,tchFile,COUNTOF(tchFile),lpFileArg))
         bOpened = FileLoad(FALSE,FALSE,FALSE,FALSE,tchFile);
     }
-    else {
-      if (bOpened = FileLoad(FALSE,FALSE,FALSE,FALSE,lpFileArg)) {
+    else
+    {
+      LPCWSTR lpFileToOpen = flagBufferFile ? szBufferFile : lpFileArg;
+      if (bOpened = FileLoad(FALSE, FALSE, FALSE, FALSE, lpFileToOpen)) {
+        if (flagBufferFile) {
+          lstrcpy(szCurFile, lpFileArg);
+          if (!flagLexerSpecified)
+            Style_SetLexerFromFile(hwndEdit, szCurFile);
+          bModified = TRUE;
+          SetWindowTitle(hwndMain, uidsAppTitle, fIsElevated, IDS_UNTITLED, lpFileArg,
+            iPathNameFormat, bModified, IDS_READONLY, bReadOnly, szTitleExcerpt);
+        }
         if (flagJumpTo) { // Jump to position
           EditJumpTo(hwndEdit,iInitialLine,iInitialColumn);
           EditEnsureSelectionVisible(hwndEdit);
@@ -6046,6 +6058,14 @@ void ParseCommandLine()
         else
           flagUseSystemMRU = 1;
       }
+      else if (StrCmpNI(lp1,L"buffer",CSTRLEN(L"buffer")) == 0) {
+        if (ExtractFirstArgument(lp2, lp1, lp2)) {
+          StrCpyN(szBufferFile, lp1, COUNTOF(szBufferFile));
+          TrimString(szBufferFile);
+          PathUnquoteSpaces(szBufferFile);
+          flagBufferFile = 1;
+        }
+      }
 
       else switch (*CharUpper(lp1))
       {
@@ -7131,11 +7151,52 @@ BOOL FileSave(BOOL bSaveAlways,BOOL bAsk,BOOL bSaveAs,BOOL bSaveCopy)
     if (lstrlen(szCurFile) != 0)
       lstrcpy(tchFile,szCurFile);
 
-    SetWindowTitle(hwndMain,uidsAppTitle,fIsElevated,IDS_UNTITLED,szCurFile,
-      iPathNameFormat,bModified || iEncoding != iOriginalEncoding,
-      IDS_READONLY,bReadOnly,szTitleExcerpt);
+    if (!fIsElevated && dwLastIOError == ERROR_ACCESS_DENIED)
+    {
+      if (IDYES == MsgBox(MBYESNOWARN, IDS_ERR_ACCESSDENIED, tchFile))
+      {
+        WCHAR lpTempPathBuffer[MAX_PATH];
+        WCHAR szTempFileName[MAX_PATH];
 
-    MsgBox(MBWARN,IDS_ERR_SAVEFILE,tchFile);
+        if (GetTempPath(MAX_PATH, lpTempPathBuffer) &&
+            GetTempFileName(lpTempPathBuffer, TEXT("N2"), 0, szTempFileName))
+        {
+          if (FileIO(FALSE, szTempFileName, FALSE, &iEncoding, &iEOLMode, NULL, NULL, &bCancelDataLoss, TRUE)) 
+          {
+            WCHAR szArguments[2 * MAX_PATH + 64] = L"";
+            LPWSTR lpCmdLine = GetCommandLine();
+            LPWSTR lpExe = LocalAlloc(LPTR, sizeof(WCHAR)*(lstrlen(lpCmdLine) + 1));
+            LPWSTR lpArgs = LocalAlloc(LPTR, sizeof(WCHAR)*(lstrlen(lpCmdLine) + 1));
+
+            ExtractFirstArgument(lpCmdLine, lpExe, lpArgs);
+            
+            wsprintf(szArguments, L"/buffer %s %s", szTempFileName, lpArgs);
+            if (lstrlen(tchFile))
+            {
+              if (!StrStrI(szArguments, tchFile)) {
+                wsprintf(szArguments, L"%s %s", szArguments, tchFile);
+              }
+            }
+
+            flagRelaunchElevated = 1;
+            if (RelaunchElevated(szArguments)) 
+            {
+              LocalFree(lpExe);
+              LocalFree(lpArgs);
+              exit(0);
+            }
+          }
+        }
+      }
+    } 
+    else
+    {
+      SetWindowTitle(hwndMain,uidsAppTitle,fIsElevated,IDS_UNTITLED,szCurFile,
+        iPathNameFormat,bModified || iEncoding != iOriginalEncoding,
+        IDS_READONLY,bReadOnly,szTitleExcerpt);
+
+      MsgBox(MBWARN,IDS_ERR_SAVEFILE,tchFile);
+    }
   }
 
   return(fSuccess);
@@ -7587,43 +7648,50 @@ BOOL RelaunchMultiInst() {
 //  RelaunchElevated()
 //
 //
-BOOL RelaunchElevated() {
+BOOL RelaunchElevated(LPWSTR lpArgs) {
 
   if (!IsVista() || fIsElevated || !flagRelaunchElevated || flagDisplayHelp)
     return(FALSE);
 
   else {
 
-    LPWSTR lpCmdLine;
-    LPWSTR lpArg1, lpArg2;
+    LPWSTR lpCmdLine, lpExe;
     STARTUPINFO si;
     SHELLEXECUTEINFO sei;
+    BOOL bShouldFree = FALSE;
 
     si.cb = sizeof(STARTUPINFO);
     GetStartupInfo(&si);
 
     lpCmdLine = GetCommandLine();
-    lpArg1 = LocalAlloc(LPTR,sizeof(WCHAR)*(lstrlen(lpCmdLine) + 1));
-    lpArg2 = LocalAlloc(LPTR,sizeof(WCHAR)*(lstrlen(lpCmdLine) + 1));
-    ExtractFirstArgument(lpCmdLine,lpArg1,lpArg2);
+    lpExe = LocalAlloc(LPTR, sizeof(WCHAR)*(lstrlen(lpCmdLine) + 1));
+    if (!lpArgs) {
+      lpArgs = LocalAlloc(LPTR,sizeof(WCHAR)*(lstrlen(lpCmdLine) + 1));
+      ExtractFirstArgument(lpCmdLine, lpExe, lpArgs);
+      bShouldFree = TRUE;
+    } 
+    else {
+      ExtractFirstArgument(lpCmdLine, lpExe, NULL);
+    }
 
-    if (lstrlen(lpArg1)) {
+    if (lstrlen(lpArgs)) {
 
       ZeroMemory(&sei,sizeof(SHELLEXECUTEINFO));
       sei.cbSize = sizeof(SHELLEXECUTEINFO);
       sei.fMask = SEE_MASK_FLAG_NO_UI | /*SEE_MASK_NOASYNC*/0x00000100 | /*SEE_MASK_NOZONECHECKS*/0x00800000;
       sei.hwnd = GetForegroundWindow();
       sei.lpVerb = L"runas";
-      sei.lpFile = lpArg1;
-      sei.lpParameters = lpArg2;
+      sei.lpFile = lpExe;
+      sei.lpParameters = lpArgs;
       sei.lpDirectory = g_wchWorkingDirectory;
-      sei.nShow = si.wShowWindow;
+      sei.nShow = si.wShowWindow ? si.wShowWindow : SW_SHOWNORMAL;
 
       ShellExecuteEx(&sei);
     }
 
-    LocalFree(lpArg1);
-    LocalFree(lpArg2);
+    if (bShouldFree)
+      LocalFree(lpArgs);
+    LocalFree(lpExe);
 
     return(TRUE);
   }
