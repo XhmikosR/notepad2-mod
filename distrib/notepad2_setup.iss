@@ -43,7 +43,7 @@
 #expr ParseVersion(bindir + "\Release_x86\Notepad2.exe", VerMajor, VerMinor, VerBuild, VerRevision)
 #define app_version   str(VerMajor) + "." + str(VerMinor) + "." + str(VerBuild) + "." + str(VerRevision)
 #define app_name      "Notepad2-mod"
-#define app_copyright "Copyright � 2004-2017, Florian Balmer et al."
+#define app_copyright "Copyright © 2004-2017, Florian Balmer et al."
 #define quick_launch  "{userappdata}\Microsoft\Internet Explorer\Quick Launch"
 
 
@@ -99,6 +99,7 @@ SetupMutex='{#app_name}' + '_setup_mutex'
 
 [Languages]
 Name: en; MessagesFile: compiler:Default.isl
+Name: es; MessagesFile: compiler:Languages\Spanish.isl
 
 
 [Messages]
@@ -123,6 +124,21 @@ en.tsk_ResetSettings         =Reset {#app_name}'s settings
 en.tsk_RemoveDefault         =Restore Windows notepad
 en.tsk_SetDefault            =Replace Windows notepad with {#app_name}
 en.tsk_StartMenuIcon         =Create a Start Menu shortcut
+es.msg_AppIsRunning          =El programa de instalación ha detectado que {#app_name} se está ejecutando actualmente.%n%nCierre todas las aplicaciones ahora, haga clic en Aceptar para continuar o en Cancelar para salir.
+es.msg_AppIsRunningUninstall =La desinstalación ha detectado que {#app_name} se está ejecutando actualmente.%n%nCierre todas las aplicaciones ahora, haga clic en Aceptar para continuar o en Cancelar para salir.
+es.msg_DeleteSettings        =¿Desea borrar la configuración de {#app_name}?%n%nSi desea volver a instalar {#app_name}, no tendrá que eliminarlos.
+#if defined(sse_required)
+es.msg_simd_sse              =Esta compilación de {#app_name} requiere una CPU con soporte de extensión SSE.%n%nSu CPU no tiene esas capacidades.
+#elif defined(sse2_required)
+es.msg_simd_sse2             =Esta compilación de {#app_name} requiere una CPU con soporte de extensión SSE2.%n%nSu CPU no tiene esas capacidades.
+#endif
+es.tsk_AllUsers              =Para todos los usuarios
+es.tsk_CurrentUser           =Solo para el usuario actual
+es.tsk_Other                 =Other tasks:
+es.tsk_ResetSettings         =Restablecer la configuración de {#app_name}
+es.tsk_RemoveDefault         =Restaurar el Bloc de notas de Windows
+es.tsk_SetDefault            =Reemplazar el Bloc de notas de Windows con {#app_name}
+es.tsk_StartMenuIcon         =Crear un acceso directo en el menú Inicio
 
 
 [Tasks]
