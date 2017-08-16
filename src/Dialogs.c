@@ -102,9 +102,10 @@ int MsgBox(int iType,UINT uIdMsg,...)
     case MBOKCANCEL: iIcon = MB_ICONEXCLAMATION | MB_OKCANCEL; break;
   }
 
-  if (!(hwnd = GetFocus()))
+  if (!(hwnd = GetActiveWindow()))
     hwnd = hwndMain;
 
+  PostMessage(hwndMain, APPM_CENTER_MESSAGE_BOX, (WPARAM)hwnd, 0);
   return MessageBoxEx(hwnd,
            szText,szTitle,
            MB_SETFOREGROUND | iIcon,
@@ -138,6 +139,9 @@ void DisplayCmdLineHelp(HWND hwnd)
   mbp.lpfnMsgBoxCallback = NULL;
   mbp.dwLanguageId = MAKELANGID(LANG_NEUTRAL,SUBLANG_NEUTRAL);
 
+  if (hwnd != NULL) {
+    PostMessage(hwndMain, APPM_CENTER_MESSAGE_BOX, (WPARAM)hwnd, 0);
+  }
   MessageBoxIndirect(&mbp);
 }
 
