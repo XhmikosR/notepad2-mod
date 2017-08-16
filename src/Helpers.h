@@ -89,7 +89,9 @@ BOOL SetWindowTitle(HWND,UINT,BOOL,UINT,LPCWSTR,int,BOOL,UINT,BOOL,LPCWSTR);
 void SetWindowTransparentMode(HWND,BOOL);
 
 
+void CenterDlgInParentEx(HWND hDlg, HWND hParent);
 void CenterDlgInParent(HWND);
+void SnapToDefaultButton(HWND hwndBox);
 void GetDlgPos(HWND,LPINT,LPINT);
 void SetDlgPos(HWND,int,int);
 void ResizeDlg_Init(HWND,int,int,int);

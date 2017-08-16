@@ -1520,6 +1520,16 @@ LRESULT CALLBACK MainWndProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lParam)
       }
       break;
 
+    case APPM_CENTER_MESSAGE_BOX: {
+        HWND box = FindWindow(L"#32770", NULL);
+        HWND parent = GetParent(box);
+        // MessageBox belongs to us.
+        if (parent == (HWND)wParam || parent == hwndMain) {
+            CenterDlgInParentEx(box, parent);
+            SnapToDefaultButton(box);
+        }
+      }
+      break;
 
     default:
 
