@@ -144,4 +144,4 @@ LRESULT MsgNotify(HWND,WPARAM,LPARAM);
 
 
 
-///   End of Notepad2.h   \\\
+///   End of Notepad2.h   ///

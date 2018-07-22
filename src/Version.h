@@ -56,6 +56,7 @@
 #endif
 
 // Compiler specific
+#ifndef VERSION_COMPILER
 #if defined(_MSC_VER)
     #if _MSC_VER == 1910
         #if (_MSC_FULL_VER >= 191025017 && _MSC_FULL_VER <= 191025019)
@@ -66,6 +67,7 @@
     #endif
 #else
     #define VERSION_COMPILER            L"(Unknown compiler)"
+#endif
 #endif
 
 #endif // NOTEPAD2_VERSION_H

@@ -37,6 +37,7 @@ extern WCHAR szIniFile[MAX_PATH];
   WritePrivateProfileString(lpSection,lpName,lpString,szIniFile)
 #define IniDeleteSection(lpSection) \
   WritePrivateProfileSection(lpSection,NULL,szIniFile)
+__inline BOOL IniSetInt(LPCWSTR lpSection,LPCWSTR lpName,int i) FORCE_INLINE;
 __inline BOOL IniSetInt(LPCWSTR lpSection,LPCWSTR lpName,int i) {
   WCHAR tch[32]; wsprintf(tch,L"%i",i); return IniSetString(lpSection,lpName,tch);
 }
@@ -47,16 +48,19 @@ __inline BOOL IniSetInt(LPCWSTR lpSection,LPCWSTR lpName,int i) {
 int IniSectionGetString(LPCWSTR,LPCWSTR,LPCWSTR,LPWSTR,int);
 int IniSectionGetInt(LPCWSTR,LPCWSTR,int);
 BOOL IniSectionSetString(LPWSTR,LPCWSTR,LPCWSTR);
+__inline BOOL IniSectionSetInt(LPWSTR lpCachedIniSection,LPCWSTR lpName,int i) FORCE_INLINE;
 __inline BOOL IniSectionSetInt(LPWSTR lpCachedIniSection,LPCWSTR lpName,int i) {
   WCHAR tch[32]; wsprintf(tch,L"%i",i); return IniSectionSetString(lpCachedIniSection,lpName,tch);
 }
 
 
 extern HWND hwndEdit;
+__inline void BeginWaitCursor() FORCE_INLINE;
 __inline void BeginWaitCursor()
 {
   SendMessage(hwndEdit,SCI_SETCURSOR,(WPARAM)SC_CURSORWAIT,0);
 }
+__inline void EndWaitCursor() FORCE_INLINE;
 __inline void EndWaitCursor()
 {
   POINT pt;
@@ -234,4 +238,4 @@ VOID RestoreWndFromTray(HWND hWnd);
 
 
 
-///   End of Helpers.h   \\\
+///   End of Helpers.h   ///

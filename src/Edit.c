@@ -637,7 +637,7 @@ void Encoding_InitDefaults() {
   // Try to set the DOS encoding to DOS-437 if the default OEMCP is not DOS-437
   if (mEncoding[g_DOSEncoding].uCodePage != 437)
   {
-    int i;
+    size_t i;
     for (i = CPI_UTF7 + 1; i < COUNTOF(mEncoding); ++i) {
       if (mEncoding[i].uCodePage == 437 && Encoding_IsValid(i)) {
         g_DOSEncoding = i;
@@ -661,7 +661,7 @@ int Encoding_MapIniSetting(BOOL bLoad,int iSetting) {
       case 7: return CPI_UNICODEBE;
       case 8: return CPI_UTF7;
       default: {
-        int i;
+        size_t i;
         for (i = CPI_UTF7 + 1; i < COUNTOF(mEncoding); i++) {
           if (mEncoding[i].uCodePage == (UINT)iSetting && Encoding_IsValid(i))
             return(i);
@@ -712,7 +712,7 @@ int Encoding_MatchW(LPCWSTR pwszTest) {
 
 
 int Encoding_MatchA(char *pchTest) {
-  int i;
+  size_t i;
   char  chTest[256];
   char *pchSrc = pchTest;
   char *pchDst = chTest;
@@ -742,7 +742,7 @@ int Encoding_MatchA(char *pchTest) {
 BOOL Encoding_IsValid(int iTestEncoding) {
   CPINFO cpi;
   if (iTestEncoding >= 0 &&
-      iTestEncoding < COUNTOF(mEncoding)) {
+      (size_t)iTestEncoding < COUNTOF(mEncoding)) {
     if  ((mEncoding[iTestEncoding].uFlags & NCP_INTERNAL) ||
           IsValidCodePage(mEncoding[iTestEncoding].uCodePage) &&
           GetCPInfo(mEncoding[iTestEncoding].uCodePage,&cpi)) {
@@ -764,7 +764,7 @@ int CmpEncoding(const void *s1, const void *s2) {
 
 void Encoding_AddToListView(HWND hwnd,int idSel,BOOL bRecodeOnly)
 {
-  int i;
+  size_t i;
   int iSelItem = -1;
   LVITEM lvi;
   WCHAR wchBuf[256];
@@ -853,7 +853,7 @@ BOOL Encoding_GetFromListView(HWND hwnd,int *pidEncoding)
 
 void Encoding_AddToComboboxEx(HWND hwnd,int idSel,BOOL bRecodeOnly)
 {
-  int i;
+  size_t i;
   int iSelItem = -1;
   COMBOBOXEXITEM cbei;
   WCHAR wchBuf[256];
@@ -2106,7 +2106,7 @@ void EditEscapeCChars(HWND hwnd) {
   {
     if (SC_SEL_RECTANGLE != SendMessage(hwnd,SCI_GETSELECTIONMODE,0,0))
     {
-      EDITFINDREPLACE efr = { "", "", "", "", 0, 0, 0, 0, 0, 0, hwnd };
+      EDITFINDREPLACE efr = EDITFINDREPLACE_INIT("", "", "", "", 0, 0, 0, 0, 0, 0, hwnd);
 
       SendMessage(hwnd,SCI_BEGINUNDOACTION,0,0);
 
@@ -2140,7 +2140,7 @@ void EditUnescapeCChars(HWND hwnd) {
   {
     if (SC_SEL_RECTANGLE != SendMessage(hwnd,SCI_GETSELECTIONMODE,0,0))
     {
-      EDITFINDREPLACE efr = { "", "", "", "", 0, 0, 0, 0, 0, 0, hwnd };
+      EDITFINDREPLACE efr = EDITFINDREPLACE_INIT("", "", "", "", 0, 0, 0, 0, 0, 0, hwnd);
 
       SendMessage(hwnd,SCI_BEGINUNDOACTION,0,0);
 
@@ -2222,7 +2222,7 @@ void EditHex2Char(HWND hwnd) {
 
     if (iSelEnd - iSelStart) {
 
-      if (SendMessage(hwnd,SCI_GETSELTEXT,0,0) <= COUNTOF(ch)) {
+      if ((size_t)SendMessage(hwnd,SCI_GETSELTEXT,0,0) <= COUNTOF(ch)) {
 
         SendMessage(hwnd,SCI_GETSELTEXT,0,(LPARAM)ch);
 
@@ -2285,7 +2285,7 @@ void EditModifyNumber(HWND hwnd,BOOL bIncrease) {
       int  iNumber;
       int  iWidth;
 
-      if (SendMessage(hwnd,SCI_GETSELTEXT,0,0) <= COUNTOF(chNumber)) {
+      if ((size_t)SendMessage(hwnd,SCI_GETSELTEXT,0,0) <= COUNTOF(chNumber)) {
         SendMessage(hwnd,SCI_GETSELTEXT,0,(LPARAM)chNumber);
 
         if (StrChrIA(chNumber,'-'))
@@ -3818,7 +3818,7 @@ void EditStripTrailingBlanks(HWND hwnd,BOOL bIgnoreSelection)
   {
     if (SC_SEL_RECTANGLE != SendMessage(hwnd,SCI_GETSELECTIONMODE,0,0))
     {
-      EDITFINDREPLACE efrTrim = { "[ \t]+$", "", "", "", SCFIND_REGEXP, 0, 0, 0, 0, 0, hwnd };
+      EDITFINDREPLACE efrTrim = EDITFINDREPLACE_INIT("[ \t]+$", "", "", "", SCFIND_REGEXP, 0, 0, 0, 0, 0, hwnd);
       EditReplaceAllInSelection(hwnd,&efrTrim,FALSE);
     }
     else
@@ -4417,10 +4417,10 @@ void EditSortLines(HWND hwnd,int iSortFlags)
   int iLineCount;
 
   BOOL bIsRectangular = FALSE;
-  int iRcCurLine;
-  int iRcAnchorLine;
-  int iRcCurCol;
-  int iRcAnchorCol;
+  int iRcCurLine = 0;
+  int iRcAnchorLine = 0;
+  int iRcCurCol = 0;
+  int iRcAnchorCol = 0;
 
   int  i, iLine;
   int  cchTotal = 0;
@@ -5398,7 +5398,7 @@ HWND EditFindReplaceDlg(HWND hwnd,LPCEDITFINDREPLACE lpefr,BOOL bReplace)
             iSource++;
             iDest++;
         }
-        szWildcardEscaped[iDest] = (char)NULL;
+        szWildcardEscaped[iDest] = '\0';
         lstrcpynA(szFind2,szWildcardEscaped,COUNTOF(szWildcardEscaped));
     }
 #endif
@@ -6379,7 +6379,7 @@ INT_PTR CALLBACK EditModifyLinesDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM
 
         if (GetActiveWindow() == hwnd) {
           if (dwId >= 200 && dwId <= 205) {
-            if (id_capture == dwId || id_capture == 0) {
+            if ((DWORD)id_capture == dwId || id_capture == 0) {
               if (id_hover != id_capture || id_hover == 0) {
                 id_hover = dwId;
                 //InvalidateRect(GetDlgItem(hwnd,dwId),NULL,FALSE);
@@ -7234,7 +7234,7 @@ BOOL FileVars_IsValidEncoding(LPFILEVARS lpfv) {
   CPINFO cpi;
   if (lpfv->mask & FV_ENCODING &&
       lpfv->iEncoding >= 0 &&
-      lpfv->iEncoding < COUNTOF(mEncoding)) {
+      (size_t)lpfv->iEncoding < COUNTOF(mEncoding)) {
     if ((mEncoding[lpfv->iEncoding].uFlags & NCP_INTERNAL) ||
          IsValidCodePage(mEncoding[lpfv->iEncoding].uCodePage) &&
          GetCPInfo(mEncoding[lpfv->iEncoding].uCodePage,&cpi)) {
@@ -7394,4 +7394,4 @@ int FileVars_GetEncoding(LPFILEVARS lpfv) {
 
 
 
-///   End of Edit.c   \\\
+///   End of Edit.c   ///

@@ -42,8 +42,8 @@ extern int iEncoding;
 #define MULTI_STYLE(a,b,c,d) ((a)|(b<<8)|(c<<16)|(d<<24))
 
 
-KEYWORDLIST KeyWords_NULL = {
-"", "", "", "", "", "", "", "", "" };
+KEYWORDLIST KeyWords_NULL = {{
+"", "", "", "", "", "", "", "", ""}};
 
 
 EDITLEXER lexDefault = { SCLEX_NULL, 63000, L"Default Text", L"txt; text; wtx; log; asc; doc", L"", &KeyWords_NULL, {
@@ -75,7 +75,7 @@ EDITLEXER lexDefault = { SCLEX_NULL, 63000, L"Default Text", L"txt; text; wtx; l
                          { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_HTML = {
+KEYWORDLIST KeyWords_HTML = {{
 "!doctype ^aria- ^data- a abbr accept accept-charset accesskey acronym action address align alink "
 "alt and applet archive area article aside async audio autocomplete autofocus autoplay axis b "
 "background base basefont bb bdi bdo bgcolor big blockquote body border bordercolor br buffered button "
@@ -129,7 +129,7 @@ KEYWORDLIST KeyWords_HTML = {
 "instanceof insteadof interface isset list namespace new not null old_function or parent php_self "
 "print private protected public require require_once return static stdclass switch this throw trait "
 "true try unset use var virtual while xor",
-"", "", "", "" };
+"", "", "", "" }};
 
 
 EDITLEXER lexHTML = { SCLEX_HTML, 63001, L"Web Source Code", L"html; htm; asp; aspx; shtml; htd; xhtml; php; php3; phtml; htt; cfm; tpl; dtd; hta; htc", L"", &KeyWords_HTML, {
@@ -217,8 +217,8 @@ EDITLEXER lexHTML = { SCLEX_HTML, 63001, L"Web Source Code", L"html; htm; asp; a
                       { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_XML = {
-"", "", "", "", "", "", "", "", "" };
+KEYWORDLIST KeyWords_XML = {{
+"", "", "", "", "", "", "", "", "" }};
 
 
 EDITLEXER lexXML = { SCLEX_XML, 63002, L"XML Document", L"xml; xsl; rss; svg; xul; xsd; xslt; axl; rdf; xaml; vcproj", L"", &KeyWords_XML, {
@@ -237,7 +237,7 @@ EDITLEXER lexXML = { SCLEX_XML, 63002, L"XML Document", L"xml; xsl; rss; svg; xu
                      { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_CSS = {
+KEYWORDLIST KeyWords_CSS = {{
 "align-content align-items align-self alignment-adjust alignment-baseline animation animation-delay "
 "animation-direction animation-duration animation-fill-mode animation-iteration-count animation-name "
 "animation-play-state animation-timing-function appearance ascent azimuth backface-visibility "
@@ -295,7 +295,7 @@ KEYWORDLIST KeyWords_CSS = {
 "^-moz- ^-ms- ^-o- ^-webkit-",
 "^-moz- ^-ms- ^-o- ^-webkit-",
 "^-moz- ^-ms- ^-o- ^-webkit-",
-"" };
+"" }};
 
 
 EDITLEXER lexCSS = { SCLEX_CSS, 63003, L"CSS Style Sheets", L"css", L"", &KeyWords_CSS, {
@@ -321,7 +321,7 @@ EDITLEXER lexCSS = { SCLEX_CSS, 63003, L"CSS Style Sheets", L"css", L"", &KeyWor
                      { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_CPP = {
+KEYWORDLIST KeyWords_CPP = {{
 "__abstract __alignof __asm __assume __based __box __cdecl __declspec __delegate __event "
 "__except __except__try __fastcall __finally __forceinline __gc __hook __identifier "
 "__if_exists __if_not_exists __inline __int16 __int32 __int64 __int8 __interface __leave "
@@ -334,7 +334,7 @@ KEYWORDLIST KeyWords_CPP = {
 "switch template this throw true try typedef typeid typename union unsigned using uuid "
 "virtual void volatile wchar_t while",
 "",
-"", "", "", "", "", "", "" };
+"", "", "", "", "", "", "" }};
 
 
 EDITLEXER lexCPP = { SCLEX_CPP, 63004, L"C/C++ Source Code", L"c; cpp; cxx; cc; h; hpp; hxx; hh; m; mm; idl; inl; odl", L"", &KeyWords_CPP, {
@@ -354,7 +354,7 @@ EDITLEXER lexCPP = { SCLEX_CPP, 63004, L"C/C++ Source Code", L"c; cpp; cxx; cc; 
                      { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_CS = {
+KEYWORDLIST KeyWords_CS = {{
 "abstract add alias as ascending async await base bool break by byte case catch char checked "
 "class const continue decimal default delegate descending do double dynamic else "
 "enum equals event explicit extern false finally fixed float for foreach from get "
@@ -486,7 +486,7 @@ KEYWORDLIST KeyWords_CS = {
 "XslCompiledTransform XsltArgumentList XsltCompileException XsltContext XsltException "
 "XsltMessageEncounteredEventArgs XsltMessageEncounteredEventHandler XslTransform XsltSettings "
 "XStreamingElement XText",
-"", "", "", "", "" };
+"", "", "", "", "" }};
 
 
 EDITLEXER lexCS = { SCLEX_CPP, 63005, L"C# Source Code", L"cs", L"", &KeyWords_CS, {
@@ -507,7 +507,7 @@ EDITLEXER lexCS = { SCLEX_CPP, 63005, L"C# Source Code", L"cs", L"", &KeyWords_C
                     { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_RC = {
+KEYWORDLIST KeyWords_RC = {{
 "ACCELERATORS ALT AUTO3STATE AUTOCHECKBOX AUTORADIOBUTTON "
 "BEGIN BITMAP BLOCK BUTTON CAPTION CHARACTERISTICS CHECKBOX "
 "CLASS COMBOBOX CONTROL CTEXT CURSOR DEFPUSHBUTTON DIALOG "
@@ -516,7 +516,7 @@ KEYWORDLIST KeyWords_RC = {
 "MESSAGETABLE POPUP PUSHBUTTON RADIOBUTTON RCDATA RTEXT "
 "SCROLLBAR SEPARATOR SHIFT STATE3 STRINGTABLE STYLE "
 "TEXTINCLUDE VALUE VERSION VERSIONINFO VIRTKEY",
-"", "", "", "", "", "", "", "" };
+"", "", "", "", "", "", "", "" }};
 
 
 EDITLEXER lexRC = { SCLEX_CPP, 63006, L"Resource Script", L"rc; rc2; rct; rh; r; dlg", L"", &KeyWords_RC, {
@@ -536,8 +536,8 @@ EDITLEXER lexRC = { SCLEX_CPP, 63006, L"Resource Script", L"rc; rc2; rct; rh; r;
                     { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_MAK = {
-"", "", "", "", "", "", "", "", "" };
+KEYWORDLIST KeyWords_MAK = {{
+"", "", "", "", "", "", "", "", "" }};
 
 
 EDITLEXER lexMAK = { SCLEX_MAKEFILE, 63007, L"Makefiles", L"mak; make; mk; dsp; msc; msvc", L"", &KeyWords_MAK, {
@@ -551,14 +551,14 @@ EDITLEXER lexMAK = { SCLEX_MAKEFILE, 63007, L"Makefiles", L"mak; make; mk; dsp; 
                      { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_VBS = {
+KEYWORDLIST KeyWords_VBS = {{
 "alias and as attribute begin boolean byref byte byval call case class compare const continue "
 "currency date declare dim do double each else elseif empty end enum eqv erase error event exit "
 "explicit false for friend function get global gosub goto if imp implement in integer is let lib "
 "load long loop lset me mid mod module new next not nothing null object on option optional or "
 "preserve private property public raiseevent redim rem resume return rset select set single "
 "static stop string sub then to true type unload until variant wend while with withevents xor",
-"", "", "", "", "", "", "", "" };
+"", "", "", "", "", "", "", "" }};
 
 
 EDITLEXER lexVBS = { SCLEX_VBSCRIPT, 63008, L"VBScript", L"vbs; dsm", L"", &KeyWords_VBS, {
@@ -580,7 +580,7 @@ EDITLEXER lexVBS = { SCLEX_VBSCRIPT, 63008, L"VBScript", L"vbs; dsm", L"", &KeyW
                     { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_VB = {
+KEYWORDLIST KeyWords_VB = {{
 "addhandler addressof alias and andalso ansi any as assembly auto boolean byref byte byval call "
 "case catch cbool cbyte cchar cdate cdbl cdec char cint class clng cobj compare const cshort csng "
 "cstr ctype date decimal declare default delegate dim directcast do double each else elseif end "
@@ -592,7 +592,7 @@ KEYWORDLIST KeyWords_VB = {
 "redim rem removehandler resume return select set shadows shared short single static step stop "
 "strict string structure sub synclock then throw to true try typeof unicode until variant when "
 "while with withevents writeonly xor",
-"", "", "", "", "", "", "", "" };
+"", "", "", "", "", "", "", "" }};
 
 
 EDITLEXER lexVB = { SCLEX_VB, 63009, L"Visual Basic", L"vb; bas; frm; cls; ctl; pag; dsr; dob", L"", &KeyWords_VB, {
@@ -613,13 +613,13 @@ EDITLEXER lexVB = { SCLEX_VB, 63009, L"Visual Basic", L"vb; bas; frm; cls; ctl; 
                     { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_JS = {
+KEYWORDLIST KeyWords_JS = {{
 "abstract boolean break byte case catch char class const continue debugger default delete do "
 "double else enum export extends false final finally float for function goto if implements "
 "import in instanceof int interface let long native new null package private protected public "
 "return short static super switch synchronized this throw throws transient true try typeof var "
 "void volatile while with",
-"", "", "", "", "", "", "", "" };
+"", "", "", "", "", "", "", "" }};
 
 
 EDITLEXER lexJS = { SCLEX_CPP, 63010, L"JavaScript", L"js; jse; jsm; json; as", L"", &KeyWords_JS, {
@@ -639,7 +639,7 @@ EDITLEXER lexJS = { SCLEX_CPP, 63010, L"JavaScript", L"js; jse; jsm; json; as", 
                     { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_JAVA = {
+KEYWORDLIST KeyWords_JAVA = {{
 "@interface abstract assert boolean break byte case catch char class const "
 "continue default do double else enum extends final finally float for future "
 "generic goto if implements import inner instanceof int interface long "
@@ -650,7 +650,7 @@ KEYWORDLIST KeyWords_JAVA = {
 "@LargeTest @MediumTest @Override @Retention "
 "@SmallTest @Smoke @Supress @SupressLint @SupressWarnings @Target @TargetApi "
 "@TestTarget @TestTargetClass @UiThreadTest",
-"", "", "", "", "", "", "", "" };
+"", "", "", "", "", "", "", "" }};
 
 
 EDITLEXER lexJAVA = { SCLEX_CPP, 63011, L"Java Source Code", L"java", L"", &KeyWords_JAVA, {
@@ -670,14 +670,14 @@ EDITLEXER lexJAVA = { SCLEX_CPP, 63011, L"Java Source Code", L"java", L"", &KeyW
                       { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_PAS = {
+KEYWORDLIST KeyWords_PAS = {{
 "absolute abstract alias and array as asm assembler begin break case cdecl class const constructor continue cppdecl default "
 "destructor dispose div do downto else end end. except exit export exports external false far far16 file finalization finally for "
 "forward function goto if implementation in index inherited initialization inline interface is label library local message mod "
 "name near new nil nostackframe not object of oldfpccall on operator or out overload override packed pascal private procedure "
 "program property protected public published raise read record register reintroduce repeat resourcestring safecall self set shl "
 "shr softfloat stdcall stored string then threadvar to true try type unit until uses var virtual while with write xor",
-"", "", "", "", "", "", "", "" };
+"", "", "", "", "", "", "", "" }};
 
 
 EDITLEXER lexPAS = { SCLEX_PASCAL, 63012, L"Pascal Source Code", L"pas; dpr; dpk; dfm; inc; pp", L"", &KeyWords_PAS, {
@@ -694,7 +694,7 @@ EDITLEXER lexPAS = { SCLEX_PASCAL, 63012, L"Pascal Source Code", L"pas; dpr; dpk
                      { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_ASM = {
+KEYWORDLIST KeyWords_ASM = {{
 "aaa aad aam aas adc add and arpl bound bsf bsr bswap bt btc btr bts call cbw cdq cflush clc cld "
 "cli clts cmc cmova cmovae cmovb cmovbe cmovc cmove cmovg cmovge cmovl cmovle cmovna cmovnae "
 "cmovnb cmovnbe cmovnc cmovne cmovng cmovnge cmovnl cmovnle cmovno cmovnp cmovns cmovnz cmovo "
@@ -781,7 +781,7 @@ KEYWORDLIST KeyWords_ASM = {
 "punpcklbw punpckldq punpcklqdq punpcklwd pxor rcpps rcpss roundpd roundps roundsd roundss "
 "rsqrtps rsqrtss sfence shufpd shufps sqrtpd sqrtps sqrtsd sqrtss stmxcsr subpd subps subsd subss "
 "ucomisd ucomiss unpckhpd unpckhps unpcklpd unpcklps xorpd xorps",
-"", "", "" };
+"", "", "" }};
 
 
 EDITLEXER lexASM = { SCLEX_ASM, 63013, L"Assembly Script", L"asm", L"", &KeyWords_ASM, {
@@ -801,7 +801,7 @@ EDITLEXER lexASM = { SCLEX_ASM, 63013, L"Assembly Script", L"asm", L"", &KeyWord
                      { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_PL = {
+KEYWORDLIST KeyWords_PL = {{
 "__DATA__ __END__ __FILE__ __LINE__ __PACKAGE__ abs accept alarm and atan2 AUTOLOAD BEGIN "
 "bind binmode bless break caller chdir CHECK chmod chomp chop chown chr chroot close closedir "
 "cmp connect continue CORE cos crypt dbmclose dbmopen default defined delete DESTROY die do "
@@ -822,7 +822,7 @@ KEYWORDLIST KeyWords_PL = {
 "system syswrite tell telldir tie tied time times truncate uc ucfirst umask undef UNITCHECK "
 "unless unlink unpack unshift untie until use utime values vec wait waitpid wantarray warn "
 "when while write xor",
-"", "", "", "", "", "", "", "" };
+"", "", "", "", "", "", "", "" }};
 
 
 EDITLEXER lexPL = { SCLEX_PERL, 63014, L"Perl Script", L"pl; pm; cgi; pod", L"", &KeyWords_PL, {
@@ -864,8 +864,8 @@ EDITLEXER lexPL = { SCLEX_PERL, 63014, L"Perl Script", L"pl; pm; cgi; pod", L"",
                     { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_INI = {
-"", "", "", "", "", "", "", "", "" };
+KEYWORDLIST KeyWords_INI = {{
+"", "", "", "", "", "", "", "", "" }};
 
 
 EDITLEXER lexINI = { SCLEX_PROPERTIES, 63015, L"Configuration Files", L"ini; inf; reg; cfg; properties; oem; sif; url; sed; theme", L"", &KeyWords_INI, {
@@ -878,7 +878,7 @@ EDITLEXER lexINI = { SCLEX_PROPERTIES, 63015, L"Configuration Files", L"ini; inf
                      { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_BAT = {
+KEYWORDLIST KeyWords_BAT = {{
 "arp assoc attrib bcdedit bootcfg break cacls call cd change chcp chdir chkdsk chkntfs choice cipher "
 "cleanmgr cls cmd cmdkey color com comp compact con convert copy country ctty date defined defrag del "
 "dir disableextensions diskcomp diskcopy diskpart do doskey driverquery echo echo. else enableextensions "
@@ -889,7 +889,7 @@ KEYWORDLIST KeyWords_BAT = {
 "regsvr32 rem ren rename replace rmdir robocopy route runas rundll32 sc schtasks sclist set setlocal sfc shift "
 "shutdown sort start subst systeminfo taskkill tasklist time timeout title tracert tree type typeperf ver verify "
 "vol wmic xcopy",
-"", "", "", "", "", "", "", "" };
+"", "", "", "", "", "", "", "" }};
 
 
 EDITLEXER lexBAT = { SCLEX_BATCH, 63016, L"Batch Files", L"bat; cmd", L"", &KeyWords_BAT, {
@@ -904,8 +904,8 @@ EDITLEXER lexBAT = { SCLEX_BATCH, 63016, L"Batch Files", L"bat; cmd", L"", &KeyW
                      { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_DIFF = {
-"", "", "", "", "", "", "", "", "" };
+KEYWORDLIST KeyWords_DIFF = {{
+"", "", "", "", "", "", "", "", "" }};
 
 
 EDITLEXER lexDIFF = { SCLEX_DIFF, 63017, L"Diff Files", L"diff; patch", L"", &KeyWords_DIFF, {
@@ -921,7 +921,7 @@ EDITLEXER lexDIFF = { SCLEX_DIFF, 63017, L"Diff Files", L"diff; patch", L"", &Ke
                       { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_SQL = {
+KEYWORDLIST KeyWords_SQL = {{
 "abort accessible action add after all alter analyze and as asc asensitive attach autoincrement "
 "before begin between bigint binary bit blob both by call cascade case cast change char character "
 "check collate column commit condition conflict constraint continue convert create cross current_date "
@@ -944,7 +944,7 @@ KEYWORDLIST KeyWords_SQL = {
 "trailing transaction trigger true undo union unique unlock unsigned update usage use using utc_date "
 "utc_time utc_timestamp vacuum values varbinary varchar varcharacter varying view virtual when where "
 "while with write xor year_month zerofill",
-"", "", "", "", "", "", "", "" };
+"", "", "", "", "", "", "", "" }};
 
 
 EDITLEXER lexSQL = { SCLEX_SQL, 63018, L"SQL Query", L"sql", L"", &KeyWords_SQL, {
@@ -960,11 +960,11 @@ EDITLEXER lexSQL = { SCLEX_SQL, 63018, L"SQL Query", L"sql", L"", &KeyWords_SQL,
                      { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_PY = {
+KEYWORDLIST KeyWords_PY = {{
 "and as assert break class continue def del elif else except "
 "exec False finally for from global if import in is lambda None "
 "nonlocal not or pass print raise return True try while with yield",
-"", "", "", "", "", "", "", "" };
+"", "", "", "", "", "", "", "" }};
 
 
 EDITLEXER lexPY = { SCLEX_PYTHON, 63019, L"Python Script", L"py; pyw", L"", &KeyWords_PY, {
@@ -984,7 +984,7 @@ EDITLEXER lexPY = { SCLEX_PYTHON, 63019, L"Python Script", L"py; pyw", L"", &Key
                     { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_CONF = {
+KEYWORDLIST KeyWords_CONF = {{
 "acceptfilter acceptmutex acceptpathinfo accessconfig accessfilename action addalt addaltbyencoding "
 "addaltbytype addcharset adddefaultcharset adddescription addencoding addhandler addicon addiconbyencoding "
 "addiconbytype addinputfilter addlanguage addmodule addmoduleinfo addoutputfilter addoutputfilterbytype "
@@ -1094,7 +1094,7 @@ KEYWORDLIST KeyWords_CONF = {
 "virtualdocumentrootip virtualhost virtualscriptalias virtualscriptaliasip watchdoginterval win32disableacceptex "
 "xbithack xml2encalias xml2encdefault xml2startparse",
 "", //"on off standalone inetd force-response-1.0 downgrade-1.0 nokeepalive indexes includes followsymlinks none x-compress x-gzip",
-"", "", "", "", "", "", "" };
+"", "", "", "", "", "", "" }};
 
 
 EDITLEXER lexCONF = { SCLEX_CONF, 63020, L"Apache Config Files", L"conf; htaccess", L"", &KeyWords_CONF, {
@@ -1111,7 +1111,7 @@ EDITLEXER lexCONF = { SCLEX_CONF, 63020, L"Apache Config Files", L"conf; htacces
                       { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_PS = {
+KEYWORDLIST KeyWords_PS = {{
 "begin break catch continue data do dynamicparam else elseif end exit filter finally for foreach "
 "from function if in local param private process return switch throw trap try until where while",
 "add-computer add-content add-history add-member add-pssnapin add-type checkpoint-computer "
@@ -1164,7 +1164,7 @@ KEYWORDLIST KeyWords_PS = {
 "rvpa rwmi sajb sal saps sasv sbp sc select set si sl sleep sort sp spjb spps spsv start sv swmi "
 "tee type where wjb write",
 "importsystemmodules prompt psedit tabexpansion",
-"", "", "", "", "" };
+"", "", "", "", "" }};
 
 
 EDITLEXER lexPS = { SCLEX_POWERSHELL, 63021, L"PowerShell Script", L"ps1; psd1; psm1", L"", &KeyWords_PS, {
@@ -1182,7 +1182,7 @@ EDITLEXER lexPS = { SCLEX_POWERSHELL, 63021, L"PowerShell Script", L"ps1; psd1; 
                     { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_NSIS = {
+KEYWORDLIST KeyWords_NSIS = {{
 "!addincludedir !addplugindir !appendfile !cd !define !delfile !echo !else !endif !error "
 "!execute !finalize !getdllversion !if !ifdef !ifmacrodef !ifmacrondef !ifndef !include !insertmacro !macro "
 "!macroend !macroundef !makensis !packhdr !searchparse !searchreplace !system !tempfile !undef !verbose !warning "
@@ -1233,7 +1233,7 @@ KEYWORDLIST KeyWords_NSIS = {
 "hidden file_attribute_hidden offline file_attribute_offline readonly file_attribute_readonly system "
 "file_attribute_system temporary file_attribute_temporary custom license components directory instfiles "
 "uninstconfirm 32 64 enablecancel noworkingdir plugin rawnl winvista win7 win8 win8.1 win10",
-"", "", "", "", "", "" };
+"", "", "", "", "", "" }};
 
 
 EDITLEXER lexNSIS = { SCLEX_NSIS, 63284, L"NSIS Script", L"nsi; nsh", L"", &KeyWords_NSIS, {
@@ -1257,7 +1257,7 @@ EDITLEXER lexNSIS = { SCLEX_NSIS, 63284, L"NSIS Script", L"nsi; nsh", L"", &KeyW
                       { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_INNO = {
+KEYWORDLIST KeyWords_INNO = {{
 "code components custommessages dirs files icons ini installdelete langoptions languages messages "
 "registry run setup types tasks uninstalldelete uninstallrun _istool",
 "allowcancelduringinstall allownetworkdrive allownoicons allowrootdirectory allowuncpath alwaysrestart "
@@ -1291,7 +1291,7 @@ KEYWORDLIST KeyWords_INNO = {
 "sub undef",
 "and begin break case const continue do downto else end except finally for function "
 "if not of or procedure repeat then to try type until uses var while with",
-"", "", "", "" };
+"", "", "", "" }};
 
 
 EDITLEXER lexINNO = { SCLEX_INNOSETUP, 63293, L"Inno Setup Script", L"iss; isl; islu", L"", &KeyWords_INNO, {
@@ -1311,11 +1311,11 @@ EDITLEXER lexINNO = { SCLEX_INNOSETUP, 63293, L"Inno Setup Script", L"iss; isl; 
                       { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_RUBY = {
+KEYWORDLIST KeyWords_RUBY = {{
 "__FILE__ __LINE__ alias and begin break case class def defined? do else elsif end ensure "
 "false for in if module next nil not or redo rescue retry return self super then true "
 "undef unless until when while yield",
-"", "", "", "", "", "", "", "" };
+"", "", "", "", "", "", "", "" }};
 
 EDITLEXER lexRUBY = { SCLEX_RUBY, 63304, L"Ruby Script", L"rb; ruby; rbw; rake; rjs; Rakefile; gemspec", L"", &KeyWords_RUBY, {
                     { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
@@ -1338,7 +1338,7 @@ EDITLEXER lexRUBY = { SCLEX_RUBY, 63304, L"Ruby Script", L"rb; ruby; rbw; rake; 
                     { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_LUA = {
+KEYWORDLIST KeyWords_LUA = {{
 "and break do else elseif end false for function goto if "
 "in local nil not or repeat return then true until while",
 // Basic Functions
@@ -1364,7 +1364,7 @@ KEYWORDLIST KeyWords_LUA = {
 "io.read io.tmpfile io.type io.write io.stdin io.stdout io.stderr os.clock os.date os.difftime "
 "os.execute os.exit os.getenv os.remove os.rename os.setlocale os.time os.tmpname coroutine.running "
 "package.cpath package.loaded package.loadlib package.path package.preload package.seeall io.popen",
-"", "", "", "", "" };
+"", "", "", "", "" }};
 
 
 EDITLEXER lexLUA = { SCLEX_LUA, 63298, L"Lua Script", L"lua", L"", &KeyWords_LUA, {
@@ -1385,7 +1385,7 @@ EDITLEXER lexLUA = { SCLEX_LUA, 63298, L"Lua Script", L"lua", L"", &KeyWords_LUA
                     { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_BASH = {
+KEYWORDLIST KeyWords_BASH = {{
 "alias ar asa awk banner basename bash bc bdiff break bunzip2 bzip2 cal calendar case cat "
 "cc cd chmod cksum clear cmp col comm compress continue cp cpio crypt csplit ctags cut date "
 "dc dd declare deroff dev df diff diff3 dircmp dirname do done du echo ed egrep elif else "
@@ -1399,7 +1399,7 @@ KEYWORDLIST KeyWords_BASH = {
 "unset until uudecode uuencode vi vim vpax wait wc whence which while who wpaste wstart xargs "
 "zcat chgrp chown chroot dir dircolors factor groups hostid install link md5sum mkfifo mknod "
 "nice pinky printenv ptx readlink seq sha1sum shred stat su tac unlink users vdir whoami yes",
-"", "", "", "", "", "", "", "" };
+"", "", "", "", "", "", "", "" }};
 
 
 EDITLEXER lexBASH = { SCLEX_BASH, 63259, L"Shell Script", L"sh", L"", &KeyWords_BASH, {
@@ -1420,7 +1420,7 @@ EDITLEXER lexBASH = { SCLEX_BASH, 63259, L"Shell Script", L"sh", L"", &KeyWords_
                       { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_TCL = {
+KEYWORDLIST KeyWords_TCL = {{
 // TCL Keywords
 "after append array auto_execok auto_import auto_load auto_load_index auto_qualify beep "
 "bgerror binary break case catch cd clock close concat continue dde default echo else "
@@ -1442,7 +1442,7 @@ KEYWORDLIST KeyWords_TCL = {
 "@scope body class code common component configbody constructor define destructor hull "
 "import inherit itcl itk itk_component itk_initialize itk_interior itk_option iwidgets keep "
 "method private protected public",
-"", "", "", "", "", "" };
+"", "", "", "", "", "" }};
 
 
 #define SCE_TCL__MULTI_COMMENT      MULTI_STYLE(SCE_TCL_COMMENT,SCE_TCL_COMMENTLINE,SCE_TCL_COMMENT_BOX,SCE_TCL_BLOCK_COMMENT)
@@ -1463,7 +1463,7 @@ EDITLEXER lexTCL = { SCLEX_TCL, 63273, L"Tcl Script", L"tcl; itcl", L"", &KeyWor
                      { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_AU3 = {
+KEYWORDLIST KeyWords_AU3 = {{
 "and byref case const continuecase continueloop default dim do else elseif endfunc endif "
 "endselect endswitch endwith enum exit exitloop false for func global if in local next not "
 "or redim return select static step switch then to true until wend while with",
@@ -2106,7 +2106,7 @@ KEYWORDLIST KeyWords_AU3 = {
 "_worddoclinkgetcollection _worddocopen _worddocprint _worddocpropertyget _worddocpropertyset _worddocsave "
 "_worddocsaveas _worderrorhandlerderegister _worderrorhandlerregister _worderrornotify _wordmacrorun "
 "_wordpropertyget _wordpropertyset _wordquit",
-"" };
+"" }};
 
 
 EDITLEXER lexAU3 = { SCLEX_AU3, 63276, L"AutoIt3 Script", L"au3", L"", &KeyWords_AU3, {
@@ -2145,7 +2145,7 @@ EDITLEXER lexANSI = { SCLEX_NULL, 63258, L"ANSI Art", L"nfo; diz", L"", &KeyWord
                       { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_AHK = {
+KEYWORDLIST KeyWords_AHK = {{
 "break continue else exit exitapp gosub goto if ifequal ifexist ifgreater ifgreaterorequal "
 "ifinstring ifless iflessorequal ifmsgbox ifnotequal ifnotexist ifnotinstring ifwinactive "
 "ifwinexist ifwinnotactive ifwinnotexist loop onexit pause repeat return settimer sleep "
@@ -2249,7 +2249,7 @@ KEYWORDLIST KeyWords_AHK = {
 "yes no ok cancel abort retry ignore force on off all send wanttab monitorcount monitorprimary "
 "monitorname monitorworkarea pid this base extends __get __set __call __delete __new new "
 "useunsetlocal useunsetglobal useenv localsameasglobal",
-"", "" };
+"", "" }};
 
 
 EDITLEXER lexAHK = { SCLEX_AHK, 63305, L"AutoHotkey Script", L"ahk; ia; scriptlet", L"", &KeyWords_AHK, {
@@ -2277,7 +2277,7 @@ EDITLEXER lexAHK = { SCLEX_AHK, 63305, L"AutoHotkey Script", L"ahk; ia; scriptle
                      { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_CMAKE = {
+KEYWORDLIST KeyWords_CMAKE = {{
 "add_custom_command add_custom_target add_definitions add_dependencies add_executable add_library "
 "add_subdirectory add_test aux_source_directory build_command build_name cmake_minimum_required "
 "configure_file create_test_sourcelist else elseif enable_language enable_testing endforeach endif "
@@ -2303,7 +2303,7 @@ KEYWORDLIST KeyWords_CMAKE = {
 "RETURN_VALUE RUNTIME_DIRECTORY SEND_ERROR SHARED SOURCES STATIC STATUS STREQUAL STRGREATER STRLESS "
 "SUFFIX TARGET TOLOWER TOUPPER VAR VARIABLES VERSION WIN32 WRAP_EXCLUDE WRITE APPLE MINGW MSYS CYGWIN "
 "BORLAND WATCOM MSVC MSVC_IDE MSVC60 MSVC70 MSVC71 MSVC80 CMAKE_COMPILER_2005 OFF ON",
-"", "", "", "", "", "", "" };
+"", "", "", "", "", "", "" }};
 
 
 EDITLEXER lexCmake = { SCLEX_CMAKE, 63324, L"Cmake Script", L"cmake; ctest", L"", &KeyWords_CMAKE, {
@@ -2324,7 +2324,7 @@ EDITLEXER lexCmake = { SCLEX_CMAKE, 63324, L"Cmake Script", L"cmake; ctest", L""
                        { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_AVS = {
+KEYWORDLIST KeyWords_AVS = {{
 "true false return global",
 "addborders alignedsplice amplify amplifydb animate applyrange assumebff assumefieldbased assumefps "
 "assumeframebased assumesamplerate assumescaledfps assumetff audiodub audiodubex avifilesource "
@@ -2396,7 +2396,7 @@ KEYWORDLIST KeyWords_AVS = {
 "audiobits audiochannels audiolength audiolengthf audiorate framecount framerate frameratedenominator "
 "frameratenumerator getleftchannel getrightchannel hasaudio hasvideo height isaudiofloat isaudioint "
 "isfieldbased isframebased isinterleaved isplanar isrgb isrgb24 isrgb32 isyuv isyuy2 isyv12 width",
-"", "", "", "" };
+"", "", "", "" }};
 
 
 EDITLEXER lexAVS = { SCLEX_AVS, 63332, L"AviSynth Script", L"avs; avsi", L"", &KeyWords_AVS, {
@@ -2415,8 +2415,8 @@ EDITLEXER lexAVS = { SCLEX_AVS, 63332, L"AviSynth Script", L"avs; avsi", L"", &K
                      { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_MARKDOWN = {
-"", "", "", "", "", "", "", "", "" };
+KEYWORDLIST KeyWords_MARKDOWN = {{
+"", "", "", "", "", "", "", "", "" }};
 
 
 EDITLEXER lexMARKDOWN = { SCLEX_MARKDOWN, 63336, L"Markdown", L"md; markdown; mdown; mkdn; mkd", L"", &KeyWords_MARKDOWN, {
@@ -2442,8 +2442,8 @@ EDITLEXER lexMARKDOWN = { SCLEX_MARKDOWN, 63336, L"Markdown", L"md; markdown; md
                           { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_YAML = {
-"y n yes no on off true false", "", "", "", "", "", "", "", "" };
+KEYWORDLIST KeyWords_YAML = {{
+"y n yes no on off true false", "", "", "", "", "", "", "", "" }};
 
 EDITLEXER lexYAML = { SCLEX_YAML, 63355, L"YAML", L"yaml; yml", L"", &KeyWords_YAML, {
                       { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
@@ -2459,7 +2459,7 @@ EDITLEXER lexYAML = { SCLEX_YAML, 63355, L"YAML", L"yaml; yml", L"", &KeyWords_Y
                       { SCE_YAML_OPERATOR, 63132, L"Operator", L"fore:#333366", L"" },
                       { -1, 00000, L"", L"", L"" } } };
 
-KEYWORDLIST KeyWords_VHDL = {
+KEYWORDLIST KeyWords_VHDL = {{
 "access after alias all architecture array assert attribute begin block body buffer bus case component configuration "
 "constant disconnect downto else elsif end entity exit file for function generate generic group guarded if impure in "
 "inertial inout is label library linkage literal loop map new next null of on open others out package port postponed "
@@ -2475,7 +2475,7 @@ KEYWORDLIST KeyWords_VHDL = {
 "numeric_bit numeric_std math_complex math_real vital_primitives vital_timing",
 "boolean bit character severity_level integer real time delay_length natural positive string bit_vector file_open_kind "
 "file_open_status line text side width std_ulogic std_ulogic_vector std_logic std_logic_vector X01 X01Z UX01 UX01Z unsigned signed",
-"", "", "" };
+"", "", "" }};
 
 EDITLEXER lexVHDL = { SCLEX_VHDL, 63370, L"VHDL", L"vhdl; vhd", L"", &KeyWords_VHDL, {
                        { STYLE_DEFAULT, 63126, L"Default", L"", L"" },
@@ -2493,8 +2493,8 @@ EDITLEXER lexVHDL = { SCLEX_VHDL, 63370, L"VHDL", L"vhdl; vhd", L"", &KeyWords_V
                        { -1, 00000, L"", L"", L"" } } };
 
 
-KEYWORDLIST KeyWords_COFFEESCRIPT = {
-"", "", "", "", "", "", "", "", "" };
+KEYWORDLIST KeyWords_COFFEESCRIPT = {{
+"", "", "", "", "", "", "", "", "" }};
 
 
 EDITLEXER lexCOFFEESCRIPT = { SCLEX_COFFEESCRIPT, 63362, L"Coffeescript", L"coffee; Cakefile", L"", &KeyWords_COFFEESCRIPT, {
@@ -2825,7 +2825,7 @@ BOOL Style_Export(HWND hwnd)
 //
 void Style_SetLexer(HWND hwnd,PEDITLEXER pLexNew)
 {
-  int i;
+  size_t i;
   //WCHAR *p;
   int rgb;
   int iValue;
@@ -3088,7 +3088,7 @@ void Style_SetLexer(HWND hwnd,PEDITLEXER pLexNew)
       SC_MARKNUM_FOLDERMIDTAIL
     };
 
-    int i;
+    size_t i;
 
     COLORREF clrFore = SciCall_StyleGetFore(STYLE_DEFAULT);
     COLORREF clrBack = SciCall_StyleGetBack(STYLE_DEFAULT);
@@ -3116,7 +3116,7 @@ void Style_SetLexer(HWND hwnd,PEDITLEXER pLexNew)
 
   if (pLexNew->iLexer != SCLEX_NULL || pLexNew == &lexANSI)
   {
-    int j;
+    size_t j;
     i = 1;
     while (pLexNew->Styles[i].iStyle != -1) {
 

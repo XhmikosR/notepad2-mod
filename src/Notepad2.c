@@ -59,38 +59,38 @@ HWND      hDlgFindReplace = NULL;
 #define NUMINITIALTOOLS 24
 #define MARGIN_FOLD_INDEX 2
 
-TBBUTTON  tbbMainWnd[] = { {0,IDT_FILE_NEW,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0},
-                           {1,IDT_FILE_OPEN,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0},
-                           {2,IDT_FILE_BROWSE,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0},
-                           {3,IDT_FILE_SAVE,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0},
-                           {0,0,0,TBSTYLE_SEP,0,0},
-                           {4,IDT_EDIT_UNDO,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0},
-                           {5,IDT_EDIT_REDO,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0},
-                           {0,0,0,TBSTYLE_SEP,0,0},
-                           {6,IDT_EDIT_CUT,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0},
-                           {7,IDT_EDIT_COPY,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0},
-                           {8,IDT_EDIT_PASTE,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0},
-                           {0,0,0,TBSTYLE_SEP,0,0},
-                           {9,IDT_EDIT_FIND,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0},
-                           {10,IDT_EDIT_REPLACE,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0},
-                           {0,0,0,TBSTYLE_SEP,0,0},
-                           {11,IDT_VIEW_WORDWRAP,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0},
-                           {0,0,0,TBSTYLE_SEP,0,0},
-                           {12,IDT_VIEW_ZOOMIN,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0},
-                           {13,IDT_VIEW_ZOOMOUT,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0},
-                           {0,0,0,TBSTYLE_SEP,0,0},
-                           {14,IDT_VIEW_SCHEME,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0},
-                           {15,IDT_VIEW_SCHEMECONFIG,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0},
-                           {0,0,0,TBSTYLE_SEP,0,0},
-                           {16,IDT_FILE_EXIT,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0},
-                           {17,IDT_FILE_SAVEAS,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0},
-                           {18,IDT_FILE_SAVECOPY,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0},
-                           {19,IDT_EDIT_CLEAR,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0},
-                           {20,IDT_FILE_PRINT,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0},
-                           {21,IDT_FILE_OPENFAV,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0},
-                           {22,IDT_FILE_ADDTOFAV,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0},
-                           {23,IDT_VIEW_TOGGLEFOLDS,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0},
-                           {24,IDT_FILE_LAUNCH,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0} };
+TBBUTTON  tbbMainWnd[] = { TBBUTTON_INIT(0,IDT_FILE_NEW,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0),
+                           TBBUTTON_INIT(1,IDT_FILE_OPEN,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0),
+                           TBBUTTON_INIT(2,IDT_FILE_BROWSE,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0),
+                           TBBUTTON_INIT(3,IDT_FILE_SAVE,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0),
+                           TBBUTTON_INIT(0,0,0,TBSTYLE_SEP,0,0),
+                           TBBUTTON_INIT(4,IDT_EDIT_UNDO,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0),
+                           TBBUTTON_INIT(5,IDT_EDIT_REDO,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0),
+                           TBBUTTON_INIT(0,0,0,TBSTYLE_SEP,0,0),
+                           TBBUTTON_INIT(6,IDT_EDIT_CUT,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0),
+                           TBBUTTON_INIT(7,IDT_EDIT_COPY,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0),
+                           TBBUTTON_INIT(8,IDT_EDIT_PASTE,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0),
+                           TBBUTTON_INIT(0,0,0,TBSTYLE_SEP,0,0),
+                           TBBUTTON_INIT(9,IDT_EDIT_FIND,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0),
+                           TBBUTTON_INIT(10,IDT_EDIT_REPLACE,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0),
+                           TBBUTTON_INIT(0,0,0,TBSTYLE_SEP,0,0),
+                           TBBUTTON_INIT(11,IDT_VIEW_WORDWRAP,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0),
+                           TBBUTTON_INIT(0,0,0,TBSTYLE_SEP,0,0),
+                           TBBUTTON_INIT(12,IDT_VIEW_ZOOMIN,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0),
+                           TBBUTTON_INIT(13,IDT_VIEW_ZOOMOUT,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0),
+                           TBBUTTON_INIT(0,0,0,TBSTYLE_SEP,0,0),
+                           TBBUTTON_INIT(14,IDT_VIEW_SCHEME,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0),
+                           TBBUTTON_INIT(15,IDT_VIEW_SCHEMECONFIG,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0),
+                           TBBUTTON_INIT(0,0,0,TBSTYLE_SEP,0,0),
+                           TBBUTTON_INIT(16,IDT_FILE_EXIT,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0),
+                           TBBUTTON_INIT(17,IDT_FILE_SAVEAS,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0),
+                           TBBUTTON_INIT(18,IDT_FILE_SAVECOPY,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0),
+                           TBBUTTON_INIT(19,IDT_EDIT_CLEAR,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0),
+                           TBBUTTON_INIT(20,IDT_FILE_PRINT,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0),
+                           TBBUTTON_INIT(21,IDT_FILE_OPENFAV,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0),
+                           TBBUTTON_INIT(22,IDT_FILE_ADDTOFAV,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0),
+                           TBBUTTON_INIT(23,IDT_VIEW_TOGGLEFOLDS,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0),
+                           TBBUTTON_INIT(24,IDT_FILE_LAUNCH,TBSTATE_ENABLED,TBSTYLE_BUTTON,0,0) };
 
 WCHAR      szIniFile[MAX_PATH] = L"";
 WCHAR      szIniFile2[MAX_PATH] = L"";
@@ -245,7 +245,7 @@ UINT      msgTaskbarCreated = 0;
 
 HMODULE   hModUxTheme = NULL;
 
-EDITFINDREPLACE efrData = { "", "", "", "", 0, 0, 0, 0, 0, 0, NULL };
+EDITFINDREPLACE efrData = EDITFINDREPLACE_INIT("", "", "", "", 0, FALSE, FALSE, FALSE, FALSE, FALSE, NULL);
 UINT cpLastFind = 0;
 BOOL bReplaceInitialized = FALSE;
 
@@ -1525,8 +1525,10 @@ LRESULT CALLBACK MainWndProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lParam)
 
       if (umsg == msgTaskbarCreated) {
         if (!IsWindowVisible(hwnd))
+        {
           ShowNotifyIcon(hwnd,TRUE);
           SetNotifyIconTitle(hwnd);
+        }
         return(0);
       }
 
@@ -1753,7 +1755,8 @@ void CreateBars(HWND hwnd,HINSTANCE hInstance)
 
   BOOL bIsAppThemed = PrivateIsAppThemed();
 
-  int i,n;
+  size_t i;
+  int n;
   WCHAR tchDesc[256];
   WCHAR tchIndex[256];
 
@@ -4540,7 +4543,7 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
         struct tm sst;
 
         UINT cp;
-        EDITFINDREPLACE efrTS = { "", "", "", "", SCFIND_REGEXP, 0, 0, 0, 0, 0, hwndEdit };
+        EDITFINDREPLACE efrTS = EDITFINDREPLACE_INIT( "", "", "", "", SCFIND_REGEXP, 0, 0, 0, 0, 0, hwndEdit);
 
         IniGetString(L"Settings2",L"TimeStamp",L"\\$Date:[^\\$]+\\$ | $Date: %Y/%m/%d %H:%M:%S $",wchFind,COUNTOF(wchFind));
 
@@ -4603,7 +4606,7 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
           cchSelection = (int)SendMessage(hwndEdit,SCI_GETSELECTIONEND,0,0) -
                           (int)SendMessage(hwndEdit,SCI_GETSELECTIONSTART,0,0);
 
-          if (cchSelection > 0 && cchSelection <= 500 && SendMessage(hwndEdit,SCI_GETSELTEXT,0,0) < COUNTOF(mszSelection))
+          if (cchSelection > 0 && cchSelection <= 500 && (size_t)SendMessage(hwndEdit,SCI_GETSELTEXT,0,0) < COUNTOF(mszSelection))
           {
             SendMessage(hwndEdit,SCI_GETSELTEXT,0,(LPARAM)mszSelection);
             mszSelection[cchSelection] = 0; // zero terminate
@@ -5363,7 +5366,7 @@ LRESULT MsgNotify(HWND hwnd,WPARAM wParam,LPARAM lParam)
 
         case TBN_GETBUTTONINFO:
           {
-            if (((LPTBNOTIFY)lParam)->iItem < COUNTOF(tbbMainWnd))
+            if ((size_t)((LPTBNOTIFY)lParam)->iItem < COUNTOF(tbbMainWnd))
             {
               WCHAR tch[256];
               GetString(tbbMainWnd[((LPTBNOTIFY)lParam)->iItem].idCommand,tch,COUNTOF(tch));
@@ -7021,7 +7024,7 @@ BOOL FileSave(BOOL bSaveAlways,BOOL bAsk,BOOL bSaveAs,BOOL bSaveCopy)
     }
   }
 
-  if (!bSaveAlways && (!bModified && iEncoding == iOriginalEncoding || bIsEmptyNewFile) && !bSaveAs)
+  if (!bSaveAlways && (!bModified && (iEncoding == iOriginalEncoding) || bIsEmptyNewFile) && !bSaveAs)
     return TRUE;
 
   if (bAsk)
@@ -7904,4 +7907,4 @@ void CALLBACK PasteBoardTimer(HWND hwnd,UINT uMsg,UINT_PTR idEvent,DWORD dwTime)
 
 
 
-///  End of Notepad2.c  \\\
+///  End of Notepad2.c  ///
