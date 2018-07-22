@@ -4408,13 +4408,13 @@ int CmpLogicalRev(const void *s1, const void *s2) {
 
 void EditSortLines(HWND hwnd,int iSortFlags)
 {
-  int iCurPos;
-  int iAnchorPos;
-  int iSelStart;
-  int iSelEnd;
-  int iLineStart;
-  int iLineEnd;
-  int iLineCount;
+  int iCurPos = 0;
+  int iAnchorPos = 0;
+  int iSelStart = 0;
+  int iSelEnd = 0;
+  int iLineStart = 0;
+  int iLineEnd = 0;
+  int iLineCount = 0;
 
   BOOL bIsRectangular = FALSE;
   int iRcCurLine = 0;
