@@ -707,7 +707,7 @@ void MakeColorPickButton(HWND hwnd,int nCtlId,HINSTANCE hInstance,COLORREF crCol
   if (SendMessage(hwndCtl,BCM_GETIMAGELIST,0,(LPARAM)&bi))
     himlOld = bi.himl;
 
-  if (IsWindowEnabled(hwndCtl) && crColor != -1) {
+  if (IsWindowEnabled(hwndCtl) && crColor != (COLORREF)-1) {
     colormap[0].from = RGB(0x00,0x00,0x00);
     colormap[0].to   = GetSysColor(COLOR_3DSHADOW);
   }
@@ -716,7 +716,7 @@ void MakeColorPickButton(HWND hwnd,int nCtlId,HINSTANCE hInstance,COLORREF crCol
     colormap[0].to   = RGB(0xFF,0xFF,0xFF);
   }
 
-  if (IsWindowEnabled(hwndCtl) && crColor != -1) {
+  if (IsWindowEnabled(hwndCtl) && crColor != (COLORREF)-1) {
     if (crColor == RGB(0xFF,0xFF,0xFF))
       crColor = RGB(0xFF,0xFF,0xFE);
 
@@ -854,12 +854,14 @@ int Toolbar_GetButtons(HWND hwnd,int cmdBase,LPWSTR lpszButtons,int cchButtons)
   return(c);
 }
 
-int Toolbar_SetButtons(HWND hwnd,int cmdBase,LPCWSTR lpszButtons,LPCTBBUTTON ptbb,int ctbb)
+int Toolbar_SetButtons(HWND hwnd,int cmdBase,LPCWSTR lpszButtons,void* ptbb_v,int ctbb)
 {
   WCHAR tchButtons[512];
   WCHAR *p;
   int i,c;
   int iCmd;
+  
+  TBBUTTON const * ptbb = (TBBUTTON const *) ptbb_v;
 
   ZeroMemory(tchButtons,COUNTOF(tchButtons)*sizeof(tchButtons[0]));
   lstrcpyn(tchButtons,lpszButtons,COUNTOF(tchButtons)-2);
@@ -871,7 +873,7 @@ int Toolbar_SetButtons(HWND hwnd,int cmdBase,LPCWSTR lpszButtons,LPCTBBUTTON ptb
   for (i = 0; i < c; i++)
     SendMessage(hwnd,TB_DELETEBUTTON,0,0);
 
-  for (i = 0; i < COUNTOF(tchButtons); i++)
+  for (i = 0; (size_t)i < COUNTOF(tchButtons); i++)
     if (tchButtons[i] == L' ') tchButtons[i] = 0;
 
   p = tchButtons;
@@ -1896,23 +1898,23 @@ BOOL GetThemedDialogFont(LPWSTR lpFaceName,WORD* wSize)
   return(bSucceed);
 }
 
-__inline BOOL DialogTemplate_IsDialogEx(const DLGTEMPLATE* pTemplate) {
+static __inline BOOL DialogTemplate_IsDialogEx(const DLGTEMPLATE* pTemplate) {
 
   return ((DLGTEMPLATEEX*)pTemplate)->signature == 0xFFFF;
 }
 
-__inline BOOL DialogTemplate_HasFont(const DLGTEMPLATE* pTemplate) {
+static __inline BOOL DialogTemplate_HasFont(const DLGTEMPLATE* pTemplate) {
 
   return (DS_SETFONT &
     (DialogTemplate_IsDialogEx(pTemplate) ? ((DLGTEMPLATEEX*)pTemplate)->style : pTemplate->style));
 }
 
-__inline int DialogTemplate_FontAttrSize(BOOL bDialogEx) {
+static __inline int DialogTemplate_FontAttrSize(BOOL bDialogEx) {
 
   return (int)sizeof(WORD) * (bDialogEx ? 3 : 1);
 }
 
-__inline BYTE* DialogTemplate_GetFontSizeField(const DLGTEMPLATE* pTemplate) {
+static __inline BYTE* DialogTemplate_GetFontSizeField(const DLGTEMPLATE* pTemplate) {
 
   BOOL bDialogEx = DialogTemplate_IsDialogEx(pTemplate);
   WORD* pw;
@@ -2052,7 +2054,7 @@ HWND CreateThemedDialogParam(
 *  UnSlash functions
 *  Mostly taken from SciTE, (c) Neil Hodgson, http://www.scintilla.org
 *
-/
+*/
 
 /**
  * Is the character an octal digit?
@@ -2386,4 +2388,4 @@ VOID RestoreWndFromTray(HWND hWnd)
 
 
 
-///   End of Helpers.c   \\\
+///   End of Helpers.c   ///

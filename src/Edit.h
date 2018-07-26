@@ -222,4 +222,4 @@ int  FileVars_GetEncoding(LPFILEVARS);
 
 
 
-///   End of Edit.h   \\\
+///   End of Edit.h   ///

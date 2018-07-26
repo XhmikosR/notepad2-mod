@@ -18,3 +18,11 @@
 /res/Notepad2.exe.manifest
 /signinfo.txt
 /src/VersionRev.h
+/build/mingw/*.o
+/build/mingw/*/*.o
+/build/mingw/*.exe
+.tags
+.tags_sorted_by_file
+*.sublime-project
+*.sublime-workspace
+*.ansi.rc
